@@ -42,65 +42,66 @@ public class PlayerVehicle : MonoBehaviour
         currentAcceleration = acceleration * input.Forward;
         currentBrakeForce = brakingForce * input.Brake;
         currentTurnAngle = maxHorizontalAngle * input.Right;
-        
-        // foreach (WheelCollider movingWheelCollider in movingWheelColliders)
-        // {
-        //     movingWheelCollider.motorTorque = currentAcceleration;
-        // }
-        //
-        // foreach (WheelCollider wheelCollider in allWheelColliders)
-        // {
-        //     wheelCollider.brakeTorque = currentBrakeForce;
-        // }
-        //
-        // foreach (WheelCollider turningWheelCollider in turningWheelColliders)
-        // {
-        //     turningWheelCollider.steerAngle = currentTurnAngle;
-        // }
-        //
-        for (int i = 0 ; i < allWheelMeshes.Length ; i++)
-        {
-            updateWheelVisuals(allWheelColliders[i], allWheelMeshes[i]);
-        }
 
         bool isOnGround = this.isOnGround();
+        bool useAirForce = false;
         if (!isOnGround)
         {
             if (input.Forward < 0.1f)
             {
-                input.Up = -0.5f;
+                input.Up = -1f;
                 input.Forward = 0.5f;
             }
+
+            useAirForce = true;
         }
         else
         {
-            if (input.Up > 0.1f)
+            if (input.Up > 0.25f)
             {
                 rigid.useGravity = false;
+                useAirForce = true;
             }
             else
             {
+                input.Up = 0f;
                 rigid.useGravity = true;
+                rigid.velocity = new Vector3(rigid.velocity.x, 0f, rigid.velocity.z);
             }
         }
 
-        //rigid.useGravity = (isOnGround() && input.Up > 0.1f) || ;
+        if (useAirForce)
+        {
+            Vector3 direction = new Vector3(input.Right, input.Up, input.Forward);
+            rigid.velocity = (direction * speed);
 
-        // Calculate movement direction
-        //Vector3 movement = new Vector3(input.Right, input.Up, input.Forward) * speed * Time.deltaTime;
-        //transform.Translate(movement);
+            float roll = input.Right * rollSpeed;
+            float pitch = -input.Up * pitchSpeed;
+            Quaternion targetRotation = Quaternion.Euler(pitch, roll, 0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSmoothness);
+        }
+        else
+        {
+            foreach (WheelCollider movingWheelCollider in movingWheelColliders)
+            {
+                movingWheelCollider.motorTorque = currentAcceleration;
+            }
+        
+            foreach (WheelCollider wheelCollider in allWheelColliders)
+            {
+                wheelCollider.brakeTorque = currentBrakeForce;
+            }
+        
+            foreach (WheelCollider turningWheelCollider in turningWheelColliders)
+            {
+                turningWheelCollider.steerAngle = currentTurnAngle;
+            }
+        }
 
-        Vector3 direction = new Vector3(input.Right, input.Up, input.Forward);
-        Debug.LogError(direction);
-        //rigid.AddForce(direction * airForce);
-        rigid.velocity = (direction * speed);
-
-        // Calculate rotation
-        float roll = input.Right * rollSpeed;
-        float pitch = -input.Up * pitchSpeed;
-        Quaternion targetRotation = Quaternion.Euler(pitch, roll, 0f);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSmoothness);
-
+        for (int i = 0 ; i < allWheelMeshes.Length ; i++)
+        {
+            updateWheelVisuals(allWheelColliders[i], allWheelMeshes[i]);
+        }
     }
 
     private void updateWheelVisuals(WheelCollider wheelCollider, Transform wheelMesh)
