@@ -28,12 +28,6 @@ public class PlayerVehicle : MonoBehaviour
     private void Update()
     {
         float distanceToGround = getDistanceToGround();
-        float targetRotationAngleX = maxHorizontalAngle * input.Right;
-        float targetRotationAngleY = maxVerticalAngle * input.Up;
-        Quaternion targetRotation = Quaternion.Euler(targetRotationAngleY, targetRotationAngleX, 0f);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed);
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, widthMinMax.x, widthMinMax.y),Mathf.Clamp(transform.position.y, heightMinMax.x, heightMinMax.y), transform.position.z);
-        
         float targetSpeed = maxSpeed * input.Forward;
         float diff = targetSpeed - speed;
         if (diff > 0)
@@ -51,24 +45,51 @@ public class PlayerVehicle : MonoBehaviour
                 speed = targetSpeed;
         }
 
+        input.UnlockInputRight();
+        input.UnlockInputForward();
+        input.UnlockInputUp();
         if (distanceToGround < heightMinMax.x+clampOffset)
             input.LockInputUp(0f, 1f);
         else if (distanceToGround > heightMinMax.y-clampOffset)
             input.LockInputUp(-1f, 0f);
         else
-            input.UnlockInputUp();
-        
+        {
+            if (distanceToGround > heightMinMax.x && !input.Hold)
+            {
+                input.LockInputUp(-0.5f, -0.5f);
+                input.LockInputForward(0.5f, 0.5f);
+            }
+        }
         if (transform.position.x < widthMinMax.x+clampOffset)
             input.LockInputRight(0f, 1f);
         else if (transform.position.x > widthMinMax.y-clampOffset)
             input.LockInputRight(-1f, 0f);
         else
             input.UnlockInputRight();
+        
+        
+        float targetRotationAngleX = maxHorizontalAngle * input.Right;
+        float targetRotationAngleY = maxVerticalAngle * input.Up;
+        Quaternion targetRotation = Quaternion.Euler(targetRotationAngleY, targetRotationAngleX, 0f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed);
     }
 
     private void FixedUpdate()
     {
-        rigidbody.MovePosition(transform.position + (transform.forward * speed * Time.deltaTime));
+        Vector3 direction = transform.forward * speed * Time.deltaTime;
+
+        if ((transform.position + direction).x > widthMinMax.y || (transform.position + direction).x < widthMinMax.x)
+            direction.x = 0f;
+        if ((transform.position + direction).y > heightMinMax.y || (transform.position + direction).y < heightMinMax.x)
+            direction.y = 0f;
+        rigidbody.MovePosition(transform.position + direction);
+        //transform.position = new Vector3(Mathf.Clamp(transform.position.x, widthMinMax.x, widthMinMax.y),Mathf.Clamp(transform.position.y, heightMinMax.x, heightMinMax.y), transform.position.z);
+
+    }
+
+    private void LateUpdate()
+    {
+
     }
 
     private bool isOnGround()

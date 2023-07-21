@@ -8,6 +8,7 @@ public class PlayerInput : MonoBehaviour
     [HideInInspector] public float Forward;
     [HideInInspector] public float Right;
     [HideInInspector] public float Up;
+    [HideInInspector] public bool Hold;
     
     [SerializeField] private Vector3 lerpSpeed;
     [SerializeField] private float sensivityX = 1f;
@@ -34,7 +35,8 @@ public class PlayerInput : MonoBehaviour
     
     private void Update()
     {
-        targetInput.z = Input.GetMouseButton(0)?1f:0f;
+        Hold = Input.GetMouseButton(0);
+        targetInput.z = Mathf.Clamp(Input.GetMouseButton(0)?1f:0f, forwardInputBounds.x, forwardInputBounds.y);
 
         if (Input.GetMouseButtonDown(0) && !isDragging)
         {
@@ -106,5 +108,15 @@ public class PlayerInput : MonoBehaviour
     public void UnlockInputRight()
     {
         rightInputBounds = new Vector2(-1f, 1f);
+    }
+    
+    public void LockInputForward(float min , float max)
+    {
+        forwardInputBounds = new Vector2(min, max);
+    }
+    
+    public void UnlockInputForward()
+    {
+        forwardInputBounds = new Vector2(-1f, 1f);
     }
 }
