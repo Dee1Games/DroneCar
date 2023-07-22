@@ -5,91 +5,160 @@ using UnityEngine;
 
 public class PlayerVehicle : MonoBehaviour
 {
-    [SerializeField] private Vector2 accel;
-    [SerializeField] private float maxSpeed = 10f;
-    [SerializeField] private float rotSpeed = 10f;
-    [SerializeField] private float maxHorizontalAngle = 25f;
-    [SerializeField] private float maxVerticalAngle = 45f;
-    [SerializeField] private Vector2 heightMinMax;
-    [SerializeField] private Vector2 widthMinMax;
-    [SerializeField] private float clampOffset = 0.1f;
+    [Header("Car Properties")]
+    [SerializeField] private float carAcceleration = 500f;
+    [SerializeField] private float carReverseAcceleration = 500f;
+    [SerializeField] private float carMaxSpeed = 100f;
+    
+    [Header("Drone Properties")]
+    [SerializeField] private float droneAcceleration;
+    [SerializeField] private float droneReverseAcceleration;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float droneMaxSpeed;
+    
+    [Header("Other Properties")]
+    [SerializeField] private float convertHeight = 2f;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Transform pivot;
-
-    private float speed;
+    
+    
+    private bool isHovering;
+    private bool isChanging;
+    
+    private float currentSpeed;
 
     private Rigidbody rigidbody;
+    private Animator animator;
+    private Vector3 direction;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+        isHovering = false;
+        isChanging = false;
     }
-    
+
     private void Update()
     {
-        float distanceToGround = getDistanceToGround();
-        float targetSpeed = maxSpeed * input.Forward;
-        float diff = targetSpeed - speed;
-        if (diff > 0)
-        {
-            if (Mathf.Abs(targetSpeed - speed) > accel.y)
-                speed += accel.y;
-            else
-                speed = targetSpeed;
-        }
-        else
-        {
-            if (Mathf.Abs(targetSpeed - speed) > accel.y)
-                speed -= accel.y;
-            else
-                speed = targetSpeed;
-        }
+        if (isChanging)
+            return;
 
-        input.UnlockInputRight();
-        input.UnlockInputForward();
-        input.UnlockInputUp();
-        if (distanceToGround < heightMinMax.x+clampOffset)
-            input.LockInputUp(0f, 1f);
-        else if (distanceToGround > heightMinMax.y-clampOffset)
-            input.LockInputUp(-1f, 0f);
+        float height = getDistanceToGround();
+
+        if (!isHovering && height > convertHeight)
+            ConvertToDrone();
+        
+        if (isHovering && height < convertHeight)
+            ConvertToCar();
+        
+        if(!isHovering && input.SwipeUp)
+            ConvertToDrone();
+        
+        if (isHovering)
+        {
+            float speedDiff = (droneMaxSpeed * input.Forward) - currentSpeed;
+            if (speedDiff > 0)
+            {
+                float delta = droneAcceleration * Time.deltaTime;
+                if (delta + currentSpeed <= droneMaxSpeed)
+                    currentSpeed += delta;
+                else
+                    currentSpeed = droneMaxSpeed;
+            }
+            else {
+                float delta = -droneReverseAcceleration * Time.deltaTime;
+                if (delta + currentSpeed >= 0f)
+                    currentSpeed += delta;
+                else
+                    currentSpeed = 0f;
+            }
+            
+            if (input.Hold)
+            {
+                transform.Rotate(Vector3.up, input.Right);
+                transform.Rotate(Vector3.right, -input.Up);
+            }
+
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
+            direction = new Vector3(input.Right, 0f, input.Forward);
+        }
         else
         {
-            if (distanceToGround > heightMinMax.x && !input.Hold)
+            float speedDiff = (carMaxSpeed * input.Forward) - currentSpeed;
+            if (speedDiff > 0)
             {
-                input.LockInputUp(-0.5f, -0.5f);
-                input.LockInputForward(0.5f, 0.5f);
+                float delta = carAcceleration * Time.deltaTime;
+                if (delta + currentSpeed <= carMaxSpeed)
+                    currentSpeed += delta;
+                else
+                    currentSpeed = carMaxSpeed;
             }
+            else {
+                float delta = -carReverseAcceleration * Time.deltaTime;
+                if (delta + currentSpeed >= 0f)
+                    currentSpeed += delta;
+                else
+                    currentSpeed = 0f;
+            }
+            
+            direction = new Vector3(input.JoystickX, 0f, input.Forward);
+            transform.Rotate(Vector3.up, input.JoystickX);
         }
-        if (transform.position.x < widthMinMax.x+clampOffset)
-            input.LockInputRight(0f, 1f);
-        else if (transform.position.x > widthMinMax.y-clampOffset)
-            input.LockInputRight(-1f, 0f);
-        else
-            input.UnlockInputRight();
-        
-        
-        float targetRotationAngleX = maxHorizontalAngle * input.Right;
-        float targetRotationAngleY = maxVerticalAngle * input.Up;
-        Quaternion targetRotation = Quaternion.Euler(targetRotationAngleY, targetRotationAngleX, 0f);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed);
     }
 
     private void FixedUpdate()
     {
-        Vector3 direction = transform.forward * speed * Time.deltaTime;
-
-        if ((transform.position + direction).x > widthMinMax.y || (transform.position + direction).x < widthMinMax.x)
-            direction.x = 0f;
-        if ((transform.position + direction).y > heightMinMax.y || (transform.position + direction).y < heightMinMax.x)
-            direction.y = 0f;
-        rigidbody.MovePosition(transform.position + direction);
-        //transform.position = new Vector3(Mathf.Clamp(transform.position.x, widthMinMax.x, widthMinMax.y),Mathf.Clamp(transform.position.y, heightMinMax.x, heightMinMax.y), transform.position.z);
-
+        if (isChanging)
+            return;
+        
+        if (isHovering)
+        {
+            rigidbody.velocity = transform.forward * currentSpeed;
+        }
+        else
+        {
+            Vector3 v = transform.forward * currentSpeed;
+            v.y = rigidbody.velocity.y;
+            rigidbody.velocity = v;
+        }
     }
 
-    private void LateUpdate()
+    private void ConvertToCar()
     {
+        StartCoroutine(convertToCar());
+    }
 
+    private IEnumerator convertToCar()
+    {
+        isChanging = true;
+        isHovering = false;
+        animator.SetTrigger("close");
+        rigidbody.useGravity = true;
+        while (getDistanceToGround()>1f)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        isChanging = false;
+    }
+    
+    private void ConvertToDrone()
+    {
+        StartCoroutine(convertToDrone());
+    }
+    
+    private IEnumerator convertToDrone()
+    {
+        isChanging = true;
+        isHovering = true;
+        animator.SetTrigger("open");
+        rigidbody.AddForce(transform.up*jumpForce, ForceMode.VelocityChange);
+        while (rigidbody.velocity.y>-0.1f)
+        {
+            yield return new WaitForFixedUpdate();
+        }
+        rigidbody.useGravity = false;
+        isChanging = false;
     }
 
     private bool isOnGround()
@@ -107,6 +176,15 @@ public class PlayerVehicle : MonoBehaviour
         }
 
         return 9999f;
+    }
+    
+    private void updateWheelVisuals(WheelCollider wheelCollider, Transform wheelMesh)
+    {
+        Vector3 position;
+        Quaternion rotation;
+        wheelCollider.GetWorldPose(out position, out rotation);
+        wheelMesh.position = position;
+        wheelMesh.rotation = rotation;
     }
     
 }
