@@ -7,51 +7,46 @@
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl"
 
 
-#if defined(_DETAIL_MULX2) || defined(_DETAIL_SCALED)
-#define _DETAIL
-#endif
-
 // Extended CBUFFER
 
 CBUFFER_START(UnityPerMaterial)
-    float4  _BaseMap_ST;
-    float4  _DetailAlbedoMap_ST;
-    half4   _BaseColor;
-    half4   _SpecColor;
-    half4   _EmissionColor;
-    half    _Cutoff;
-    half    _Smoothness;
-    half    _Metallic;
-    half    _BumpScale;
-    half    _Parallax;
-    half    _OcclusionStrength;
+    
+    float4 _BaseMap_ST;
+    half4 _BaseColor;
+    half4 _SpecColor;
+    half4 _EmissionColor;
+    half _Cutoff;
+    half _Smoothness;
+    half _Metallic;
+    half _BumpScale;
+    half _OcclusionStrength;
 
-    half    _DetailAlbedoMapScale;
-    half    _DetailNormalMapScale;
+    half4 _RimColor;
+    half _RimPower;
+    half _RimMinPower;
+    half _RimFrequency;
+    half _RimPerPositionFrequency;
 
-    half    _Blend;
+    #if defined(_UBER)
+        half _Parallax;
+        half _ScreenSpaceVariance;
+        half _SAAThreshold;
+        half _GItoAO;
+        half _GItoAOBias;
+        half _HorizonOcclusion;
+        float _CameraFadeDist;
+        float _CameraShadowFadeDist;
+        float4 _DetailAlbedoMap_ST;
+        half _DetailAlbedoMapScale;
+        half _DetailNormalMapScale;
+    #endif
 
-    half4   _RimColor;
-    half    _RimPower;
-    half    _RimMinPower;
-    half    _RimFrequency;
-    half    _RimPerPositionFrequency;
-
-    half    _ScreenSpaceVariance;
-    half    _SAAThreshold;
-    half    _GItoAO;
-    half    _GItoAOBias;
-    half    _HorizonOcclusion;
-    float   _CameraFadeDist;
-    float   _CameraShadowFadeDist;
-
-    half    _Surface;
+    float _Surface;
 CBUFFER_END
 
 TEXTURE2D(_OcclusionMap);       SAMPLER(sampler_OcclusionMap);
 TEXTURE2D(_MetallicGlossMap);   SAMPLER(sampler_MetallicGlossMap);
 TEXTURE2D(_SpecGlossMap);       SAMPLER(sampler_SpecGlossMap);
-
 TEXTURE2D(_BentNormalMap);      SAMPLER(sampler_BentNormalMap);
 
 
@@ -63,7 +58,7 @@ TEXTURE2D(_BentNormalMap);      SAMPLER(sampler_BentNormalMap);
     TEXTURE2D(_DetailMask);       SAMPLER(sampler_DetailMask);
     TEXTURE2D(_DetailAlbedoMap);  SAMPLER(sampler_DetailAlbedoMap);
     TEXTURE2D(_DetailNormalMap);  SAMPLER(sampler_DetailNormalMap);
-#endif    
+#endif
 
 #ifdef _SPECULAR_SETUP
     #define SAMPLE_METALLICSPECULAR(uv) SAMPLE_TEXTURE2D(_SpecGlossMap, sampler_SpecGlossMap, uv)
@@ -74,17 +69,6 @@ TEXTURE2D(_BentNormalMap);      SAMPLER(sampler_BentNormalMap);
 #if defined(_BESTFITTINGNORMALS_ON)
     TEXTURE2D(_BestFittingNormal); SAMPLER(sampler_BestFittingNormal);
 #endif
-
-//  DOTS - we only define a minimal set here. The user might extend it to whatever is needed.
-    #ifdef UNITY_DOTS_INSTANCING_ENABLED
-        UNITY_DOTS_INSTANCING_START(MaterialPropertyMetadata)
-            UNITY_DOTS_INSTANCED_PROP(float4, _BaseColor)
-            UNITY_DOTS_INSTANCED_PROP(float , _Surface)
-        UNITY_DOTS_INSTANCING_END(MaterialPropertyMetadata)
-        
-        #define _BaseColor              UNITY_ACCESS_DOTS_INSTANCED_PROP_WITH_DEFAULT(float4 , _BaseColor)
-        #define _Surface                UNITY_ACCESS_DOTS_INSTANCED_PROP_WITH_DEFAULT(float  , _Surface)
-    #endif
 
 //  Used by shadow caster and depth pass (parallax only)
     struct VertexInput
@@ -222,54 +206,6 @@ float3 rnmBlendUnpacked(float3 n1, float3 n2) {
     return n1 * dot(n1, n2) / n1.z - n2;
 }
 
-// From URP 13.1.8.
-half3 ScaleDetailAlbedo(half3 detailAlbedo, half scale)
-{
-    // detailAlbedo = detailAlbedo * 2.0h - 1.0h;
-    // detailAlbedo *= _DetailAlbedoMapScale;
-    // detailAlbedo = detailAlbedo * 0.5h + 0.5h;
-    // return detailAlbedo * 2.0f;
-
-    // A bit more optimized
-    return half(2.0) * detailAlbedo * scale - scale + half(1.0);
-}
-half3 ApplyDetailAlbedo(float2 detailUv, half3 albedo, half detailMask)
-{
-#if defined(_DETAIL)
-    half3 detailAlbedo = SAMPLE_TEXTURE2D(_DetailAlbedoMap, sampler_DetailAlbedoMap, detailUv).rgb;
-
-    // In order to have same performance as builtin, we do scaling only if scale is not 1.0 (Scaled version has 6 additional instructions)
-#if defined(_DETAIL_SCALED)
-    detailAlbedo = ScaleDetailAlbedo(detailAlbedo, _DetailAlbedoMapScale);
-#else
-    detailAlbedo = half(2.0) * detailAlbedo;
-#endif
-
-    return albedo * LerpWhiteTo(detailAlbedo, detailMask);
-#else
-    return albedo;
-#endif
-}
-half3 ApplyDetailNormal(float2 detailUv, half3 normalTS, half detailMask)
-{
-#if defined(_DETAIL)
-#if BUMP_SCALE_NOT_SUPPORTED
-    half3 detailNormalTS = UnpackNormal(SAMPLE_TEXTURE2D(_DetailNormalMap, sampler_DetailNormalMap, detailUv));
-#else
-    half3 detailNormalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_DetailNormalMap, sampler_DetailNormalMap, detailUv), _DetailNormalMapScale);
-#endif
-
-    // With UNITY_NO_DXT5nm unpacked vector is not normalized for BlendNormalRNM
-    // For visual consistancy we going to do in all cases
-    detailNormalTS = normalize(detailNormalTS);
-
-    return lerp(normalTS, BlendNormalRNM(normalTS, detailNormalTS), detailMask); // todo: detailMask should lerp the angle of the quaternion rotation, not the normals
-#else
-    return normalTS;
-#endif
-}
-// END
-
 inline void InitializeStandardLitSurfaceData(float2 uv, out SurfaceData outSurfaceData)
 {
     half4 albedoAlpha = SampleAlbedoAlpha(uv, TEXTURE2D_ARGS(_BaseMap, sampler_BaseMap));
@@ -289,7 +225,13 @@ inline void InitializeStandardLitSurfaceData(float2 uv, out SurfaceData outSurfa
     outSurfaceData.smoothness = specGloss.a;
     outSurfaceData.normalTS = SampleNormal(uv, TEXTURE2D_ARGS(_BumpMap, sampler_BumpMap), _BumpScale);
     outSurfaceData.occlusion = SampleOcclusion(uv);
-    outSurfaceData.emission = SampleEmission(uv, _EmissionColor.rgb, TEXTURE2D_ARGS(_EmissionMap, sampler_EmissionMap));
+    
+    //outSurfaceData.emission = SampleEmission(uv, _EmissionColor.rgb, TEXTURE2D_ARGS(_EmissionMap, sampler_EmissionMap));
+    #if defined (_EMISSION)
+        outSurfaceData.emission = SampleEmission(uv, _EmissionColor.rgb, TEXTURE2D_ARGS(_EmissionMap, sampler_EmissionMap));
+    #else
+        outSurfaceData.emission = 0;
+    #endif
 
     outSurfaceData.clearCoatMask = 0;
     outSurfaceData.clearCoatSmoothness = 0;
@@ -346,8 +288,19 @@ inline void InitializeStandardLitSurfaceData(float2 uv, out SurfaceData outSurfa
         #if defined(_DETAIL)
             half detailMask = SAMPLE_TEXTURE2D(_DetailMask, sampler_DetailMask, uv).a;
             float2 detailUV = uv * _DetailAlbedoMap_ST.xy + _DetailAlbedoMap_ST.zw;
-            outSurfaceData.albedo = ApplyDetailAlbedo(detailUV, outSurfaceData.albedo, detailMask);
-            outSurfaceData.normalTS = ApplyDetailNormal(detailUV, outSurfaceData.normalTS, detailMask);
+            half3 detailAlbedo = SAMPLE_TEXTURE2D(_DetailAlbedoMap, sampler_DetailAlbedoMap, detailUV).rgb;
+            detailAlbedo = 2.0h * detailAlbedo * _DetailAlbedoMapScale - _DetailAlbedoMapScale + 1.0h;
+            outSurfaceData.albedo *= lerp(half3(1,1,1), detailAlbedo, detailMask.xxx);
+
+            #if BUMP_SCALE_NOT_SUPPORTED
+                half3 detailNormalTS = UnpackNormal(SAMPLE_TEXTURE2D(_DetailNormalMap, sampler_DetailNormalMap, detailUV));
+            #else
+                half3 detailNormalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_DetailNormalMap, sampler_DetailNormalMap, detailUV), _DetailNormalMapScale);
+            #endif
+            // With UNITY_NO_DXT5nm unpacked vector is not normalized for BlendNormalRNM
+            // For visual consistancy we going to do in all cases
+            detailNormalTS = normalize(detailNormalTS);
+            outSurfaceData.normalTS = lerp(outSurfaceData.normalTS, BlendNormalRNM(outSurfaceData.normalTS, detailNormalTS), detailMask);
         #endif
 
         outSurfaceData.clearCoatMask = 0;

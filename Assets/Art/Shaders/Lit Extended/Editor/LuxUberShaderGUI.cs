@@ -18,7 +18,7 @@ namespace UnityEditor
 
         public enum BlendMode {
             Alpha,   // Old school alpha-blending mode, fresnel does not affect amount of transparency
-            Premultiply_PBR, // Physically plausible transparency mode, implemented as alpha pre-multiply
+            Premultiply, // Physically plausible transparency mode, implemented as alpha pre-multiply
             Additive,
             Multiply
         }
@@ -370,7 +370,7 @@ namespace UnityEditor
                     			material.SetOverrideTag("RenderType", "TransparentCutout");
                     		}
 
-                    	//	We may have to re enable camera fading
+                    	//	We may have to re eanble camera fading
                     		if(cameraFadingEnabledProp.floatValue == 1) {
 	        					material.EnableKeyword("_FADING_ON");
 		        				if(cameraFadeShadowsProp.floatValue == 1) {
@@ -461,32 +461,21 @@ namespace UnityEditor
 		                    case BlendMode.Alpha:
 		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
 		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.Zero);
 		                        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-		                        material.DisableKeyword("_ALPHAMODULATE_ON");
 		                        break;
-		                    case BlendMode.Premultiply_PBR:
+		                    case BlendMode.Premultiply:
 		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
 		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
 		                        material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-		                        material.DisableKeyword("_ALPHAMODULATE_ON");
 		                        break;
 		                    case BlendMode.Additive:
 		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
 		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-		                        material.DisableKeyword("_ALPHAMODULATE_ON");
+		                        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
 		                        break;
 		                    case BlendMode.Multiply:
 		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.DstColor);
 		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.Zero);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
 		                        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
 		                        material.EnableKeyword("_ALPHAMODULATE_ON");
 		                        break;
@@ -702,7 +691,6 @@ namespace UnityEditor
                     		material.globalIlluminationFlags |= MaterialGlobalIlluminationFlags.EmissiveIsBlack;
                     	}
 	        		}
-	        		materialEditor.LightmapEmissionFlagsProperty(MaterialEditor.kMiniTextureFieldLabelIndentLevel, true);
 	        	}
 
 	        //	Tiling
@@ -730,11 +718,8 @@ namespace UnityEditor
 	        		materialEditor.TexturePropertySingleLine(new GUIContent("Detail Normal"), DetailNormalMap, DetailNormalMap.textureValue != null ? DetailNormalMapScale : null );
 	        		materialEditor.TextureScaleOffsetProperty(DetailAlbedoMap);
 	        	if (EditorGUI.EndChangeCheck()) {
-	        		bool isScaled = material.GetFloat("_DetailAlbedoMapScale") != 1.0f;
 	        		bool hasDetailMap = material.GetTexture("_DetailAlbedoMap") || material.GetTexture("_DetailNormalMap");
-	        		//CoreUtils.SetKeyword(material, "_DETAIL", hasDetailMap);
-	        		CoreUtils.SetKeyword(material, "_DETAIL_MULX2", !isScaled && hasDetailMap);
-                	CoreUtils.SetKeyword(material, "_DETAIL_SCALED", isScaled && hasDetailMap);
+	        		CoreUtils.SetKeyword(material, "_DETAIL", hasDetailMap);
 	        	}
 	        }
 	        EditorGUILayout.EndFoldoutHeaderGroup();
@@ -960,7 +945,7 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
 	    //	Fix all the missing stuff
 
 	    //  Needed to make the Selection Outline work
-	    //	Lightmapper needs it for alpha testing?!
+	    //	Lightmapper needs it for alpha testing!
 	    	if (material.HasProperty("_MainTex") && material.HasProperty("_BaseMap") ) {
 	            if (material.GetTexture("_BaseMap") != null) {
 	                material.SetTexture("_MainTex", material.GetTexture("_BaseMap"));
@@ -975,8 +960,7 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
         public override void ValidateMaterial(Material material)
         {
             
-
-        //	Lightmapper needs it for alpha testing?!
+        //	Lightmapper needs it for alpha testing!
 	    	if (material.HasProperty("_MainTex") && material.HasProperty("_BaseMap") ) {
 	            if (material.GetTexture("_BaseMap") != null) {
 	                material.SetTexture("_MainTex", material.GetTexture("_BaseMap"));
@@ -988,7 +972,7 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
         	{
                 material.SetColor("_Color", material.GetColor("_BaseColor"));
         	}
-            
+
         	if(material.HasProperty("_Surface"))
         	{
         		var isOpaque = material.GetFloat("_Surface") == 0.0f;
@@ -997,7 +981,7 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
         			material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
             		material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
             		material.SetInt("_ZWrite", 1);
-
+        			
             		if (material.HasProperty("_AlphaClip"))
             		{
             			if(material.GetFloat("_AlphaClip") == 1.0f)
@@ -1008,10 +992,10 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
             			{
             				material.SetOverrideTag("RenderType", "Opaque");
             				material.DisableKeyword("_FADING_ON");
-		        			material.DisableKeyword("_FADING_SHADOWS_ON");		
+		        			material.DisableKeyword("_FADING_SHADOWS_ON");	
             			}
             		}
-					//material.renderQueue = (int)RenderQueue.Geometry;
+        			//material.renderQueue = (int)RenderQueue.Geometry;
         			material.SetShaderPassEnabled("ShadowCaster", true);
         			material.DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
         		}
@@ -1019,7 +1003,7 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
         		{
         			material.SetOverrideTag("RenderType", "Transparent");
         			material.SetInt("_ZWrite", 0);
-					//material.renderQueue = (int)RenderQueue.Transparent;
+        			//material.renderQueue = (int)RenderQueue.Transparent;
         			material.SetShaderPassEnabled("ShadowCaster", false);
         			material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
 
@@ -1031,51 +1015,13 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
 		        			material.DisableKeyword("_FADING_SHADOWS_ON");
             			}
             		}
-
-        			var blendMode = material.GetFloat("_Blend");
-        			switch (blendMode) {
-		                    case (float)BlendMode.Alpha:
-		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.Zero);
-		                        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-		                        material.DisableKeyword("_ALPHAMODULATE_ON");
-		                        break;
-		                    case (float)BlendMode.Premultiply_PBR:
-		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-		                        material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-		                        material.DisableKeyword("_ALPHAMODULATE_ON");
-		                        break;
-		                    case (float)BlendMode.Additive:
-		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-		                        material.DisableKeyword("_ALPHAMODULATE_ON");
-		                        break;
-		                    case (float)BlendMode.Multiply:
-		                        material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.DstColor);
-		                        material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-		                        material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.Zero);
-		                        material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-		                        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-		                        material.EnableKeyword("_ALPHAMODULATE_ON");
-		                        break;
-		                }
         		}
         	}
 
-        	if (material.HasProperty("_DetailAlbedoMap"))
+        	if(material.HasProperty("_DetailAlbedoMap"))
         	{
-	        	bool isScaled = material.GetFloat("_DetailAlbedoMapScale") != 1.0f;
         		bool hasDetailMap = material.GetTexture("_DetailAlbedoMap") || material.GetTexture("_DetailNormalMap");
-        		CoreUtils.SetKeyword(material, "_DETAIL_MULX2", !isScaled && hasDetailMap);
-            	CoreUtils.SetKeyword(material, "_DETAIL_SCALED", isScaled && hasDetailMap);
+	        	CoreUtils.SetKeyword(material, "_DETAIL", hasDetailMap);
         	}
 
             if (material.HasProperty("_WorkflowMode"))
@@ -1110,9 +1056,9 @@ labeltooltip = new GUIContent("Bias", "Adds a constant value to brighten the val
 
             if (material.HasProperty("_AlphaClip") && material.HasProperty("_SmoothnessTextureChannel"))
             {
-            	var doesAlphClip = material.GetFloat("_AlphaClip") == 1.0f;
+            	var doAlphaClip = material.GetFloat("_AlphaClip") == 1.0f;
             	var samplesSmoothnessFromAlbedo = material.GetFloat("_SmoothnessTextureChannel") != 0.0f;
-            	if(doesAlphClip && samplesSmoothnessFromAlbedo)
+            	if(doAlphaClip && samplesSmoothnessFromAlbedo)
             	{
             		CoreUtils.SetKeyword(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", false);
             		material.SetFloat("_SmoothnessTextureChannel", 0.0f);	
