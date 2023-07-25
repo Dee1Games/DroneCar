@@ -20,17 +20,54 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float sensivityJoystick = 2f;
     [SerializeField] private float swipeUpOffset = 0.8f;
     
+    private bool isDragging = false;
+    private Vector3 dragStartPos;
+    private Vector3 dragPos;
+    
     private Vector3 targetInput;
     private Vector3 lastPos;
+    private bool wasHoldingLastFrame;
 
     private void Update()
     {
         Hold = Input.GetMouseButton(0);
+        
         Forward = Input.GetMouseButton(0)?1f:0f;
-        Right = ((Input.mousePosition.x - lastPos.x) / Screen.width) * sensivityX;
-        Up = ((Input.mousePosition.y - lastPos.y) / Screen.height) * sensivityY;
-        SwipeUp = joystick.Vertical > swipeUpOffset;
+        
+        if (wasHoldingLastFrame)
+            Right = ((Input.mousePosition.x - lastPos.x) / Screen.width) * sensivityX;
+        else
+            Right = 0f;
+        
+        if (wasHoldingLastFrame)
+            Up = ((Input.mousePosition.y - lastPos.y) / Screen.height) * sensivityY;
+        else
+            Up = 0f;
+        
+        if (Input.GetMouseButtonDown(0) && !isDragging)
+        {
+            dragStartPos = Input.mousePosition;
+            isDragging = true;
+        }
+        
+        if (Input.GetMouseButton(0) && isDragging)
+        {
+            dragPos = Input.mousePosition;
+        }
+
+        if (!Input.GetMouseButton(0) && isDragging)
+        {
+            isDragging = false;
+            dragStartPos = Vector3.zero;
+            dragPos = Vector3.zero;
+        }
+
+        float dragX = ((dragPos.x - dragStartPos.x) / Screen.width);
+        float dragY = ((dragPos.y - dragStartPos.y) / Screen.height);
+
+        SwipeUp = (isDragging && dragY > swipeUpOffset);
 
         lastPos = Input.mousePosition;
+        wasHoldingLastFrame = Input.GetMouseButton(0);
     }
 }

@@ -47,7 +47,7 @@ public class PlayerVehicle : MonoBehaviour
         float height = getDistanceToGround();
 
         if (!isHovering && height > convertHeight)
-            ConvertToDrone();
+            ConvertToDrone(false);
         
         if (isHovering && height < convertHeight)
             ConvertToCar();
@@ -57,7 +57,8 @@ public class PlayerVehicle : MonoBehaviour
         
         if (isHovering)
         {
-            float speedDiff = (droneMaxSpeed * input.Forward) - currentSpeed;
+            float inputForward = 1f;
+            float speedDiff = (droneMaxSpeed * inputForward) - currentSpeed;
             if (speedDiff > 0)
             {
                 float delta = droneAcceleration * Time.deltaTime;
@@ -79,9 +80,14 @@ public class PlayerVehicle : MonoBehaviour
                 transform.Rotate(Vector3.up, input.Right);
                 transform.Rotate(Vector3.right, -input.Up);
             }
+            
+            if(Physics.Raycast(transform.position, transform.forward, 3f, LayerMask.GetMask("Props")))
+            {
+                currentSpeed = 0f;
+            }
 
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
-            direction = new Vector3(input.Right, 0f, input.Forward);
+            direction = new Vector3(input.Right, 0f, inputForward);
         }
         else
         {
@@ -102,6 +108,11 @@ public class PlayerVehicle : MonoBehaviour
                     currentSpeed = 0f;
             }
             
+            if(Physics.Raycast(transform.position, transform.forward, 3f, LayerMask.GetMask("Props")))
+            {
+                currentSpeed = 0f;
+            }
+            
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
             transform.Rotate(Vector3.up, input.JoystickX);
         }
@@ -115,12 +126,14 @@ public class PlayerVehicle : MonoBehaviour
         if (isHovering)
         {
             rigidbody.velocity = transform.forward * currentSpeed;
+            rigidbody.angularVelocity = Vector3.zero;
         }
         else
         {
             Vector3 v = transform.forward * currentSpeed;
             v.y = rigidbody.velocity.y;
             rigidbody.velocity = v;
+            rigidbody.angularVelocity = Vector3.zero;
         }
     }
 
@@ -142,23 +155,41 @@ public class PlayerVehicle : MonoBehaviour
         isChanging = false;
     }
     
-    private void ConvertToDrone()
+    private void ConvertToDrone(bool jump = true)
     {
-        StartCoroutine(convertToDrone());
+        StartCoroutine(convertToDrone(jump));
     }
     
-    private IEnumerator convertToDrone()
+    private IEnumerator convertToDrone(bool jump = true)
     {
         isChanging = true;
         isHovering = true;
         animator.SetTrigger("open");
-        rigidbody.AddForce(transform.up*jumpForce, ForceMode.VelocityChange);
-        while (rigidbody.velocity.y>-0.1f)
+        if(jump) 
+            rigidbody.AddForce(Vector3.up*jumpForce, ForceMode.VelocityChange);
+
+        Quaternion startRot = transform.rotation;
+        Quaternion targetRot = Quaternion.Euler(0f, startRot.eulerAngles.y, 0f);
+        float timer = 0f;
+        float dur = 1f;
+        //rigidbody.velocity = Vector3.zero;
+        //rigidbody.useGravity = false;
+        rigidbody.angularVelocity = Vector3.zero;
+        Vector3 startV = rigidbody.velocity;
+        while (timer<dur)
         {
-            yield return new WaitForFixedUpdate();
+            //rigidbody.velocity = new Vector3(startV.x, startV.y*(1-(timer/dur)), startV.z);
+            transform.rotation = Quaternion.Lerp(startRot, targetRot, timer/dur);
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+            rigidbody.angularVelocity = Vector3.zero;
         }
+        
         rigidbody.useGravity = false;
         isChanging = false;
+
+        //yield return new WaitForSeconds(999);
+        
     }
 
     private bool isOnGround()
