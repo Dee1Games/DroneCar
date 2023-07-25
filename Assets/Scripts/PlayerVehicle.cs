@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class PlayerVehicle : MonoBehaviour
 {
+    public static PlayerVehicle Instance;
+    
     [Header("Car Properties")]
     [SerializeField] private float carAcceleration = 500f;
     [SerializeField] private float carReverseAcceleration = 500f;
@@ -20,6 +23,14 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private float convertHeight = 2f;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Transform pivot;
+    [SerializeField] private GameObject[] visuals;
+    [SerializeField] private MMFeedbacks explodeFeedback;
+
+    public bool IsActive
+    {
+        get;
+        private set;
+    }
     
     
     private bool isHovering;
@@ -33,15 +44,32 @@ public class PlayerVehicle : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Init()
+    {
+        IsActive = true;
         isHovering = false;
         isChanging = false;
+        CameraController.Instance.SetTarget(transform);
+        SetVisualsVisibility(true);
+        rigidbody.isKinematic = false;
     }
 
     private void Update()
     {
-        if (isChanging)
+        if (!IsActive || isChanging)
             return;
 
         float height = getDistanceToGround();
@@ -120,7 +148,7 @@ public class PlayerVehicle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isChanging)
+        if (!IsActive || isChanging)
             return;
         
         if (isHovering)
@@ -134,6 +162,38 @@ public class PlayerVehicle : MonoBehaviour
             v.y = rigidbody.velocity.y;
             rigidbody.velocity = v;
             rigidbody.angularVelocity = Vector3.zero;
+        }
+    }
+
+    private void Explode()
+    {
+        if (!IsActive)
+            return;
+        
+        IsActive = false;
+        CameraController.Instance.SetTarget(null);
+        SetVisualsVisibility(false);
+        rigidbody.useGravity = false;
+        rigidbody.isKinematic = true;
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+        explodeFeedback.PlayFeedbacks();
+    }
+
+    private void SetVisualsVisibility(bool value)
+    {
+        foreach (GameObject visual in visuals)
+        {
+            visual.SetActive(value);
+        }
+    }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        Monster monster = collision.gameObject.GetComponentInParent<Monster>();
+        if (monster != null)
+        {
+            Explode();
         }
     }
 
