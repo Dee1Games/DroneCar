@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,8 +51,18 @@ public class CameraController : MonoBehaviour
     public void SetTarget(Transform target)
     {
         this.target = target;
+        Reset();
     }
-    
+
+    public void Reset()
+    {
+        if (target == null)
+            return;
+        
+        transform.position = target.position + (target.forward*offset.z) + (target.up*offset.y) + (target.right*offset.x);
+        transform.LookAt( target.position + (target.up*offset.y*lookOffset));
+    }
+
     private void HideCameraOverlaps()
     {
         foreach (MeshRenderer renderer in propRenderers)
@@ -59,7 +70,6 @@ public class CameraController : MonoBehaviour
             renderer.enabled = true;
         }
         
-        // Raycast from camera to target and get the hits
         Vector3 direction = (target.position - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, target.position);
         hits = Physics.RaycastAll(transform.position, direction, distance, LayerMask.GetMask("Props"));

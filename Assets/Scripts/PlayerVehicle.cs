@@ -21,10 +21,13 @@ public class PlayerVehicle : MonoBehaviour
     
     [Header("Other Properties")]
     [SerializeField] private float convertHeight = 2f;
+    [SerializeField] private float damage = 50f;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Transform pivot;
     [SerializeField] private GameObject[] visuals;
     [SerializeField] private MMFeedbacks explodeFeedback;
+
+    public static System.Action OnExploded;
 
     public bool IsActive
     {
@@ -52,11 +55,6 @@ public class PlayerVehicle : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
         IsActive = true;
@@ -65,6 +63,9 @@ public class PlayerVehicle : MonoBehaviour
         CameraController.Instance.SetTarget(transform);
         SetVisualsVisibility(true);
         rigidbody.isKinematic = false;
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+        input.Init();
     }
 
     private void Update()
@@ -169,15 +170,17 @@ public class PlayerVehicle : MonoBehaviour
     {
         if (!IsActive)
             return;
-        
+
         IsActive = false;
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
+        animator.SetTrigger("close");
         rigidbody.useGravity = false;
         rigidbody.isKinematic = true;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
         explodeFeedback.PlayFeedbacks();
+        OnExploded?.Invoke();
     }
 
     private void SetVisualsVisibility(bool value)
@@ -193,6 +196,7 @@ public class PlayerVehicle : MonoBehaviour
         Monster monster = collision.gameObject.GetComponentInParent<Monster>();
         if (monster != null)
         {
+            monster.TakeDamage(damage);
             Explode();
         }
     }

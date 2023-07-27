@@ -28,6 +28,14 @@ public class PlayerInput : MonoBehaviour
     private Vector3 lastPos;
     private bool wasHoldingLastFrame;
 
+    public void Init()
+    {
+        Hold = false;
+        Forward = 0f;
+        Right = 0f;
+        Up = 0f;
+    }
+
     private void Update()
     {
         Hold = Input.GetMouseButton(0);

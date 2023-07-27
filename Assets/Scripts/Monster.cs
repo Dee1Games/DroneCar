@@ -1,18 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Tools;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float health;
+
+    public static System.Action<float, float> OnHealthChange;
+
+    public void Init()
     {
-        
+        health = maxHealth;
+        OnHealthChange?.Invoke(health, maxHealth);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(float damage)
     {
-        
+        health -= damage;
+        OnHealthChange?.Invoke(health, maxHealth);
     }
 }
