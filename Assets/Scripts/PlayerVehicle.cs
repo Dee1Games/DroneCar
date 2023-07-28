@@ -8,25 +8,23 @@ public class PlayerVehicle : MonoBehaviour
 {
     public static PlayerVehicle Instance;
     
-    [Header("Car Properties")]
-    [SerializeField] private float carAcceleration = 500f;
-    [SerializeField] private float carReverseAcceleration = 500f;
-    [SerializeField] private float carMaxSpeed = 100f;
+    public VehicleConfig Config;
     
-    [Header("Drone Properties")]
-    [SerializeField] private float droneAcceleration;
-    [SerializeField] private float droneReverseAcceleration;
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float droneMaxSpeed;
-    
-    [Header("Other Properties")]
     [SerializeField] private float convertHeight = 2f;
-    [SerializeField] private float damage = 50f;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Transform pivot;
     [SerializeField] private GameObject[] visuals;
     [SerializeField] private MMFeedbacks explodeFeedback;
+    [SerializeField] private List<UpgradeLevel> upgrades;
 
+    private float acceleration;
+    private float reverseAcceleration;
+    private float maxSpeed;
+    private float handeling;
+    private float bomb;
+    private float gun;
+    private float jumpForce;
+    
     public static System.Action OnExploded;
 
     public bool IsActive
@@ -57,6 +55,7 @@ public class PlayerVehicle : MonoBehaviour
 
     public void Init()
     {
+        GetUpgradeValues();
         IsActive = true;
         isHovering = false;
         isChanging = false;
@@ -87,17 +86,17 @@ public class PlayerVehicle : MonoBehaviour
         if (isHovering)
         {
             float inputForward = 1f;
-            float speedDiff = (droneMaxSpeed * inputForward) - currentSpeed;
+            float speedDiff = (maxSpeed * inputForward) - currentSpeed;
             if (speedDiff > 0)
             {
-                float delta = droneAcceleration * Time.deltaTime;
-                if (delta + currentSpeed <= droneMaxSpeed)
+                float delta = acceleration * Time.deltaTime;
+                if (delta + currentSpeed <= maxSpeed)
                     currentSpeed += delta;
                 else
-                    currentSpeed = droneMaxSpeed;
+                    currentSpeed = maxSpeed;
             }
             else {
-                float delta = -droneReverseAcceleration * Time.deltaTime;
+                float delta = -acceleration * Time.deltaTime;
                 if (delta + currentSpeed >= 0f)
                     currentSpeed += delta;
                 else
@@ -106,8 +105,8 @@ public class PlayerVehicle : MonoBehaviour
             
             if (input.Hold)
             {
-                transform.Rotate(Vector3.up, input.Right);
-                transform.Rotate(Vector3.right, -input.Up);
+                transform.Rotate(Vector3.up, input.Right*handeling);
+                transform.Rotate(Vector3.right, -input.Up*handeling);
             }
             
             if(Physics.Raycast(transform.position, transform.forward, 3f, LayerMask.GetMask("Props")))
@@ -120,17 +119,17 @@ public class PlayerVehicle : MonoBehaviour
         }
         else
         {
-            float speedDiff = (carMaxSpeed * input.Forward) - currentSpeed;
+            float speedDiff = (maxSpeed * input.Forward) - currentSpeed;
             if (speedDiff > 0)
             {
-                float delta = carAcceleration * Time.deltaTime;
-                if (delta + currentSpeed <= carMaxSpeed)
+                float delta = acceleration * Time.deltaTime;
+                if (delta + currentSpeed <= maxSpeed)
                     currentSpeed += delta;
                 else
-                    currentSpeed = carMaxSpeed;
+                    currentSpeed = maxSpeed;
             }
             else {
-                float delta = -carReverseAcceleration * Time.deltaTime;
+                float delta = -reverseAcceleration * Time.deltaTime;
                 if (delta + currentSpeed >= 0f)
                     currentSpeed += delta;
                 else
@@ -143,7 +142,7 @@ public class PlayerVehicle : MonoBehaviour
             }
             
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
-            transform.Rotate(Vector3.up, input.JoystickX);
+            transform.Rotate(Vector3.up, input.JoystickX*handeling);
         }
     }
 
@@ -196,7 +195,7 @@ public class PlayerVehicle : MonoBehaviour
         Monster monster = collision.gameObject.GetComponentInParent<Monster>();
         if (monster != null)
         {
-            monster.TakeDamage(damage);
+            monster.TakeDamage(bomb);
             Explode();
         }
     }
@@ -282,4 +281,34 @@ public class PlayerVehicle : MonoBehaviour
         wheelMesh.rotation = rotation;
     }
     
+    private void GetUpgradeValues ()
+    {
+        acceleration = Config.Acceleration;
+        reverseAcceleration = Config.ReverseAcceleration;
+        maxSpeed = Config.MaxSpeed;
+        handeling = Config.Handeling;
+        bomb = Config.Bomb;
+        gun = Config.Gun;
+        jumpForce = Config.JumpForce;
+        
+        foreach (UpgradeLevel upgradeLevel in upgrades)
+        {
+            UpgradeConfig upgrade = Config.GetUpgradeConfig(upgradeLevel.Type);
+
+            acceleration = Mathf.Max(acceleration, upgrade.GetAcceleration(upgradeLevel.Level));
+            reverseAcceleration = Mathf.Max(acceleration, upgrade.GetReverseAcceleration(upgradeLevel.Level));
+            maxSpeed = Mathf.Max(acceleration, upgrade.GetMaxSpeed(upgradeLevel.Level));
+            handeling = Mathf.Max(acceleration, upgrade.GetHandling(upgradeLevel.Level));
+            bomb = Mathf.Max(acceleration, upgrade.GetBomb(upgradeLevel.Level));
+            gun = Mathf.Max(acceleration, upgrade.GetGun(upgradeLevel.Level));
+            jumpForce = Mathf.Max(acceleration, upgrade.GetJumpForce(upgradeLevel.Level));
+        }
+    }
+    
+    [System.Serializable]
+    class UpgradeLevel
+    {
+        public UpgradeType Type;
+        public int Level;
+    }
 }
