@@ -296,12 +296,12 @@ public class PlayerVehicle : MonoBehaviour
             UpgradeConfig upgrade = Config.GetUpgradeConfig(upgradeLevel.Type);
 
             acceleration = Mathf.Max(acceleration, upgrade.GetAcceleration(upgradeLevel.Level));
-            reverseAcceleration = Mathf.Max(acceleration, upgrade.GetReverseAcceleration(upgradeLevel.Level));
-            maxSpeed = Mathf.Max(acceleration, upgrade.GetMaxSpeed(upgradeLevel.Level));
-            handeling = Mathf.Max(acceleration, upgrade.GetHandling(upgradeLevel.Level));
-            bomb = Mathf.Max(acceleration, upgrade.GetBomb(upgradeLevel.Level));
-            gun = Mathf.Max(acceleration, upgrade.GetGun(upgradeLevel.Level));
-            jumpForce = Mathf.Max(acceleration, upgrade.GetJumpForce(upgradeLevel.Level));
+            reverseAcceleration = Mathf.Max(reverseAcceleration, upgrade.GetReverseAcceleration(upgradeLevel.Level));
+            maxSpeed = Mathf.Max(maxSpeed, upgrade.GetMaxSpeed(upgradeLevel.Level));
+            handeling = Mathf.Max(handeling, upgrade.GetHandling(upgradeLevel.Level));
+            bomb = Mathf.Max(bomb, upgrade.GetBomb(upgradeLevel.Level));
+            gun = Mathf.Max(gun, upgrade.GetGun(upgradeLevel.Level));
+            jumpForce = Mathf.Max(jumpForce, upgrade.GetJumpForce(upgradeLevel.Level));
         }
     }
     
