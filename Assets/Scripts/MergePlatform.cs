@@ -8,7 +8,6 @@ public class MergePlatform : MonoBehaviour
     
     [SerializeField] private Camera camera;
     [SerializeField] private MergeCell[] cells;
-    [SerializeField] private GameObject itemPrefab;
     [SerializeField] private float moveSpeed;
     [SerializeField] private Vector3 moveOffset;
 
@@ -53,18 +52,21 @@ public class MergePlatform : MonoBehaviour
             }
             else
             {
-                MergeCell closestCell = GetClosestCell(currentSelectedItem.transform.position);
+                MergeCell closestCell = GetClosestCell(currentSelectedItem);
                 if (closestCell == null)
                     closestCell = currentSelectedItem.CurrentCell;
-                closestCell.SetItem(currentSelectedItem);
-                currentSelectedItem.MoveToCell(closestCell, moveSpeed);
+                MergeItem currentItem = currentSelectedItem;
+                currentSelectedItem.MoveToCell(closestCell, moveSpeed, () =>
+                {
+                    closestCell.SetItem(currentItem);
+                });
                 currentSelectedItem = null;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SpawnItemInCell(GetRandomEmptyCell());
+            SpawnInRandomCell();
         }
     }
 
@@ -73,9 +75,16 @@ public class MergePlatform : MonoBehaviour
         currentSelectedItem = item;
     }
 
+    private void SpawnInRandomCell()
+    {
+        SpawnItemInCell(GetRandomEmptyCell());
+    }
+
     private void SpawnItemInCell(MergeCell cell)
     {
-        MergeItem item = Instantiate(itemPrefab, cell.transform).GetComponent<MergeItem>();
+        Item randomItem = GetRandomItem();
+        MergeItem item = Instantiate(randomItem.MergePrefab, cell.transform).GetComponent<MergeItem>();
+        item.Init(randomItem.Level, randomItem.Type);
         cell.SetItem(item);
     }
 
@@ -89,9 +98,26 @@ public class MergePlatform : MonoBehaviour
         }
         return emptyCells[Random.Range(0, emptyCells.Count)];
     }
-
-    private MergeCell GetClosestCell(Vector3 pos)
+    
+    private Item GetRandomItem()
     {
+        List<UpgradeType> probabilities = new List<UpgradeType>();
+        foreach(UpgradeType upgradeType in UpgradeType.GetValues(typeof(UpgradeType)))
+        {
+            int p = PlayerVehicle.Instance.Config.GetProbability(upgradeType);
+            for (int i = 0; i < p; i++)
+            {
+                probabilities.Add(upgradeType);
+            }
+        }
+
+        UpgradeType randomType = probabilities[Random.Range(0, probabilities.Count)];
+        return PlayerVehicle.Instance.Config.GetItem(randomType, 1);
+    }
+
+    private MergeCell GetClosestCell(MergeItem item)
+    {
+        Vector3 pos = item.transform.position;
         Collider[] nearCellColliders = Physics.OverlapSphere(pos, 1f, LayerMask.GetMask("MergeCell"));
             
         float minDistance = 9999f;
@@ -100,8 +126,11 @@ public class MergePlatform : MonoBehaviour
         foreach (Collider cellCollider in nearCellColliders)
         {
             MergeCell cell = cellCollider.GetComponent<MergeCell>();
-            if(cell!=null && cell.IsFull)
+            if (cell==null)
                 continue;
+            if (cell.IsFull)
+                if (cell.Item.Type!=item.Type || cell.Item.Level!=item.Level)
+                    continue;
             
             pos.y = cell.transform.position.y;
             float distance = Vector3.Distance(pos, cell.transform.position);

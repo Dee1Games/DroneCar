@@ -22,7 +22,7 @@ public class VehicleConfig : ScriptableObject
         return upgrades.FirstOrDefault(up => up.Type == type);
     }
     
-    public float GetProbability(UpgradeType type)
+    public int GetProbability(UpgradeType type)
     {
         return items.FirstOrDefault(i => i.Type == type).Probability;
     }
@@ -32,16 +32,16 @@ public class VehicleConfig : ScriptableObject
         return items.FirstOrDefault(i => i.Type == type).Items;
     }
     
-    public Item GetUpgrade(UpgradeType type, int level)
+    public Item GetItem(UpgradeType type, int level)
     {
-        return GetItems(type)[level-1];
+        return GetItems(type)[level];
     }
     
     [System.Serializable]
     class ItemsEntry
     {
         public UpgradeType Type;
-        public float Probability;
+        public int Probability;
         public List<Item> Items;
     }
 }

@@ -23,8 +23,17 @@ public class MergeCell : MonoBehaviour
 
     public void SetItem(MergeItem item)
     {
+        if (Item != null && Item.Type == item.Type && Item.Level == item.Level)
+        {
+            MergeItem newItem = Instantiate(PlayerVehicle.Instance.Config.GetItem(Item.Type, Item.Level+1).MergePrefab, transform).GetComponent<MergeItem>();
+            newItem.Init(Item.Level+1, Item.Type);
+            Destroy(Item.gameObject);
+            Destroy(item.gameObject);
+            item = newItem;
+        }
         Item = item;
         Item.transform.parent = transform;
+        Item.transform.localPosition = Vector3.zero;
         Item.SetCurrentCell(this);
     }
     
