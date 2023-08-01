@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc4ac734f0793f4394ff734d1caadc5, type: 3}
   m_Name: VehicleConfig
   m_EditorClassIdentifier: 
-  Acceleration: 20
+  Acceleration: 25
   ReverseAcceleration: 30
-  MaxSpeed: 20
+  MaxSpeed: 25
   Handeling: 2
   Bomb: 50
   Gun: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    bombRemap: {x: 10, y: 200}
+    bombRemap: {x: 50, y: 200}
     gunCurve:
       serializedVersion: 2
       m_Curve: []
@@ -289,7 +289,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    accelerationRemap: {x: 10, y: 50}
+    accelerationRemap: {x: 30, y: 50}
     reverseAccelerationCurve:
       serializedVersion: 2
       m_Curve: []
@@ -357,7 +357,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    maxSpeedRemap: {x: 10, y: 50}
+    maxSpeedRemap: {x: 30, y: 50}
     handlingCurve:
       serializedVersion: 2
       m_Curve: []
@@ -504,7 +504,7 @@ MonoBehaviour:
       Type: 0
       MergePrefab: {fileID: 8527887436437427152, guid: d67d6aee1fc21e74594a825be4adbc71, type: 3}
   - Type: 1
-    Probability: 1
+    Probability: 2
     Items:
     - Level: 0
       Type: 1
@@ -516,7 +516,7 @@ MonoBehaviour:
       Type: 1
       MergePrefab: {fileID: 8527887436437427152, guid: 3d1e97f363ee5f447ac8a5ac096b1c59, type: 3}
   - Type: 2
-    Probability: 1
+    Probability: 0
     Items:
     - Level: 0
       Type: 2
@@ -528,7 +528,7 @@ MonoBehaviour:
       Type: 2
       MergePrefab: {fileID: 8527887436437427152, guid: c41d48f8fea217c4280b196fb8c59a34, type: 3}
   - Type: 3
-    Probability: 1
+    Probability: 0
     Items:
     - Level: 0
       Type: 3

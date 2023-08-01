@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float respawnDelay;
     [SerializeField] private Transform[] spawnPoints;
 
+    private bool isPlaying;
+
     private void OnEnable()
     {
         PlayerVehicle.OnExploded += SpawnPlayer;
@@ -40,19 +42,21 @@ public class GameManager : MonoBehaviour
         Prefs.Coins = 99999;
         UIManager.Instance.Init();
         GoToUpgradeMode();
+        Monster.Init();
     }
 
     public void GoToPlayMode()
     {
+        isPlaying = true;
         PlayerVehicle.Instance.InitPlayMode();
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
         MergePlatform.Instance.Hide();
-        Monster.Init();
         spawnPlayer();
     }
 
     public void GoToUpgradeMode()
     {
+        isPlaying = false;
         PlayerVehicle.Instance.InitShowCaseMode();
         MergePlatform.Instance.Init();
         MergePlatform.Instance.Show();
@@ -66,9 +70,17 @@ public class GameManager : MonoBehaviour
 
     private void spawnPlayer()
     {
+        if(!isPlaying)
+            return;
+        
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
         PlayerVehicle.Instance.transform.position = spawnPoint.position;
         PlayerVehicle.Instance.transform.forward = spawnPoint.forward;
         PlayerVehicle.Instance.InitPlayMode();
+    }
+
+    public bool IsPlaying()
+    {
+        return isPlaying;
     }
 }
