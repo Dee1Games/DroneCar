@@ -267,6 +267,8 @@ public class PlayerVehicle : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
+        if (!IsActive)
+            return;
         Monster monster = collision.gameObject.GetComponentInParent<Monster>();
         if (monster != null)
         {
