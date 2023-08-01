@@ -16,16 +16,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
         foreach (UIScreen screen in Screens)
         {
             screen.Init();
+            screen.Hide();
         }
     }
 
@@ -45,5 +41,10 @@ public class UIManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void Refresh()
+    {
+        currentScreen.Show();
     }
 }

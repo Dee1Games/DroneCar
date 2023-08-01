@@ -37,9 +37,26 @@ public class GameManager : MonoBehaviour
     
     public void Init()
     {
-        Monster.Init();
+        Prefs.Coins = 99999;
+        UIManager.Instance.Init();
+        GoToUpgradeMode();
+    }
+
+    public void GoToPlayMode()
+    {
+        PlayerVehicle.Instance.InitPlayMode();
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
+        MergePlatform.Instance.Hide();
+        Monster.Init();
         spawnPlayer();
+    }
+
+    public void GoToUpgradeMode()
+    {
+        PlayerVehicle.Instance.InitShowCaseMode();
+        MergePlatform.Instance.Init();
+        MergePlatform.Instance.Show();
+        UIManager.Instance.ShowScreen(UIScreenID.Merge);
     }
 
     public void SpawnPlayer()
@@ -52,6 +69,6 @@ public class GameManager : MonoBehaviour
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
         PlayerVehicle.Instance.transform.position = spawnPoint.position;
         PlayerVehicle.Instance.transform.forward = spawnPoint.forward;
-        PlayerVehicle.Instance.Init();
+        PlayerVehicle.Instance.InitPlayMode();
     }
 }

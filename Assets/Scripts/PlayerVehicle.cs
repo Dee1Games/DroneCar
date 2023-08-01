@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MoreMountains.Feedbacks;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerVehicle : MonoBehaviour
@@ -11,10 +13,12 @@ public class PlayerVehicle : MonoBehaviour
     public VehicleConfig Config;
     
     [SerializeField] private float convertHeight = 2f;
+    [SerializeField] private float rotationLerp = 2f;
     [SerializeField] private PlayerInput input;
     [SerializeField] private Transform pivot;
     [SerializeField] private GameObject[] visuals;
     [SerializeField] private MMFeedbacks explodeFeedback;
+    [SerializeField] private Animator anim;
     [SerializeField] private List<UpgradeLevel> upgrades;
 
     private float acceleration;
@@ -24,6 +28,8 @@ public class PlayerVehicle : MonoBehaviour
     private float bomb;
     private float gun;
     private float jumpForce;
+    private Dictionary<UpgradeType, Dictionary<int, List<UpgradeItem>>> upgradeItems;
+    private Dictionary<UpgradeType, LevelIndicatorUI> levelsUI;
     
     public static System.Action OnExploded;
 
@@ -40,7 +46,6 @@ public class PlayerVehicle : MonoBehaviour
     private float currentSpeed;
 
     private Rigidbody rigidbody;
-    private Animator animator;
     private Vector3 direction;
 
     private void Awake()
@@ -50,12 +55,20 @@ public class PlayerVehicle : MonoBehaviour
             Instance = this;
         }
         rigidbody = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+
+        levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
+        List<LevelIndicatorUI> allLevelUIs = GetComponentsInChildren<LevelIndicatorUI>(true).ToList();
+        foreach (LevelIndicatorUI levelUI in allLevelUIs)
+        {
+            levelsUI.Add(levelUI.Type, levelUI);
+        }
     }
 
-    public void Init()
+    public void InitPlayMode()
     {
+        anim.SetTrigger("reset");
         GetUpgradeValues();
+        ShowUpgradeVisuals();
         IsActive = true;
         isHovering = false;
         isChanging = false;
@@ -65,6 +78,67 @@ public class PlayerVehicle : MonoBehaviour
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
         input.Init();
+
+        foreach (LevelIndicatorUI levelUI in levelsUI.Values)
+        {
+            levelUI.gameObject.SetActive(false);
+        }
+    }
+    
+    public void InitShowCaseMode()
+    {
+        GetUpgradeValues();
+        ShowUpgradeVisuals();
+        IsActive = false;
+        isHovering = false;
+        SetVisualsVisibility(true);
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = Vector3.zero;
+        anim.SetTrigger("showcase");
+        
+        
+        foreach (LevelIndicatorUI levelUI in levelsUI.Values)
+        {
+            levelUI.gameObject.SetActive(true);
+        }
+    }
+
+    public void ShowUpgradeVisuals()
+    {
+        upgradeItems = new Dictionary<UpgradeType, Dictionary<int, List<UpgradeItem>>>();
+        List<UpgradeItem> allItems = GetComponentsInChildren<UpgradeItem>(true).ToList();
+
+        foreach (UpgradeItem item in allItems)
+        {
+            if (!upgradeItems.ContainsKey(item.Type))
+            {
+                upgradeItems.Add(item.Type, new Dictionary<int, List<UpgradeItem>>());
+            }
+            if (!upgradeItems[item.Type].ContainsKey(item.Level))
+            {
+                upgradeItems[item.Type].Add(item.Level, new List<UpgradeItem>());
+            }
+            upgradeItems[item.Type][item.Level].Add(item);
+            item.gameObject.SetActive(false);
+        }
+
+        foreach (UpgradeLevel upgradeLevel in upgrades)
+        {
+            try
+            {
+                List<UpgradeItem> list = upgradeItems[upgradeLevel.Type][upgradeLevel.Level];
+                foreach (UpgradeItem item in list)
+                {
+                    item.gameObject.SetActive(true);
+                    levelsUI[item.Type].SetLevel(item.Level);
+                }
+            }
+            catch {
+                
+            }
+        }
     }
 
     private void Update()
@@ -143,6 +217,7 @@ public class PlayerVehicle : MonoBehaviour
             
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
             transform.Rotate(Vector3.up, input.JoystickX*handeling);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
         }
     }
 
@@ -173,7 +248,7 @@ public class PlayerVehicle : MonoBehaviour
         IsActive = false;
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
-        animator.SetTrigger("close");
+        anim.SetBool("hover", false);
         rigidbody.useGravity = false;
         rigidbody.isKinematic = true;
         rigidbody.velocity = Vector3.zero;
@@ -209,7 +284,7 @@ public class PlayerVehicle : MonoBehaviour
     {
         isChanging = true;
         isHovering = false;
-        animator.SetTrigger("close");
+        anim.SetBool("hover", false);
         rigidbody.useGravity = true;
         while (getDistanceToGround()>1f)
         {
@@ -227,7 +302,7 @@ public class PlayerVehicle : MonoBehaviour
     {
         isChanging = true;
         isHovering = true;
-        animator.SetTrigger("open");
+        anim.SetBool("hover", true);
         if(jump) 
             rigidbody.AddForce(Vector3.up*jumpForce, ForceMode.VelocityChange);
 
@@ -279,6 +354,29 @@ public class PlayerVehicle : MonoBehaviour
         wheelCollider.GetWorldPose(out position, out rotation);
         wheelMesh.position = position;
         wheelMesh.rotation = rotation;
+    }
+
+    public bool SetUpgrade(UpgradeType type, int level)
+    {
+        int upgradeIndex = -1;
+        for (int i = 0; i < upgrades.Count; i++)
+        {
+            if (upgrades[i].Type == type)
+            {
+                if (upgrades[i].Level >= level)
+                {
+                    return false;
+                }
+                else
+                {
+                    upgrades[i].Level = level;
+                    GetUpgradeValues();
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     private void GetUpgradeValues ()

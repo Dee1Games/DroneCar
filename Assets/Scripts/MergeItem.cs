@@ -35,7 +35,12 @@ public class MergeItem : MonoBehaviour
     
     public void MoveToCell(MergeCell cell, float speed, Action onEnd = null)
     {
-        StartCoroutine(moveToCell(cell, speed, onEnd));
+        StartCoroutine(moveToPos(cell.transform.position, speed, onEnd));
+    }
+    
+    public void MoveToPlayerVehicle(float speed, Action onEnd = null)
+    {
+        StartCoroutine(moveToPos(PlayerVehicle.Instance.transform.position, speed, onEnd));
     }
 
     public void SetCurrentCell(MergeCell cell)
@@ -43,21 +48,21 @@ public class MergeItem : MonoBehaviour
         CurrentCell = cell;
     }
 
-    private IEnumerator moveToCell(MergeCell cell, float speed, Action onEnd = null)
+    private IEnumerator moveToPos(Vector3 pos, float speed, Action onEnd = null)
     {
-        Vector3 direction = (cell.transform.position - transform.position).normalized;
+        Vector3 direction = (pos - transform.position).normalized;
 
         while (true)
         {
             float delta = speed * Time.deltaTime;
-            if (Vector3.Distance(transform.position, cell.transform.position) > delta)
+            if (Vector3.Distance(transform.position, pos) > delta)
             {
                 transform.Translate(direction*delta);
                 yield return new WaitForEndOfFrame();
             }
             else
             {
-                transform.position = cell.transform.position;
+                transform.position = pos;
                 break;
             }
         }

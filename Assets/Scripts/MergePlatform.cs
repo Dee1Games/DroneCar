@@ -7,11 +7,18 @@ public class MergePlatform : MonoBehaviour
     public static MergePlatform Instance;
     
     [SerializeField] private Camera camera;
+    [SerializeField] private Transform content;
     [SerializeField] private MergeCell[] cells;
     [SerializeField] private float moveSpeed;
     [SerializeField] private Vector3 moveOffset;
+    [SerializeField] private Transform vehiclePos;
+    [SerializeField] private float mergeToVehicleDistance;
+    [SerializeField] private int firstUpgradePrice;
+    [SerializeField] private float upgradePriceMultiplier;
 
     private MergeItem currentSelectedItem;
+
+    public Transform CameraTransform => camera.transform;
 
     private void Awake()
     {
@@ -19,11 +26,6 @@ public class MergePlatform : MonoBehaviour
         {
             Instance = this;
         }
-    }
-
-    private void Start()
-    {
-        Init();
     }
 
     public void Init()
@@ -34,6 +36,9 @@ public class MergePlatform : MonoBehaviour
         }
 
         currentSelectedItem = null;
+        PlayerVehicle.Instance.InitShowCaseMode();
+        PlayerVehicle.Instance.transform.position = vehiclePos.position;
+        PlayerVehicle.Instance.transform.rotation = vehiclePos.rotation;
     }
 
     private void Update()
@@ -52,21 +57,36 @@ public class MergePlatform : MonoBehaviour
             }
             else
             {
-                MergeCell closestCell = GetClosestCell(currentSelectedItem);
-                if (closestCell == null)
-                    closestCell = currentSelectedItem.CurrentCell;
-                MergeItem currentItem = currentSelectedItem;
-                currentSelectedItem.MoveToCell(closestCell, moveSpeed, () =>
+                bool merged = false;
+                if (Vector3.Distance(PlayerVehicle.Instance.transform.position, currentSelectedItem.transform.position) < mergeToVehicleDistance)
                 {
-                    closestCell.SetItem(currentItem);
-                });
+                    if (PlayerVehicle.Instance.SetUpgrade(currentSelectedItem.Type, currentSelectedItem.Level))
+                    {
+                        merged = true;
+                        
+                        PlayerVehicle.Instance.ShowUpgradeVisuals();
+                        MergeItem currentItem = currentSelectedItem;
+                        currentSelectedItem.MoveToPlayerVehicle(moveSpeed, () =>
+                        {
+                            Destroy(currentItem.gameObject);
+                        });
+                    }
+                }
+
+                if (!merged)
+                {
+                    MergeCell closestCell = GetClosestCell(currentSelectedItem);
+                    if (closestCell == null)
+                        closestCell = currentSelectedItem.CurrentCell;
+                    MergeItem currentItem = currentSelectedItem;
+                    currentSelectedItem.MoveToCell(closestCell, moveSpeed, () =>
+                    {
+                        closestCell.SetItem(currentItem);
+                    });
+                }
+                
                 currentSelectedItem = null;
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpawnInRandomCell();
         }
     }
 
@@ -75,9 +95,13 @@ public class MergePlatform : MonoBehaviour
         currentSelectedItem = item;
     }
 
-    private void SpawnInRandomCell()
+    public void SpawnUpgrade()
     {
         SpawnItemInCell(GetRandomEmptyCell());
+        
+        Prefs.Coins -= GetCurrentUpgradePrice();
+        Prefs.UpgradeCount++;
+        UIManager.Instance.Refresh();
     }
 
     private void SpawnItemInCell(MergeCell cell)
@@ -142,5 +166,25 @@ public class MergePlatform : MonoBehaviour
         }
 
         return closestCell;
+    }
+
+    public void Show()
+    {
+        content.gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        content.gameObject.SetActive(false);
+    }
+
+    public int GetCurrentUpgradePrice()
+    {
+        if (Prefs.UpgradeCount == 0)
+            return firstUpgradePrice;
+        else
+        {
+            return Mathf.RoundToInt(firstUpgradePrice * Prefs.UpgradeCount * upgradePriceMultiplier);
+        }
     }
 }
