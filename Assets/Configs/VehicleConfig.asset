@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc4ac734f0793f4394ff734d1caadc5, type: 3}
   m_Name: VehicleConfig
   m_EditorClassIdentifier: 
-  Acceleration: 25
-  ReverseAcceleration: 30
-  MaxSpeed: 25
+  Acceleration: 1
+  ReverseAcceleration: 1
+  MaxSpeed: 1
   Handeling: 2
-  Bomb: 50
+  Bomb: 10
   Gun: 0
   JumpForce: 5
   upgrades:
@@ -66,43 +66,25 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 1
         value: 20
-        inSlope: 10
-        outSlope: 10
-        tangentMode: 34
+        inSlope: 21.55865
+        outSlope: 21.55865
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 3
-        value: 40
-        inSlope: 10
-        outSlope: 10
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 4
-        value: 50
-        inSlope: 10
-        outSlope: 10
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.052511424
       - serializedVersion: 3
         time: 5
         value: 60
-        inSlope: 10
-        outSlope: 10
-        tangentMode: 34
+        inSlope: 4.7677817
+        outSlope: 4.7677817
+        tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.118721485
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    handlingRemap: {x: 2, y: 20}
+    handlingRemap: {x: 2, y: 15}
     bombCurve:
       serializedVersion: 2
       m_Curve: []
@@ -157,63 +139,27 @@ MonoBehaviour:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 10
-        inSlope: 50
-        outSlope: 50
-        tangentMode: 34
+        time: 0.011417389
+        value: 9.546661
+        inSlope: 75.66669
+        outSlope: 75.66669
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 60
-        inSlope: 40
-        outSlope: 40
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 2
-        value: 90
-        inSlope: 30
-        outSlope: 30
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 3
-        value: 120
-        inSlope: 30
-        outSlope: 30
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 4
-        value: 150
-        inSlope: 40
-        outSlope: 40
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.04576624
       - serializedVersion: 3
         time: 5
-        value: 200
-        inSlope: 50
-        outSlope: 50
-        tangentMode: 34
+        value: 200.45334
+        inSlope: 12.157056
+        outSlope: 12.157056
+        tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.111872
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    bombRemap: {x: 50, y: 200}
+    bombRemap: {x: 10, y: 150}
     gunCurve:
       serializedVersion: 2
       m_Curve: []
@@ -289,7 +235,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    accelerationRemap: {x: 30, y: 50}
+    accelerationRemap: {x: 1, y: 37}
     reverseAccelerationCurve:
       serializedVersion: 2
       m_Curve: []
@@ -357,7 +303,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    maxSpeedRemap: {x: 30, y: 50}
+    maxSpeedRemap: {x: 1, y: 37}
     handlingCurve:
       serializedVersion: 2
       m_Curve: []
