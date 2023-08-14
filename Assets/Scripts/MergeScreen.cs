@@ -19,8 +19,8 @@ public class MergeScreen : UIScreen
     {
         base.Show();
         RefreshUpgradePrice();
-        coinsText.text = "$" + Prefs.Coins.ToString();
-        levelText.text = "Level " + Prefs.Level.ToString();
+        coinsText.text = "$" + UserManager.Instance.Data.Coins.ToString();
+        levelText.text = "Level " + UserManager.Instance.Data.Level.ToString();
     }
     
     public override void Hide()

@@ -15,10 +15,11 @@ public class MergePlatform : MonoBehaviour
     [SerializeField] private float mergeToVehicleDistance;
     [SerializeField] private int firstUpgradePrice;
     [SerializeField] private float upgradePriceMultiplier;
+    [SerializeField] private ParticleSystem particle;
+    public Transform CameraTransform => camera.transform;
 
     private MergeItem currentSelectedItem;
 
-    public Transform CameraTransform => camera.transform;
 
     private void Awake()
     {
@@ -33,12 +34,19 @@ public class MergePlatform : MonoBehaviour
         foreach (MergeCell cell in cells)
         {
             cell.Init();
+            UpgradeLevel upgradeLevel = UserManager.Instance.GetMergePlatformCell(cell.Index);
+            if (upgradeLevel.Level != -1)
+            {
+                Item i = GameManager.Instance.Player.Config.GetItem(upgradeLevel.Type, upgradeLevel.Level);
+                MergeItem item = Instantiate(i.MergePrefab, cell.transform).GetComponent<MergeItem>();
+                item.Init(i.Level, i.Type);
+                cell.SetItem(item);
+            }
         }
 
         currentSelectedItem = null;
-        PlayerVehicle.Instance.InitShowCaseMode();
-        PlayerVehicle.Instance.transform.position = vehiclePos.position;
-        PlayerVehicle.Instance.transform.rotation = vehiclePos.rotation;
+        GameManager.Instance.Player.transform.position = vehiclePos.position;
+        GameManager.Instance.Player.transform.rotation = vehiclePos.rotation;
     }
 
     private void Update()
@@ -58,16 +66,16 @@ public class MergePlatform : MonoBehaviour
             else
             {
                 bool merged = false;
-                if (Vector3.Distance(PlayerVehicle.Instance.transform.position, currentSelectedItem.transform.position) < mergeToVehicleDistance)
+                if (Vector3.Distance(GameManager.Instance.Player.transform.position, currentSelectedItem.transform.position) < mergeToVehicleDistance)
                 {
-                    if (PlayerVehicle.Instance.SetUpgrade(currentSelectedItem.Type, currentSelectedItem.Level))
+                    if (GameManager.Instance.Player.SetUpgrade(currentSelectedItem.Type, currentSelectedItem.Level))
                     {
                         merged = true;
-                        
-                        PlayerVehicle.Instance.ShowUpgradeVisuals();
+                        GameManager.Instance.Player.ShowUpgradeVisuals();
                         MergeItem currentItem = currentSelectedItem;
                         currentSelectedItem.MoveToPlayerVehicle(moveSpeed, () =>
                         {
+                            PlayParticle();
                             Destroy(currentItem.gameObject);
                         });
                     }
@@ -99,8 +107,8 @@ public class MergePlatform : MonoBehaviour
     {
         SpawnItemInCell(GetRandomEmptyCell());
         
-        Prefs.Coins -= GetCurrentUpgradePrice();
-        Prefs.UpgradeCount++;
+        UserManager.Instance.Data.Coins -= GetCurrentUpgradePrice();
+        UserManager.Instance.NextUpgrade();
         UIManager.Instance.Refresh();
     }
 
@@ -110,6 +118,7 @@ public class MergePlatform : MonoBehaviour
         MergeItem item = Instantiate(randomItem.MergePrefab, cell.transform).GetComponent<MergeItem>();
         item.Init(randomItem.Level, randomItem.Type);
         cell.SetItem(item);
+        UserManager.Instance.SetMergePlatformCell(cell.Index, item.Type, item.Level);
     }
 
     private MergeCell GetRandomEmptyCell()
@@ -122,21 +131,52 @@ public class MergePlatform : MonoBehaviour
         }
         return emptyCells[Random.Range(0, emptyCells.Count)];
     }
+
+    private int NumberOfFullCells()
+    {
+        int n = 0;
+        foreach (MergeCell cell in cells)
+        {
+            if (cell.IsFull)
+                n++;
+        }
+
+        return n;
+    }
     
     private Item GetRandomItem()
     {
         List<UpgradeType> probabilities = new List<UpgradeType>();
         foreach(UpgradeType upgradeType in UpgradeType.GetValues(typeof(UpgradeType)))
         {
-            int p = PlayerVehicle.Instance.Config.GetProbability(upgradeType);
+            int p = GameManager.Instance.Player.Config.GetProbability(upgradeType);
+            if (GameManager.Instance.Player.Config.GetItem(upgradeType,
+                UserManager.Instance.GetUpgradeLevel(UserManager.Instance.Data.CurrentVehicleID, upgradeType)+1) == null)
+            {
+                p = 0;
+            } 
             for (int i = 0; i < p; i++)
             {
                 probabilities.Add(upgradeType);
             }
         }
 
-        UpgradeType randomType = probabilities[Random.Range(0, probabilities.Count)];
-        return PlayerVehicle.Instance.Config.GetItem(randomType, 1);
+        if (NumberOfFullCells() == 5)
+        {
+            UpgradeType t = probabilities[0];
+            foreach (MergeCell cell in cells)
+            {
+                if (cell.Item!=null && cell.Item.Level == 1)
+                    t = cell.Item.Type;
+            }
+
+            return GameManager.Instance.Player.Config.GetItem(t, 1);
+        }
+        else
+        {
+            UpgradeType randomType = probabilities[Random.Range(0, probabilities.Count)];
+            return GameManager.Instance.Player.Config.GetItem(randomType, 1);
+        }
     }
 
     private MergeCell GetClosestCell(MergeItem item)
@@ -153,9 +193,13 @@ public class MergePlatform : MonoBehaviour
             if (cell==null)
                 continue;
             if (cell.IsFull)
-                if (cell.Item.Type!=item.Type || cell.Item.Level!=item.Level)
+            {
+                if (cell.Item.Type != item.Type || cell.Item.Level != item.Level)
                     continue;
-            
+                else if (GameManager.Instance.Player.Config.GetItem(item.Type, item.Level + 1) == null)
+                    continue;
+            }
+
             pos.y = cell.transform.position.y;
             float distance = Vector3.Distance(pos, cell.transform.position);
             if (distance < minDistance)
@@ -180,11 +224,23 @@ public class MergePlatform : MonoBehaviour
 
     public int GetCurrentUpgradePrice()
     {
-        if (Prefs.UpgradeCount == 0)
-            return firstUpgradePrice;
+        return GetUpgradePrice(UserManager.Instance.Data.UpgradeCount);
+    }
+
+    public void PlayParticle()
+    {
+        particle.Play();
+    }
+
+    private int GetUpgradePrice(int n)
+    {
+        if (n <= 1)
+        {
+            return 23;
+        }
         else
         {
-            return Mathf.RoundToInt(firstUpgradePrice * Prefs.UpgradeCount * upgradePriceMultiplier);
+            return Mathf.FloorToInt((24.97f * (n - 1)) + 22.64f + GetUpgradePrice(n-1));
         }
     }
 }

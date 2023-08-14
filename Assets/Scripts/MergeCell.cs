@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MergeCell : MonoBehaviour
 {
+    public int Index;
+    
     public MergeItem Item
     {
         get;
@@ -25,7 +27,7 @@ public class MergeCell : MonoBehaviour
     {
         if (Item != null && Item.Type == item.Type && Item.Level == item.Level)
         {
-            MergeItem newItem = Instantiate(PlayerVehicle.Instance.Config.GetItem(Item.Type, Item.Level+1).MergePrefab, transform).GetComponent<MergeItem>();
+            MergeItem newItem = Instantiate(GameManager.Instance.Player.Config.GetItem(Item.Type, Item.Level+1).MergePrefab, transform).GetComponent<MergeItem>();
             newItem.Init(Item.Level+1, Item.Type);
             Destroy(Item.gameObject);
             Destroy(item.gameObject);

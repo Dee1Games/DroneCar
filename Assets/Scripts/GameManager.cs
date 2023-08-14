@@ -7,21 +7,24 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    
-    [SerializeField] private Monster Monster;
+
+    [HideInInspector] public Map Map;
+    [HideInInspector] public Monster Monster;
+    [HideInInspector] public PlayerVehicle Player;
+
+    [SerializeField] private Vehicles VehiclesConfig;
     [SerializeField] private float respawnDelay;
-    [SerializeField] private Transform[] spawnPoints;
 
     private bool isPlaying;
 
     private void OnEnable()
     {
-        PlayerVehicle.OnExploded += SpawnPlayer;
+        //PlayerVehicle.OnExploded += SpawnPlayer;
     }
 
     private void OnDisable()
     {
-        PlayerVehicle.OnExploded -= SpawnPlayer;
+        //PlayerVehicle.OnExploded -= SpawnPlayer;
     }
 
     private void Awake()
@@ -39,25 +42,24 @@ public class GameManager : MonoBehaviour
     
     public void Init()
     {
-        Prefs.Coins = 99999;
+        UserManager.Instance.Init();
+        LevelManager.Instance.InitCurrentLevel();
         UIManager.Instance.Init();
         GoToUpgradeMode();
-        Monster.Init();
     }
 
     public void GoToPlayMode()
     {
         isPlaying = true;
-        PlayerVehicle.Instance.InitPlayMode();
+        spawnPlayer();
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
         MergePlatform.Instance.Hide();
-        spawnPlayer();
     }
 
     public void GoToUpgradeMode()
     {
         isPlaying = false;
-        PlayerVehicle.Instance.InitShowCaseMode();
+        spawnPlayer();
         MergePlatform.Instance.Init();
         MergePlatform.Instance.Show();
         UIManager.Instance.ShowScreen(UIScreenID.Merge);
@@ -70,13 +72,17 @@ public class GameManager : MonoBehaviour
 
     private void spawnPlayer()
     {
-        if(!isPlaying)
-            return;
+        if(Player != null)
+            DestroyImmediate(Player.gameObject);
+        Player = Instantiate(VehiclesConfig.GetVehicle(UserManager.Instance.Data.CurrentVehicleID).Prefab).GetComponent<PlayerVehicle>();
+        Transform spawnPoint = Map.GetRandomSpawnPoint();
+        Player.transform.position = spawnPoint.position;
+        Player.transform.forward = spawnPoint.forward;
         
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        PlayerVehicle.Instance.transform.position = spawnPoint.position;
-        PlayerVehicle.Instance.transform.forward = spawnPoint.forward;
-        PlayerVehicle.Instance.InitPlayMode();
+        if(isPlaying)
+            Player.InitPlayMode();
+        else
+            Player.InitShowCaseMode();
     }
 
     public bool IsPlaying()
