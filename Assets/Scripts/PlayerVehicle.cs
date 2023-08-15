@@ -8,10 +8,10 @@ using UnityEngine;
 
 public class PlayerVehicle : MonoBehaviour
 {
-    public static PlayerVehicle Instance;
     
     public VehicleConfig Config;
     
+    [SerializeField] private VehicleID ID;
     [SerializeField] private float convertHeight = 2f;
     [SerializeField] private float rotationLerp = 2f;
     [SerializeField] private PlayerInput input;
@@ -19,8 +19,8 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private GameObject[] visuals;
     [SerializeField] private MMFeedbacks explodeFeedback;
     [SerializeField] private Animator anim;
-    [SerializeField] private List<UpgradeLevel> upgrades;
-
+    
+    private List<UpgradeLevel> upgrades;
     private float acceleration;
     private float reverseAcceleration;
     private float maxSpeed;
@@ -50,10 +50,6 @@ public class PlayerVehicle : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
         rigidbody = GetComponent<Rigidbody>();
 
         levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
@@ -66,6 +62,7 @@ public class PlayerVehicle : MonoBehaviour
 
     public void InitPlayMode()
     {
+        upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         anim.SetTrigger("reset");
         GetUpgradeValues();
         ShowUpgradeVisuals();
@@ -75,6 +72,7 @@ public class PlayerVehicle : MonoBehaviour
         CameraController.Instance.SetTarget(transform);
         SetVisualsVisibility(true);
         rigidbody.isKinematic = false;
+        rigidbody.useGravity = true;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
         input.Init();
@@ -85,8 +83,9 @@ public class PlayerVehicle : MonoBehaviour
         }
     }
     
-    public void InitShowCaseMode()
+    public void InitShowCaseMode()   
     {
+        upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = false;
@@ -272,9 +271,11 @@ public class PlayerVehicle : MonoBehaviour
         Monster monster = collision.gameObject.GetComponentInParent<Monster>();
         if (monster != null)
         {
-            monster.TakeDamage(bomb);
+            monster.TakeDamage(bomb, transform.position);
+            CameraController.Instance.TakeLongShot(transform.position, transform.forward);
             Explode();
         }
+        
     }
 
     private void ConvertToCar()
@@ -372,6 +373,7 @@ public class PlayerVehicle : MonoBehaviour
                 else
                 {
                     upgrades[i].Level = level;
+                    UserManager.Instance.SetUpgradeLevel(ID, type, level);
                     GetUpgradeValues();
                     return true;
                 }
@@ -403,12 +405,5 @@ public class PlayerVehicle : MonoBehaviour
             gun = Mathf.Max(gun, upgrade.GetGun(upgradeLevel.Level));
             jumpForce = Mathf.Max(jumpForce, upgrade.GetJumpForce(upgradeLevel.Level));
         }
-    }
-    
-    [System.Serializable]
-    class UpgradeLevel
-    {
-        public UpgradeType Type;
-        public int Level;
     }
 }

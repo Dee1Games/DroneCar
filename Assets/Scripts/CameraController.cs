@@ -1,7 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
+using Unity.VisualScripting;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class CameraController : MonoBehaviour
 {
@@ -10,11 +14,14 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float smoothSpeed = 0.125f;
     [SerializeField] private Vector3 offset;
     [SerializeField] private float lookOffset;
-    [SerializeField] private MeshRenderer[] propRenderers;
+    [SerializeField] private float longShotDuration;
+    [SerializeField] private float longShotOffset;
+    private MeshRenderer[] propRenderers;
 
     
     private Transform target;
     private RaycastHit[] hits;
+    private bool following;
 
     private void Awake()
     {
@@ -26,7 +33,7 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (target == null)
+        if (target == null || !following)
             return;
 
         // Calculate the desired position the camera should be at
@@ -51,6 +58,7 @@ public class CameraController : MonoBehaviour
     public void SetTarget(Transform target)
     {
         this.target = target;
+        following = true;
         Reset();
     }
 
@@ -63,12 +71,45 @@ public class CameraController : MonoBehaviour
         transform.LookAt( target.position + (target.up*offset.y*lookOffset));
     }
 
+    public void TakeLongShot(Vector3 hitPoint, Vector3 axis)
+    {
+        StartCoroutine(takeLongShot(hitPoint, axis));
+    }
+
+    private IEnumerator takeLongShot(Vector3 hitPoint, Vector3 axis)
+    {
+        //Vector3 axis = (hitPoint - GameManager.Instance.Monster.transform.position).normalized;
+        //axis.y = 0f;
+        following = false;
+        float timer = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 endPos = hitPoint - (axis*longShotOffset);
+        while (timer<longShotDuration)
+        {
+            Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(endPos), timer / longShotDuration);
+            transform.position = Vector3.Lerp(transform.position, endPos, timer / longShotDuration);
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        
+        if (GameManager.Instance.Monster.IsDead)
+        {
+            UserManager.Instance.Nextlevel();
+            LevelManager.Instance.InitCurrentLevel();
+        }
+        GameManager.Instance.GoToUpgradeMode();
+    }
+
     private void HideCameraOverlaps()
     {
-        foreach (MeshRenderer renderer in propRenderers)
+        if (propRenderers != null)
         {
-            renderer.enabled = true;
+            foreach (MeshRenderer renderer in propRenderers)
+            {
+                renderer.enabled = true;
+            }
         }
+        
         
         Vector3 direction = (target.position - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, target.position);

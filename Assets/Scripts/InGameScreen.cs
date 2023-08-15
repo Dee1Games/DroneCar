@@ -30,8 +30,8 @@ public class InGameScreen : UIScreen
     public override void Show()
     {
         base.Show();
-        coinsText.text = "$" + Prefs.Coins.ToString();
-        levelText.text = "Level " + Prefs.Level.ToString();
+        coinsText.text = "$" + UserManager.Instance.Data.Coins.ToString();
+        levelText.text = "Level " + UserManager.Instance.Data.Level.ToString();
     }
     
     public override void Hide()

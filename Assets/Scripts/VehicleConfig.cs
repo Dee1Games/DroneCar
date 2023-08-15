@@ -34,7 +34,10 @@ public class VehicleConfig : ScriptableObject
     
     public Item GetItem(UpgradeType type, int level)
     {
-        return GetItems(type)[level];
+        if (GetItems(type).Count <= level)
+            return null;
+        else
+            return GetItems(type)[level];
     }
     
     [System.Serializable]
