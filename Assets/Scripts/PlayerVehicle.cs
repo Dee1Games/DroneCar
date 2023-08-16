@@ -30,6 +30,9 @@ public class PlayerVehicle : MonoBehaviour
     private float jumpForce;
     private Dictionary<UpgradeType, Dictionary<int, List<UpgradeItem>>> upgradeItems;
     private Dictionary<UpgradeType, LevelIndicatorUI> levelsUI;
+    private GunExitPoint[] gunExitPoints;
+    private int lastGunIndex;
+    private float lastTimeShooting;
     
     public static System.Action OnExploded;
 
@@ -81,6 +84,8 @@ public class PlayerVehicle : MonoBehaviour
         {
             levelUI.gameObject.SetActive(false);
         }
+
+        lastTimeShooting = Time.timeSinceLevelLoad;
     }
     
     public void InitShowCaseMode()   
@@ -138,6 +143,8 @@ public class PlayerVehicle : MonoBehaviour
                 
             }
         }
+
+        gunExitPoints = GetComponentsInChildren<GunExitPoint>();
     }
 
     private void Update()
@@ -218,6 +225,47 @@ public class PlayerVehicle : MonoBehaviour
             transform.Rotate(Vector3.up, input.JoystickX*handeling);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
         }
+
+        if (CanShoot())
+        {
+            Shoot();
+            lastTimeShooting = Time.timeSinceLevelLoad;
+        }
+    }
+
+    private bool CanShoot()
+    {
+        if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / Config.FireRate) && gunExitPoints.Length!=0)
+        {
+            if (Config.AlwaysShoot)
+            {
+                return true;
+            }
+            else
+            {
+                if(Physics.Raycast(transform.position, transform.forward, 1000f, LayerMask.GetMask("Enemy")))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void Shoot()
+    {
+        ProjectileMoveScript projectile = ProjectilePoolManager.Instance.GetProjectile(upgrades.FirstOrDefault(U=>U.Type==UpgradeType.Gun).Level-1);
+        projectile.transform.position = gunExitPoints[lastGunIndex].transform.position;
+        projectile.transform.forward = gunExitPoints[lastGunIndex].transform.forward;
+        projectile.Init(gun);
+        lastGunIndex = (lastGunIndex + 1) % gunExitPoints.Length;
     }
 
     private void FixedUpdate()

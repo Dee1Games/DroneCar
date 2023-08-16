@@ -13,6 +13,8 @@ public class VehicleConfig : ScriptableObject
     public float Bomb = 1f;
     public float Gun = 1f;
     public float JumpForce = 1f;
+    public float FireRate = 0.5f;
+    public bool AlwaysShoot = true;
 
     [SerializeField] private List<UpgradeConfig> upgrades;
     [SerializeField] private List<ItemsEntry> items;
