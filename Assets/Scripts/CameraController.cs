@@ -94,7 +94,7 @@ public class CameraController : MonoBehaviour
         
         if (GameManager.Instance.Monster.IsDead)
         {
-            UserManager.Instance.Nextlevel();
+            UserManager.Instance.NextLevel();
             LevelManager.Instance.InitCurrentLevel();
         }
         GameManager.Instance.GoToUpgradeMode();

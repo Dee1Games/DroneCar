@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MoreMountains.Feedbacks;
+using SupersonicWisdomSDK;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -287,11 +288,26 @@ public class PlayerVehicle : MonoBehaviour
         }
     }
 
-    private void Explode()
+    public void Explode()
     {
         if (!IsActive)
             return;
+        
+        explodeFeedback.PlayFeedbacks();
+        Deactivate();
+        Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
+        try
+        {
+            SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
+        }
+        catch
+        {
+        }
+        UserManager.Instance.NextRun();
+    }
 
+    public void Deactivate()
+    {
         IsActive = false;
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
