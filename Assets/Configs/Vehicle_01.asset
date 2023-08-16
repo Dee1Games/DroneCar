@@ -1,0 +1,510 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc4ac734f0793f4394ff734d1caadc5, type: 3}
+  m_Name: Vehicle_01
+  m_EditorClassIdentifier: 
+  Acceleration: 1
+  ReverseAcceleration: 1
+  MaxSpeed: 1
+  Handeling: 2
+  Bomb: 50
+  Gun: 5
+  JumpForce: 10
+  FireRate: 1.5
+  AlwaysShoot: 1
+  upgrades:
+  - Type: 0
+    accelerationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 1
+        value: 20
+        inSlope: 10
+        outSlope: 10
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    accelerationRemap: {x: 0, y: 0}
+    reverseAccelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    reverseAccelerationRemap: {x: 0, y: 0}
+    maxSpeedCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 1
+        value: 20
+        inSlope: 10
+        outSlope: 10
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedRemap: {x: 0, y: 0}
+    handlingCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 1
+        value: 20
+        inSlope: 21.55865
+        outSlope: 21.55865
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.052511424
+      - serializedVersion: 3
+        time: 5
+        value: 60
+        inSlope: 4.7677817
+        outSlope: 4.7677817
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.118721485
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    handlingRemap: {x: 2, y: 15}
+    bombCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bombRemap: {x: 0, y: 0}
+    gunCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    gunRemap: {x: 0, y: 0}
+    jumpForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    jumpForceRemap: {x: 0, y: 0}
+  - Type: 1
+    accelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    accelerationRemap: {x: 0, y: 0}
+    reverseAccelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    reverseAccelerationRemap: {x: 0, y: 0}
+    maxSpeedCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedRemap: {x: 0, y: 0}
+    handlingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    handlingRemap: {x: 0, y: 0}
+    bombCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.011417389
+        value: 9.546661
+        inSlope: 75.66669
+        outSlope: 75.66669
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.04576624
+      - serializedVersion: 3
+        time: 5
+        value: 200.45334
+        inSlope: 12.157056
+        outSlope: 12.157056
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.111872
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bombRemap: {x: 50, y: 500}
+    gunCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    gunRemap: {x: 0, y: 0}
+    jumpForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    jumpForceRemap: {x: 0, y: 0}
+  - Type: 2
+    accelerationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 20
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 40
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2
+        value: 60
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 3
+        value: 80
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 4
+        value: 100
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 5
+        value: 120
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    accelerationRemap: {x: 1, y: 37}
+    reverseAccelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    reverseAccelerationRemap: {x: 0, y: 0}
+    maxSpeedCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 20
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 40
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2
+        value: 60
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 3
+        value: 80
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 4
+        value: 100
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 5
+        value: 120
+        inSlope: 20
+        outSlope: 20
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedRemap: {x: 1, y: 37}
+    handlingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    handlingRemap: {x: 0, y: 0}
+    bombCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bombRemap: {x: 0, y: 0}
+    gunCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    gunRemap: {x: 0, y: 0}
+    jumpForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    jumpForceRemap: {x: 0, y: 0}
+  - Type: 3
+    accelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    accelerationRemap: {x: 0, y: 0}
+    reverseAccelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    reverseAccelerationRemap: {x: 0, y: 0}
+    maxSpeedCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedRemap: {x: 0, y: 0}
+    handlingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    handlingRemap: {x: 0, y: 0}
+    bombCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bombRemap: {x: 0, y: 0}
+    gunCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 10
+        inSlope: 50
+        outSlope: 50
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 60
+        inSlope: 40
+        outSlope: 40
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2
+        value: 90
+        inSlope: 30
+        outSlope: 30
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 3
+        value: 120
+        inSlope: 30
+        outSlope: 30
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 4
+        value: 150
+        inSlope: 40
+        outSlope: 40
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 5
+        value: 200
+        inSlope: 50
+        outSlope: 50
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    gunRemap: {x: 5, y: 50}
+    jumpForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    jumpForceRemap: {x: 0, y: 0}
+  items:
+  - Type: 0
+    Probability: 0
+    Items:
+    - Level: 0
+      Type: 0
+      MergePrefab: {fileID: 8527887436437427152, guid: 778f7aa6d96401f4ea6907cb60fcb384, type: 3}
+    - Level: 1
+      Type: 0
+      MergePrefab: {fileID: 8527887436437427152, guid: 997ee45c130a1304d9d3be14171e4aef, type: 3}
+    - Level: 2
+      Type: 0
+      MergePrefab: {fileID: 8527887436437427152, guid: d67d6aee1fc21e74594a825be4adbc71, type: 3}
+    - Level: 3
+      Type: 0
+      MergePrefab: {fileID: 8527887436437427152, guid: 8d7f03b1fd54e69479d4468531f0236f, type: 3}
+    - Level: 4
+      Type: 0
+      MergePrefab: {fileID: 8527887436437427152, guid: 2da84d548dee110499e39ca05ba7c786, type: 3}
+  - Type: 1
+    Probability: 0
+    Items:
+    - Level: 0
+      Type: 1
+      MergePrefab: {fileID: 8527887436437427152, guid: f51d4791c2356114ba1b24dcad67202a, type: 3}
+    - Level: 1
+      Type: 1
+      MergePrefab: {fileID: 8527887436437427152, guid: 3a3c9099c44b6ed4ab3467ea700851dd, type: 3}
+    - Level: 2
+      Type: 1
+      MergePrefab: {fileID: 8527887436437427152, guid: 3d1e97f363ee5f447ac8a5ac096b1c59, type: 3}
+  - Type: 2
+    Probability: 0
+    Items:
+    - Level: 0
+      Type: 2
+      MergePrefab: {fileID: 8527887436437427152, guid: 71cb781f87ca4bb49871f6f9322ae2ea, type: 3}
+    - Level: 1
+      Type: 2
+      MergePrefab: {fileID: 8527887436437427152, guid: fcc60f78686a05745bee1630aa8baf1f, type: 3}
+    - Level: 2
+      Type: 2
+      MergePrefab: {fileID: 8527887436437427152, guid: c41d48f8fea217c4280b196fb8c59a34, type: 3}
+    - Level: 3
+      Type: 2
+      MergePrefab: {fileID: 8527887436437427152, guid: eacf6961b8b2a6948b75f6c0d449674b, type: 3}
+    - Level: 4
+      Type: 2
+      MergePrefab: {fileID: 8527887436437427152, guid: 8d8edd62066ec2d40aa87c04dcee1dc3, type: 3}
+  - Type: 3
+    Probability: 2
+    Items:
+    - Level: 0
+      Type: 3
+      MergePrefab: {fileID: 8527887436437427152, guid: 6efe6e82bc4f19e4eb90c0264b9cde84, type: 3}
+    - Level: 1
+      Type: 3
+      MergePrefab: {fileID: 8527887436437427152, guid: 3167d1f70befc2c448f61ec32f668002, type: 3}
+    - Level: 2
+      Type: 3
+      MergePrefab: {fileID: 8527887436437427152, guid: 3ab669fa2d1794e44ae8a10794b929a4, type: 3}
+    - Level: 3
+      Type: 3
+      MergePrefab: {fileID: 8527887436437427152, guid: 784975b88b414ba4eb4a98fe7fb2d5b9, type: 3}
+    - Level: 4
+      Type: 3
+      MergePrefab: {fileID: 8527887436437427152, guid: 76cedc842cee06c4194e4f7f46f702fc, type: 3}
+    - Level: 5
+      Type: 3
+      MergePrefab: {fileID: 8527887436437427152, guid: f9759ac41d3eeff4ab7a042b5b1b00a4, type: 3}

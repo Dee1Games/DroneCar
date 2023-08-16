@@ -40,7 +40,7 @@ public class MergeItem : MonoBehaviour
     
     public void MoveToPlayerVehicle(float speed, Action onEnd = null)
     {
-        StartCoroutine(moveToPos(PlayerVehicle.Instance.transform.position, speed, onEnd));
+        StartCoroutine(moveToPos(GameManager.Instance.Player.transform.position, speed, onEnd));
     }
 
     public void SetCurrentCell(MergeCell cell)

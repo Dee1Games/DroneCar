@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.supersonic.wisdom": {
+      "version": "file:SupersonicWisdom",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.0.2"
+      }
+    },
     "com.unity.burst": {
       "version": "1.8.4",
       "depth": 1,
@@ -72,6 +80,13 @@
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

@@ -8,10 +8,10 @@ using UnityEngine;
 
 public class PlayerVehicle : MonoBehaviour
 {
-    public static PlayerVehicle Instance;
     
     public VehicleConfig Config;
     
+    [SerializeField] private VehicleID ID;
     [SerializeField] private float convertHeight = 2f;
     [SerializeField] private float rotationLerp = 2f;
     [SerializeField] private PlayerInput input;
@@ -19,8 +19,8 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private GameObject[] visuals;
     [SerializeField] private MMFeedbacks explodeFeedback;
     [SerializeField] private Animator anim;
-    [SerializeField] private List<UpgradeLevel> upgrades;
-
+    
+    private List<UpgradeLevel> upgrades;
     private float acceleration;
     private float reverseAcceleration;
     private float maxSpeed;
@@ -30,6 +30,9 @@ public class PlayerVehicle : MonoBehaviour
     private float jumpForce;
     private Dictionary<UpgradeType, Dictionary<int, List<UpgradeItem>>> upgradeItems;
     private Dictionary<UpgradeType, LevelIndicatorUI> levelsUI;
+    private GunExitPoint[] gunExitPoints;
+    private int lastGunIndex;
+    private float lastTimeShooting;
     
     public static System.Action OnExploded;
 
@@ -50,10 +53,6 @@ public class PlayerVehicle : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
         rigidbody = GetComponent<Rigidbody>();
 
         levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
@@ -66,6 +65,7 @@ public class PlayerVehicle : MonoBehaviour
 
     public void InitPlayMode()
     {
+        upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         anim.SetTrigger("reset");
         GetUpgradeValues();
         ShowUpgradeVisuals();
@@ -75,6 +75,7 @@ public class PlayerVehicle : MonoBehaviour
         CameraController.Instance.SetTarget(transform);
         SetVisualsVisibility(true);
         rigidbody.isKinematic = false;
+        rigidbody.useGravity = true;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
         input.Init();
@@ -83,10 +84,13 @@ public class PlayerVehicle : MonoBehaviour
         {
             levelUI.gameObject.SetActive(false);
         }
+
+        lastTimeShooting = Time.timeSinceLevelLoad;
     }
     
-    public void InitShowCaseMode()
+    public void InitShowCaseMode()   
     {
+        upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = false;
@@ -139,6 +143,8 @@ public class PlayerVehicle : MonoBehaviour
                 
             }
         }
+
+        gunExitPoints = GetComponentsInChildren<GunExitPoint>();
     }
 
     private void Update()
@@ -219,6 +225,47 @@ public class PlayerVehicle : MonoBehaviour
             transform.Rotate(Vector3.up, input.JoystickX*handeling);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
         }
+
+        if (CanShoot())
+        {
+            Shoot();
+            lastTimeShooting = Time.timeSinceLevelLoad;
+        }
+    }
+
+    private bool CanShoot()
+    {
+        if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / Config.FireRate) && gunExitPoints.Length!=0)
+        {
+            if (Config.AlwaysShoot)
+            {
+                return true;
+            }
+            else
+            {
+                if(Physics.Raycast(transform.position, transform.forward, 1000f, LayerMask.GetMask("Enemy")))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void Shoot()
+    {
+        ProjectileMoveScript projectile = ProjectilePoolManager.Instance.GetProjectile(upgrades.FirstOrDefault(U=>U.Type==UpgradeType.Gun).Level-1);
+        projectile.transform.position = gunExitPoints[lastGunIndex].transform.position;
+        projectile.transform.forward = gunExitPoints[lastGunIndex].transform.forward;
+        projectile.Init(gun);
+        lastGunIndex = (lastGunIndex + 1) % gunExitPoints.Length;
     }
 
     private void FixedUpdate()
@@ -272,9 +319,11 @@ public class PlayerVehicle : MonoBehaviour
         Monster monster = collision.gameObject.GetComponentInParent<Monster>();
         if (monster != null)
         {
-            monster.TakeDamage(bomb);
+            monster.TakeDamage(bomb, transform.position);
+            CameraController.Instance.TakeLongShot(transform.position, transform.forward);
             Explode();
         }
+        
     }
 
     private void ConvertToCar()
@@ -372,6 +421,7 @@ public class PlayerVehicle : MonoBehaviour
                 else
                 {
                     upgrades[i].Level = level;
+                    UserManager.Instance.SetUpgradeLevel(ID, type, level);
                     GetUpgradeValues();
                     return true;
                 }
@@ -403,12 +453,5 @@ public class PlayerVehicle : MonoBehaviour
             gun = Mathf.Max(gun, upgrade.GetGun(upgradeLevel.Level));
             jumpForce = Mathf.Max(jumpForce, upgrade.GetJumpForce(upgradeLevel.Level));
         }
-    }
-    
-    [System.Serializable]
-    class UpgradeLevel
-    {
-        public UpgradeType Type;
-        public int Level;
     }
 }

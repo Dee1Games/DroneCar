@@ -11,10 +11,9 @@ public class PlayerInput : MonoBehaviour
     [HideInInspector] public bool Hold;
     [HideInInspector] public bool SwipeUp;
 
-    public float JoystickX => joystick.Horizontal * sensivityJoystick;
-    public float JoystickY => joystick.Vertical * sensivityJoystick;
+    public float JoystickX => DynamicJoystick.Instance.Horizontal * sensivityJoystick;
+    public float JoystickY => DynamicJoystick.Instance.Vertical * sensivityJoystick;
 
-    [SerializeField] private DynamicJoystick joystick;
     [SerializeField] private float sensivityX = 1f;
     [SerializeField] private float sensivityY = 2f;
     [SerializeField] private float sensivityJoystick = 2f;
