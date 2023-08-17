@@ -9,5 +9,6 @@ public class CityColorScriptableObject : ScriptableObject
 
     public Color Color1;
     public Color Color2;
+    [ColorUsage(true, true)]
     public Color EmissiveColor;
 }
