@@ -49,7 +49,8 @@ public class Giant_Base : MonoBehaviour
     public void RagdollSetActive(bool phase)
     {
         animator.enabled = !phase;
-        giantAI.agent.enabled = !phase;
+        if (giantAI) giantAI.agent.enabled = !phase;
+
         if (fullBodyBipedIK) fullBodyBipedIK.enabled = !phase;
 
         foreach (var ragdollPart in ragdollParts)

@@ -22,6 +22,7 @@ public class Giant_AI : AI_Core
     private void Update()
     {
         animator.SetFloat(Speed, agent.velocity.magnitude);
-        agent.destination = target.position;
+
+        if (target) agent.destination = target.position;
     }
 }

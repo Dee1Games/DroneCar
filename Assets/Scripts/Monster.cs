@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    //[SerializeField] private Animator animator;
     [SerializeField] private List<WeakPoint> weakPoints;
     
     private float health;
@@ -47,7 +47,7 @@ public class Monster : MonoBehaviour
 
         if (health <= 0f)
         {
-            animator.SetTrigger("die");
+            //animator.SetTrigger("die");
         }
     }
 }

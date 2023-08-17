@@ -149,6 +149,7 @@ public class ProjectileMoveScript : MonoBehaviour {
                 Monster monster = co.gameObject.GetComponentInParent<Monster>();
                 if (monster != null && active)
                 {
+	                
 	                monster.TakeDamage(damage, transform.position);
                 }
 

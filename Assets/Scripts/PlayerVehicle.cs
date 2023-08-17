@@ -335,10 +335,21 @@ public class PlayerVehicle : MonoBehaviour
         Monster monster = collision.gameObject.GetComponentInParent<Monster>();
         if (monster != null)
         {
+            #region Added Limb
+
+            if (collision.transform.TryGetComponent(out Limb limb))
+            {
+                limb.Dismember();
+            }
+
+            #endregion
+
+            
             monster.TakeDamage(bomb, transform.position);
             CameraController.Instance.TakeLongShot(transform.position, transform.forward);
             Explode();
         }
+        
         
     }
 
