@@ -17,8 +17,10 @@ MonoBehaviour:
   MaxSpeed: 1
   Handeling: 2
   Bomb: 50
-  Gun: 0
+  Gun: 5
   JumpForce: 10
+  FireRate: 1.5
+  AlwaysShoot: 0
   upgrades:
   - Type: 0
     accelerationCurve:
@@ -428,7 +430,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    gunRemap: {x: 10, y: 200}
+    gunRemap: {x: 5, y: 50}
     jumpForceCurve:
       serializedVersion: 2
       m_Curve: []
@@ -438,7 +440,7 @@ MonoBehaviour:
     jumpForceRemap: {x: 0, y: 0}
   items:
   - Type: 0
-    Probability: 2
+    Probability: 0
     Items:
     - Level: 0
       Type: 0
@@ -456,7 +458,7 @@ MonoBehaviour:
       Type: 0
       MergePrefab: {fileID: 8527887436437427152, guid: 2da84d548dee110499e39ca05ba7c786, type: 3}
   - Type: 1
-    Probability: 1
+    Probability: 0
     Items:
     - Level: 0
       Type: 1
@@ -468,7 +470,7 @@ MonoBehaviour:
       Type: 1
       MergePrefab: {fileID: 8527887436437427152, guid: 3d1e97f363ee5f447ac8a5ac096b1c59, type: 3}
   - Type: 2
-    Probability: 2
+    Probability: 0
     Items:
     - Level: 0
       Type: 2

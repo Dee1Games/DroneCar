@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using SupersonicWisdomSDK;
 using TMPro;
 using UnityEngine;
 
@@ -11,15 +12,18 @@ public class InGameScreen : UIScreen
     [SerializeField] private HealthUI monsterHealthUI;
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
+    [SerializeField] private GameObject retryButton;
 
     private void OnEnable()
     {
         Monster.OnHealthChange += UpdateMonsterHealthBar;
+        PlayerVehicle.OnExploded += HideRetryButton;
     }
 
     private void OnDisable()
     {
         Monster.OnHealthChange -= UpdateMonsterHealthBar;
+        PlayerVehicle.OnExploded -= HideRetryButton;
     }
 
     public override void Init()
@@ -30,8 +34,9 @@ public class InGameScreen : UIScreen
     public override void Show()
     {
         base.Show();
-        coinsText.text = "$" + UserManager.Instance.Data.Coins.ToString();
-        levelText.text = "Level " + UserManager.Instance.Data.Level.ToString();
+        retryButton.SetActive(true);
+        coinsText.text = UserManager.Instance.Data.Coins.ToString();
+        levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
     }
     
     public override void Hide()
@@ -43,9 +48,30 @@ public class InGameScreen : UIScreen
     {
         GameManager.Instance.GoToUpgradeMode();
     }
+    
+    public void OnClick_Retry()
+    {
+        GameManager.Instance.Player.Deactivate();
+        Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
+        try
+        {
+            SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
+        } catch {}
+        GameManager.Instance.GoToPlayMode();
+        Debug.Log($"Run {UserManager.Instance.Data.Run} Started");
+        try
+        {
+            SupersonicWisdom.Api.NotifyLevelStarted(UserManager.Instance.Data.Run, null);
+        } catch {}
+    }
 
     private void UpdateMonsterHealthBar(float currentHealth, float maxHealth)
     {
         monsterHealthUI.UpdateHealthUI(currentHealth, maxHealth); 
+    }
+
+    private void HideRetryButton()
+    {
+        retryButton.SetActive(false);
     }
 }

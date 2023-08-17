@@ -33,9 +33,15 @@ public class UserManager : MonoBehaviour
         SaveManager.Instance.SaveUserData(Data);
     }
 
-    public void Nextlevel()
+    public void NextLevel()
     {
         Data.Level++;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+
+    public void NextRun()
+    {
+        Data.Run++;
         SaveManager.Instance.SaveUserData(Data);
     }
     

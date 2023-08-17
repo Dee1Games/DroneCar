@@ -37,6 +37,7 @@ public class MergeCell : MonoBehaviour
         Item.transform.parent = transform;
         Item.transform.localPosition = Vector3.zero;
         Item.SetCurrentCell(this);
+        UserManager.Instance.SetMergePlatformCell(Index, item.Type, item.Level);
     }
     
     public void RemoveItem()
@@ -48,5 +49,6 @@ public class MergeCell : MonoBehaviour
     {
         MergePlatform.Instance.ItemSelected(Item);
         RemoveItem();
+        UserManager.Instance.SetMergePlatformCell(Index, UpgradeType.Tire, -1);
     }
 }

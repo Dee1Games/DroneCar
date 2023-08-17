@@ -5,6 +5,7 @@ using System.Linq;
 public class UserData
 {
     public int Level;
+    public int Run;
     public VehicleID CurrentVehicleID;
     public List<VehicleID> OwnedVehicles;
     public List<VehicleUpgradeData> VehicleUpgrades;
@@ -15,6 +16,7 @@ public class UserData
     public UserData()
     {
         Level = 1;
+        Run = 1;
         CurrentVehicleID = VehicleID.Vehicle_01;
         OwnedVehicles = new List<VehicleID>() {VehicleID.Vehicle_01};
         VehicleUpgrades = new List<VehicleUpgradeData>()

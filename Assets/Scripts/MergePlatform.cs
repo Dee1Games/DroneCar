@@ -118,7 +118,6 @@ public class MergePlatform : MonoBehaviour
         MergeItem item = Instantiate(randomItem.MergePrefab, cell.transform).GetComponent<MergeItem>();
         item.Init(randomItem.Level, randomItem.Type);
         cell.SetItem(item);
-        UserManager.Instance.SetMergePlatformCell(cell.Index, item.Type, item.Level);
     }
 
     private MergeCell GetRandomEmptyCell()

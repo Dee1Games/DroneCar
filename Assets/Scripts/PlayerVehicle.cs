@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MoreMountains.Feedbacks;
+using SupersonicWisdomSDK;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -30,6 +31,9 @@ public class PlayerVehicle : MonoBehaviour
     private float jumpForce;
     private Dictionary<UpgradeType, Dictionary<int, List<UpgradeItem>>> upgradeItems;
     private Dictionary<UpgradeType, LevelIndicatorUI> levelsUI;
+    private GunExitPoint[] gunExitPoints;
+    private int lastGunIndex;
+    private float lastTimeShooting;
     
     public static System.Action OnExploded;
 
@@ -81,6 +85,8 @@ public class PlayerVehicle : MonoBehaviour
         {
             levelUI.gameObject.SetActive(false);
         }
+
+        lastTimeShooting = Time.timeSinceLevelLoad;
     }
     
     public void InitShowCaseMode()   
@@ -138,6 +144,8 @@ public class PlayerVehicle : MonoBehaviour
                 
             }
         }
+
+        gunExitPoints = GetComponentsInChildren<GunExitPoint>();
     }
 
     private void Update()
@@ -218,6 +226,47 @@ public class PlayerVehicle : MonoBehaviour
             transform.Rotate(Vector3.up, input.JoystickX*handeling);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
         }
+
+        if (CanShoot())
+        {
+            Shoot();
+            lastTimeShooting = Time.timeSinceLevelLoad;
+        }
+    }
+
+    private bool CanShoot()
+    {
+        if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / Config.FireRate) && gunExitPoints.Length!=0)
+        {
+            if (Config.AlwaysShoot)
+            {
+                return true;
+            }
+            else
+            {
+                if(Physics.Raycast(transform.position, transform.forward, 1000f, LayerMask.GetMask("Enemy")))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void Shoot()
+    {
+        ProjectileMoveScript projectile = ProjectilePoolManager.Instance.GetProjectile(upgrades.FirstOrDefault(U=>U.Type==UpgradeType.Gun).Level-1);
+        projectile.transform.position = gunExitPoints[lastGunIndex].transform.position;
+        projectile.transform.forward = gunExitPoints[lastGunIndex].transform.forward;
+        projectile.Init(gun);
+        lastGunIndex = (lastGunIndex + 1) % gunExitPoints.Length;
     }
 
     private void FixedUpdate()
@@ -239,11 +288,26 @@ public class PlayerVehicle : MonoBehaviour
         }
     }
 
-    private void Explode()
+    public void Explode()
     {
         if (!IsActive)
             return;
+        
+        explodeFeedback.PlayFeedbacks();
+        Deactivate();
+        Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
+        try
+        {
+            SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
+        }
+        catch
+        {
+        }
+        UserManager.Instance.NextRun();
+    }
 
+    public void Deactivate()
+    {
         IsActive = false;
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
@@ -271,10 +335,21 @@ public class PlayerVehicle : MonoBehaviour
         Monster monster = collision.gameObject.GetComponentInParent<Monster>();
         if (monster != null)
         {
+            #region Added Limb
+
+            if (collision.transform.TryGetComponent(out Limb limb))
+            {
+                limb.Dismember();
+            }
+
+            #endregion
+
+            
             monster.TakeDamage(bomb, transform.position);
             CameraController.Instance.TakeLongShot(transform.position, transform.forward);
             Explode();
         }
+        
         
     }
 
