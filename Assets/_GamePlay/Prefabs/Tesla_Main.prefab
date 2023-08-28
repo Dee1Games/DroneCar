@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519840663236343926}
   - component: {fileID: 2858202176092893563}
+  - component: {fileID: 4197165643066995513}
   m_Layer: 0
   m_Name: Tesla_Main
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   fullBodyBipedIK: {fileID: 0}
   ragdollParts: []
-  giantAI: {fileID: 0}
+  giantAI: {fileID: 4197165643066995513}
   limbs:
   - {fileID: 1512489428685877023}
   - {fileID: 2565805103444221843}
@@ -56,6 +57,20 @@ MonoBehaviour:
   - {fileID: 64561835642396268}
   - {fileID: 8703899031480314635}
   particleSystem: {fileID: 0}
+--- !u!114 &4197165643066995513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6059983145876167463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a75c03f726e089f4bb6eba2beb3d3fb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardiness: 0
+  target: {fileID: 0}
 --- !u!1001 &1269469587827310910
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -393,7 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  giantBase: {fileID: 0}
+  giantCore: {fileID: 0}
   health: 100
   maxHealth: 100
   ragdollActivator: 0
@@ -679,7 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  giantBase: {fileID: 0}
+  giantCore: {fileID: 0}
   health: 100
   maxHealth: 100
   ragdollActivator: 0
@@ -830,7 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  giantBase: {fileID: 0}
+  giantCore: {fileID: 0}
   health: 100
   maxHealth: 100
   ragdollActivator: 0
@@ -1504,7 +1519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  giantBase: {fileID: 0}
+  giantCore: {fileID: 0}
   health: 100
   maxHealth: 100
   ragdollActivator: 0
@@ -2047,7 +2062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  giantBase: {fileID: 0}
+  giantCore: {fileID: 0}
   health: 100
   maxHealth: 100
   ragdollActivator: 0

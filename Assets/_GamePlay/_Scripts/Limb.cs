@@ -11,7 +11,7 @@ public class Limb : MonoBehaviour
     private Collider _collider;
     private Joint _joint;
     [HideInInspector]
-    public Giant_Base giantBase;
+    public Giant_Core giantCore;
 
     [Header("General")]
     public float health = 100f;
@@ -93,7 +93,7 @@ public class Limb : MonoBehaviour
         
         if (ragdollActivator)
         {
-            giantBase.RagdollSetActive(true);
+            giantCore.RagdollSetActive(true);
         }
     }
 }

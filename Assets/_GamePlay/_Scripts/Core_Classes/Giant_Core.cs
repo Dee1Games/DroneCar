@@ -5,7 +5,7 @@ using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Giant_Base : MonoBehaviour
+public class Giant_Core : MonoBehaviour
 {
     public Animator animator;
     public FullBodyBipedIK fullBodyBipedIK;
@@ -42,14 +42,14 @@ public class Giant_Base : MonoBehaviour
         limbs = GetComponentsInChildren<Limb>();
         foreach (var limb in limbs)
         {
-            limb.giantBase = this;
+            limb.giantCore = this;
         }
     }
 
     public void RagdollSetActive(bool phase)
     {
         animator.enabled = !phase;
-        if (giantAI) giantAI.agent.enabled = !phase;
+        if (giantAI) giantAI.Agent.enabled = !phase;
 
         if (fullBodyBipedIK) fullBodyBipedIK.enabled = !phase;
 
