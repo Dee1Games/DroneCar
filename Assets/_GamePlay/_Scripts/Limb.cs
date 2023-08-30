@@ -89,7 +89,10 @@ public class Limb : MonoBehaviour
         }
 
         if (particle) Instantiate(particle, transform.position, transform.rotation, transform.root);
-        if (member) Instantiate(member, transform.position, transform.rotation, transform.root);
+        if (member)
+        {
+            Instantiate(member, transform.position, transform.rotation, transform.root);
+        }
         
         if (ragdollActivator)
         {
