@@ -5,18 +5,16 @@ using UnityEngine.AI;
 
 public class Giant_AI : AI_Core
 {
-    private Animator animator;
-    public NavMeshAgent agent;
 
     public Transform target;
     
     // Performance
     private static readonly int Speed = Animator.StringToHash("speed");
 
-    private void Start()
+    protected override void Start()
     {
-        animator = GetComponentInChildren<Animator>();
-        agent = GetComponentInChildren<NavMeshAgent>();
+        base.Start();
+        
     }
 
     private void Update()
