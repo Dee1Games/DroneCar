@@ -1,0 +1,56 @@
+﻿namespace RaycastPro.Bullets
+{
+    using UnityEngine;
+#if UNITY_EDITOR
+    using UnityEditor;
+#endif
+
+    [AddComponentMenu("RaycastPro/Bullets/" + nameof(InstantBullet))]
+    public class InstantBullet : Bullet
+    {
+        public override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
+
+        protected override void OnCast()
+        {
+            if (planarSensitive)
+            {
+                var clone = raySource.LastClone;
+                transform.position = clone.TipTarget;
+                
+                // Hit Direction cuz don't want to place on hit Normal
+                transform.rotation =
+                    Quaternion.LookRotation(clone.HitDirection, transform.up);
+                if (raySource.hit.transform) InvokeDamageEvent(raySource.hit.transform);
+            }
+            else
+            {
+                transform.position = raySource.TipTarget;
+                transform.rotation = Quaternion.LookRotation(raySource.HitDirection, transform.up);
+                if (raySource.hit.transform) InvokeDamageEvent(raySource.hit.transform);
+            }
+        }
+
+#if UNITY_EDITOR
+#pragma warning disable CS0414
+        private static string Info = "Instant shots to Target Tip of sensor ray." + HDependent;
+#pragma warning restore CS0414
+
+
+        internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
+            bool hasEvents = true,
+            bool hasInfo = true)
+        {
+            if (hasMain)
+            {       
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(planarSensitive)),
+                    CPlanarSensitive.ToContent(TPlanarSensitive));
+            }
+            if (hasGeneral) GeneralField(_so);
+
+            if (hasEvents) EventField(_so);
+
+            if (hasInfo) InformationField();
+        }
+#endif
+    }
+}

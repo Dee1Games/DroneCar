@@ -10,11 +10,40 @@ public class Giant_Core : MonoBehaviour
     public Animator animator;
     public FullBodyBipedIK fullBodyBipedIK;
     
+    public AI_Core aiCore;
+
     public List<Rigidbody> ragdollParts;
-    public Giant_AI giantAI;
-
     public Limb[] limbs;
+    [Header("Ragdoll Setup")]
+    public float drag = 3;
+    public float angularDrag = 3;
+    
+    private void Start()
+    {
+        aiCore = GetComponent<AI_Core>();
+        animator = GetComponentInChildren<Animator>();
+        fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
+        // Get All Ragdolls via ignore self;
+        ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
 
+        limbs = GetComponentsInChildren<Limb>();
+        foreach (var limb in limbs)
+        {
+            limb.giantCore = this;
+        }
+    }
+
+
+    [Button("Set Ragdoll")]
+    private void SetRagdoll()
+    {
+        ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
+        foreach (var ragdollPart in ragdollParts)
+        {
+            ragdollPart.drag = drag;
+            ragdollPart.angularDrag = angularDrag;
+        }
+    }
     [Button("Find Limbs")]
     private void FindLimbs()
     {
@@ -32,24 +61,10 @@ public class Giant_Core : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        animator = GetComponentInChildren<Animator>();
-        fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
-        // Get All Ragdolls via ignore self;
-        ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
-
-        limbs = GetComponentsInChildren<Limb>();
-        foreach (var limb in limbs)
-        {
-            limb.giantCore = this;
-        }
-    }
 
     public void RagdollSetActive(bool phase)
     {
-        animator.enabled = !phase;
-        if (giantAI) giantAI.Agent.enabled = !phase;
+        aiCore.Active(!phase);
 
         if (fullBodyBipedIK) fullBodyBipedIK.enabled = !phase;
 

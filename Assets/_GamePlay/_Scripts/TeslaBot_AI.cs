@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using RaycastPro.Casters;
+using RaycastPro.RaySensors;
 using UnityEngine;
 
 public class TeslaBot_AI : AI_Core
@@ -8,13 +10,29 @@ public class TeslaBot_AI : AI_Core
     /// Main Object for Follow
     /// </summary>
     public Transform carTransform;
-    protected override void Start()
+
+    [Header("Guns")]
+    public AdvanceCaster TeslaGun;
+    public TargetRay laserGun;
+
+    public override void Active(bool phase)
     {
-        base.Start();
-        
+        base.Active(phase);
+        TeslaGun.enabled = phase;
     }
-    void Update()
+    protected override void OnPlayerFound(PlayerVehicle vehicle)
     {
-        
+        base.OnPlayerFound(vehicle);
+        Debug.Log("On Found");
+        TeslaGun.trackTarget = vehicle.transform;
+        laserGun.target = vehicle.transform;
+        TeslaGun.enabled = true;
+    }
+    protected override void OnPlayerLost(PlayerVehicle vehicle)
+    {
+        base.OnPlayerLost(vehicle);
+        TeslaGun.trackTarget = null;
+        laserGun.target = null;
+        TeslaGun.enabled = false;
     }
 }
