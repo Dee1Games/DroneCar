@@ -23,16 +23,19 @@ public class TeslaBot_AI : AI_Core
     protected override void OnPlayerFound(PlayerVehicle vehicle)
     {
         base.OnPlayerFound(vehicle);
-        Debug.Log("On Found");
         TeslaGun.trackTarget = vehicle.transform;
         laserGun.target = vehicle.transform;
+        laserGun.gameObject.SetActive(true);
         TeslaGun.enabled = true;
     }
     protected override void OnPlayerLost(PlayerVehicle vehicle)
     {
         base.OnPlayerLost(vehicle);
         TeslaGun.trackTarget = null;
+        laserGun.gameObject.SetActive(false);
         laserGun.target = null;
         TeslaGun.enabled = false;
+        playerVehicle = null;
+        sightDetector.DetectedColliders.Clear();
     }
 }

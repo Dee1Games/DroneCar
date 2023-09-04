@@ -119,6 +119,8 @@
         }
         protected void PassColliderGate(Collider c)
         {
+            if (!c) return;
+
             PanelGate += () => DetectorInfoField(c.transform, c.bounds.center, false);
             GizmoGate += () =>
             {

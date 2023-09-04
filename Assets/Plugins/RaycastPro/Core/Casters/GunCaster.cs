@@ -128,6 +128,7 @@
             _bullet.enabled = true;
             _bullet.position = 0;
             _bullet.Life = 0;
+            BulletSetup(_bullet);
         }
 
         private Vector3 basePoint;

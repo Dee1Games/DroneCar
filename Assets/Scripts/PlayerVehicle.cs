@@ -293,6 +293,15 @@ public class PlayerVehicle : MonoBehaviour
         if (!IsActive)
             return;
         
+        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
+        foreach (var aiCore in FindObjectsOfType<AI_Core>())
+        {
+            aiCore.OnEnd(this);
+        }
+        foreach (var colliders in GetComponentsInChildren<Collider>())
+        {
+            colliders.enabled = false;
+        }
         explodeFeedback.PlayFeedbacks();
         Deactivate();
         Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
@@ -346,7 +355,7 @@ public class PlayerVehicle : MonoBehaviour
 
             
             monster.TakeDamage(bomb, transform.position);
-            CameraController.Instance.TakeLongShot(transform.position, transform.forward);
+            // Camera Take a long shot move on Explode, Cuz of calling it in bullet.
             Explode();
         }
         
