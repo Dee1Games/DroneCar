@@ -79,7 +79,10 @@
             foreach (var _dHit in DetectedHits) DetectedColliders.Add(_dHit.collider);
             
 #if UNITY_EDITOR
-            foreach (var c in DetectedColliders) PassColliderGate(c);
+            foreach (var c in DetectedColliders)
+            {
+                if (c) PassColliderGate(c);
+            }
 #endif
             if (onHit != null) foreach (var _member in DetectedHits) onHit.Invoke(_member);
             if (onNewHit != null) foreach (var _member in DetectedHits.Except(PreviousHits)) onNewHit.Invoke(_member);

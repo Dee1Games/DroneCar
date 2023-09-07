@@ -41,7 +41,7 @@ namespace RaycastPro.Bullets
                 // Tip Direction
                 transform.rotation = Quaternion.LookRotation(raySource.TipDirection, transform.up);
             }
-
+            
             targetPoint = target.position;
             currentForce = force;
             _t = transform;
@@ -52,33 +52,46 @@ namespace RaycastPro.Bullets
         private Vector3 _dir;
         private Quaternion look;
         public override void RuntimeUpdate()
-        {
+        {              
+            _dt = GetModeDeltaTime(timeMode);
+            UpdateLifeProcess(_dt);
+            
             targetPoint = target ? target.position + trackOffset : _t.position;
             _dis = Vector3.Distance(_t.position, targetPoint);
-            if (currentForce <= .1f || _dis <= distanceThreshold) OnEnd();
-            else
+            if (currentForce <= .1f)
             {
-
-                _dt = GetModeDeltaTime(timeMode);
-                _dir = targetPoint - _t.position;
-                
-                switch (trackType)
-                {
-                    case TrackType.PositionLerp:
-                        var lerp = Vector3.Lerp(_t.position, targetPoint, _dt * speed);
-                        _t.position = lerp;
-                        break;
-                    case TrackType.RotationLerp:
-                        look = Quaternion.Lerp(look, Quaternion.LookRotation(_dir.normalized, transform.up), 1 - Mathf.Exp(-turnSharpness * _dt));
-                        currentForce = Mathf.Lerp(currentForce, 0, 1 - Mathf.Exp(-drag * _dt));
-                        _t.position += look * transform.forward * (currentForce * _dt);
-                        break;
-                }
-
-                if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
-                
-                CollisionRun(_dir, _dt);
+                OnEnd();
+                return;
             }
+            if (target && _dis <= distanceThreshold)
+            {
+                OnEnd();
+                return;
+            }
+            _dir = targetPoint - _t.position;
+            switch (trackType)
+            {
+                case TrackType.PositionLerp:
+                    var lerp = Vector3.Lerp(_t.position, targetPoint, _dt * speed);
+                    _t.position = lerp;
+                    break;
+                case TrackType.RotationLerp:
+                    _t.rotation = Quaternion.Lerp(_t.rotation, Quaternion.LookRotation(_dir.normalized, transform.up), 1 - Mathf.Exp(-turnSharpness * _dt));
+                    currentForce = Mathf.Lerp(currentForce, 0, 1 - Mathf.Exp(-drag * _dt));
+
+                    var nextPoint = transform.forward * (currentForce * _dt);
+                    _t.position += nextPoint;
+                    //_t.rotation = Quaternion.Lerp(_t.rotation, look, 1 - Mathf.Exp(-turnSharpness * _dt));
+                    break;
+            }
+
+            //if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
+            CollisionRun(_dir, _dt);
+        }
+
+        public void UnParent(Transform transform)
+        {
+            transform.parent = null;
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414

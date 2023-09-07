@@ -156,8 +156,10 @@
         /// </summary>
         /// <param name="target"></param>
         protected void InvokeDamageEvent(Transform target)
-        { if (callMethod == "") return;
-
+        {
+            if (!target || callMethod == "") return;
+            
+            Debug.Log($"<color=#64FF4B>\"{callMethod}\"</color> Try to call on <color=#33A3FF>{target.name}</color>.");
             if (messageUpward)
             {
                 if (this is Bullet _blt)    
@@ -169,7 +171,6 @@
                     target.SendMessageUpwards(callMethod, this as Bullet2D, SendMessageOptions.DontRequireReceiver);
                 }
             }
-            
             else
             {
                 if (this is Bullet _blt)

@@ -20,6 +20,7 @@ public class UserManager : MonoBehaviour
     public void Init()
     {
         Data = SaveManager.Instance.LoadUserData();
+        
         if (Data == null)
         {
             Data = new UserData();

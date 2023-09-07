@@ -22,8 +22,12 @@ public abstract class AI_Core : MonoBehaviour
     public NavMeshAgent Agent => agent;
     
     protected PlayerVehicle playerVehicle;
+    
+
     protected virtual void Start()
     {
+
+        
         if (!animator)
         {
             animator = GetComponentInChildren<Animator>();
@@ -45,38 +49,43 @@ public abstract class AI_Core : MonoBehaviour
 
         sightDetector.onNewCollider.AddListener(col =>
         {
-            col.TryGetComponent(out playerVehicle);
-            OnPlayerFound(playerVehicle);
-            Debug.Log($"<color=#83FF5F>{playerVehicle}</color> founded.");
+            if (col.TryGetComponent(out playerVehicle))
+            {
+                OnPlayerFound(playerVehicle);
+            }
         });
         sightDetector.onLostCollider.AddListener(col =>
         {
-            Debug.Log($"<color=#83FF5F>{playerVehicle}</color> Lost.");
             OnPlayerLost(playerVehicle);
-            playerVehicle = null;
         });
     }
 
+    public void OnEnd(PlayerVehicle vehicle)
+    {
+        OnPlayerLost(vehicle);
+    }
     public virtual void Active(bool phase)
     {
         animator.enabled = phase;
         sightDetector.enabled = phase;
         lookAtIK.enabled = phase;
     }
-    protected void DoLook(float value, float duration)
-    {
-        DOVirtual.Float(lookAtIK.solver.GetIKPositionWeight()
-            ,value, duration, f => lookAtIK.solver.SetLookAtWeight(f));
-    }
     private float lookRateDelay = 1f;
     protected virtual void OnPlayerFound(PlayerVehicle vehicle)
     {
+        Debug.Log($"<color=#83FF5F>{vehicle}</color> founded.");
+
         lookAtIK.solver.target = vehicle.transform;
-        DoLook(1, lookRateDelay);
+        DOVirtual.Float(lookAtIK.solver.IKPositionWeight
+            ,1, lookRateDelay, f => lookAtIK.solver.IKPositionWeight = f);
     }
     protected virtual void OnPlayerLost(PlayerVehicle vehicle)
     {
-        lookAtIK.solver.target = null;
-        DoLook(0, lookRateDelay);
+        Debug.Log($"<color=#83FF5F>{vehicle}</color> Lost.");
+        DOVirtual.Float(lookAtIK.solver.IKPositionWeight
+            ,0, lookRateDelay, f => lookAtIK.solver.IKPositionWeight = f).OnComplete(() =>
+        {
+            lookAtIK.solver.target = null;
+        });
     }
 }
