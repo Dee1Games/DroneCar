@@ -63,7 +63,7 @@ namespace RaycastPro.Editor
         internal static bool LoadWhenOpen = false;
         private Texture2D headerTexture;
         private Vector2 scrollPos;
-        internal static string ResourcePath => EditorPrefs.GetString(CResourcePath, "Assets/RaycastPro/Resources");
+        internal static string ResourcePath =>  "Assets/Plugins/RaycastPro/Resources";
 
         private void OnEnable()
         {
