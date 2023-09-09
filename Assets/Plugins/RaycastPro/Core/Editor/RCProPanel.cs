@@ -63,7 +63,8 @@ namespace RaycastPro.Editor
         internal static bool LoadWhenOpen = false;
         private Texture2D headerTexture;
         private Vector2 scrollPos;
-        internal static string ResourcePath => EditorPrefs.GetString(CResourcePath, "Assets/RaycastPro/Resources");
+        /// DONT TOUCH ME ALERT :) This is not bug, You can browse the resource folder externally from panel :).
+        internal static string ResourcePath => EditorPrefs.GetString(CResourcePath, "Assets/Plugins/RaycastPro/Resources");
 
         private void OnEnable()
         {
