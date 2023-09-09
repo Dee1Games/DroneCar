@@ -39,8 +39,51 @@
         }
 
         public int DetectIndex = -1;
+        private Vector2 _dir;
+        protected int PathCast(out RaycastHit2D hit, float radius = 0)
+        {
+            hit = new RaycastHit2D();
+            var minD = MinDepth;
+            var maxD = MaxDepth;
+            if (radius == 0)
+            {
+                for (var i = 0; i < PathPoints.Count - 1; i++)
+                {
+                    hit = Physics2D.Linecast(PathPoints[i], PathPoints[i + 1], detectLayer.value, minD, maxD);
+                    if (!hit.transform) continue;
+                    return i;
+                }
+            }
+            else
+            {
+                for (var i = 0; i < PathPoints.Count - 1; i++)
+                {
+                    _dir = PathPoints[i + 1] - PathPoints[i];
+                    hit = Physics2D.CircleCast(PathPoints[i], radius, _dir, _dir.magnitude, detectLayer.value, minD, maxD);
+                    if (!hit.transform) continue;
+                    return i;
+                }
+            }
+            return -1;
+        }
+        protected abstract void UpdatePath();
         
 #if UNITY_EDITOR
+
+        protected void FullPathDraw(float radius = 0f, bool cap = false)
+        {
+            if (IsManuelMode)
+            {
+                UpdatePath();
+                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, drawDisc: true,
+                    coneCap: true);
+            }
+            else
+            {
+                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, drawDisc: true,
+                    coneCap: true);
+            }
+        }
         protected void PathRayGeneralField(SerializedObject _so)
         {
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(pathCast)));

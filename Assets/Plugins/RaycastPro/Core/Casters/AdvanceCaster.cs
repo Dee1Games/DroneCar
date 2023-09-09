@@ -35,22 +35,22 @@ namespace RaycastPro.Casters
             switch (castType)
             {
                 case CastType.Together:
-                    BulletCast(_index, raySensors);
+                    BulletCast(_index, raySensors, bullet => onCast?.Invoke(bullet));
                     break;
                 case CastType.Sequence:
-                    if (BulletCast(_index, raySensors[currentIndex]))
+                    if (BulletCast(_index, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.Random:
-                    if (BulletCast(_index, raySensors[new Random().Next(0, raySensors.Length)]))
+                    if (BulletCast(_index, raySensors[new Random().Next(0, raySensors.Length)], bullet => onCast?.Invoke(bullet)))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.PingPong:
-                    if (BulletCast(_index, raySensors[currentIndex]))
+                    if (BulletCast(_index, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
                     {
                         currentIndex = pingPongPhase ? --currentIndex : ++currentIndex;
                         if (currentIndex == raySensors.Length - 1 || currentIndex == 0) pingPongPhase = !pingPongPhase;
@@ -62,7 +62,7 @@ namespace RaycastPro.Casters
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "A bullet launcher with a source from multi raySensors." + HAccurate + HDependent;
+        private static string Info = "Bullet caster, with the ability to adjust Ammo, detect all types of bullets automatically and RaySensors different shooting modes." + HAccurate + HDependent;
 #pragma warning restore CS0414
 
         private Vector3 tip, position;

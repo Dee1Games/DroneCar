@@ -11,7 +11,7 @@ namespace RaycastPro.RaySensors2D
     [AddComponentMenu("RaycastPro/Rey Sensors/" + nameof(BoxRay2D))]
     public sealed class BoxRay2D : RaySensor2D
     {
-        public Vector2 size = new Vector2(.4f, .4f);
+        public Vector2 size = new Vector2(.1f, .4f);
 
         private float angle;
         protected override void OnCast()
@@ -55,7 +55,7 @@ namespace RaycastPro.RaySensors2D
             if (hasInfo) HitInformationField();
         }
 #endif
-        public override Vector3 Tip => transform.position + Direction.ToDepth() + Direction.ToDepth().normalized * size.x / 2;
+        public override Vector3 Tip => transform.position + Direction.ToDepth();
         public override float RayLength => direction.magnitude + size.x;
         public override Vector3 BasePoint => transform.position;
     }

@@ -318,13 +318,13 @@
             }
             else
             {
-                _st.position = Tip + TipDirection * stampOffset;
+                _st.position = Tip + (HitDirection * stampOffset).ToDepth();
                 if (!syncStamp.syncAxis) return;
                 switch (syncStamp.axis)
                 {
-                    case Axis.X: _st.right = TipDirection * (syncStamp.flipAxis ? 1 : -1); break;
-                    case Axis.Z: _st.forward = TipDirection * (syncStamp.flipAxis ? 1 : -1); break;
-                    case Axis.Y: _st.up = TipDirection * (syncStamp.flipAxis ? 1 : -1); break;
+                    case Axis.X: _st.right = HitDirection * (syncStamp.flipAxis ? 1 : -1); break;
+                    case Axis.Z: _st.forward = HitDirection * (syncStamp.flipAxis ? 1 : -1); break;
+                    case Axis.Y: _st.up = HitDirection * (syncStamp.flipAxis ? 1 : -1); break;
                 }
             }
         }
@@ -412,7 +412,14 @@
                 }
             }
         }
-
+        internal override void SafeRemove()
+        {
+            if (cloneRaySensor)
+            {
+                cloneRaySensor.SafeRemove();
+            }
+            Destroy(gameObject);
+        }
         public static void CloneDestroy(RaySensor2D sensor)
         {
             if (!(sensor && sensor.gameObject)) return;
@@ -521,15 +528,21 @@
         protected override void EditorUpdate()
         {
             if (!RCProPanel.realtimeEditor) return;
-            if (!IsPlaying) GizmoGate = null;
-
-            if (IsSceneView && !IsPlaying) SolvedQueriesCast();
-            
+            if (!IsPlaying)
+            {
+                GizmoGate = null;
+                if (IsSceneView)
+                {
+                    SolvedQueriesCast();
+                }
+            }
             GizmoGate?.Invoke();
-            
-            UpdateStamp();
-            UpdateLiner();
-            
+            if (!IsManuelMode)
+            {
+                UpdateStamp();
+                UpdateLiner();
+            }
+
             if (cloneRaySensor && cloneRaySensor.gameObject) cloneRaySensor.OnGizmos();
         }
 

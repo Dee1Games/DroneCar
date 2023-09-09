@@ -23,17 +23,22 @@
             get => height;
             set => height = Mathf.Max(0, value);
         }
+
+        private Vector3 _tDir;
+        private Transform _t;
         protected override void OnCast()
         {
+            _t = transform;
+            _tDir = ScaledDirection;
             if (height > 0)
             {
-                var up = transform.up * height/2;
-                Physics.CapsuleCast(transform.position+up, transform.position-up, radius, Direction, out hit, direction.magnitude,
+                var up = _t.up * (height * _t.lossyScale.y)/2 ;
+                Physics.CapsuleCast(_t.position+up, _t.position-up, radius*Scale, _tDir, out hit, _tDir.magnitude,
                     detectLayer.value, triggerInteraction);
             }
             else
             {
-                Physics.SphereCast(transform.position, radius, Direction, out hit, direction.magnitude,
+                Physics.SphereCast(_t.position, radius*Scale, _tDir, out hit, _tDir.magnitude,
                     detectLayer.value, triggerInteraction);
             }
         }
@@ -76,15 +81,10 @@
         internal override void OnGizmos()
         {
             EditorUpdate();
-
             var position = transform.position;
-
             Handles.color = Performed ? DetectColor : DefaultColor;
-            
-            DrawCapsuleLine(position, position + Direction, radius, height, _t: transform);
-            
+            DrawCapsuleLine(position, position + ScaledDirection, radius*Scale, height*transform.lossyScale.y, _t: transform);
             Handles.color = DetectColor;
-
             if (Performed) DrawNormal(Hit);
         }
 

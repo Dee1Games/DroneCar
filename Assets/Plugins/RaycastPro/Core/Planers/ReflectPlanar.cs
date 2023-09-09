@@ -8,10 +8,23 @@ namespace RaycastPro.Planers
     [AddComponentMenu("RaycastPro/Planers/" + nameof(ReflectPlanar))]
     public sealed class ReflectPlanar : Planar
     {
+        public override void GetForward(RaySensor raySensor, out Vector3 forward)
+        {
+            switch (baseDirection)
+            {
+                case DirectionOutput.NegativeHitNormal: forward = -raySensor.hit.normal; return;
+                case DirectionOutput.HitDirection: forward = raySensor.HitDirection; return;
+                case DirectionOutput.SensorLocal: forward = raySensor.LocalDirection.normalized; return;
+            }
+            forward = transform.forward;
+        }
+        
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "The reflection of the Planar Sensitive Ray from the Hit Point.";
+        private static string Info = "The reflection of the Planar Sensitive Ray from the Hit Point."+HDependent+HAccurate;
 #pragma warning restore CS0414
+
+
         internal override void OnGizmos() => DrawPlanar();
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
@@ -22,28 +35,19 @@ namespace RaycastPro.Planers
             if (hasEvents) EventField(_so);
         }
 #endif
-
-        internal override TransitionData[] GetTransitionData(RaycastHit hit, Vector3 direction)
-        {
-            var data = new TransitionData
-            {
-                position = hit.point,
-                rotation = Quaternion.LookRotation(Vector3.Reflect(direction, hit.normal), transform.up)
-            };
-
-            return new TransitionData[] {data};
-        }
+        
         private Vector3 forward, look;
         private RaySensor clone;
+
         internal override void OnReceiveRay(RaySensor sensor)
         {
-            var clone = sensor.cloneRaySensor;
+            clone = sensor.cloneRaySensor;
             if (!clone) return;
             if (clone.liner) clone.liner.enabled = sensor.liner.enabled;
             
-            forward = -GetForward(sensor, transform.forward);
+            GetForward(sensor, out forward);
             clone.transform.forward = Vector3.Reflect(sensor.TipDirection, forward).normalized;
-            clone.transform.position = sensor.hit.point - GetForward(sensor, transform.forward) * offset;
+            clone.transform.position = sensor.hit.point - forward * offset;
             ApplyLengthControl(sensor);
         }
     }

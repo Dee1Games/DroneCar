@@ -1,9 +1,10 @@
-﻿namespace RaycastPro.Detectors
+﻿
+namespace RaycastPro.Detectors
 {
     using System;
     using UnityEngine;
     using System.Collections.Generic;
-
+    using System.Linq;
 
 #if UNITY_EDITOR
     using UnityEditor;
@@ -11,10 +12,20 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(TargetDetector))]
-    public sealed class TargetDetector : Detector, IRadius
+    public sealed class TargetDetector : Detector, IRadius, IPulse
     {
         public Transform[] targets = Array.Empty<Transform>();
-        public float Value => (float) BlockedTargets.Count / targets.Length;
+        
+        private float value;
+
+        /// <summary>
+        /// Use the Calculated value in process time
+        /// </summary>
+        public float Value => value;
+        /// <summary>
+        /// calculate Value when call it
+        /// </summary>
+        public float DirectValue => (float) BlockedTargets.Count / targets.Length;
         public override bool Performed
         {
             get => BlockedTargets.Count < targets.Length;
@@ -38,7 +49,7 @@
                 return average / count;
             }
         }
-        [SerializeField] public float radius = .4f;
+        [SerializeField] public float radius = 0f;
         public float Radius
         {
             get => radius;
@@ -51,11 +62,17 @@
         
         private Vector3 _dir;
 
-        public bool CastFrom(Vector3 position)
+        public float CastFrom(ColliderDetector cDetector)
+        {
+            TDP = cDetector.transform.position;
+            CoreUpdate();
+            return value;
+        }
+        public float CastFrom(Vector3 position)
         {
             TDP = position;
             CoreUpdate();
-            return Performed;
+            return value;
         }
         private void CoreUpdate()
         {
@@ -96,7 +113,18 @@
                 if (pass) BlockedTargets.Add(_t);
             }
 
-            CallEvents(BlockedTargets, PreviousBlockedTargets, onDetectTransform, onBeginDetected, onBeginBlocked);
+            // Setup Value
+            value = DirectValue;
+
+            if (onDetectTransform != null) foreach (var _member in BlockedTargets) onDetectTransform.Invoke(_member);
+            if (onBeginDetected != null)
+            {
+                foreach (var _member in BlockedTargets.Except(PreviousBlockedTargets)) onBeginDetected.Invoke(_member);
+            }
+            if (onBeginBlocked != null)
+            {
+                foreach (var _member in PreviousBlockedTargets.Except(BlockedTargets)) onBeginBlocked.Invoke(_member);
+            }
         }
         protected override void OnCast()
         {
@@ -113,12 +141,10 @@
         internal override void OnGizmos() 
         {
             EditorCast();
-            
             if (IsLabel)
             {
                 Handles.Label(Center,
-                    $"<color=#60FFF5>{name}</color> TD: <color=#3EFF3A>{Value:P}</color>",
-                    RCProEditor.LabelStyle);
+                    $"<color=#60FFF5>{name}</color> TD: <color=#3EFF3A>{value:P}</color>", RCProEditor.LabelStyle);
             }
         }
         
@@ -145,15 +171,17 @@
             if (hasEvents)
             {
                 EventField(_so);
-                if (EventFoldout) RCProEditor.EventField(_so, new[] {nameof(onDetectTransform), nameof(onBeginDetected), nameof(onBeginBlocked)});
+                if (EventFoldout) RCProEditor.EventField(_so,events);
             }
 
             if (hasInfo)
             {
                 InformationField(PanelGate);
-                ProgressField(Value, "Detected");
+                ProgressField(DirectValue, "Detected");
             }
         }
+
+        private static readonly string[] events = new[] {nameof(onDetectTransform), nameof(onBeginDetected), nameof(onBeginBlocked)};
         protected override void DrawDetectorGuide(Vector3 point) { }
 #endif
         public List<Transform> BlockedTargets { get; set; } = new List<Transform>();

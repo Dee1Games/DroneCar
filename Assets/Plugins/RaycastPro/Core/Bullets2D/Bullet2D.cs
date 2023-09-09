@@ -1,9 +1,5 @@
-﻿
-using RaycastPro.Planers2D;
-
-namespace RaycastPro.Bullets2D
+﻿namespace RaycastPro.Bullets2D
 {
-    using UnityEngine;
     using RaySensors2D;
 
 #if UNITY_EDITOR
@@ -14,97 +10,67 @@ namespace RaycastPro.Bullets2D
     public abstract class Bullet2D : BaseBullet
     {
         public BaseCaster caster;
-        
         public RaySensor2D raySource;
+        public RaySensor2D collisionRay;
         public float Z => transform.position.z;
-
-        // TEMP DISABLE DEPTH CUZ OF NO FEATURE SUPPORTING FOR NOW
-        
-        // public float minDepth = .5f;
-        // public float maxDepth = -.5f;
-        //
-        // public float MinDepth => transform.position.z + minDepth;
-        // public float MaxDepth => transform.position.z + maxDepth;
         internal override void Cast<R>(BaseCaster _caster, R raySensor)
         {
             caster = _caster;
             
-            if (raySensor is RaySensor2D _r) raySource = _r;
+            raySource = raySensor as RaySensor2D;
             
-            onCast?.Invoke(caster);
-
+            transform.forward = raySource.LocalDirection;
+            transform.position = raySource.BasePoint;
+            
             OnCast(); // Auto Setup 3D Bullet
-        }
-
-        void X()
-        {
-
-        }
-        
-        protected bool CollisionRun(Vector2 direction, float deltaTime)
-        {
-            if (!hasCollision) return false;
-            
-            RaycastHit2D hit;
-            if (radius > 0)
+            onCast?.Invoke(caster);
+            if (trailRenderer) TrailSetup();
+            if (collisionRay)
             {
-                hit = Physics2D.Raycast(transform.position, direction, length, detectLayer.value);
+                collisionRay.enabled = false;
+            }
+
+            onCast?.Invoke(caster);
+        }
+
+        public override void SetCollision(bool turn)
+        {
+            collisionRay.enabled = turn;
+        }
+
+        private float ignoreTime;
+        protected override void CollisionRun(float deltaTime)
+        {
+            if (ignoreTime > 0)
+            {
+                ignoreTime -= deltaTime;
+                return;
+            }
+
+            if (!collisionRay.Cast()) return;
+
+            if (collisionRay.cloneRaySensor)
+            {
+                ignoreTime = baseIgnoreTime;
+                transform.position = collisionRay.cloneRaySensor.BasePoint;
+                transform.right = collisionRay.cloneRaySensor.Direction;
             }
             else
             {
-                hit = Physics2D.CircleCast(transform.position, radius, direction, length, detectLayer.value);
+                InvokeDamageEvent(collisionRay.hit.transform);
+                if (endOnCollide) OnEnd(caster);
             }
-            if (!hit.transform) return false;
-
-            
-            if (planarSensitive)
-            {
-                if (hit && hit.transform.TryGetComponent(out Planar2D planar))
-                {
-                    var data = planar.GetTransitionData2D(hit, direction);
-                    if (data.Length == 1)
-                    {
-                        transform.position = data[0].position + (Vector3) direction * planar.offset;
-                        transform.rotation = data[0].rotation;
-                        
-                        //TempIgnore();
-                    }
-                    else
-                    {
-                        for (int i = 0; i < data.Length; i++)
-                        {
-                            var _b = Instantiate(this, data[i].position+ (Vector3) direction * planar.offset, data[i].rotation);
-                            _b.planarSensitive = false;
-                            //_b.TempIgnore();
-                            _b.endFunction = EndType.Destroy;
-                        }
-                        enabled = false;
-                        OnEnd();
-                    }
-                }
-            }
-
-            InvokeDamageEvent(hit.transform);
-            OnEnd();
-            return true;
         }
 
 #if UNITY_EDITOR
+        
+        protected override void CollisionRayField(SerializedObject _so)
+        {
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(collisionRay)));
+        }
         internal override void OnGizmos()
         {
-            var _forward = transform.right;
-            
-            DrawCap(transform.position, _forward, 5);
-            
-            var _tOffset = _forward * offset;
-            
-            var _pos = transform.position+_tOffset;
-
-            Handles.color = HelperColor;
-
-
-
-            DrawCircleLine(_pos, _pos + _forward, radius);
+            DrawCap(transform.position, transform.right, 4);
         }
 #endif
     }

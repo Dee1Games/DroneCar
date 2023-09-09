@@ -9,7 +9,7 @@ public class Monster : MonoBehaviour
     //[SerializeField] private Animator animator;
     [SerializeField] private List<WeakPoint> weakPoints;
     
-    private float health;
+    [SerializeField] private float health = 100f;
 
     public static System.Action<float, float> OnHealthChange;
 

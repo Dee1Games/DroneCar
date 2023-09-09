@@ -86,7 +86,7 @@
             ReflectCast();
         }
 
-
+        protected override void UpdatePath() { }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Send a reflective 2D ray to the <i>Reflect layer</i> and detect the point of impact in the <i>Detect layer</i>." +

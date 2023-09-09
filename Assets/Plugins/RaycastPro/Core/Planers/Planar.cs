@@ -12,7 +12,6 @@
 
     [Serializable]
     public class RaySensorEvent : UnityEvent<RaySensor> { }
-
     public abstract class Planar : BasePlanar
     {
         public RaySensor outerRay;
@@ -37,23 +36,8 @@
         /// 
         /// </summary>
         public RaySensorEvent onEndReceiveRay;
-
-
-        #region Lambdas
-
-        protected Vector3 GetForward(RaySensor innerRay, Vector3 _default)
-        {
-            switch (baseDirection)
-            {
-                case DirectionOutput.NegativeHitNormal: return -innerRay.hit.normal;
-                case DirectionOutput.HitDirection: return innerRay.HitDirection;
-                case DirectionOutput.SensorLocal: return innerRay.LocalDirection.normalized;
-                case DirectionOutput.PlanarForward: return _default;
-                default: return _default;
-            }
-        }
-
-        #endregion
+        
+        public abstract void GetForward(RaySensor raySensor, out Vector3 forward);
         protected void ApplyLengthControl(RaySensor raySensor)
         {
             switch (lengthControl)
@@ -70,7 +54,6 @@
                     break;
             }
         }
-
         /// <summary>
         /// It will instantiate a ray Clone
         /// </summary>
@@ -78,9 +61,7 @@
         private void CloneInstantiate(RaySensor raySensor)
         {
             if (!raySensor) return;
-
             if (!InLayer(raySensor.gameObject) || raySensor.hit.transform != transform) return;
-
             switch (outerType)
             {
                 case OuterType.Auto:
@@ -108,28 +89,18 @@
         private void InstantiateReference(RaySensor raySensor)
         {
             // Double supported Clone Sensors
-            raySensor.cloneRaySensor = Instantiate(outerRay ? outerRay : raySensor);
+            raySensor.cloneRaySensor = Instantiate(outerRay ? outerRay : raySensor, poolManager);
             raySensor.cloneRaySensor._baseRaySensor = raySensor;
         } 
         private void InstantiateClone(RaySensor raySensor)
         {
             var obj = new GameObject();
-
             //Scene Debugging
             SceneManager.MoveGameObjectToScene(obj, raySensor.gameObject.scene);
-
             var cloneRay = obj.AddComponent<CloneRay>();
-
+            cloneRay.transform.parent = poolManager;
             cloneRay.name = $"Clone of {raySensor.GetType().Name} ({raySensor.name})";
-            if (this is PortalPlanar planar)
-            {
-                cloneRay.CopyFrom(raySensor, transform, planar.outer);
-            }
-            else
-            {
-                cloneRay.CopyFrom(raySensor, transform, transform);
-            }
-
+            cloneRay.CopyFrom(raySensor, this, (this is PortalPlanar planar) ? planar.outer : transform);
             // Double supported Clone Sensors
             cloneRay._baseRaySensor = raySensor;
             raySensor.cloneRaySensor = cloneRay;
@@ -178,9 +149,10 @@
         }
         protected void GeneralField(SerializedObject _so, bool lengthControlField = true, bool outerField = true)
         {
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(poolManager)), CPoolManager.ToContent(TPoolManager));
             DetectLayerField(_so);
             BaseDirectionField(_so);
-            PropertyMaxField(_so.FindProperty(nameof(offset)),  COffset.ToContent(COffset), 0.02f);
+            PropertyMaxField(_so.FindProperty(nameof(offset)),  COffset.ToContent(), 0.02f);
             if (lengthControlField) LengthControlField(_so);
             if (outerField) OuterField(_so.FindProperty(nameof(outerType)), _so.FindProperty(nameof(outerRay)));
             BaseField(_so, hasInfluence: true, hasInteraction: false, hasUpdateMode: false);
@@ -194,15 +166,12 @@
             if (EventFoldout)  RCProEditor.EventField(_so, new[] {nameof(onReceiveRay), nameof(onCloneRay), nameof(onBeginReceiveRay), nameof(onEndReceiveRay)});
         }
 #endif
-        internal abstract TransitionData[] GetTransitionData(RaycastHit hit, Vector3 direction);
         internal abstract void OnReceiveRay(RaySensor sensor);
 
         internal virtual void OnBeginReceiveRay(RaySensor sensor)
         {
             CloneInstantiate(sensor);
-
             sensor.cloneRaySensor?.transform.RemoveChildren();
-
             OnCloneRay(sensor.cloneRaySensor);
         }
 
@@ -214,7 +183,8 @@
 
         internal virtual bool OnEndReceiveRay(RaySensor sensor)
         {
-            CloneDestroy(sensor.cloneRaySensor);
+            sensor.cloneRaySensor.SafeRemove();
+            //CloneDestroy(sensor.cloneRaySensor);
             return true;
         }
 

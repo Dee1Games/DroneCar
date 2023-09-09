@@ -32,26 +32,13 @@ namespace RaycastPro.Planers2D
             }
         }
 #endif
-
-        internal override TransitionData[] GetTransitionData2D(RaycastHit2D hit, Vector2 direction)
-        {
-            var data = new TransitionData
-            {
-                position = hit.point,
-                rotation = Quaternion.LookRotation(Vector3.Reflect(direction, hit.normal), transform.up)
-            };
-
-            return new TransitionData[] {data};
-        }
         public override void OnReceiveRay(RaySensor2D sensor)
         {
             var clone = sensor.cloneRaySensor;
 
             if (!clone) return;
-
             clone.transform.right = Vector2.Reflect(sensor.TipDirection, sensor.hit.normal);
-
-            clone.transform.position = sensor.hit.point - GetForward(sensor, transform.right) * offset;
+            clone.transform.position = sensor.HitPointZ - GetForward(sensor, transform.right) * offset;
 
             ApplyLengthControl(sensor);
         }

@@ -30,7 +30,7 @@ namespace RaycastPro.Bullets
 
         // Cached Variables
         private Vector3 _pos, _dir;
-        
+        private float _dt;
         protected override void OnCast()
         {
             if (raySource is PathRay _pathRay)
@@ -58,23 +58,23 @@ namespace RaycastPro.Bullets
             {
                 posM = position * pathLength;
             }
-            var delta = GetModeDeltaTime(timeMode);
-            UpdateLifeProcess(delta);
+            _dt = GetModeDeltaTime(timeMode);
+            UpdateLifeProcess(_dt);
                 
             switch (moveType)
             {
                 case MoveType.Speed:
-                    position += delta * speed / pathLength;
+                    position += _dt * speed / pathLength;
                     break;
                 case MoveType.Duration:
-                    position += delta / duration;
+                    position += _dt / duration;
                     break;
                 case MoveType.Curve:
-                    position += delta / duration;
+                    position += _dt / duration;
                     break;
             }
 
-            if (position >= 1) OnEnd();
+            if (position >= 1) OnEnd(caster);
             
             for (var i = 1; i < Path.Count; i++)
             {
@@ -92,11 +92,12 @@ namespace RaycastPro.Bullets
             }
             if (rigidBody) rigidBody.MovePosition(_pos);
             else transform.position = _pos;
-            
-            CollisionRun(_dir, delta);
-            
+            if (collisionRay) CollisionRun(_dt);
             if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
         }
+        
+        // need to setup a formula for path binding
+        protected override void CollisionBehaviour() { }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "A smart bullet that can recognize the path of the PathRay and move on it." + HAccurate + HDependent;
@@ -124,5 +125,6 @@ namespace RaycastPro.Bullets
             if (hasInfo) InformationField();
         }
 #endif
+
     }
 }

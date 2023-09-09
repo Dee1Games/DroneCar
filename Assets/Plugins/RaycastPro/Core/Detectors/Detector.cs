@@ -195,8 +195,8 @@
 
         protected void GeneralField(SerializedObject _so, bool layerField = true, bool hasTagField = true)
         {
+            if (this is IPulse) PulseField(_so);
             if (layerField) DetectLayerField(_so);
-
             if (hasTagField) TagField(_so);
         }
 #endif

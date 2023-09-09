@@ -11,24 +11,14 @@ namespace RaycastPro
 
     public abstract class BasePlanar : RaycastCore
     {
-        public struct TransitionData
-        {
-            public Vector3 position;
-            public Quaternion rotation;
-        }
-        
+        public Transform poolManager;
+
         public float offset = .05f;
-
         public enum LengthControl { Continues, Constant, Sync, }
-
         public LengthControl lengthControl = LengthControl.Continues;
-
         public float length = 1;
-
         public enum OuterType { Auto, Reference, Clone }
-
         public OuterType outerType = OuterType.Auto;
-
         public enum DirectionOutput
         {
             /// <summary>
@@ -50,11 +40,6 @@ namespace RaycastPro
         }
 
         public DirectionOutput baseDirection = DirectionOutput.PlanarForward;
-        
-        // public void Update() { if (autoUpdate == UpdateMode.Normal) OnCast(); }
-        // public void LateUpdate() { if (autoUpdate == UpdateMode.Late) OnCast(); }
-        // protected void FixedUpdate() { if (autoUpdate == UpdateMode.Fixed) OnCast(); }
-
         protected override void OnCast() { } // NOTHING FOR NOW
 
 #if UNITY_EDITOR
@@ -77,7 +62,7 @@ namespace RaycastPro
         protected void BaseDirectionField(SerializedObject _so)
         {
             BeginVerticalBox();
-            PropertyEnumField(_so.FindProperty(nameof(baseDirection)), 2, "Base Direction".ToContent("Base Direction"), new GUIContent[]
+            PropertyEnumField(_so.FindProperty(nameof(baseDirection)), 2, CBaseDirection.ToContent(TBaseDirection), new GUIContent[]
             {
                 "Planar Forward".ToContent("Planar Forward"),
                 "Sensor Local".ToContent("Sensor Local"),
@@ -93,9 +78,9 @@ namespace RaycastPro
             BeginVerticalBox();
             PropertyEnumField(_so.FindProperty(nameof(lengthControl)), 3, CLengthControl.ToContent(TLengthControl), new GUIContent[]
             {
-                "Continues".ToContent("Continues"),
-                "Constant".ToContent("Constant"),
-                "Sync".ToContent("Sync"),
+                "Continues".ToContent("This option is the most common possible mode you can see, the Ray takes its remaining length out of the planar, which is normal."),
+                "Constant".ToContent("As it is known, certain length of Ray is out of planar."),
+                "Sync".ToContent("The same length of input Ray comes out of the Planar."),
             });
             PropertyMaxField(_so.FindProperty(nameof(length)), (lengthControl == LengthControl.Constant) ? CLength.ToContent() : CMultiplier.ToContent());
             EndVertical();

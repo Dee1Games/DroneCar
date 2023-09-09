@@ -36,11 +36,8 @@ namespace RaycastPro.RaySensors
         private async void ConvertToBoxRay()
         {
             var _ray = Undo.AddComponent<BoxRay>(gameObject);
-
             _ray.direction = direction;
-            
             await Task.Delay(1);
-            
             Undo.DestroyObjectImmediate(this);
         }
 
@@ -49,28 +46,17 @@ namespace RaycastPro.RaySensors
         {
             EditorUpdate();
             
-            if (Performed)
-            {
-                _p = transform.position;
-                Gizmos.color = DetectColor;
-                if (IsManuelMode)
-                {
-                    Gizmos.DrawRay(transform.position, Direction);
-                }
-                else
-                {
-                    Gizmos.DrawLine(_p, Hit.point);
-                    Handles.color = BlockColor;
-                    Handles.DrawDottedLine(Hit.point, _p + Direction, StepSizeLine);
-                }
-                DrawNormal(Hit);
-
-                return;
-            }
-
+            _p = transform.position;
             Gizmos.color = Performed ? DetectColor : DefaultColor;
-
-            Gizmos.DrawRay(transform.position, LocalDirection);
+            if (IsManuelMode)
+            {
+                Gizmos.DrawRay(transform.position, Direction);
+            }
+            else
+            {
+                DrawBlockLine(_p, _p + Direction, hit);
+            }
+            DrawNormal(hit);
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
@@ -84,7 +70,6 @@ namespace RaycastPro.RaySensors
         }
 #endif
         public override Vector3 Tip => transform.position + Direction;
-
         public override float RayLength => direction.magnitude;
         public override Vector3 BasePoint => transform.position;
     }

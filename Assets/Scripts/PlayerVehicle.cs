@@ -37,6 +37,7 @@ public class PlayerVehicle : MonoBehaviour
     
     public static System.Action OnExploded;
 
+    private CarCore core;
     public bool IsActive
     {
         get;
@@ -52,9 +53,19 @@ public class PlayerVehicle : MonoBehaviour
     private Rigidbody rigidbody;
     private Vector3 direction;
 
+    #region Cached_Animatios
+
+    private static readonly int Reset = Animator.StringToHash("reset");
+    private static readonly int Showcase = Animator.StringToHash("showcase");
+    private static readonly int Hover = Animator.StringToHash("hover");
+
+    #endregion
+
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
+        core = GetComponent<CarCore>();
 
         levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
         List<LevelIndicatorUI> allLevelUIs = GetComponentsInChildren<LevelIndicatorUI>(true).ToList();
@@ -67,7 +78,8 @@ public class PlayerVehicle : MonoBehaviour
     public void InitPlayMode()
     {
         upgrades = UserManager.Instance.GetUpgradeLevels(ID);
-        anim.SetTrigger("reset");
+        anim.SetTrigger(Reset);
+        core.Restore();
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = true;
@@ -101,7 +113,7 @@ public class PlayerVehicle : MonoBehaviour
         rigidbody.useGravity = false;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
-        anim.SetTrigger("showcase");
+        anim.SetTrigger(Showcase);
         
         
         foreach (LevelIndicatorUI levelUI in levelsUI.Values)
@@ -294,10 +306,7 @@ public class PlayerVehicle : MonoBehaviour
             return;
         
         CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
-        foreach (var aiCore in FindObjectsOfType<AI_Core>())
-        {
-            aiCore.OnEnd(this);
-        }
+
         foreach (var colliders in GetComponentsInChildren<Collider>())
         {
             colliders.enabled = false;
@@ -320,7 +329,7 @@ public class PlayerVehicle : MonoBehaviour
         IsActive = false;
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
-        anim.SetBool("hover", false);
+        anim.SetBool(Hover, false);
         rigidbody.useGravity = false;
         rigidbody.isKinematic = true;
         rigidbody.velocity = Vector3.zero;
@@ -371,7 +380,7 @@ public class PlayerVehicle : MonoBehaviour
     {
         isChanging = true;
         isHovering = false;
-        anim.SetBool("hover", false);
+        anim.SetBool(Hover, false);
         rigidbody.useGravity = true;
         while (getDistanceToGround()>1f)
         {
@@ -389,7 +398,7 @@ public class PlayerVehicle : MonoBehaviour
     {
         isChanging = true;
         isHovering = true;
-        anim.SetBool("hover", true);
+        anim.SetBool(Hover, true);
         if(jump) 
             rigidbody.AddForce(Vector3.up*jumpForce, ForceMode.VelocityChange);
 
@@ -421,12 +430,14 @@ public class PlayerVehicle : MonoBehaviour
     {
         return getDistanceToGround() < 0.1f;
     }
+    
+    public LayerMask groundLayer;
 
     private float getDistanceToGround()
     {
         RaycastHit hit;
         Ray ray = new Ray(pivot.position+(Vector3.up*10f), Vector3.down);
-        if(Physics.Raycast(ray, out hit, 9999f, LayerMask.GetMask("Ground")))
+        if(Physics.Raycast(ray, out hit, 9999f, groundLayer.value))
         {
             return hit.distance-10f;
         }

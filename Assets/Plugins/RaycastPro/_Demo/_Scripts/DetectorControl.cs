@@ -7,16 +7,11 @@ namespace Plugins.RaycastPro.Demo.Scripts
     public class DetectorControl : MonoBehaviour
     {
         [SerializeField] private ColliderDetector detector;
-
-        [SerializeField] private float maxRange;
-    
-        private float sinus;
         private void Start()
         {
             detector.onNewCollider.AddListener(OnNewCollider);
             detector.onLostCollider.AddListener(OnLostCollider);
         }
-
         private void OnNewCollider(Collider col)
         {
             Debug.Log($"<color=#5AFFDA>{col.name}</color> is Detected.");
@@ -33,14 +28,6 @@ namespace Plugins.RaycastPro.Demo.Scripts
                 _neonMaterial.SetNeonColor(false);
             }
         }
-
-        void Update()
-        {
-            if (detector is IRadius radiusDetector)
-            {
-                sinus = (Mathf.Sin(Time.time) + 1) * .5f;
-                radiusDetector.Radius = sinus * maxRange;
-            }
-        }
+        
     }
 }

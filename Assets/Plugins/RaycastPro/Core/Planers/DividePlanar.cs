@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace RaycastPro.Planers
 {
@@ -11,16 +12,30 @@ namespace RaycastPro.Planers
     using UnityEditor;
 #endif
     [AddComponentMenu("RaycastPro/Planers/"+nameof(DividePlanar))]
-    abstract class DividePlanar : Planar
+    public class DividePlanar : Planar
     {
         public float radius= 1f;
         public float forward = 1f;
         public int count = 5;
         public readonly Dictionary<RaySensor, List<RaySensor>> CloneProfile = new Dictionary<RaySensor, List<RaySensor>>();
+
+        public override void GetForward(RaySensor raySensor, out Vector3 forward)
+        {
+            switch (baseDirection)
+            {
+                case DirectionOutput.NegativeHitNormal: forward = -raySensor.hit.normal; return;
+                case DirectionOutput.HitDirection: forward = raySensor.HitDirection; return;
+                case DirectionOutput.SensorLocal: forward = raySensor.LocalDirection.normalized; return;
+            }
+            forward = transform.forward;
+        }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Division of Planar Sensitive Ray in angles and count entered.";
+        private static string Info = "Division of Planar Sensitive Ray in angles and count entered."+HDependent+HExperimental;
 #pragma warning restore CS0414
+        
+
+
         internal override void OnGizmos()
         {
             points = CircularPoints(transform.position+transform.forward*forward, radius, transform.forward, transform.up, count, true);
@@ -44,7 +59,7 @@ namespace RaycastPro.Planers
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(count)));
             }
             if (hasGeneral) GeneralField(_so);
-            if (hasEvents)EventField(_so);
+            if (hasEvents) EventField(_so);
         }
 #endif
 
@@ -59,55 +74,57 @@ namespace RaycastPro.Planers
             if (!clone) return;
             // // TEMP BASE RAY SENSOR DEBUG..
             if (!clone._baseRaySensor) RaySensor.CloneDestroy(clone);
-            _forward = GetForward(sensor, transform.forward);
-            point = sensor.Hit.point;
+            
+            GetForward(sensor, out _forward);
+
+            point = sensor.hit.point;
             _cloneT = clone.transform;
-            _cloneT.position = point;
-            inverseTransformDirection = transform.InverseTransformDirection(point - sensor.BasePoint);
-            cloneDirection = transform.TransformDirection(inverseTransformDirection);
-            _cloneT.rotation = Quaternion.LookRotation(cloneDirection);
-            
-            point += _cloneT.forward * offset; // Offset most Apply after Rotation Calculating
-            
+            _cloneT.rotation = Quaternion.LookRotation(_forward, transform.up);
+            _cloneT.position = point + _forward * offset; // Offset most Apply after Rotation Calculating
             _cloneT.localScale = Vector3.one;
-            ApplyLengthControl(sensor);
+
             if (!CloneProfile.ContainsKey(clone)) return;
             cloneCount = CloneProfile[clone].Count;
             
             // Switch it to non Allocator Later
             points = CircularPoints(_forward*forward, radius, _forward, _cloneT.up, cloneCount);
-            foreach (var c in CloneProfile[clone])
+
+            
+            if (_cloneT)
             {
-                c.transform.position = point;
-                c.direction = clone.direction;
-                c.transform.localScale = sensor.transform.localScale;
-                if (c.liner) c.liner.enabled = sensor.liner.enabled;
-                if (c.stamp) c.stamp.gameObject.SetActive(sensor.stamp.gameObject.activeInHierarchy);
+                var _dir = clone.direction;
+                switch (lengthControl)
+                {
+                    case LengthControl.Constant:
+                        _dir = sensor.direction.normalized * length;
+                        break;
+                    case LengthControl.Sync:
+                        _dir = sensor.direction * length;
+                        break;
+                    case LengthControl.Continues:
+                        _dir = sensor.direction.normalized * (sensor.ContinuesDistance * length);
+                        break;
+                }
+                
+                foreach (var miniClone in CloneProfile[clone])
+                {
+                    if (!miniClone) continue;
+
+                    miniClone.transform.position = _cloneT.position;
+                    miniClone.transform.localScale = sensor.transform.localScale;
+                    miniClone.direction = _dir;
+                    
+                    if (miniClone.liner) miniClone.liner.enabled = sensor.liner.enabled;
+                    if (miniClone.stamp) miniClone.stamp.gameObject.SetActive(sensor.stamp.gameObject.activeInHierarchy);
+                }
             }
+
             for (i = 0; i < cloneCount; i++)
             {
+                if (!clone) return;
+                if (!CloneProfile[clone][i]) continue;
                 CloneProfile[clone][i].transform.rotation = Quaternion.LookRotation(points[i]);
             }
-        }
-
-        /// <summary>
-        /// This method is used for Bullet Transitions.
-        /// </summary>
-        /// <param name="hit"></param>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        internal override TransitionData[] GetTransitionData(RaycastHit hit, Vector3 direction)
-        {
-            point = hit.point + direction * offset;
-            cross = Vector3.Cross(transform.right, direction);
-            points = CircularPoints(point + direction * forward, radius, direction, cross, count);
-            var data = new TransitionData[count];
-            for (i = 0; i < points.Length; i++)
-            {
-                data[i].position = point;
-                data[i].rotation = Quaternion.LookRotation(points[i] - point, cross);
-            }
-            return data;
         }
 
         private readonly List<RaySensor> clones = new List<RaySensor>();
@@ -122,8 +139,8 @@ namespace RaycastPro.Planers
             CloneProfile.Add(clone, clones);
             foreach (var c in clones)
             {
+                c._baseRaySensor = sensor;
                 c.transform.parent = clone.transform;
-                
                 if (sensor.stamp) //STAMP Reservation
                 {
                     c.stamp = Instantiate(sensor.stamp);
@@ -132,11 +149,10 @@ namespace RaycastPro.Planers
                     c.stampOnHit = sensor.stampOnHit;
                 }
             }
-
             OnReceiveRay(sensor);
             Destroy(clone.liner);
             clone.enabled = false;
-            clone.stamp = null;
+            //clone.stamp = null;
             
 #if UNITY_EDITOR
             clone.gizmosUpdate = GizmosMode.Off;
@@ -145,15 +161,7 @@ namespace RaycastPro.Planers
 
         internal override bool OnEndReceiveRay(RaySensor sensor)
         {
-            if (base.OnEndReceiveRay(sensor))
-            {
-                if (sensor.stamp)
-                {
-                    foreach (var raySensor in CloneProfile[sensor.cloneRaySensor]) Destroy(raySensor.stamp.gameObject);
-                }
-                
-                CloneProfile.Remove(sensor.cloneRaySensor);
-            }
+            sensor.cloneRaySensor.SafeRemove();
 
             return true;
         }

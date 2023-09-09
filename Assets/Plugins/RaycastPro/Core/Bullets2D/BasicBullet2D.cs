@@ -10,7 +10,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Bullets/" + nameof(BasicBullet2D))]
-    public sealed class BasicBullet2D : Bullet2D, IRadius
+    public sealed class BasicBullet2D : Bullet2D
     {
         protected override void OnCast()
         {
@@ -31,13 +31,13 @@
             var _forward = transform.right; // IN 2D forward is right
             transform.position += _forward * (speed * delta);
             UpdateLifeProcess(delta);
-            CollisionRun(transform.right, delta);
+            if (collisionRay) CollisionRun(delta);
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info =
             "A simple bullet that travels directly from the origin to the tip of the raySensor with avoiding the path." +
-            HAccurate + HDependent + HIRadius;
+            HAccurate + HDependent;
 #pragma warning restore CS0414
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
@@ -45,7 +45,6 @@
         {
             if (hasMain)
             {
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(planarSensitive)), CPlanarSensitive.ToContent(TPlanarSensitive));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(speed)), CSpeed.ToContent(CSpeed));
             }
             
@@ -56,6 +55,5 @@
             if (hasInfo) InformationField();
         }
 #endif
-
     }
 }

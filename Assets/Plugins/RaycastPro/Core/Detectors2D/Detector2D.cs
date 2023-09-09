@@ -138,6 +138,7 @@
 
         protected void GeneralField(SerializedObject _so)
         {
+            if (this is IPulse) PulseField(_so);
             DetectLayerField(_so);
             TagField(_so);
             DepthField(_so);

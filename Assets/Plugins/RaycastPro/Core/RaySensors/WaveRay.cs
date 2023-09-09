@@ -27,8 +27,8 @@ namespace RaycastPro.RaySensors
         public float power = 1;
         public Vector2 noise;
         public Vector2 scale = new Vector2(0f, 1f);
-        public AnimationCurve clumpY = AnimationCurve.Constant(0, 1, 1);
-        public AnimationCurve clumpX = AnimationCurve.Constant(0, 1, 1);
+        public AnimationCurve clumpY = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        public AnimationCurve clumpX = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public float offsetX;
         public int digitStep;
         private float cycle;
@@ -46,7 +46,7 @@ namespace RaycastPro.RaySensors
         private Vector3 Function3D(float i, float step)
         {
             pos = i * step;
-            directionY = direction.y * pos / direction.z;
+            directionY = direction.y * pos/direction.z;
             directionX = direction.x * pos;
             time = i / segments;
             scaleX = scale.x * clumpX.Evaluate(time) * (Function(offsetX + i) + Random.value * noise.x);
@@ -58,7 +58,7 @@ namespace RaycastPro.RaySensors
         protected override void OnCast()
         {
             UpdatePath();
-            if (pathCast) DetectIndex = PathCast(PathPoints, radius);
+            if (pathCast) DetectIndex = PathCast(radius);
         }
 
         private float dt, step;

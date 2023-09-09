@@ -7,7 +7,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(SightDetector))]
-    public sealed class SightDetector : ColliderDetector
+    public sealed class SightDetector : ColliderDetector, IRadius, IPulse
     {
 #if UNITY_EDITOR
         private const float BezierWidth = .5f;
@@ -112,7 +112,7 @@
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Receiving colliders within the specified FOV angles with a detect point solver." + HCDetector + HSmartSolver + HIRadius + HINonAllocator;
+        private static string Info = "Receiving colliders within the specified FOV angles with a detect point solver." + HCDetector + HLOS_Solver + HIPulse + HIRadius + HINonAllocator;
 #pragma warning restore CS0414
         
         protected override void AfterValidate() => DetectFunction = SetupDetectFunction();
@@ -202,13 +202,13 @@
             {
                 RadiusField(_so);
                 RadiusField(_so, nameof(minRadius), "Min Radius".ToContent());
-    
+                
                 var fullAwarenessProp = _so.FindProperty(nameof(fullAwareness));
-                EditorGUILayout.PropertyField(fullAwarenessProp, fullAwarenessProp.displayName.ToContent());
+                EditorGUILayout.PropertyField(fullAwarenessProp, fullAwarenessProp.displayName.ToContent("The range of full awareness will always be detected regardless of the viewing angle."));
                 fullAwarenessProp.floatValue = Mathf.Clamp(fullAwarenessProp.floatValue, -1, radius);
                 
-                PropertySliderField(_so.FindProperty(nameof(angleX)), 0f, 360f, "Arc X".ToContent());
-                PropertySliderField(_so.FindProperty(nameof(angleY)), 0f, 360f, "Arc Y".ToContent());
+                PropertySliderField(_so.FindProperty(nameof(angleX)), 0f, 360f, "Arc X".ToContent("The horizontal range of vision, which is counted in Degress units."));
+                PropertySliderField(_so.FindProperty(nameof(angleY)), 0f, 360f, "Arc Y".ToContent("The vertical range of vision, which is counted in Degress units."));
                 GUI.enabled = true;
             }
 

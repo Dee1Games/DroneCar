@@ -53,7 +53,7 @@
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Send a 2D Ray to the mouse point in the scene and return the hit point."+HAccurate;
+        private static string Info = "A mouse location tracker that is able to emit from the desired object and is used to immediately launch this feature."+HAccurate+HIRadius+HDependent;
 #pragma warning restore CS0414
 
         private Vector3 basePoint, tip;
@@ -91,7 +91,7 @@
             if (hasInfo) HitInformationField();
         }
         
-        private bool InEditMode => IsSceneView && !Application.isPlaying;
+        private bool InEditMode => IsSceneView || !Application.isPlaying;
 #endif
 
 

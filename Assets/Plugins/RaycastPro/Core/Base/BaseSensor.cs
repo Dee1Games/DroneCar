@@ -15,7 +15,6 @@
         {
             EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
                 RCProEditor.HeaderFoldout());
-
             if (EventFoldout)
             {
                 RCProEditor.EventField(new SerializedObject(this), new[]
@@ -23,7 +22,6 @@
                     nameof(onDetect)
                 });
             }
-
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
 #endif

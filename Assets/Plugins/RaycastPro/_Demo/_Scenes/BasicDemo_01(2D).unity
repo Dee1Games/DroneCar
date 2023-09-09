@@ -393,6 +393,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2583596346087589765, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_text
       value: And 2D Rays are just as easy and controllable, these mechanism and gizmos
@@ -438,6 +442,30 @@ PrefabInstance:
     - target: {fileID: 4944054610069616903, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_PlaneDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6505992306007326160, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_Name
@@ -509,9 +537,9 @@ MonoBehaviour:
   minAngle: 0
   maxAngle: 15
   hitBackside: 0
-  direction: {x: 5, y: 0}
+  direction: {x: 4, y: 0}
   radius: 0.4
-  height: 0
+  height: 1.02
 --- !u!1001 &473733088366298558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -590,6 +618,26 @@ PrefabInstance:
     - target: {fileID: 1283550812584037303, guid: d7f41d62a0088a94fb503cc8c350b14f, type: 3}
       propertyPath: m_Name
       value: Pyrocaster (2D)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3143713123466044002, guid: d7f41d62a0088a94fb503cc8c350b14f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3143713123466044002, guid: d7f41d62a0088a94fb503cc8c350b14f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3143713123466044002, guid: d7f41d62a0088a94fb503cc8c350b14f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3143713123466044002, guid: d7f41d62a0088a94fb503cc8c350b14f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3143713123466044002, guid: d7f41d62a0088a94fb503cc8c350b14f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3779288952386933711, guid: d7f41d62a0088a94fb503cc8c350b14f, type: 3}
       propertyPath: m_RootOrder

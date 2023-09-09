@@ -8,7 +8,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(BoxDetector))]
-    public sealed class BoxDetector : ColliderDetector
+    public sealed class BoxDetector : ColliderDetector, IPulse
     {
         [SerializeField]
         public Vector3 extents = Vector3.one;
@@ -90,7 +90,7 @@
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Receiving colliders within the specified bounds with a detect point solver." +
-                                     HAccurate + HCDetector + HSmartSolver + HRotatable + HINonAllocator;
+                                     HAccurate + HIPulse + HCDetector + HLOS_Solver + HRotatable + HINonAllocator;
 #pragma warning restore CS0414
         protected override void DrawDetectorGuide(Vector3 point)
         {

@@ -22,7 +22,6 @@ namespace RaycastPro.Planers2D
         public RaySensor2D outerRay;
         public override bool Performed { get; protected set; }
         
-
         public float z => transform.position.z;
 
         public RaySensor2DEvent onReceiveRay;
@@ -47,7 +46,7 @@ namespace RaycastPro.Planers2D
             }
         }
         
-        protected Vector2 GetForward(RaySensor2D innerRay, Vector2 _default)
+        protected Vector3 GetForward(RaySensor2D innerRay, Vector2 _default)
         {
             switch (baseDirection)
             {
@@ -75,6 +74,7 @@ namespace RaycastPro.Planers2D
             PropertyMaxField(_so.FindProperty(nameof(offset)),  COffset.ToContent(COffset), 0.02f);
             if (lengthControlField) LengthControlField(_so);
             if (outerField) OuterField(_so.FindProperty(nameof(outerType)), _so.FindProperty(nameof(outerRay)));
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(poolManager)), CPoolManager.ToContent(TPoolManager));
             BaseField(_so, hasInteraction: false, hasUpdateMode: false);
         }
 
@@ -149,8 +149,6 @@ namespace RaycastPro.Planers2D
             cloneRay._baseRaySensor = raySensor;
             raySensor.cloneRaySensor = cloneRay;
         }
-
-        internal abstract TransitionData[] GetTransitionData2D(RaycastHit2D hit, Vector2 direction);
         public abstract void OnReceiveRay(RaySensor2D sensor);
         public virtual void OnBeginReceiveRay(RaySensor2D sensor)
         {

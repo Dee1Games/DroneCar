@@ -11,7 +11,7 @@ namespace RaycastPro.Detectors2D
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(PolyDetector2D))]
-    abstract class PolyDetector2D : ColliderDetector2D
+    abstract class PolyDetector2D : ColliderDetector2D, IPulse
     {
         [SerializeField] private float minRadius = 4f;
         [SerializeField] private float maxRadius = 8f;
@@ -146,7 +146,7 @@ namespace RaycastPro.Detectors2D
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Receiving colliders within the 2D polygon with a detect point solver." +
-                                     HCDetector + HSmartSolver + HINonAllocator;
+                                     HCDetector + HLOS_Solver + HINonAllocator;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {

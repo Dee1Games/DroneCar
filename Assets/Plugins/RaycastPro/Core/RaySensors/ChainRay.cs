@@ -36,7 +36,7 @@
         protected override void OnCast()
         {
             UpdatePath(PathPoints);
-            if (pathCast) DetectIndex = PathCast(PathPoints, radius);
+            if (pathCast) DetectIndex = PathCast(radius);
             else DetectIndex = -1;
         }
 
@@ -79,11 +79,17 @@
                 DrawPath(PathPoints, hit, radius,  detectIndex: DetectIndex, drawSphere: true);
             }
 
-            Handles.color = Gizmos.color = HelperColor;
-            Handles.DrawDottedLine(BasePoint, Tip, StepSizeLine);
-            Handles.Label((BasePoint + Tip) / 2,
-                "<color=#2BC6D2>Distance:</color> <color=#FFFFFF>" + TipLength.ToString("F2") + "</color>", new GUIStyle {richText = true});
-            DrawCap(PathPoints.Last(), PathPoints.LastDirection(TipDirection));
+            if (RCProPanel.DrawGuide)
+            {
+                Handles.color = Gizmos.color = HelperColor;
+                Handles.DrawDottedLine(BasePoint, Tip, StepSizeLine);
+                DrawCap(PathPoints.Last(), PathPoints.LastDirection(TipDirection));
+                if (RCProPanel.ShowLabels)
+                {
+                    Handles.Label((BasePoint + Tip) / 2,
+                        "<color=#2BC6D2>Distance:</color> <color=#FFFFFF>" + TipLength.ToString("F2") + "</color>", new GUIStyle {richText = true});
+                }
+            }
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

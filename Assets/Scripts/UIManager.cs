@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -7,12 +8,22 @@ public class UIManager : MonoBehaviour
     public UIScreen[] Screens;
 
     private UIScreen currentScreen;
+
+    public Image giantGunTimer;
     
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+        }
+    }
+
+    public void SetGiantGunTimer(float value)
+    {
+        if (giantGunTimer)
+        {
+            giantGunTimer.fillAmount = value;
         }
     }
 

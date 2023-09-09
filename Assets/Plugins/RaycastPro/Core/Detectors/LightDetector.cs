@@ -14,7 +14,7 @@
     public class LightEvent : UnityEvent<Light> {  }
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(LightDetector))]
-    public sealed class LightDetector : Detector
+    public sealed class LightDetector : Detector, IPulse
     {
         public Light[] Lights = Array.Empty<Light>();
         public float minIntensity, maxIntensity = 100;
@@ -39,7 +39,7 @@
         private float inRange;
         private bool trueIntensity, trueColor;
         
-        protected void Start() // Refreshing
+        private void Start() // Refreshing
         {
             DetectedLights = new List<Light>();
             PreviousLights = Array.Empty<Light>();

@@ -34,7 +34,7 @@
             get
             {
 #if UNITY_EDITOR
-                if (SwipCondition)
+                if (InEditMode)
                 {
                     var _t = rayFromCamera ? mainCamera.transform : transform;
                     return _t.position + _t.forward * direction.magnitude;
@@ -138,10 +138,10 @@
                     var _mt = mainCamera.transform;
                     var p1 = mouseRay.origin;
                     var p2 = Vector3.zero;
-                    if (SwipCondition)
+                    if (InEditMode)
                     {
                         p1 = transform.position;
-                        p2 = transform.forward * direction.z;
+                        p2 = transform.position + direction.normalized;
                     }
                     else
                     {
@@ -154,10 +154,14 @@
                     DrawLine(p1-_mt.up*radius, p2-_mt.up*radius);
                     
                     Handles.DrawWireDisc((p1 + p2) / 2, p2 - p1, radius);
-                    
                     Handles.DrawWireDisc(p2, p2 - p1, radius);
 
                     if (Application.isPlaying) DrawDetectLine(p1, p2, hit, Performed);
+                    else
+                    {
+                        GizmoColor = HelperColor;
+                        DrawLine(p1, p2, true);
+                    }
                 };
 #endif
             }
@@ -166,10 +170,10 @@
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Send a ray to the mouse point in the scene and return the hit point."+HAccurate+HIRadius;
+        private static string Info = "A mouse location tracker that is able to emit from the desired object and is used to immediately launch this feature."+HAccurate+HIRadius+HDependent;
 #pragma warning restore CS0414
         internal override void OnGizmos() => EditorUpdate();
-        private bool SwipCondition => IsSceneView && !Application.isPlaying;
+        private bool InEditMode => IsSceneView || !Application.isPlaying;
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,

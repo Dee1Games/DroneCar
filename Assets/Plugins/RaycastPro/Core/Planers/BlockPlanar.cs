@@ -10,11 +10,21 @@
     [AddComponentMenu("RaycastPro/Planers/" + nameof(BlockPlanar))]
     public sealed class BlockPlanar : Planar
     {
+        public override void GetForward(RaySensor raySensor, out Vector3 forward)
+        {
+            switch (baseDirection)
+            {
+                case DirectionOutput.NegativeHitNormal: forward = -raySensor.hit.normal; return;
+                case DirectionOutput.HitDirection: forward = raySensor.HitDirection; return;
+                case DirectionOutput.SensorLocal: forward = raySensor.LocalDirection.normalized; return;
+            }
+            forward = transform.forward;
+        }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Receiving and blocking impact from any Planar Sensitive Ray";
+        private static string Info = "Receiving and blocking impact from any Planar Sensitive Ray"+HVirtual;
 #pragma warning restore CS0414
-
+        
         internal override void OnGizmos() => DrawPlanar();
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
@@ -44,12 +54,8 @@
             }
         }
 #endif
-
-        internal override TransitionData[] GetTransitionData(RaycastHit hit, Vector3 direction)
-        { 
-            return new TransitionData[] { };
-        }
         internal override void OnBeginReceiveRay(RaySensor sensor) {}
+
         internal override void OnReceiveRay(RaySensor sensor) { }
     }
 }

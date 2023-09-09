@@ -30,12 +30,12 @@ namespace RaycastPro.RaySensors2D
             UpdatePath();
             if (pathCast)
             {
-                PathCast(PathPoints, out hit, out DetectIndex, MinDepth, MaxDepth, radius: radius);
+                DetectIndex = PathCast(out hit, radius);
                 isDetect = hit && FilterCheck(hit);
             }
         }
 
-        public void UpdatePath()
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             PathPoints.Add(Position2D);
@@ -67,16 +67,7 @@ namespace RaycastPro.RaySensors2D
         {
             EditorUpdate();
             DrawDepthLine(Position2D, Tip);
-            if (IsManuelMode)
-            {
-                UpdatePath();
-                DrawPath2D(PathPoints.ToDepth(z).ToList(), HitPointZ, isDetect, radius, pointLabel: true, drawDisc: true, coneCap: true, detectIndex: DetectIndex);
-            }
-            else
-            {
-                DrawPath2D(PathPoints.ToDepth(z).ToList(), HitPointZ, isDetect, radius, pointLabel: true, drawDisc: true, coneCap: true, detectIndex: DetectIndex);
-            }
-            Handles.color = Gizmos.color = HelperColor;
+            FullPathDraw(radius, true);
             DrawNormal2D(hit, z);
             DrawNormalFilter();
         }

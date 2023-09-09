@@ -6,6 +6,12 @@ namespace Plugins.RaycastPro.Demo.Scripts
     public class Shooting : MonoBehaviour
     {
         [SerializeField] private BasicCaster _caster;
+
+        private void Start()
+        {
+            _caster = GetComponent<BasicCaster>();
+        }
+
         void Update()
         {
             // Simple Coding

@@ -14,11 +14,10 @@
 
         protected override void OnCast()
         {
-            if (planarSensitive)
+            if (collisionRay.planarSensitive)
             {
                 var clone = raySource.LastClone;
                 transform.position = clone.TipTarget;
-                
                 // Hit Direction cuz don't want to place on hit Normal
                 transform.right = clone.HitDirection.normalized;
                 if (raySource.hit) InvokeDamageEvent(raySource.hit.transform);
@@ -39,11 +38,7 @@
             bool hasEvents = true,
             bool hasInfo = true)
         {
-            if (hasMain)
-            {       
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(planarSensitive)),
-                    CPlanarSensitive.ToContent(TPlanarSensitive));
-            }
+            if (hasMain) { }
             if (hasGeneral) GeneralField(_so);
 
             if (hasEvents) EventField(_so);

@@ -176,18 +176,14 @@
         public void SetLiner(LineRenderer lineRenderer)
         {
             liner = lineRenderer;
-
             UpdateLiner();
         }
 
         public void SetStamp(Transform newStamp)
         {
             stamp = newStamp;
-
             UpdateStamp();
         }
-        
-        
         #endregion
 
         #region Updates
@@ -196,26 +192,22 @@
         public bool Cast()
         {
             RuntimeUpdate();
-
             return Performed;
         }
         
         protected void Update()
         {
             if (autoUpdate != UpdateMode.Normal) return;
-
             RuntimeUpdate();
         }
         protected void LateUpdate()
         {
             if (autoUpdate != UpdateMode.Late) return;
-
             RuntimeUpdate();
         }
         protected void FixedUpdate()
         {
             if (autoUpdate != UpdateMode.Fixed) return;
-
             RuntimeUpdate();
         }
         #endregion
@@ -232,6 +224,11 @@
         internal abstract void OnDetect();
         internal abstract void OnBeginDetect();
         internal abstract void OnEndDetect();
+        protected void OnDestroy()
+        {
+            SafeRemove();
+        }
+        internal abstract void SafeRemove();
         protected void CleanGate()
         {
 #if UNITY_EDITOR
@@ -267,7 +264,6 @@
                 EndVertical();
             }
         }
-        
         protected void StampField(SerializedObject _so)
         {
             if (stamp) BeginVerticalBox();
@@ -282,7 +278,6 @@
             syncStamp.EditorPanel(_so.FindProperty(nameof(syncStamp)));
             EndVertical();
         }
-
         // ReSharper disable Unity.PerformanceAnalysis
         protected void LinerField(SerializedObject _so)
         {
@@ -293,8 +288,8 @@
 
             if (!liner && GUILayout.Button(CAdd, GUILayout.Width(50f)))
             {
-                var lineRenderer = GetComponent<LineRenderer>();
-                if (lineRenderer) liner = lineRenderer;
+                // Fixed Liner Problem
+                if (TryGetComponent(out LineRenderer lineRenderer)) liner = lineRenderer;
                 else
                 {
                     prop.objectReferenceValue = gameObject.AddComponent<LineRenderer>();
@@ -304,7 +299,10 @@
 
                 liner.endWidth = Mathf.Min(RCProPanel.linerMaxWidth, .1f);
                 liner.startWidth = Mathf.Min(RCProPanel.linerMaxWidth, .1f);
-                liner.numCapVertices = Mathf.Min(RCProPanel.linerMaxCapVertices, 6);
+                liner.numCornerVertices = Mathf.Min(0, 6);
+                liner.numCapVertices = Mathf.Min(0, 6);
+                
+                UpdateLiner();
             }
 
             EndHorizontal();
@@ -322,8 +320,9 @@
 
             liner.startWidth = EditorGUILayout.Slider(CStartWidth, liner.startWidth, 0f, RCProPanel.linerMaxWidth);
             liner.endWidth = EditorGUILayout.Slider(CEndWidth, liner.endWidth, 0f, RCProPanel.linerMaxWidth);
-            liner.numCapVertices = EditorGUILayout.IntSlider(CCorner, liner.numCapVertices, 0, RCProPanel.linerMaxCapVertices);
-
+            liner.numCapVertices = EditorGUILayout.IntField(CCap, liner.numCapVertices);
+            liner.numCornerVertices = EditorGUILayout.IntField(CCorner, liner.numCornerVertices);
+            
             GUI.backgroundColor = Color.white;
             liner.colorGradient = EditorGUILayout.GradientField(CGradient, liner.colorGradient);
             GUI.backgroundColor = RCProEditor.Violet;
@@ -332,7 +331,11 @@
 
             #endregion
         }
-
+        
+        
+/// <summary>
+/// Main Event names
+/// </summary>
         protected readonly string[] CEventNames = {"onDetect", "onBeginDetect", "onEndDetect", "onChange","onCast"};
         protected void EventField(SerializedObject _so)
         {

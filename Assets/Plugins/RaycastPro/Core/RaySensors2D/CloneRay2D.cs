@@ -36,10 +36,9 @@ namespace RaycastPro.RaySensors2D
             detectLayer = raySensor.detectLayer;
 
             planarSensitive = raySensor.planarSensitive;
-            
             anyPlanar = raySensor.anyPlanar;
-            
             if (!anyPlanar) planers = raySensor.planers;
+            if (raySensor is IRadius iRadius) radius = iRadius.Radius;
 
             planers = raySensor.planers;
             stamp = raySensor.stamp;
@@ -47,9 +46,7 @@ namespace RaycastPro.RaySensors2D
             stampOffset = raySensor.stampOffset;
             stampOnHit = raySensor.stampOnHit;
             syncStamp = raySensor.syncStamp;
-
             cutOnHit = raySensor.cutOnHit;
-
 #if UNITY_EDITOR
             gizmosUpdate = raySensor.gizmosUpdate;
 #endif
@@ -57,23 +54,19 @@ namespace RaycastPro.RaySensors2D
             if (raySensor.liner)
             {
                 liner = CopyComponent(raySensor.liner, gameObject);
-
                 UpdateLiner();
             }
         }
 
-        protected override void OnCast()
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             DetectIndex = -1;
-            if (!sensor) return;
 
             if (sensor is PathRay2D pathRay)
             {
                 _tPath.Clear();
-                
                 _tPath.Add(Vector2.zero);
-                
                 for (var i = pathRay.DetectIndex + 1; i < pathRay.PathPoints.Count; i++)
                     _tPath.Add(pathRay.PathPoints[i]-sensor.hit.point);
 
@@ -90,10 +83,17 @@ namespace RaycastPro.RaySensors2D
                 foreach (var p in path) PathPoints.Add(outer.TransformPoint(p));
             }
             if (sensor is IRadius iRadius) radius = iRadius.Radius;
-            
-            PathCast(PathPoints, out hit, out var detectIndex, MinDepth, MaxDepth, radius);
-
-            DetectIndex = detectIndex;
+            DetectIndex = PathCast(out hit, radius);
+            isDetect = FilterCheck(hit);
+        }
+        protected override void OnCast()
+        {
+            UpdatePath();
+            if (pathCast)
+            {
+                DetectIndex = PathCast(out hit, radius);
+                isDetect = FilterCheck(hit);
+            }
         }
 
 #if UNITY_EDITOR
@@ -104,7 +104,9 @@ namespace RaycastPro.RaySensors2D
         internal override void OnGizmos()
         {
             EditorUpdate();
-            DrawPath2D(PathPoints.ToDepth(z), hit.point, detectIndex: DetectIndex, radius: radius);
+            if (PathPoints.Count == 0) return;
+            if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
+            FullPathDraw(radius);
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
@@ -123,9 +125,7 @@ namespace RaycastPro.RaySensors2D
             EditorGUILayout.LabelField("Clone Rays can't be modified.");
             
             EndVertical();
-
             BaseField(_so, hasInfluence: false, hasInteraction: false, hasUpdateMode: false);
-
             InformationField();
         }
 #endif

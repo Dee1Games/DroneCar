@@ -26,12 +26,10 @@
     public abstract class RaycastCore : MonoBehaviour
     {
         #region Public Enums
-        
         /// <summary>
         /// Indicates whether ray has detected a target.
         /// </summary>
         public abstract bool Performed { get; protected set; }
-        
         public enum TimeMode
         {
             /// <summary>
@@ -55,7 +53,6 @@
             /// </summary>
             UnscaledFixedDeltaTime,
         }
-
         public enum WeightType
         {
             /// <summary>
@@ -73,14 +70,7 @@
             /// </summary>
             Offset,
         }
-
-        public enum Axis
-        {
-            X,
-            Y,
-            Z
-        }
-
+        public enum Axis { X, Y, Z }
         public enum UpdateMode
         {
             /// <summary>
@@ -98,39 +88,21 @@
             /// </summary>
             Late,
         }
-
-        public enum RayType
-        {
-            Ray,
-            Pipe,
-            Box
-        }
-
-        public enum BodyType
-        {
-            Ray,
-            Pipe
-        }
-
+        public enum RayType { Ray, Pipe, Box }
+        public enum BodyType { Ray, Pipe }
         #endregion
 
         #region Parameteres
-
         /// <summary>
         /// This auxiliary variable is defined for coefficient on other variables affected by ray. For example: gunDamage = influence * power
         /// </summary>
-        [Range(0, 1)] [SerializeField] private float influence = 1;
-
+        [Range(0, 1)] [SerializeField] internal float influence = 1;
         [SerializeField]
         public QueryTriggerInteraction triggerInteraction;
-
         [SerializeField]
         public LayerMask detectLayer = 1;
-
         [SerializeField]
         public UpdateMode autoUpdate = UpdateMode.Normal;
-        
-
         /// <summary>
         /// This auxiliary variable is defined for coefficient on other variables affected by ray. For e.g: gunDamage = influence * power
         /// </summary>
@@ -139,9 +111,7 @@
             get => influence;
             set => influence = Mathf.Clamp01(value);
         }
-
         #endregion
-        
         [Serializable]
         internal class AxisRun
         {
@@ -181,6 +151,7 @@
                     Quaternion.LookRotation(forward * (flipAxis ? -1 : 1), Vector3.up)
                     , 1 - Mathf.Exp(-dampSharpness * deltaTime));
             }
+
 
 #if UNITY_EDITOR
             
@@ -224,6 +195,7 @@
 #endif
         }
         
+        
         protected static float GetModeDeltaTime(TimeMode mode)
         {
             switch (mode)
@@ -242,6 +214,22 @@
 
         public void AddInfluence(float value) => Influence += value;
 
+        /// <summary>
+        /// With self Parenting
+        /// </summary>
+        /// <param name="prefab"></param>
+        public void InstantiateOnSelf(GameObject prefab)
+        {
+            Instantiate(prefab, transform.position, transform.rotation, transform);
+        }
+        /// <summary>
+        /// Without parenting
+        /// </summary>
+        /// <param name="prefab"></param>
+        public void InstantiateOnPoint(GameObject prefab)
+        {
+            Instantiate(prefab, transform.position, transform.rotation);
+        }
         #endregion
 
         protected bool InLayer(GameObject obj) => detectLayer == (detectLayer | (1 << obj.layer));
@@ -323,45 +311,6 @@
                     output.AddRange(Physics.RaycastAll(path[i], _dir.normalized, _dir.magnitude, detectLayer.value, triggerInteraction));
                 }
             }
-        }
-        protected bool PathCast(List<Vector2> path, out RaycastHit2D hit, out int detectIndex,
-            float minDepth, float maxDepth, float radius = 0)
-        {
-            hit = default;
-
-            if (radius == 0)
-            {
-                for (var i = 0; i < path.Count - 1; i++)
-                {
-                    hit = Physics2D.Linecast(path[i], path[i + 1], detectLayer.value, minDepth, maxDepth);
-
-                    if (!hit.transform) continue;
-
-                    detectIndex = i;
-
-                    return true;
-                }
-            }
-            else
-            {
-                for (var i = 0; i < path.Count - 1; i++)
-                {
-                    var direction = path[i + 1] - path[i];
-
-                    hit = Physics2D.CircleCast(path[i], radius, direction, direction.magnitude, detectLayer.value,
-                        minDepth,
-                        maxDepth);
-
-                    if (!hit.transform) continue;
-
-                    detectIndex = i;
-
-                    return true;
-                }
-            }
-
-            detectIndex = -1;
-            return false;
         }
         protected static Vector3[] CircularPoints(Vector3 _p, float radius, Vector3 normal, Vector3 tangent,
             int count, bool closed = false)
@@ -468,11 +417,9 @@
         protected void OnValidate() => AfterValidate();
         protected virtual void AfterValidate() {}
         /// <summary>
-        /// In Editor (No Playing) mode & Auto Update On.
-        ///
-        /// Use "Else"  when you want to force update ray in scene while update mode is off.
+        /// In Editor (No Playing) mode & Auto Update On. /n Use "Else"  when you want to force update ray in scene while update mode is off.
         /// </summary>
-        protected internal bool IsManuelMode =>  !enabled && IsPlaying;
+        protected internal bool IsManuelMode => !enabled && IsPlaying;
         
         [NonSerialized] protected bool EventFoldout = false;
 
@@ -486,11 +433,12 @@
         protected const string HCDetector = " <color=#FFD238>#CDetector</color>";
         protected const string HRDetector = " <color=#35D6FF>#RDetector</color>";
         protected const string HExperimental = " <color=#FF5548>#Experimental</color>";
-        protected const string HSmartSolver = " <color=#2BC6D2>#Solver</color>";
+        protected const string HLOS_Solver = " <color=#2BC6D2>#LOS_Solver</color>";
         protected const string HRecursive = " <color=#FFFC26>#Recursive</color>";
         protected const string HVirtual = " <color=#FFFC26>#Virtual</color>";
         protected const string HDependent = " <color=#C1D133>#Dependent</color>";
         protected const string HIRadius = " <color=#6861D1>#IRadius</color>";
+        protected const string HIPulse = " <color=#2EEBFF>#IPulse</color>";
         protected const string HINonAllocator = " <color=#87B06F>#NonAllocator</color>";
         protected const string HScalable = " <color=#B1976C>#Scalable</color>";
         protected const string HRotatable = " <color=#D18EC0>#Rotatable</color>";
@@ -498,9 +446,7 @@
         //private Color col = new Color(0.53f, 0.69f, 0.44f);
 
         protected const string CInformation = "Information";
-
         protected const string CInfluence = "Influence";
-
         protected const string TInfluence =
             "This auxiliary variable is defined for coefficient on other variables affected by ray. For e.g: gunDamage = influence * power";
 
@@ -542,8 +488,9 @@
         protected const string TPoint = "Point";
 
         protected const string COffset = "Offset";
+        protected const string CCap = "Cap";
         protected const string CCorner = "Corner";
-        protected const string CCamera = "Camera";
+        protected const string CCamera = "Main Camera";
 
         protected const string CLength = "Length";
         protected const string TLength = "Length";
@@ -559,11 +506,18 @@
         protected const string CMoveType = "Move Type";
         protected const string TMoveType = "Move Type";
 
-        protected const string CRaySensor = "Ray Sensor";
-        protected const string TRaySensor = "Ray Sensor";
+        protected const string CRaySensor = "RaySensor";
+        protected const string TRaySensor = "Ray Sensor includes all Rays. (with 2D and 3D separation)";
 
+        protected const string CSequenceOnTip = "Sequence On Tip";
+        protected const string TSequenceOnTip = "This option causes the chain of rays to be placed behind each other. Be sure to click this option after combining the Rays and making sure they are not duplicated.";
+        
+        protected const string CPathCast = "Path Cast";
+        protected const string TPathCast = "This option forces Ray to perform Raycast physical calculations, if you only need Path, it is better to keep it off just to improve performance.";
+            
         protected const string CSpace = "Space";
-        protected const string TSpace = "Space";
+        protected const string TSpace = "\nWorld: The world location accepts general directions and rotation has no effect on it." +
+                                        "\nLocal: The local position will change depending on the rotation of the object.";
 
         protected const string CBullet = "Bullet";
 
@@ -578,10 +532,13 @@
         protected const string TOuter = "It will clone ray same as received ray if this param null.";
 
         protected const string CBaseDirection = "Base Dircetion";
-        protected const string TBaseDirection = "Base Direction";
+        protected const string TBaseDirection = "The output angle of Planar can be selected according to one of the following formulas.";
+        
+        protected const string CPoolManager = "Pool Manager";
+        protected const string TPoolManager = "Automatically instantiate into this object.";
         
         protected const string CArrayCasting = "Array Casting";
-        protected const string TArrayCasting = "Array Casting (Will Support 1 bullet type)";
+        protected const string TArrayCasting = "This is a standard option that causes the bullets produced in a certain volume of the Array to be reproduced and prevents the spread of Garbage.";
 
         protected const string CLengthControl = "Length Controll";
         protected const string TLengthControl = "It will clone ray same as received ray if this param null.";
@@ -621,20 +578,17 @@
 
         protected const string CDigitStep = "DigitStep";
 
-        protected const string CBodyRadius = "Body Radius";
-        protected const string TBodyRadius = "Body Radius";
-
         protected const string CMinRadius = "Min Radius";
-        protected const string TMinRadius = "Min Radius";
+        protected const string TMinRadius = "The smallest possible radius.";
 
         protected const string CMaxRadius = "Max Radius";
-        protected const string TMaxRadius = "Max Radius";
+        protected const string TMaxRadius = "The largest possible radius.";
 
         protected const string CEdgeCount = "Edge Count";
-        protected const string TEdgeCount = "Edge Count";
+        protected const string TEdgeCount = "It's the number of sides in your Core that helps the smoothness of the ring, but the more the number, the more processing time it takes.";
 
         protected const string CHeight = "Height";
-        protected const string THeight = "Height";
+        protected const string THeight = "The height of Core in Detector or Ray, which you remember changes the type of processing to Capsule.";
 
         protected const string CRefreshTime = "Refresh Time";
         protected const string CCacheTime = "Cache Time";
@@ -643,8 +597,6 @@
 
         protected const string CGizmos = "Gizmos Update";
         protected const string TGizmos = "Define how to update gizmos frequantly.";
-        protected const string CLifeTime = "Life Time";
-        protected const string TLifeTime = "Bullet life in seconds. (-1 equals infinity)";
 
         protected const string CUpdate = "Auto Update";
 
@@ -663,7 +615,7 @@
             "Covers direction and ray length together. \"Z\" value is a straight length at usual.";
 
         protected const string CSegments = "Segments";
-        protected const string TSegments = "Segments";
+        protected const string TSegments = "It is recommended to keep the number of points on the Ray as low as possible, which helps the smoothness of the line but makes the processing heavy.";
 
         protected const string CSpeed = "Speed";
         protected const string CDuration = "Duration";
@@ -684,7 +636,7 @@
         protected const string TCollectHits = "With enable this variable, the ray automatically save all hits data to \"raycastHits\" array.";
 
         protected const string CTarget = "Target";
-        protected const string TTarget = "Target";
+        protected const string TTarget = "This option asks for the Core destination and makes decisions based on it.";
         protected const string CWeight = "Weight";
         protected const string CDistance = "Distance";
         protected const string CVelocity = "Velocity";
@@ -697,16 +649,18 @@
         protected const string TColorTolerance = "Color Tolerance";
 
         protected const string CRelative = "Relative";
-        protected const string TRelative = "Relative";
+        protected const string TRelative = "When this feature is activated, the new point will be offset from its back position.";
 
         protected const string CReferenceType = "Reference Type";
-        protected const string TReferenceType = "\nAuto: \nReference: \nClone:";
+        protected const string TReferenceType = "\nAuto: Automatic means automatic choice between virtual Clone Ray or normal clone. According to this system, Path Rays should be virtual cloned, and the rest of the Rays can use clones similar to themselves." +
+                                                "\nReference: According to this parameter, you can choose a single ray to be cloned. For example, the clone of a Basic Ray can be a Pipe." +
+                                                "\nClone: Instead of cloning a natural ray, this option creates a virtual ray that can copy and coordinate its previous ray points.";
 
-        protected const string CSolverType = "Smart Solver";
-        protected const string TSolverType = "This window is related to advanced collider detection settings.";
+        protected const string CSolverType = "LOS Solver";
+        protected const string TSolverType = "This feature helps you quickly implement a point-based Los system on the Collider.";
 
-        protected const string CBodyType = "Body";
-        protected const string TBodyType = "Body";
+        protected const string CBodyType = "Ray Body Type";
+        protected const string TBodyType = "This option is related to the Ray body, where you may choose between Pipe and Line. If your Radius is zero, it is recommended to use Line directly.";
 
         protected const string CCollectAll = "Collect All";
         protected const string CVolume = "CVolume";
@@ -825,24 +779,18 @@
         protected static void DrawNormal(Vector3 point, Vector3 normal, string label = "")
         {
             Handles.color = HelperColor;
-
             Handles.DrawWireDisc(point, normal, DiscSize);
-
             Handles.DrawLine(point, point + normal * LineSize);
-
-            if (label != "")
+            if (RCProPanel.ShowLabels && label != "")
             {
                 Handles.Label(point, label, RCProEditor.HeaderStyle);
             }
         }
-        protected static void DrawNormal(Vector3 point, Vector3 normal, float range, string label = "")
+        protected static void DrawNormal(Vector3 point, Vector3 normal, float offset, string label = "")
         {
             Handles.color = HelperColor;
-
-            Handles.DrawWireDisc(point, normal, range);
-
-            Handles.DrawLine(point, point + normal * range);
-
+            Handles.DrawWireDisc(point, normal, offset);
+            Handles.DrawLine(point, point + normal * offset);
             if (RCProPanel.ShowLabels && label != "")
             {
                 Handles.Label(point, label, RCProEditor.HeaderStyle);
@@ -851,15 +799,14 @@
         protected static void DrawNormal2D(RaycastHit2D Hit, float depth)
         {
             if (!Hit) return;
-
             Handles.color = HelperColor;
-
             var p = Hit.point.ToDepth(depth);
             Handles.DrawWireDisc(p, Hit.normal, DiscSize);
-
             Handles.DrawLine(p, p + Hit.normal.ToDepth() * LineSize);
-
-            Handles.Label(p, Hit.transform.name, RCProEditor.HeaderStyle);
+            if (RCProPanel.ShowLabels)
+            {
+                Handles.Label(p, Hit.transform.name, RCProEditor.HeaderStyle);
+            }
         }
         protected void DrawCapLine(Vector3 startPoint, Vector3 endPoint)
         {
@@ -891,9 +838,7 @@
         protected void DrawBlockLine(Vector3 p1, Vector3 p2, Transform blocked, RaycastHit blockPoint, float alpha = 1f)
         {
             if (IsLabel) Handles.Label(p2, $"<color=#60FFF5>{blocked.name}</color> blocked by <color=#FF392B>{blockPoint.collider.name}</color>", RCProEditor.LabelStyle);
-
             if (!IsBlockLine) return;
-
             if (IsGuide)
             {
                 Handles.color = BlockColor.ToAlpha(alpha);
@@ -901,6 +846,42 @@
                 DrawCross(blockPoint.point, blockPoint.normal);
                 Handles.color = Color.white.ToAlpha(alpha);
                 Handles.DrawDottedLine(blockPoint.point, p2, StepSizeLine);
+            }
+        }
+        protected void DrawBlockLine(Vector3 p1, Vector3 p2, RaycastHit blockPoint = default, float alpha = 1)
+        {
+            if (blockPoint.transform)
+            {
+                Handles.color = DetectColor.ToAlpha(alpha);
+                Handles.DrawLine(p1, blockPoint.point);
+                if (IsBlockLine)
+                {
+                    Handles.color = BlockColor.ToAlpha(alpha);
+                    Handles.DrawDottedLine(blockPoint.point, p2, StepSizeLine);
+                }
+            }
+            else
+            {
+                Handles.color = DefaultColor.ToAlpha(alpha);
+                Handles.DrawLine(p1, p2);
+            }
+        }
+        protected void DrawBlockLine(Vector3 p1, Vector3 p2, RaycastHit2D blockPoint = default, float depth = 0, float alpha = 1)
+        {
+            if (blockPoint.transform)
+            {
+                Handles.color = DetectColor.ToAlpha(alpha);
+                Handles.DrawLine(p1, blockPoint.point.ToDepth(depth));
+                if (IsBlockLine)
+                {
+                    Handles.color = BlockColor.ToAlpha(alpha);
+                    Handles.DrawDottedLine(blockPoint.point.ToDepth(depth), p2, StepSizeLine);
+                }
+            }
+            else
+            {
+                Handles.color = DefaultColor.ToAlpha(alpha);
+                Handles.DrawLine(p1, p2);
             }
         }
         protected void DrawBlockLine(Vector3 p1, Vector3 p2, Vector3 planeNormal, float radius = 0f,
@@ -1394,11 +1375,12 @@
                         ? GetNearestPointOnLine(path[i], path[i + 1], breakHit.point)
                         : breakHit.point;
                     DrawCapsuleLine(path[i], breakOn, radius, forwardS: false);
+
                     Handles.color = BlockColor;
                     DrawCapsuleLine(breakOn, path[i + 1], radius, backS: false);
                 }
             }
-            if (!coneCap) return;
+            if (!coneCap || !RCProPanel.DrawGuide) return;
             Handles.color = HelperColor;
             DrawCap(path.Last(), radius > 0 ? radius : DotSize * 2, path.LastDirection(Vector3.forward));
         }
@@ -1414,11 +1396,11 @@
                 {
                     if (detectIndex > -1) // with line detection
                     {
-                        Handles.color = isDetect && i < detectIndex ? DetectColor : BlockColor;
+                        GizmoColor = isDetect && i < detectIndex ? DetectColor : BlockColor;
                     }
                     else // without any detection
                     {
-                        Handles.color = _color == default ? DefaultColor : _color;
+                        GizmoColor = _color == default ? DefaultColor : _color;
                     }
                     DrawCircleLine(path[i], path[i + 1], radius, dotted);
                 }
@@ -1426,24 +1408,22 @@
                 {
                     if (drawDisc)
                     {
-                        Handles.color = DetectColor;
+                        GizmoColor = DetectColor;
                         var breakOn = radius > 0 ? GetNearestPointOnLine(path[i], path[i + 1], breakPoint) : breakPoint;
                         DrawCircleLine(path[i], breakOn, radius, forawrdHemi: false);
-                        Handles.color = BlockColor;
+                        
+                        GizmoColor = BlockColor;
                         DrawCircleLine(breakOn, path[i + 1], radius, backHemi: false);
                     }
-
                 }
 
                 if (drawDisc && radius > 0) Handles.DrawWireDisc(path[i + 1], Vector3.forward, radius);
-
                 if (pointLabel) Handles.Label(path[i + 1], $"Point {i + 1}");
             }
 
             if (!coneCap) return;
 
             Handles.color = HelperColor;
-
             DrawCap(path.Last(), radius > 0 ? radius : DotSize * 2, path.LastDirection(Vector3.right));
         }
         private static void DrawCap(Vector3 position, float radius, Vector3 direction)
@@ -1496,7 +1476,11 @@
         internal static void PropertyMaxField(SerializedProperty property,GUIContent label , float max = 0)
         {
             EditorGUILayout.PropertyField(property, label);
-            
+            property.floatValue = Mathf.Max(property.floatValue, max);
+        }
+        internal static void PropertyMaxField(SerializedProperty property, float max = 0)
+        {
+            EditorGUILayout.PropertyField(property);
             property.floatValue = Mathf.Max(property.floatValue, max);
         }
         internal static void PropertyMaxIntField(SerializedProperty property,GUIContent label , int max = 0)
@@ -1660,13 +1644,11 @@
             {
                 PropertySliderField(_so.FindProperty("influence"), 0f, 1f, CInfluence.ToContent(TInfluence));
             }
-
             if (hasInteraction)
             {
                 EditorGUILayout.PropertyField(_so.FindProperty("triggerInteraction"),
                     CTriggerInteraction.ToContent(TTriggerInteraction));
             }
-
             if (hasUpdateMode)
             {
                 if (enabled)
@@ -1681,7 +1663,6 @@
                     EndHorizontal();
                 }
             }
-
             if (hasGizmoUpdate)
             {
                 BeginVerticalBox();

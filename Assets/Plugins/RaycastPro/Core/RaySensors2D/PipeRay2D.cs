@@ -58,7 +58,7 @@ namespace RaycastPro.RaySensors2D
             Handles.color = Performed ? DetectColor : DefaultColor;
             DrawCircleRay(p1, direction, Direction, local, radius, height);
             if (!hit) return;
-            DrawNormal(hit.point.ToDepth(z), Hit.normal);
+            DrawNormal(hit.point.ToDepth(z), hit.normal);
             DrawNormalFilter();
         }
         
@@ -80,7 +80,7 @@ namespace RaycastPro.RaySensors2D
             if (hasInfo) HitInformationField();
         }
 #endif
-        public override Vector3 Tip => transform.position + LocalDirection3D + LocalDirection3D.normalized*radius;
+        public override Vector3 Tip => transform.position + LocalDirection3D;
 
         public override float RayLength => LocalDirection.magnitude + radius;
         public override Vector3 BasePoint => transform.position;

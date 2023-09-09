@@ -17,6 +17,7 @@
         List<Transform> BlockedTargets { get; set; }
         Transform[] PreviousBlockedTargets { get; set; }
     }
+    public interface IPulse { }
     public abstract class BaseDetector : RaycastCore
     {
         public LayerMask blockLayer;
@@ -59,9 +60,30 @@
             OnCast();
             return Performed;
         }
-        protected void Update() { if (autoUpdate == UpdateMode.Normal) OnCast(); }
-        protected void LateUpdate() { if (autoUpdate == UpdateMode.Late) OnCast(); }
-        protected void FixedUpdate() { if (autoUpdate == UpdateMode.Fixed) OnCast(); }
+
+        public float pulseTime;
+        private float currentPulse;
+
+        private void PulseUpdate()
+        {
+            if (pulseTime > 0)
+            {
+                currentPulse += Time.unscaledDeltaTime;
+                if (currentPulse >= pulseTime)
+                {
+                    currentPulse = 0f;
+                    OnCast();
+                }
+            }
+            else
+            {
+                OnCast();
+            }
+        }
+
+        protected void Update() { if (autoUpdate == UpdateMode.Normal) PulseUpdate(); }
+        protected void LateUpdate() { if (autoUpdate == UpdateMode.Late) PulseUpdate(); }
+        protected void FixedUpdate() { if (autoUpdate == UpdateMode.Fixed) PulseUpdate(); }
         
         /// <summary>
         /// Its an optimized foreach OnEnter/Exit callback event system.
@@ -75,19 +97,15 @@
         protected static void CallEvents<T>(List<T> detected, T[] previous, UnityEvent<T> onMember, UnityEvent<T> onNewMember, UnityEvent<T> onLostMember)
         {
             #region Events (Optimized)
-            
             if (onMember != null) foreach (var _member in detected) onMember.Invoke(_member);
-
             if (onNewMember != null)
             {
                 foreach (var _member in detected.Except(previous)) onNewMember.Invoke(_member);
             }
-
             if (onLostMember != null)
             {
                 foreach (var _member in previous.Except(detected)) onLostMember.Invoke(_member);
             }
-
             #endregion
         }
         
@@ -119,8 +137,6 @@
         }
         protected void PassColliderGate(Collider c)
         {
-            if (!c) return;
-
             PanelGate += () => DetectorInfoField(c.transform, c.bounds.center, false);
             GizmoGate += () =>
             {
@@ -234,6 +250,14 @@
             inBox?.Invoke();
             EndVertical();
             GUI.enabled = true;
+        }
+
+        protected void PulseField(SerializedObject _so)
+        {
+            if (enabled && this is IPulse)
+            {
+                PropertyMaxField(_so.FindProperty(nameof(pulseTime)), "Pulse Time".ToContent("It creates a time gap between each process, which is used to a large extent in process optimization."));
+            }
         }
         
         protected void EventField(SerializedObject _so)

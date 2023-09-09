@@ -445,41 +445,41 @@ MonoBehaviour:
   pathCast: 1
   PathPoints:
   - {x: -3.8953238, y: 3.9633412}
-  - {x: -3.835385, y: 3.8173869}
-  - {x: -3.7778509, y: 3.6690283}
+  - {x: -3.7493694, y: 3.9034026}
+  - {x: -3.6010108, y: 3.8458683}
   - {x: -3.4508812, y: 3.7901049}
-  - {x: -3.2996147, y: 3.7354789}
-  - {x: -3.1478443, y: 3.6813564}
-  - {x: -2.9962037, y: 3.6271038}
-  - {x: -2.8453267, y: 3.5720882}
-  - {x: -2.6958466, y: 3.5156753}
-  - {x: -2.5483968, y: 3.457232}
-  - {x: -2.4036112, y: 3.3961248}
+  - {x: -3.6674614, y: 3.3676322}
+  - {x: -3.613339, y: 3.2158618}
+  - {x: -3.5590863, y: 3.0642214}
+  - {x: -3.5040708, y: 2.9133441}
+  - {x: -3.447658, y: 2.763864}
+  - {x: -3.3892145, y: 2.6164143}
+  - {x: -3.3281074, y: 2.471629}
   - {x: -3.2637024, y: 2.3301406}
-  - {x: -3.1953664, y: 2.1925838}
-  - {x: -3.1224656, y: 2.0595918}
-  - {x: -3.0443666, y: 1.931798}
-  - {x: -2.9604356, y: 1.8098359}
-  - {x: -2.8700395, y: 1.6943393}
-  - {x: -2.7725444, y: 1.5859416}
-  - {x: -2.667317, y: 1.4852762}
+  - {x: -2.1245663, y: 3.2633839}
+  - {x: -1.9915743, y: 3.190483}
+  - {x: -1.8637805, y: 3.112384}
+  - {x: -1.7418184, y: 3.028453}
+  - {x: -1.6263218, y: 2.938057}
+  - {x: -1.5179241, y: 2.8405619}
+  - {x: -1.4172585, y: 2.7353344}
   - {x: -1.3255949, y: 2.6211052}
-  - {x: -1.2453508, y: 2.4954567}
-  - {x: -1.1751904, y: 2.3597236}
-  - {x: -1.1133876, y: 2.2156334}
-  - {x: -1.0582156, y: 2.0649126}
-  - {x: -1.0079479, y: 1.9092875}
-  - {x: -0.9608576, y: 1.7504847}
-  - {x: -0.9152186, y: 1.5902312}
+  - {x: -2.4274392, y: 1.3133683}
+  - {x: -2.291706, y: 1.2432079}
+  - {x: -2.147616, y: 1.1814051}
+  - {x: -1.9968953, y: 1.1262333}
+  - {x: -1.84127, y: 1.0759654}
+  - {x: -1.6824672, y: 1.0288751}
+  - {x: -1.5222137, y: 0.9832361}
   - {x: -1.362236, y: 0.9373212}
-  - {x: -1.2042603, y: 0.88940406}
-  - {x: -1.0500135, y: 0.8377578}
-  - {x: -0.9012222, y: 0.7806561}
-  - {x: -0.7596133, y: 0.7163725}
-  - {x: -0.62691283, y: 0.6431799}
-  - {x: -0.50484776, y: 0.5593519}
+  - {x: -0.82138634, y: 1.2722776}
+  - {x: -0.7697401, y: 1.1180308}
+  - {x: -0.7126384, y: 0.9692395}
+  - {x: -0.64835477, y: 0.8276305}
+  - {x: -0.5751622, y: 0.6949301}
+  - {x: -0.4913342, y: 0.572865}
   - {x: -0.3951447, y: 0.46316218}
-  DetectIndex: 30
+  DetectIndex: -1
   timeMode: 0
   segments: 34
   waveSpeed: 1.5
@@ -2177,7 +2177,7 @@ MonoBehaviour:
   - {x: 1.2991366, y: -2.6453156}
   - {x: 2.0062404, y: -1.9382057}
   - {x: 0.59202003, y: -0.52399826}
-  DetectIndex: 4
+  DetectIndex: -1
   chainReference: 1
   radius: 0.1
   chainPoints:
@@ -2280,6 +2280,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2583596346087589765, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_text
       value: In this demo, you can see a general description of 2D Rays and how they
@@ -2320,6 +2324,30 @@ PrefabInstance:
     - target: {fileID: 4944054610069616903, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_PlaneDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6505992306007326160, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_Name
@@ -3307,7 +3335,7 @@ MonoBehaviour:
   - {x: -1.6730325, y: 0.800001}
   - {x: -1.1730328, y: 0.4500009}
   - {x: -0.67303276, y: 0.0000010893851}
-  DetectIndex: 9
+  DetectIndex: -1
   segments: 10
   elapsedTime: 5
   radius: 0.1

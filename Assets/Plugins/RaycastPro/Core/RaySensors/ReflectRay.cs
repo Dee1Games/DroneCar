@@ -11,8 +11,10 @@
     [AddComponentMenu("RaycastPro/Rey Sensors/" + nameof(ReflectRay))]
     public sealed class ReflectRay : PathRay, IRadius
     {
-        private List<RaycastHit> reflectHits = new List<RaycastHit>();
-
+        /// <summary>
+        /// Read this list for accessing Raycast Hits
+        /// </summary>
+        public readonly List<RaycastHit> reflectHits = new List<RaycastHit>();
         public LayerMask reflectLayer;
         
         [SerializeField] private float radius;
@@ -25,7 +27,10 @@
         public Axis planeAxis;
         public bool hasFreezeAxis;
 
-        private RaycastHit ReflectCast(out List<RaycastHit> RaycastHits, out List<Vector3> _pathPoints)
+        private Vector3 point, _direction;
+        private float distance;
+        private RaycastHit _tHit;
+        private void ReflectCast()
         {
             Vector3 ApplyFreeze(Vector3 dir)
             {
@@ -38,54 +43,55 @@
                 }
                 return dir;
             }
-            _pathPoints = new List<Vector3>();
-            RaycastHits = new List<RaycastHit>();
-            var point = transform.position;
-            var _direction = Direction;
+            PathPoints.Clear();
+            reflectHits.Clear();
+            point = transform.position;
+            _direction = Direction;
             _direction = ApplyFreeze(_direction);
-            _pathPoints.Add(transform.position);
-            var distance = direction.magnitude;
+            PathPoints.Add(transform.position);
+            distance = direction.magnitude;
             DetectIndex = -1;
-            var raycastHit = new RaycastHit();
+            hit = new RaycastHit();
+            // Strictly Queries Hit back most be false
             var physicsSetting = Physics.queriesHitBackfaces;
             Physics.queriesHitBackfaces = false;
+            var DI = -1;
             while (true)
             {
-                RaycastHit _hit;
+                DI++;
+                _tHit = new RaycastHit();
                 if (radius > 0)
                 {
-                    Physics.SphereCast(point, radius, _direction, out _hit, distance, reflectLayer.value | detectLayer.value,
+                    Physics.SphereCast(point, radius, _direction, out _tHit, distance, reflectLayer.value | detectLayer.value,
                         triggerInteraction);
                 }
                 else
-                    Physics.Raycast(point, _direction, out _hit, distance, reflectLayer.value | detectLayer.value,
+                    Physics.Raycast(point, _direction, out _tHit, distance, reflectLayer.value | detectLayer.value,
                         triggerInteraction);
                     
-                if(_hit.transform)
+                if(_tHit.transform)
                 {
-                    RaycastHits.Add(_hit);
-                    _pathPoints.Add(_hit.point);
-                    var onHit = detectLayer.InLayer(_hit.transform.gameObject);
-                    if (onHit)
+                    reflectHits.Add(_tHit);
+                    PathPoints.Add(_tHit.point);
+                    if (detectLayer.InLayer(_tHit.transform.gameObject))
                     {
-                        DetectIndex = _pathPoints.Count - 1;
-                        raycastHit = _hit;
+                        DetectIndex = DI;
+                        hit = _tHit;
                         break;
                     }
-                    distance -= (_hit.point - point).magnitude;
-                    point = _hit.point;
-                    _direction = Vector3.Reflect(_direction, _hit.normal);
+                    distance -= (_tHit.point - point).magnitude;
+                    point = _tHit.point;
+                    _direction = Vector3.Reflect(_direction, _tHit.normal);
                     _direction = ApplyFreeze(_direction);
                     continue;
                 }
-                _pathPoints.Add(point + _direction.normalized * distance);
+                PathPoints.Add(point + _direction.normalized * distance);
                 break;
             }
             Physics.queriesHitBackfaces = physicsSetting;
-            return raycastHit;
         }
 
-        protected override void OnCast() => hit = ReflectCast(out reflectHits, out PathPoints);
+        protected override void OnCast() => ReflectCast();
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -98,16 +104,16 @@
 
             if (IsManuelMode)
             {
+                ReflectCast();
                 DrawPath(PathPoints, hit, radius, coneCap: true, detectIndex: DetectIndex);
                 Handles.color = HelperColor;
                 Handles.DrawDottedLine(transform.position, Tip, StepSizeLine);
             }
             else
             {
-                ReflectCast(out _, out var _pathPoints);
-                DrawPath(_pathPoints, hit, radius: radius, coneCap: true, detectIndex: DetectIndex);
+                DrawPath(PathPoints, hit, radius: radius, coneCap: true, detectIndex: DetectIndex);
                 Handles.color = HelperColor;
-                Handles.DrawDottedLine(transform.position, _pathPoints.Last(), StepSizeLine);
+                Handles.DrawDottedLine(transform.position, PathPoints.Last(), StepSizeLine);
             }
 
             reflectHits.ForEach(p => DrawNormal(p.point, p.normal, p.transform.name));

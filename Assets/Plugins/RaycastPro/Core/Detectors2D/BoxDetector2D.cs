@@ -9,7 +9,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(BoxDetector2D))]
-    public sealed class BoxDetector2D : ColliderDetector2D
+    public sealed class BoxDetector2D : ColliderDetector2D, IPulse
     {
         public Vector2 size = Vector2.one;
         public Vector2 difference;
@@ -132,11 +132,9 @@
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Receiving colliders within the specified bounds with a detect point solver." +
-                                     HAccurate + HCDetector + HSmartSolver + HRotatable + HINonAllocator;
+                                     HAccurate + HIPulse + HCDetector + HLOS_Solver + HRotatable + HINonAllocator;
 #pragma warning restore CS0414
-
-        private readonly string[] CEventNames = {"onDetectCollider", "onNewCollider", "onLostCollider"};
-
+        
         private Vector3 boundsSizeZ0, boundsMinSizeZ0, sizeY, sizeX;
         private Matrix4x4 matrix;
 

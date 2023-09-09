@@ -13,7 +13,7 @@
     public sealed class HybridRay2D : PathRay2D, IRadius
     {
         [SerializeField] private RaySensor2D[] raySensors = Array.Empty<RaySensor2D>();
-        public bool sequenceOnTip = true;
+        public bool sequenceOnTip = false;
         [SerializeField] private float radius = .4f;
         public float Radius
         {
@@ -26,7 +26,7 @@
             get
             {
                 var length = 0f;
-                foreach (var raySensor in raySensors) if (raySensor) length += raySensor.Length;
+                foreach (var raySensor in raySensors) if (raySensor) length += raySensor.RayLength;
                 return length;
             }
         }
@@ -41,8 +41,6 @@
             _t = transform;
             PathPoints.Clear();
             PathPoints.Add(transform.position);
-            
-            var l = 0;
             for (var i = 0; i < raySensors.Length; i++)
             {
                 var _r = raySensors[i];
@@ -57,10 +55,9 @@
                     PathPoints.Add(_r.transform.position);
                     PathPoints.Add(_r.Tip);
                 }
-                l = i;
             }
 
-            if (pathCast) PathCast(PathPoints, out hit, out DetectIndex, MinDepth, MaxDepth);
+            if (pathCast) DetectIndex = PathCast(out hit, radius);
 
             else
             {
@@ -75,6 +72,8 @@
             
             isDetect = FilterCheck(hit);
         }
+
+        protected override void UpdatePath() { }
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -95,14 +94,18 @@
                 }
             }
 
-            if (hit.transform)
+            if (hit)
             {
                 DrawNormalFilter();
                 GizmoColor = DetectColor;
-                DrawCross(hit.point, hit.normal);
-                Handles.DrawWireDisc(hit.point, hit.normal, DotSize * .4f);
+                hitDepth = hit.point.ToDepth(z);
+                DrawCross(hitDepth, Vector3.forward);
+                
+                DrawNormal(hitDepth+hit.normal.ToDepth()*DotSize, hit.normal);
             }
         }
+
+        private Vector3 hitDepth;
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true, bool hasInfo = true)
         {

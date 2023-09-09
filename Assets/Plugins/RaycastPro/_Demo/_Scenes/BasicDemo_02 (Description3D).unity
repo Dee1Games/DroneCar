@@ -169,6 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 119866738}
   - {fileID: 1419596423}
@@ -329,39 +330,39 @@ MonoBehaviour:
   pathCast: 1
   PathPoints:
   - {x: -0.0000008955362, y: 3.9633412, z: -3.9633412}
-  - {x: -0.0000008955362, y: 3.8747678, z: -3.875138}
-  - {x: -0.0000008955362, y: 3.7868986, z: -3.7862303}
-  - {x: -0.0000008955362, y: 3.7012315, z: -3.6951208}
-  - {x: -0.0000008955362, y: 3.618488, z: -3.6010876}
-  - {x: -0.0000008955362, y: 3.5380309, z: -3.5047681}
-  - {x: -0.0000008955362, y: 3.4576879, z: -3.4083345}
-  - {x: -0.0000008955362, y: 3.3740873, z: -3.3151581}
-  - {x: -0.0000008955362, y: 3.2834747, z: -3.2289941}
-  - {x: -0.0000008955362, y: 3.1828427, z: -3.1528497}
-  - {x: -0.0000008955362, y: 3.0711045, z: -3.087811}
-  - {x: -0.0000008955362, y: 2.9499912, z: -3.0321474}
-  - {x: -0.0000008955362, y: 2.8243794, z: -2.9809828}
-  - {x: -0.0000008955362, y: 2.7018652, z: -2.9267201}
-  - {x: -0.0000008955362, y: 2.5915537, z: -2.8602552}
-  - {x: -0.0000008955362, y: 2.5022192, z: -2.7728128}
-  - {x: -0.0000008955362, y: 2.4401665, z: -2.6580887}
-  - {x: -0.0000008955362, y: 2.4072335, z: -2.5142453}
-  - {x: -0.0000008955362, y: 2.3994155, z: -2.3452864}
-  - {x: -0.0000008955362, y: 2.406518, z: -2.161407}
-  - {x: -0.0000008955362, y: 2.413079, z: -1.9780695}
-  - {x: -0.0000008955362, y: 2.4005618, z: -1.8138099}
-  - {x: -0.0000008955362, y: 2.3505619, z: -1.6870334}
-  - {x: -0.0000008955362, y: 2.2485068, z: -1.6123116}
-  - {x: -0.0000008955362, y: 2.0871835, z: -1.5968585}
-  - {x: -0.0000008955362, y: 1.8693461, z: -1.637919}
-  - {x: -0.0000008955362, y: 1.6087766, z: -1.7217121}
-  - {x: -0.0000008955362, y: 1.3293681, z: -1.8243432}
-  - {x: -0.0000008955362, y: 1.0621581, z: -1.9147768}
-  - {x: -0.0000008955362, y: 0.84060264, z: -1.9595559}
-  - {x: -0.0000008955362, y: 0.69477415, z: -1.9286075}
-  - {x: -0.0000008955362, y: 0.64543533, z: -1.8011696}
-  - {x: -0.0000008955362, y: 0.69907, z: -1.5707583}
-  DetectIndex: 24
+  - {x: -0.0000008955362, y: 3.8745568, z: -3.875349}
+  - {x: -0.0000008955362, y: 3.7842348, z: -3.7888944}
+  - {x: -0.0000008955362, y: 3.6920557, z: -3.7042968}
+  - {x: -0.0000008955362, y: 3.5990016, z: -3.620574}
+  - {x: -0.0000008955362, y: 3.5072598, z: -3.5355392}
+  - {x: -0.0000008955362, y: 3.4196577, z: -3.4463644}
+  - {x: -0.0000008955362, y: 3.3387527, z: -3.350493}
+  - {x: -0.0000008955362, y: 3.265807, z: -3.246662}
+  - {x: -0.0000008955362, y: 3.1999357, z: -3.1357565}
+  - {x: -0.0000008955362, y: 3.137703, z: -3.0212126}
+  - {x: -0.0000008955362, y: 3.073357, z: -2.9087818}
+  - {x: -0.0000008955362, y: 2.9997573, z: -2.8056047}
+  - {x: -0.0000008955362, y: 2.909877, z: -2.7187085}
+  - {x: -0.0000008955362, y: 2.7986062, z: -2.6532025}
+  - {x: -0.0000008955362, y: 2.6644707, z: -2.6105614}
+  - {x: -0.0000008955362, y: 2.5108378, z: -2.5874176}
+  - {x: -0.0000008955362, y: 2.3462472, z: -2.5752316}
+  - {x: -0.0000008955362, y: 2.1836367, z: -2.5610652}
+  - {x: -0.0000008955362, y: 2.0384598, z: -2.5294652}
+  - {x: -0.0000008955362, y: 1.9259179, z: -2.4652305}
+  - {x: -0.0000008955362, y: 1.8577621, z: -2.3566098}
+  - {x: -0.0000008955362, y: 1.8392687, z: -2.1983263}
+  - {x: -0.0000008955362, y: 1.8670359, z: -1.9937823}
+  - {x: -0.0000008955362, y: 1.9281733, z: -1.7558684}
+  - {x: -0.0000008955362, y: 2.0012372, z: -1.5060279}
+  - {x: -0.0000008955362, y: 2.0589814, z: -1.2715068}
+  - {x: -0.0000008955362, y: 2.0726218, z: -1.08109}
+  - {x: -0.0000008955362, y: 2.016994, z: -0.9599409}
+  - {x: -0.0000008955362, y: 1.8757379, z: -0.92442036}
+  - {x: -0.0000008955362, y: 1.6455255, z: -0.9778559}
+  - {x: -0.0000008955362, y: 1.3384283, z: -1.1081767}
+  - {x: -0.0000008955362, y: 0.9817543, z: -1.288074}
+  DetectIndex: 22
   timeMode: 0
   segments: 32
   radius: 0
@@ -465,6 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 352549546}
   - {fileID: 1890849706}
@@ -637,7 +639,7 @@ GameObject:
   - component: {fileID: 634307761}
   - component: {fileID: 634307760}
   m_Layer: 0
-  m_Name: Pyrocaster (Pointer)
+  m_Name: Pyrocaster (Radial)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -669,6 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 634307760}
   - {fileID: 722871438}
@@ -741,6 +744,94 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &686406067
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 686406068}
+  - component: {fileID: 686406069}
+  m_Layer: 0
+  m_Name: Radial Ray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &686406068
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686406067}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 722871441}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &686406069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686406067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363184dbefb1e69448f84bd41eb4ba6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  influence: 1
+  triggerInteraction: 0
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  autoUpdate: 0
+  gizmosUpdate: 2
+  liner: {fileID: 0}
+  useLinerClampedPosition: 0
+  cutOnHit: 0
+  linerEndPosition: 1
+  linerBasePosition: 0
+  stamp: {fileID: 0}
+  local: 1
+  stampOnHit: 0
+  stampAutoHide: 0
+  stampOffset: 0
+  syncStamp:
+    axis: 0
+    syncAxis: 0
+    flipAxis: 0
+  planarSensitive: 0
+  _planar: {fileID: 0}
+  planers: []
+  anyPlanar: 1
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onBeginDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  direction: {x: 0, y: 0, z: 4}
+  arcAngle: 45
+  value: 0
+  subdivide: 3
 --- !u!1 &722871437
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,7 +927,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2079281950}
+  - {fileID: 686406068}
   m_Father: {fileID: 634307764}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -985,6 +1076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 959545553}
   - {fileID: 1765775890}
@@ -1068,6 +1160,7 @@ GameObject:
   - component: {fileID: 1225270668}
   - component: {fileID: 1225270667}
   - component: {fileID: 1225270666}
+  - component: {fileID: 1225270669}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -1141,6 +1234,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -75, z: 0}
+--- !u!114 &1225270669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225270665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5bdc4bc458062743acb44dde3bbee52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  influence: 1
+  triggerInteraction: 0
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  autoUpdate: 0
+  gizmosUpdate: 0
+  liner: {fileID: 0}
+  useLinerClampedPosition: 0
+  cutOnHit: 0
+  linerEndPosition: 1
+  linerBasePosition: 0
+  stamp: {fileID: 0}
+  local: 1
+  stampOnHit: 0
+  stampAutoHide: 0
+  stampOffset: 0
+  syncStamp:
+    axis: 0
+    syncAxis: 0
+    flipAxis: 0
+  planarSensitive: 0
+  _planar: {fileID: 0}
+  planers: []
+  anyPlanar: 1
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onBeginDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  direction: {x: 0, y: 0, z: 40}
+  mainCamera: {fileID: 1225270667}
+  radius: 0.4
+  rayFromCamera: 0
+  eyeType: 2
 --- !u!1 &1264943887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,6 +1431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 1277308682}
   - {fileID: 892395068}
@@ -1755,6 +1906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 1338241973}
   - {fileID: 1625455025}
@@ -2219,6 +2371,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2583596346087589765, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_text
       value: In this demo, you can see a general description of 3D Rays and how they
@@ -2259,6 +2415,30 @@ PrefabInstance:
     - target: {fileID: 4944054610069616903, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_PlaneDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218153164960195642, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6505992306007326160, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_Name
@@ -2600,6 +2780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 1823652646}
   - {fileID: 1504743780}
@@ -2792,95 +2973,6 @@ MonoBehaviour:
   rotateTurn: {x: 10, y: 10, z: 10}
   randomRotate: {x: 0, y: 0, z: 0}
   randomMove: {x: 0, y: 0, z: 0}
---- !u!1 &2079281949
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2079281950}
-  - component: {fileID: 2079281953}
-  m_Layer: 0
-  m_Name: Pointer Ray
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2079281950
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2079281949}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 722871441}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2079281953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2079281949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5bdc4bc458062743acb44dde3bbee52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  influence: 1
-  triggerInteraction: 0
-  detectLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  autoUpdate: 0
-  gizmosUpdate: 2
-  liner: {fileID: 0}
-  useLinerClampedPosition: 0
-  cutOnHit: 0
-  linerEndPosition: 1
-  linerBasePosition: 0
-  stamp: {fileID: 0}
-  local: 1
-  stampOnHit: 0
-  stampAutoHide: 0
-  stampOffset: 0
-  syncStamp:
-    axis: 0
-    syncAxis: 0
-    flipAxis: 0
-  planarSensitive: 0
-  _planar: {fileID: 0}
-  planers: []
-  anyPlanar: 1
-  onCast:
-    m_PersistentCalls:
-      m_Calls: []
-  onDetect:
-    m_PersistentCalls:
-      m_Calls: []
-  onChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onBeginDetect:
-    m_PersistentCalls:
-      m_Calls: []
-  onEndDetect:
-    m_PersistentCalls:
-      m_Calls: []
-  direction: {x: 0, y: 0, z: 30}
-  mainCamera: {fileID: 1225270667}
-  radius: 0.1
-  rayFromCamera: 0
-  eyeType: 2
 --- !u!23 &73672795920248925
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3017,6 +3109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1de990365c4c2cb4c9cfe9ed02c7832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoRayDetect: 1
   neon:
   - {fileID: 3751349153695640545}
   - {fileID: 3442973532491264196}

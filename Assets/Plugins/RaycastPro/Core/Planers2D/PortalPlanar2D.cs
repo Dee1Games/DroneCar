@@ -35,25 +35,15 @@ namespace RaycastPro.Planers2D
                 case DirectionOutput.PlanarForward: forward = transform.right; break;
             }
 
-            clone.transform.position = _tOuter.PortalPoint(transform, point).ToDepth(_tOuter.position.z) + _tOuter.TransformDirection(forward * offset);
+            clone.transform.position = _tOuter.PortalPoint(transform, point).ToDepth(_tOuter.position.z);
             inverse = transform.InverseTransformDirection(forward);
-            clone.transform.right = _tOuter.TransformDirection(inverse);
+            clone.transform.right = _tOuter.rotation * forward;
+            clone.transform.position += clone.transform.right * offset;
             ApplyLengthControl(sensor);
-        }
-
-        /// <summary>
-        /// Null Back For now
-        /// </summary>
-        /// <param name="hit"></param>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        internal override TransitionData[] GetTransitionData2D(RaycastHit2D hit, Vector2 direction)
-        {
-            return new TransitionData[] { };
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Transferring the Planer Sensitive 2D Ray sequence to the outer gate.";
+        private static string Info = "Transferring the Planer Sensitive 2D Ray sequence to the outer gate."+HExperimental;
 #pragma warning restore CS0414
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,

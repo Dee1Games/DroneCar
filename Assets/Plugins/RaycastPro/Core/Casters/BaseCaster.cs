@@ -20,6 +20,11 @@ namespace RaycastPro
         /// <param name="_index">Bullet Array Index</param>
         public abstract void Cast(int _index);
 
+        [Tooltip("Automatic creation of Pool object at start.")]
+        [SerializeField] protected bool createPoolAtStart = true;
+        
+        [Tooltip("Automatically instantiate into this object.")]
+        [SerializeField] public Transform poolManager;
         public abstract void Reload();
         #region Update
         protected void Update()
@@ -56,7 +61,14 @@ namespace RaycastPro
                 prop.SetValue(to, prop.GetValue(from, null), null);
             }
         }
-        
+
+        private void Awake()
+        {
+            if (createPoolAtStart)
+            {
+                poolManager = new GameObject($"==={name} Pool===").transform;
+            }
+        }
 
         [Serializable]
         public class Ammo
@@ -142,9 +154,17 @@ namespace RaycastPro
                 inRate = false;
             }
 
+            public float currentReloadTime { get; private set; } = 0f;
+            private float dt;
             internal IEnumerator IReload()
             {
-                yield return new WaitForSeconds(reloadTime);
+                while (currentReloadTime < reloadTime)
+                {
+                    currentReloadTime += Time.deltaTime;
+                    yield return new WaitForSeconds(Time.deltaTime);
+                }
+                currentReloadTime = 0f;
+                
                 if (infiniteAmmo) // Bill
                 {
                     magazineAmount = magazineCapacity;

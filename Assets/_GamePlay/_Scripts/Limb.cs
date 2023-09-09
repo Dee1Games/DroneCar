@@ -30,7 +30,7 @@ public class Limb : MonoBehaviour
     [Header("Art")]
     public ParticleSystem particle;
     public GameObject member;
-
+    public Transform forceToDeScale;
 
     void Start()
     {
@@ -79,6 +79,11 @@ public class Limb : MonoBehaviour
     public void Dismember()
     {
         if (unbreakable) return;
+
+        if (forceToDeScale)
+        {
+            forceToDeScale.localScale = Vector3.zero;
+        }
         
         foreach (var childLimb in childLimbs)
         {

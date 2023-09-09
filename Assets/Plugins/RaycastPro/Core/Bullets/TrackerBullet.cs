@@ -7,13 +7,14 @@ namespace RaycastPro.Bullets
 
 #if UNITY_EDITOR
     using UnityEditor;
-    using Editor;
 #endif
 
     [AddComponentMenu("RaycastPro/Bullets/" + nameof(TrackerBullet))]
     public sealed class TrackerBullet : Bullet
     {
         public Transform target;
+        public Rigidbody body;
+        
         public Vector3 targetPoint;
 
         public float force = 10f;
@@ -29,19 +30,15 @@ namespace RaycastPro.Bullets
             RotationLerp,
         }
         public TrackType trackType = TrackType.PositionLerp;
-        
-        [SerializeField]
-        private AxisRun axisRun = new AxisRun();
-        
+
         protected override void OnCast()
         {
             if (raySource)
             {
                 transform.position = raySource.BasePoint;
-                // Tip Direction
-                transform.rotation = Quaternion.LookRotation(raySource.TipDirection, transform.up);
+                transform.rotation = Quaternion.LookRotation(raySource.LocalDirection, transform.up);
             }
-            
+
             targetPoint = target.position;
             currentForce = force;
             _t = transform;
@@ -52,7 +49,7 @@ namespace RaycastPro.Bullets
         private Vector3 _dir;
         private Quaternion look;
         public override void RuntimeUpdate()
-        {              
+        {
             _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
             
@@ -60,38 +57,53 @@ namespace RaycastPro.Bullets
             _dis = Vector3.Distance(_t.position, targetPoint);
             if (currentForce <= .1f)
             {
-                OnEnd();
+                OnEnd(caster);
                 return;
             }
             if (target && _dis <= distanceThreshold)
             {
-                OnEnd();
+                OnEnd(caster);
                 return;
             }
+            _dt = GetModeDeltaTime(timeMode);
             _dir = targetPoint - _t.position;
+            
+            if (collisionRay)  CollisionRun(_dt);
+            
             switch (trackType)
             {
                 case TrackType.PositionLerp:
                     var lerp = Vector3.Lerp(_t.position, targetPoint, _dt * speed);
-                    _t.position = lerp;
+                    if (body)
+                    {
+                        body.MovePosition(lerp);
+                    }
+                    else
+                    {
+                        _t.position = lerp;
+                    }
                     break;
                 case TrackType.RotationLerp:
-                    _t.rotation = Quaternion.Lerp(_t.rotation, Quaternion.LookRotation(_dir.normalized, transform.up), 1 - Mathf.Exp(-turnSharpness * _dt));
+                    
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_dir, transform.up), 1 - Mathf.Exp(-turnSharpness * _dt));
                     currentForce = Mathf.Lerp(currentForce, 0, 1 - Mathf.Exp(-drag * _dt));
+                    if (body)
+                    {
+                        body.AddForce(transform.forward * (currentForce * _dt));
+                    }
+                    else
+                    {
+                        _t.position += transform.forward * (currentForce * _dt);
+                    }
 
-                    var nextPoint = transform.forward * (currentForce * _dt);
-                    _t.position += nextPoint;
-                    //_t.rotation = Quaternion.Lerp(_t.rotation, look, 1 - Mathf.Exp(-turnSharpness * _dt));
                     break;
             }
-
-            //if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
-            CollisionRun(_dir, _dt);
         }
-
-        public void UnParent(Transform transform)
+        
+        protected override void CollisionBehaviour()
         {
-            transform.parent = null;
+            transform.position = collisionRay.cloneRaySensor.BasePoint;
+            transform.forward = collisionRay.cloneRaySensor.Direction.normalized;
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -104,11 +116,13 @@ namespace RaycastPro.Bullets
         {
             if (hasMain)
             {
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(body)));
+                
                 BeginVerticalBox();
                 PropertyEnumField(_so.FindProperty(nameof(trackType)), 2, "Track Type".ToContent(), new GUIContent[]
                 {
-                    "Position Lerp".ToContent("Position Lerp"),
-                    "Rotation Lerp".ToContent("Position Lerp"),
+                    CPositionLerp.ToContent(TPositionLerp),
+                    CRotationLerp.ToContent(TRotationLerp),
                 });
                 
                 if (trackType == TrackType.RotationLerp)
@@ -122,22 +136,15 @@ namespace RaycastPro.Bullets
                     EditorGUILayout.PropertyField(_so.FindProperty(nameof(speed)));
                 }
                 EndVertical();
-                
-                                
-                axisRun.EditorPanel(_so.FindProperty(nameof(axisRun)));
-                
+
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(distanceThreshold)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(trackOffset)));
 
             }
-            
             if (hasGeneral) GeneralField(_so);
-
             if (hasEvents) EventField(_so);
-            
             if (hasInfo) InformationField();
         }
 #endif
-
     }
 }

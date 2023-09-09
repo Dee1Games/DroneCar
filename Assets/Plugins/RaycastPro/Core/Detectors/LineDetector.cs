@@ -12,7 +12,7 @@ namespace RaycastPro.Detectors
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(LineDetector))]
-    public sealed class LineDetector : Detector, IRadius
+    public sealed class LineDetector : ColliderDetector, IRadius, IPulse
     {
         public RayType rayType = RayType.Ray;
 
@@ -72,7 +72,7 @@ namespace RaycastPro.Detectors
             nonAllocatedHits = new RaycastHit[limitCount];
         }  
 #else
-        protected void OnEnable()
+        private void OnEnable()
         {
             nonAllocatedHits = new RaycastHit[limitCount];
         }  
@@ -84,6 +84,9 @@ namespace RaycastPro.Detectors
         private Vector3 up;
         protected override void OnCast()
         {
+            PreviousColliders = DetectedColliders.ToArray();
+            DetectedColliders.Clear();
+            
             PreviousHits = DetectedHits.ToArray();
             if (limited)
             {
@@ -156,7 +159,9 @@ namespace RaycastPro.Detectors
                     DetectedHits.AddRange(nonAllocatedHits);
                 }
             }
-            
+
+            #region Events
+
             if (onHit != null) foreach (var _member in DetectedHits) onHit.Invoke(_member);
             if (onNewHit != null)
             {
@@ -166,13 +171,18 @@ namespace RaycastPro.Detectors
             {
                 foreach (var _member in PreviousHits.Except(DetectedHits)) onLostHit.Invoke(_member);
             }
+            
+            DetectedColliders = DetectedHits.Select(hit => hit.collider).Distinct().ToList();
+            ColliderDetectorEvents();
+
+            #endregion
+
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info =
 #pragma warning restore CS0414
-            "Sending a fixed line in the form of Ray, Pipe or Box and collecting all Hits data." + HDirectional +
-            HRDetector + HINonAllocator;
+            "Sending a fixed line in the form of Ray, Pipe or Box and collecting all Hits data." + HDirectional+ HIRadius + HIPulse + HRDetector + HINonAllocator;
 
         internal override void OnGizmos()
         {
@@ -181,7 +191,7 @@ namespace RaycastPro.Detectors
             // === Gizmo Gate Are Written Here because of avoiding #IF UNITY EDITOR check in main class
             var position = transform.position;
 
-            GizmoColor = DefaultColor;
+            GizmoColor = Performed ? DetectColor : DefaultColor;
             
             switch (rayType)
             {
@@ -265,12 +275,17 @@ namespace RaycastPro.Detectors
             {
                 EventField(_so);
                 if (EventFoldout)
-                    RCProEditor.EventField(_so,
-                        new[] {nameof(onHit), nameof(onNewHit), nameof(onLostHit)});
+                    RCProEditor.EventField(_so,events);
             }
 
             if (hasInfo) InformationField(PanelGate);
         }
+
+        private static readonly string[] events = new[]
+        {
+            nameof(onDetectCollider), nameof(onLostCollider), nameof(onLostCollider), nameof(onHit), nameof(onNewHit),
+            nameof(onLostHit)
+        };
         protected override void DrawDetectorGuide(Vector3 point) { }
 #endif
         public List<RaycastHit> DetectedHits { get; private set; } = new List<RaycastHit>();

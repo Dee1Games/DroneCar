@@ -11,41 +11,32 @@
     {
         public RaySensor sensor;
 
-        public Transform getter;
+        public Planar getter;
         public Transform outer;
 
         private float radius;
         
         // Non Allocation 
         private List<Vector3> _tPath = new List<Vector3>();
-        
-        internal void CopyFrom(RaySensor raySensor, Transform _getter, Transform _outer)
+        private Vector3 forward;
+        internal void CopyFrom(RaySensor raySensor, Planar _getter, Transform _outer)
         {
             getter = _getter;
             outer = _outer;
-
             sensor = raySensor;
             detectLayer = raySensor.detectLayer;
-
             direction = raySensor.direction;
-
             planarSensitive = raySensor.planarSensitive;
-            
             anyPlanar = raySensor.anyPlanar;
-            
             if (!anyPlanar) planers = raySensor.planers;
-
             if (raySensor is IRadius iRadius) radius = iRadius.Radius;
-
             planers = raySensor.planers;
             stamp = raySensor.stamp;
             stampAutoHide = raySensor.stampAutoHide;
             stampOffset = raySensor.stampOffset;
             stampOnHit = raySensor.stampOnHit;
             syncStamp = raySensor.syncStamp;
-
             cutOnHit = raySensor.cutOnHit;
-
 #if UNITY_EDITOR
             gizmosUpdate = raySensor.gizmosUpdate;
 #endif
@@ -60,32 +51,52 @@
 
         protected override void OnCast()
         {
+            UpdatePath();
+            DetectIndex = PathCast(radius);
+        }
+        private void UpdatePath()
+        {
             PathPoints.Clear();
-
             DetectIndex = -1;
-
-            var outerTransform = outer ? outer.transform : getter.transform;
-
             if (sensor is PathRay pathRay) // THIS FORMULA SUPPORT'S ALL PATH AS WELL
             {
                 _tPath.Clear();
-                
                 _tPath.Add(Vector3.zero);
-                
                 for (var i = pathRay.DetectIndex + 1; i < pathRay.PathPoints.Count; i++)
                     _tPath.Add(pathRay.PathPoints[i]-sensor.hit.point);
-
-                foreach (var p in _tPath) PathPoints.Add( transform.TransformDirection(getter.InverseTransformDirection(p))+transform.position);
+                if (transform.parent)
+                {
+                    foreach (var p in _tPath)
+                    {
+                        PathPoints.Add( transform.TransformDirection(p) + transform.parent.position);
+                    }
+                }
+                else
+                {
+                    foreach (var p in _tPath)
+                    {
+                        PathPoints.Add(transform.TransformDirection(getter.transform.InverseTransformDirection(p)) +
+                                       transform.position);
+                    }
+                }
             }
             else
             {
-                PathPoints.Add( transform.TransformDirection(getter.InverseTransformDirection(Vector3.zero))+transform.position);
-                PathPoints.Add( transform.TransformDirection(getter.InverseTransformDirection(sensor.Tip - sensor.hit.point))+transform.position);
+                // This algorithm for single phase rays
+                getter.GetForward(_baseRaySensor, out forward);
+                PathPoints.Add( transform.TransformDirection(getter.transform.InverseTransformDirection(Vector3.zero))+transform.position);
+                if (transform.parent)
+                {
+                    PathPoints.Add( transform.forward*sensor.ContinuesDistance+transform.parent.position);
+                }
+                else
+                {
+                    PathPoints.Add( transform.TransformDirection((forward*sensor.ContinuesDistance))+transform.position);
+                }
+                
             }
-            
             if (sensor is IRadius iRadius) radius = iRadius.Radius;
-
-            DetectIndex = PathCast(PathPoints, radius);
+            DetectIndex = PathCast(radius);
         }
 
 #if UNITY_EDITOR
@@ -97,7 +108,17 @@
         {
             EditorUpdate();
 
-            DrawPath(PathPoints, hit, detectIndex: DetectIndex, radius: radius);
+            if (PathPoints.Count == 0) return;
+            if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
+            if (IsManuelMode)
+            {
+                UpdatePath();
+                DrawPath(PathPoints, hit, radius, detectIndex: DetectIndex, drawSphere: true);
+            }
+            else
+            {
+                DrawPath(PathPoints, hit, radius,  detectIndex: DetectIndex, drawSphere: true);
+            }
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

@@ -8,7 +8,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(PolyDetector))]
-    abstract class PolyDetector : ColliderDetector
+    public class PolyDetector : ColliderDetector, IPulse
     {
         public float minRadius = 2f;
         public float maxRadius = 4f;
@@ -160,7 +160,7 @@
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Receiving colliders within the Volumetric polygon with a detect point solver." +
-                                     HCDetector + HSmartSolver + HINonAllocator;
+                               HIPulse + HCDetector + HLOS_Solver + HINonAllocator;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {

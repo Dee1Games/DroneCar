@@ -23,21 +23,14 @@
         //     set
         //     {
         //         if (value <= 0) return;
-        //
         //         if (value == count) return;
-        //
         //         count = value;
-        //
         //         foreach (var c in CloneProfile.Keys)
         //         {
         //             c.enabled = true;
-        //
         //             c.liner.enabled = true;
-        //
         //             foreach (var r in CloneProfile[c]) RaySensor2D.CloneDestroy(r);
-        //
         //             CloneProfile.Remove(c);
-        //
         //             AddDividedClonesToBaseClone(c);
         //         }
         //     }
@@ -45,11 +38,6 @@
 
         public readonly Dictionary<RaySensor2D, List<RaySensor2D>> CloneProfile =
             new Dictionary<RaySensor2D, List<RaySensor2D>>();
-
-        internal override TransitionData[] GetTransitionData2D(RaycastHit2D hit, Vector2 direction)
-        {
-            return new TransitionData[] { };
-        }
         public override void OnReceiveRay(RaySensor2D sensor)
         {
             if (!sensor.cloneRaySensor) return;

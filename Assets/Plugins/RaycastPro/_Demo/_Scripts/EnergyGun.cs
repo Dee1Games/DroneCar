@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using RaycastPro.Detectors;
 using RaycastPro.RaySensors;
 using UnityEngine;
 
@@ -6,24 +9,29 @@ namespace Plugins.RaycastPro.Demo.Scripts
     public class EnergyGun : MonoBehaviour
     {
         public WaveRay waveRay;
+        public LineDetector lineDetector;
 
-        private HoverEnemy _hoverEnemy;
-
+        public List<HoverEnemy> detectedEnemies;
+        public float linerSetupTime = 2f;
         public float DPS = 24;
         void Start()
         {
-            waveRay.onBeginDetect.AddListener(hit =>
-            {
-                hit.transform.TryGetComponent(out _hoverEnemy);
-            });
-            waveRay.onEndDetect.AddListener(hit =>
-            {
-                _hoverEnemy = null;
-            });
+            lineDetector.SyncDetection(detectedEnemies);
         }
-
+        
         private void Update()
         {
+            if (Input.GetMouseButton(0))
+            {
+                waveRay.linerEndPosition += Time.deltaTime / linerSetupTime;
+                waveRay.Cast();
+                
+                foreach (var detectedEnemy in detectedEnemies)
+                {
+                    detectedEnemy.TakeDamage(Time.deltaTime*DPS);
+                    detectedEnemy.body.AddForce(-transform.forward * 7);
+                }
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 waveRay.gameObject.SetActive(true);
@@ -32,12 +40,11 @@ namespace Plugins.RaycastPro.Demo.Scripts
             if (Input.GetMouseButtonUp(0))
             {
                 waveRay.gameObject.SetActive(false);
+                waveRay.linerEndPosition = 0;
             }
         
-            if (_hoverEnemy)
-            {
-                _hoverEnemy.TakeDamage(Time.deltaTime*DPS);
-            }
+            // Optimized Way
+
         }
     }
 }

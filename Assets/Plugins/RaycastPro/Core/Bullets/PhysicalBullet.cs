@@ -16,20 +16,29 @@
         public ForceMode forceMode = ForceMode.Force;
 
         [SerializeField] private Rigidbody body;
-        public override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
 
+        private float _dt;
+        public override void RuntimeUpdate()
+        {
+            _dt = GetModeDeltaTime(timeMode);
+            UpdateLifeProcess(_dt);
+            if (collisionRay) CollisionRun(_dt);
+        }
+        protected override void CollisionBehaviour()
+        {
+            body.position = collisionRay.cloneRaySensor.BasePoint;
+            body.velocity = collisionRay.cloneRaySensor.Direction.normalized * body.velocity.magnitude;
+        }
         protected override void OnCast()
         {
             if (!body) body = GetComponent<Rigidbody>();
-
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
-            
             body.position = raySource.BasePoint;
-
             transform.forward = raySource.TipDirection.normalized;
-            
             body.AddForce(transform.forward * power, forceMode);
+            
+
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -54,5 +63,6 @@
             if (hasInfo) InformationField();
         }
 #endif
+
     }
 }

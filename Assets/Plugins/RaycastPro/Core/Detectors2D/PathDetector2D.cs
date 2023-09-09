@@ -12,7 +12,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(PathDetector2D))]
-    public class PathDetector2D : Detector2D
+    public class PathDetector2D : Detector2D, IPulse
     {
         public PathRay2D pathRay;
 
@@ -73,8 +73,7 @@
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Receive all passing hits from the entered path ray." + HAccurate + HPathRay +
-                                     HRDetector + HDependent;
+        private static string Info = "Receive all passing hits from the entered path ray." + HAccurate + HPathRay + HIPulse + HRDetector + HDependent;
 #pragma warning restore CS0414
         
         protected readonly string[] CEventNames = {"onHit", "onNewHit", "onLostHit", "onDetectCollider", "onNewCollider", "onLostCollider"};

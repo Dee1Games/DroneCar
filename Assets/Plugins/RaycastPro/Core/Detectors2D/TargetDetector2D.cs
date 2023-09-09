@@ -13,11 +13,11 @@ namespace RaycastPro.Detectors2D
 
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(TargetDetector2D))]
-    public sealed class TargetDetector2D : Detector2D, IRadius
+    public sealed class TargetDetector2D : Detector2D, IRadius, IPulse
     {
         public Transform[] targets = Array.Empty<Transform>();
         public float Value => (float) BlockedTargets.Count / targets.Length;
-        [SerializeField] public float radius = .4f;
+        [SerializeField] public float radius = 0f;
         public float Radius
         {
             get => radius;
@@ -36,11 +36,11 @@ namespace RaycastPro.Detectors2D
         private Vector3 pos;
         private Transform _t;
 
-        public bool CastFrom(Vector2 position)
+        public float CastFrom(Vector2 position)
         {
             TDP = position.ToDepth(z);
             CoreUpdate();
-            return Performed;
+            return Value;
         }
 
         private void CoreUpdate()
@@ -100,7 +100,7 @@ namespace RaycastPro.Detectors2D
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Examining Target points and detecting the blocking of the connection line."+HAccurate+HIRadius;
+        private static string Info = "Examining Target points and detecting the blocking of the connection line."+HAccurate+HIRadius+HIPulse;
 #pragma warning restore CS0414
         internal override void OnGizmos() => EditorCast();
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
@@ -119,6 +119,7 @@ namespace RaycastPro.Detectors2D
             
             if (hasGeneral)
             {
+                PulseField(_so);
                 TagField(_so);
                 DepthField(_so);
                 BaseField(_so);

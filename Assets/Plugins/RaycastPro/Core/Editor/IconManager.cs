@@ -136,7 +136,7 @@ namespace RaycastPro.Editor
         /// <returns>The icon for this object.</returns>
         public static Texture2D GetIcon(this Object obj)
         {
-#if UNITY_2021_2_OR_NEWER
+#if UNITY_2021_2_OR_NEWER && !UNITY_2021_1 && !UNITY_2021_2
             return EditorGUIUtility.GetIconForObject(obj);
 #else
             var ty = typeof(EditorGUIUtility);

@@ -31,14 +31,14 @@
             UpdatePath();
             if (pathCast)
             {
-                PathCast(PathPoints, out hit, out DetectIndex, MinDepth, MaxDepth, radius);
+                DetectIndex = PathCast(out hit, radius);
                 isDetect = FilterCheck(hit);
             }
         }
 
-        private Vector2 tPoint, g, pos, _dir, _pos;
+        private Vector2 tPoint, g, pos, _tDir, _pos;
         private float t;
-        private void UpdatePath()
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             tPoint = Position2D;
@@ -47,11 +47,11 @@
             hit = default;
             pos = Position2D;
             g = velocityLocal ? transform.TransformDirection(velocity).To2D() : velocity;
-            _dir = Direction;
+            _tDir = Direction;
             for (var i = 1; i <= segments; i++)
             {
                 t = (float) i / segments * elapsedTime;
-                _pos = pos + (_dir * t + g * (t * t) / 2);
+                _pos = pos + (_tDir * t + g * (t * t) / 2);
                 PathPoints.Add(_pos);
             }
         }
@@ -65,16 +65,9 @@
         internal override void OnGizmos()
         {
             EditorUpdate();
-            
-            if (IsManuelMode) UpdatePath();
-
-            DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, drawDisc: true,
-                coneCap: true);
-
+            FullPathDraw(radius, true);
             DrawDepthLine(BasePoint, Tip);
-
             DrawNormal2D(hit, z);
-
             DrawNormalFilter();
         }
 

@@ -11,12 +11,23 @@
     public sealed class PortalPlanar : Planar
     {
         [SerializeField] public Transform outer;
-
+        public override void GetForward(RaySensor raySensor, out Vector3 forward)
+        {
+            switch (baseDirection)
+            {
+                case DirectionOutput.NegativeHitNormal: forward = -raySensor.hit.normal; return;
+                case DirectionOutput.HitDirection: forward = raySensor.HitDirection; return;
+                case DirectionOutput.SensorLocal: forward = raySensor.LocalDirection.normalized; return;
+            }
+            forward = transform.forward;
+        }
 #if UNITY_EDITOR
         
 #pragma warning disable CS0414
-        private static string Info = "Transferring the Planer Sensitive Ray sequence to the outer gate.";
+        private static string Info = "Transferring the Planer Sensitive Ray sequence to the outer gate."+HAccurate+HDependent+HExperimental;
 #pragma warning restore CS0414
+
+
         internal override void OnGizmos()
         {
             DrawPlanar();
@@ -52,22 +63,6 @@
         }
 #endif
 
-        internal override TransitionData[] GetTransitionData(RaycastHit hit, Vector3 direction)
-        {
-            tOuter = outer ? outer.transform : transform;
-            pos = tOuter.transform.forward * offset + tOuter.PortalPoint(transform, hit.point);
-            inverse = transform.InverseTransformDirection(direction);
-            var rot = Quaternion.LookRotation(tOuter.TransformDirection(inverse), tOuter.up);
-
-            var data = new TransitionData
-            {
-                position = pos,
-                rotation = rot
-            };
-            
-            return new TransitionData[] {data};
-        }
-
         private Vector3 _hitPoint, pos, forward, inverse;
         private RaySensor clone;
         private Transform tOuter;
@@ -81,14 +76,9 @@
             
             if (clone.liner) clone.liner.enabled = sensor.liner.enabled;
             tOuter = outer ? outer : transform;
-            forward = new Vector3();
-            switch (baseDirection)
-            {
-                case DirectionOutput.NegativeHitNormal: forward = -sensor.hit.normal; break;
-                case DirectionOutput.HitDirection: forward = sensor.HitDirection; break;
-                case DirectionOutput.SensorLocal: forward = sensor.LocalDirection.normalized; break;
-                case DirectionOutput.PlanarForward: forward = transform.forward; break;
-            }
+
+            GetForward(sensor, out forward);
+
             clone.transform.position = tOuter.PortalPoint(transform, pos);
             inverse = transform.InverseTransformDirection(baseDirection == DirectionOutput.PlanarForward ? transform.forward : forward);
             clone.transform.rotation = Quaternion.LookRotation(tOuter.TransformDirection(inverse), tOuter.up);

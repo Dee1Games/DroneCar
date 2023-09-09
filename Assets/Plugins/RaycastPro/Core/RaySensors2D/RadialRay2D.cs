@@ -121,7 +121,7 @@
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Send multiple 2D rays at an angle and detect the hit Info when each of them hits." + HAccurate + HDirectional;
+        private static string Info = "Radial shape emitter, which detects the nearest point, can collect hit information." + HAccurate + HDirectional;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {

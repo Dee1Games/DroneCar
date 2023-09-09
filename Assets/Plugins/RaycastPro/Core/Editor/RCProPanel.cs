@@ -44,7 +44,6 @@ namespace RaycastPro.Editor
         [SavePreference] internal static float raysStepSize = 4f;
         [SavePreference] internal static float normalFilterRadius = 1f;
         [SavePreference] internal static float linerMaxWidth = 1f;
-        [SavePreference] internal static int linerMaxCapVertices = 6;
 
         [SavePreference] internal static bool DrawBlockLine = true;
         [SavePreference] internal static bool DrawDetectLine = true;
@@ -69,17 +68,13 @@ namespace RaycastPro.Editor
         private void OnEnable()
         {
             LoadPreferences();
-
             showOnStart = EditorPrefs.GetBool(KEY + CShowOnStart, true);
-
             headerTexture = IconManager.GetHeader();
-
             RefreshIcons();
         }
         private void OnDisable()
         {
             SavePreferences();
-
             EditorPrefs.SetBool(KEY + CShowOnStart, showOnStart);
         }
         private void OnGUI()
@@ -125,7 +120,7 @@ namespace RaycastPro.Editor
                     case CoreMode.Detectors:
                         cores = new List<Type>
                         {
-                            typeof(LineDetector), typeof(RangeDetector), typeof(BoxDetector), typeof(TargetDetector),
+                            typeof(LineDetector), typeof(RangeDetector), typeof(BoxDetector), typeof(PolyDetector), typeof(TargetDetector),
                             typeof(RadarDetector), typeof(SightDetector), typeof(SteeringDetector),
                             typeof(SoundDetector), typeof(LightDetector), typeof(PathDetector)
                         };
@@ -133,7 +128,7 @@ namespace RaycastPro.Editor
                     case CoreMode.Planers:
                         cores = new List<Type>
                         {
-                            typeof(BlockPlanar), typeof(ReflectPlanar), typeof(RefractPlanar), typeof(PortalPlanar),
+                            typeof(BlockPlanar), typeof(ReflectPlanar), typeof(RefractPlanar), typeof(PortalPlanar), typeof(DividePlanar)
                         };
                         break;
                     case CoreMode.Casters:
@@ -212,6 +207,10 @@ namespace RaycastPro.Editor
                 }
                 
                 EditorGUI.BeginChangeCheck();
+                ShowLabels = EditorGUILayout.Toggle("Show Labels", ShowLabels);
+                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
+                
+                EditorGUI.BeginChangeCheck();
                 drawHierarchyIcons = EditorGUILayout.Toggle("Draw Hierarchy Icons", drawHierarchyIcons);
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -250,8 +249,6 @@ namespace RaycastPro.Editor
                 normalFilterRadius =
                     EditorGUILayout.FloatField("Normal Filter Radius", Mathf.Max(0, normalFilterRadius));
                 linerMaxWidth = EditorGUILayout.FloatField("Liner Max Width", Mathf.Max(0, linerMaxWidth));
-                linerMaxCapVertices =
-                    EditorGUILayout.IntField("Liner Max Cap vertices", Mathf.Max(1, linerMaxCapVertices));
                 EditorGUILayout.EndVertical();
             }
 
@@ -282,10 +279,7 @@ namespace RaycastPro.Editor
                 DrawGuideLimitCount = EditorGUILayout.IntField("Limit Count", DrawGuideLimitCount);
                 if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
                 EditorGUILayout.EndHorizontal();
-
-                EditorGUI.BeginChangeCheck();
-                ShowLabels = EditorGUILayout.Toggle("Draw Labels", ShowLabels);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
+                
                 EditorGUILayout.EndVertical();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -347,7 +341,6 @@ namespace RaycastPro.Editor
             raysStepSize = 4f;
             normalFilterRadius = 1f;
             linerMaxWidth = 1f;
-            linerMaxCapVertices = 6;
 
             DrawBlockLine = true;
             DrawDetectLine = true;
@@ -376,17 +369,13 @@ namespace RaycastPro.Editor
         public static void LoadPreferences(bool message = false)
         {
             if (message) Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Update.</color>");
-
             foreach (var fieldInfo in typeof(RCProPanel).GetFields())
             {
                 if (fieldInfo.GetCustomAttribute(typeof(SavePreference)) == null) continue;
-
                 if (!EditorPrefs.HasKey(KEY + fieldInfo.Name)) continue;
-
                 if (fieldInfo.FieldType == typeof(bool))
                 {
                     fieldInfo.SetValue(null, EditorPrefs.GetBool(KEY + fieldInfo.Name));
-
                     Debug.Log(fieldInfo.Name);
                 }
                 else if (fieldInfo.FieldType == typeof(float))
@@ -429,19 +418,14 @@ namespace RaycastPro.Editor
         public static void RefreshIcons()
         {
             ICON_DICTIONARY = IconManager.GetIcons();
-            
             foreach (var type in ICON_DICTIONARY.Keys.ToList())
             {
                 if (type.IsAbstract) continue;
-
                 try
                 {
                     var obj = new GameObject();
-                    
                     var component = obj.AddComponent(type);
-                    
                     component.SetIcon(ICON_DICTIONARY[type]);
-                    
                     DestroyImmediate(obj);
                 }
                 catch (Exception e)

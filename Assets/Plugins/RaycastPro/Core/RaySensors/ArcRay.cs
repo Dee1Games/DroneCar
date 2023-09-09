@@ -26,7 +26,7 @@
         protected override void OnCast()
         {
             UpdatePath();
-            if (pathCast) DetectIndex = PathCast(PathPoints, radius);
+            if (pathCast) DetectIndex = PathCast(radius);
         }
         /// <summary>
         /// Using in Gizmo and OnCast Separately

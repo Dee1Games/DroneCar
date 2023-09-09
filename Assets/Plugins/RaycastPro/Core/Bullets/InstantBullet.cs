@@ -1,4 +1,6 @@
-﻿namespace RaycastPro.Bullets
+﻿using RaycastPro.RaySensors;
+
+namespace RaycastPro.Bullets
 {
     using UnityEngine;
 #if UNITY_EDITOR
@@ -8,42 +10,50 @@
     [AddComponentMenu("RaycastPro/Bullets/" + nameof(InstantBullet))]
     public class InstantBullet : Bullet
     {
+        [Tooltip("The offset of the bullet when hitting is calculated as the inverse of the HitDirection.")]
+        public float hitOffset = .1f;
+
+        [Tooltip("When the bullet misses, it executes the end function to prevent the bullet remaining in the tips of the rays.")]
+        public bool endOnMiss = true;
+        
+        [Tooltip("If the desired object is not fixed, you can activate this option so that the parenting action is performed and the bullet remains move along with that object.")]
+        public bool forceToParentHit;
         public override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
 
+        private RaySensor lastClone;
+        private Vector3 hitDirection;
         protected override void OnCast()
         {
-            if (planarSensitive)
+            lastClone = (raySource.planarSensitive) ? raySource.LastClone : raySource;
+            if (lastClone.hit.transform)
             {
-                var clone = raySource.LastClone;
-                transform.position = clone.TipTarget;
+                hitDirection = lastClone.HitDirection.normalized;
+                transform.position = lastClone.TipTarget - hitDirection * hitOffset;
+                transform.forward = hitDirection;
                 
-                // Hit Direction cuz don't want to place on hit Normal
-                transform.rotation =
-                    Quaternion.LookRotation(clone.HitDirection, transform.up);
-                if (raySource.hit.transform) InvokeDamageEvent(raySource.hit.transform);
+                if (forceToParentHit) transform.SetParent(lastClone.hit.transform, true);
+                    InvokeDamageEvent(raySource.hit.transform);
             }
-            else
+            else if (endOnMiss)
             {
-                transform.position = raySource.TipTarget;
-                transform.rotation = Quaternion.LookRotation(raySource.HitDirection, transform.up);
-                if (raySource.hit.transform) InvokeDamageEvent(raySource.hit.transform);
+                 OnEnd(caster);
             }
         }
-
+        protected override void CollisionBehaviour() { }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Instant shots to Target Tip of sensor ray." + HDependent;
 #pragma warning restore CS0414
-
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)
         {
             if (hasMain)
-            {       
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(planarSensitive)),
-                    CPlanarSensitive.ToContent(TPlanarSensitive));
+            {
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(hitOffset)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(endOnMiss)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(forceToParentHit)));
             }
             if (hasGeneral) GeneralField(_so);
 
@@ -52,5 +62,6 @@
             if (hasInfo) InformationField();
         }
 #endif
+
     }
 }

@@ -14,11 +14,22 @@ namespace RaycastPro.Planers
     {
         public float refractAngle;
         public float sideAngle;
-
+        public override void GetForward(RaySensor raySensor, out Vector3 forward)
+        {
+            switch (baseDirection)
+            {
+                case DirectionOutput.NegativeHitNormal: forward = -raySensor.hit.normal; return;
+                case DirectionOutput.HitDirection: forward = raySensor.HitDirection; return;
+                case DirectionOutput.SensorLocal: forward = raySensor.LocalDirection.normalized; return;
+            }
+            forward = transform.forward;
+        }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Planar Sensitive Ray Refraction Based on refract Direction.";
+        private static string Info = "Planar Sensitive Ray Refraction Based on refract Direction."+HAccurate+HDependent;
 #pragma warning restore CS0414
+
+
         internal override void OnGizmos() => DrawPlanar();
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
@@ -41,19 +52,6 @@ namespace RaycastPro.Planers
             }
         }
 #endif
-        
-        internal override TransitionData[] GetTransitionData(RaycastHit hit, Vector3 direction)
-        {
-            var data = new TransitionData
-            {
-                position = hit.point + direction,
-                rotation = Quaternion.AngleAxis(sideAngle, Vector3.forward) *
-                           Quaternion.AngleAxis(refractAngle, Vector3.right),
-            };
-
-            return new TransitionData[] {data};
-        }
-
         private Vector3 forward, look;
         private RaySensor clone;
         internal override void OnReceiveRay(RaySensor sensor)
@@ -61,7 +59,10 @@ namespace RaycastPro.Planers
             clone = sensor.cloneRaySensor;
             if (!clone) return;
             if (clone.liner) clone.liner.enabled = sensor.liner.enabled;
-            forward = -GetForward(sensor, transform.forward);
+            
+            GetForward(sensor, out forward);
+            forward *= -1;
+            
             ApplyLengthControl(sensor);
             clone.transform.position = sensor.hit.point;
             look = Quaternion.AngleAxis(sideAngle, Vector3.forward) * Quaternion.AngleAxis(refractAngle, Vector3.right) * forward;

@@ -19,7 +19,7 @@ namespace RaycastPro.RaySensors
             HAccurate + HDirectional;
 #endif
         
-        public Vector3 extents = new Vector3(.4f, .4f, .4f);
+        public Vector3 extents = new Vector3(.4f, .4f, 0f);
         protected override void OnCast()
         {
             Physics.BoxCast(transform.position, extents / 2, Direction, out hit, transform.rotation,
@@ -84,7 +84,7 @@ namespace RaycastPro.RaySensors
         private Vector3 ExtentLengthZ => LocalDirection.normalized * extents.z / 2;
         public override Vector3 Tip => transform.position + Direction ;
         public override float RayLength => direction.magnitude + extents.z;
-        public override Vector3 BasePoint => transform.position - ExtentLengthZ;
+        public override Vector3 BasePoint => transform.position;
         public Vector3 ExtentBase => BasePoint - ExtentLengthZ;
         public Vector3 ExtentTip => Tip + ExtentLengthZ;
     }

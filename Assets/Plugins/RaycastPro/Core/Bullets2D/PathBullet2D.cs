@@ -29,7 +29,7 @@
         
         // Cached Variables
         private Vector3 _pos, _dir;
-        
+        private float _dt;
         protected override void OnCast()
         {
             if (raySource is PathRay2D _pathRay)
@@ -47,9 +47,7 @@
         public override void RuntimeUpdate()
         {
             position = Mathf.Clamp01(position);
-
             float posM;
-
             if (moveType == MoveType.Curve)
             {
                 posM = curve.Evaluate(position) * pathLength;
@@ -58,26 +56,21 @@
             {
                 posM = position * pathLength;
             }
-
-            var delta = GetModeDeltaTime(timeMode);
-            
-            UpdateLifeProcess(delta);
-                
+            _dt = GetModeDeltaTime(timeMode);
+            UpdateLifeProcess(_dt);
             switch (moveType)
             {
                 case MoveType.Speed:
-                    position += delta * speed / pathLength;
+                    position += _dt * speed / pathLength;
                     break;
                 case MoveType.Duration:
-                    position += delta / duration;
+                    position += _dt / duration;
                     break;
                 case MoveType.Curve:
-                    position += delta / duration;
+                    position += _dt / duration;
                     break;
             }
-
-            if (position >= 1) OnEnd();
-            
+            if (position >= 1) OnEnd(caster);
             for (var i = 1; i < Path.Count; i++)
             {
                 var lineDistance = Path.GetPathLength(i);
@@ -92,14 +85,10 @@
 
                 posM -= lineDistance;
             }
-
             if (rigidBody) rigidBody.MovePosition(_pos);
-
-            else transform.position = _pos;
-
+            else transform.position = _pos.ToDepth(Z);
             if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
-            
-            CollisionRun(_dir, delta);
+            if (collisionRay) CollisionRun(_dt);
         }
 
 #if UNITY_EDITOR

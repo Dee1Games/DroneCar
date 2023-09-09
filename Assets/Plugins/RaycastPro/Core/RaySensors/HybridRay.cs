@@ -2,7 +2,6 @@
 {
     using UnityEngine;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 #if UNITY_EDITOR
     using Editor;
@@ -12,9 +11,9 @@
     public class HybridRay : PathRay, IRadius
     {
         [SerializeField] private RaySensor[] raySensors = Array.Empty<RaySensor>();
-
-        public bool sequenceOnTip = true;
-
+        public bool sequenceOnTip = false;
+        public bool sequenceCast;
+        
         [SerializeField] private float radius = .4f;
         public float Radius
         {
@@ -27,7 +26,7 @@
             get
             {
                 var length = 0f;
-                foreach (var raySensor in raySensors) if (raySensor) length += raySensor.DirectionLength;
+                foreach (var raySensor in raySensors) if (raySensor) length += raySensor.RayLength;
                 return length;
             }
         }
@@ -61,16 +60,28 @@
                 l = i;
             }
 
-            if (pathCast) DetectIndex = PathCast(PathPoints, radius);
-
-            else
+            if (pathCast) DetectIndex = PathCast(radius);
+            else if (sequenceCast)
             {
-                hit = default;
+                Debug.Log("phase 1");
+                hit = new RaycastHit();
                 foreach (var raySensor in raySensors)
                 {
-                    if (!raySensor || !raySensor.Performed) continue;
-                    hit = raySensor.hit;
-                    break;
+                    if (!raySensor) continue;
+                    if (!raySensor.enabled)
+                    {
+                        if (raySensor.Cast())
+                        {
+                            hit = raySensor.hit;
+                            break;
+                        }
+                    }
+                    else if (raySensor.Performed)
+                    {
+                        hit = raySensor.hit;
+                        Debug.Log(raySensor.name + " is performed");
+                        break;
+                    }
                 }
             }
         }
@@ -113,9 +124,8 @@
                     CRaySensor.ToContent(TRaySensor), i => $"RaySensors {i+1}".ToContent($"Index {i}"));
                 EndVertical();
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(sequenceOnTip)),
-                    "Sequence On Tip".ToContent("Sequence On Tip"));
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(pathCast)),
-                    "Path Cast".ToContent("Path Cast"));
+                    CSequenceOnTip.ToContent(TSequenceOnTip));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(sequenceCast)));
                 GUI.enabled = pathCast;
                 RadiusField(_so);
                 GUI.enabled = true;

@@ -26,13 +26,13 @@ namespace Plugins.RaycastPro.Demo.Scripts
         private static Color green = new Color(0.24f, 1f, 0.17f);
         private static Color red = new Color(1f, 0.12f, 0.13f);
         private Material _material;
-        private Rigidbody _rigidbody;
+        public  Rigidbody body;
         private Vector3 startPosition, newPosition;
         private Quaternion startRotation;
 
         private void Start()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            body = GetComponent<Rigidbody>();
             _meshRenderer = GetComponent<MeshRenderer>();
             _material = _meshRenderer.materials[3];
 
@@ -52,7 +52,7 @@ namespace Plugins.RaycastPro.Demo.Scripts
 
         private void Update()
         {
-            _rigidbody.MovePosition(Vector3.Lerp(_rigidbody.position, newPosition, Time.deltaTime * 2));
+            body.MovePosition(Vector3.Lerp(body.position, newPosition, Time.deltaTime * 2));
         }
 
 
@@ -67,19 +67,22 @@ namespace Plugins.RaycastPro.Demo.Scripts
             gameObject.SetActive(true);
             transform.position = startPosition;
             transform.rotation = startRotation;
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.angularVelocity = Vector3.zero;
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
         }
         public void Die()
         {
-            if (explosionEffect)
+            if (gameObject.activeInHierarchy)
             {
-                Instantiate(explosionEffect, transform.position, transform.rotation);
+                if (explosionEffect)
+                {
+                    Instantiate(explosionEffect, transform.position, transform.rotation);
+                }
+        
+                gameObject.SetActive(false);
+        
+                GunSwap.singleton.Revive(this, 10);
             }
-        
-            gameObject.SetActive(false);
-        
-            GunSwap.singleton.Revive(this, 10);
         }
     
         public void TakeDamage(float amount)

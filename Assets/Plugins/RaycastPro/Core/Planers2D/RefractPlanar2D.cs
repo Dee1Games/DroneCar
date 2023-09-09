@@ -12,26 +12,17 @@
     {
         public float refractAngle;
 
+        private RaySensor2D clone;
+        private Vector3 forward, point;
         public override void OnReceiveRay(RaySensor2D sensor)
         {
-            var clone = sensor.cloneRaySensor;
-
+            clone = sensor.cloneRaySensor;
             if (!clone) return;
-
-            var forward = GetForward(sensor, transform.right);
-            
-            var point = sensor.hit.point + forward * offset;
-
+            forward = GetForward(sensor, transform.right);
+            point = sensor.HitPointZ + forward * offset;
             clone.transform.position = point.ToDepth(sensor.z);
-
             clone.transform.right = Quaternion.AngleAxis(refractAngle, Vector3.forward) *forward;
-
             ApplyLengthControl(sensor);
-        }
-        
-        internal override TransitionData[] GetTransitionData2D(RaycastHit2D hit, Vector2 direction)
-        {
-            return new TransitionData[] { };
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414

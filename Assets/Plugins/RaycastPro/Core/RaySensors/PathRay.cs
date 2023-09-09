@@ -25,6 +25,30 @@
         /// return's total distance of the path. Alternative: PathPoints.GetPathLength().
         /// </summary>
         public override float RayLength => PathPoints.GetPathLength();
+        
+        protected int PathCast(float radius = 0f)
+        {
+            if (radius > 0)
+            {
+                for (var i = 0; i < PathPoints.Count - 1; i++)
+                {
+                    var dir = PathPoints[i + 1] - PathPoints[i];
+                    if (!Physics.SphereCast(PathPoints[i], radius, dir.normalized, out hit, dir.magnitude,
+                            detectLayer.value, triggerInteraction)) continue;
+                    return i;
+                }
+            }
+            else
+            {
+                for (var i = 0; i < PathPoints.Count - 1; i++)
+                {
+                    if (!Physics.Linecast(PathPoints[i], PathPoints[i + 1], out hit, detectLayer.value, triggerInteraction)) continue;
+                    //if (!Physics.Linecast(path[i], path[i + 1], out hit, detectLayer.value, triggerInteraction)) continue;
+                    return i;
+                }
+            }
+            return -1;
+        }
 
         // /// <summary>
         // /// Let ray to process path cast or only update path points.

@@ -23,11 +23,39 @@
 
     public abstract class BaseBullet : RaycastCore
     {
+
+        #region Public Methods
+
+        public void UnParent(Transform child)
+        {
+            child.parent = null;
+        }
+
+        public void UnParentAllChildren()
+        {
+            if (unParentChild)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).parent = null;
+                }
+            }
+        }
+
+        #endregion
+        
         public override bool Performed { get => false; protected set {} }
         
         public TimeMode timeMode = TimeMode.DeltaTime;
+
+        [Tooltip("If CollisionRay is used, it is good to create a break between each detection so that the Hit calculation process does not face many repetition problems.")]
+        [SerializeField] protected float baseIgnoreTime = .1f;
         
+        [Tooltip("If you are using ArrayCasting, this option will help the caster to separate the bullets and respawn them if needed.")]
         public string bulletID;
+
+        [Tooltip("This option will un parent the child transform when end casting. using for save particle or tail animation without breaking.")]
+        public bool unParentChild;
         
         /// <summary>
         /// Invoke on Cast
@@ -55,34 +83,13 @@
             get => position;
             set => position = Mathf.Clamp01(position);
         }
-        
-        [SerializeField]
-        public bool hasCollision = true;
-        [SerializeField]
-        public bool planarSensitive = true;
-        
-        [SerializeField] internal float radius = .2f;
-        
-        [SerializeField]
-        public float offset = 0f;
-        
-        [SerializeField]
-        public float length = .5f;
-        
-        public float Radius
-        {
-            get => radius;
-            set => radius = Mathf.Max(0,value);
-        }
-
         [SerializeField] private string callMethod = "OnBullet";
         [SerializeField] private bool messageUpward;
         
         [SerializeField] public float damage = 10;
         public float speed = 6;
-        /// <summary>
-        /// Life time from instantiate. (use negative to infinite Life)
-        /// </summary>
+
+        [Tooltip("The life of the bullet, which after the end, until the final completion, the process stops working. -1 means infinite")]
         public float lifeTime = 10;
         internal float life;
         public float Life
@@ -91,64 +98,84 @@
             internal set => life = value;
         }
 
+        [Tooltip("Bullet downtime before final completion. You can use it as a particle holder, keeping the bullet dead for a short time.")]
         public float endDelay;
         public enum EndType { Disable, Destroy }
 
         [SerializeField]
         public EndType endFunction = EndType.Destroy;
+        
+        [Tooltip("Auto clear Tail Renderer on cast and unParent it on end.")]
+        public TrailRenderer trailRenderer;
 
-        #region Puplic Methods
+        [Tooltip("If it is active after collision Ray with an object other than Planar, the life of the bullet ends.")]
+        public bool endOnCollide = true;
+        public abstract void SetCollision(bool turn);
 
-        public void InstantiateOnPosition(GameObject prefab) =>
-            Instantiate(prefab, transform.position, transform.rotation);
-
-        #endregion
+        protected abstract void CollisionRun(float delta);
         
         #region Updates
-
         protected void Update()
         {
             if (autoUpdate != UpdateMode.Normal) return;
-
             RuntimeUpdate();
         }
         protected void LateUpdate()
         {
             if (autoUpdate != UpdateMode.Late) return;
-
             RuntimeUpdate();
         }
         protected void FixedUpdate()
         {
             if (autoUpdate != UpdateMode.Fixed) return;
-
             RuntimeUpdate();
         }
         public abstract void RuntimeUpdate();
         #endregion
         internal abstract void Cast<R>(BaseCaster _caster, R raySensor);
-        protected void OnEnd()
+
+        protected void TrailSetup()
         {
+            if (trailRenderer.transform.parent != transform)
+            {
+                trailRenderer.transform.parent = transform;
+                trailRenderer.transform.localPosition = Vector3.zero;
+                trailRenderer.transform.localEulerAngles = Vector3.zero;
+                trailRenderer.Clear();
+            }
+        }
+
+        internal bool ended;
+        protected void OnEnd<B>(B _caster) where B : BaseCaster// Review
+        {
+            if (ended) return;
+            ended = true;
+            
             position = 1;
-            
-            if (this is Bullet _b)
+            onEndCast?.Invoke(_caster);
+            if (trailRenderer)
             {
-                onEndCast?.Invoke(_b.caster);
-                onEnd?.Invoke(_b.caster);
+                trailRenderer.transform.parent = _caster.poolManager;
             }
-            else if (this is Bullet2D _b2d)
+            if (unParentChild)
             {
-                onEndCast?.Invoke(_b2d.caster);
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    transform.GetChild(i).parent = _caster.poolManager;
+                }
             }
-            
-            if (endFunction == EndType.Destroy)
+            StartCoroutine(DelayRun(endDelay, () =>
             {
-                Destroy(gameObject, endDelay);
-            }
-            else
-            {
-                StartCoroutine(DelayRun(endDelay, () => gameObject.SetActive(false)));
-            }
+                if (endFunction == EndType.Destroy) // In Normal Casting
+                {
+                    Destroy(gameObject);
+                }
+                else // In Array Casting
+                {
+                    gameObject.SetActive(false);
+                }
+                onEnd?.Invoke(_caster);
+            }));
         }
         
         /// <summary>
@@ -156,10 +183,8 @@
         /// </summary>
         /// <param name="target"></param>
         protected void InvokeDamageEvent(Transform target)
-        {
-            if (!target || callMethod == "") return;
-            
-            Debug.Log($"<color=#64FF4B>\"{callMethod}\"</color> Try to call on <color=#33A3FF>{target.name}</color>.");
+        { if (callMethod == "") return;
+
             if (messageUpward)
             {
                 if (this is Bullet _blt)    
@@ -171,6 +196,7 @@
                     target.SendMessageUpwards(callMethod, this as Bullet2D, SendMessageOptions.DontRequireReceiver);
                 }
             }
+            
             else
             {
                 if (this is Bullet _blt)
@@ -190,11 +216,26 @@
         /// <param name="delta"></param>
         protected void UpdateLifeProcess(float delta)
         {
-            if (life >= lifeTime && lifeTime >= 0) OnEnd();
+            if (life >= lifeTime && lifeTime >= 0)
+            {
+                // On End Run to End Delay
+                if (this is Bullet bullet)
+                {
+                    OnEnd(bullet.caster);
+                }
+                else if (this is Bullet2D bullet2D)
+                {
+                    OnEnd(bullet2D.caster);
+                }
+            }
             else life += delta;
         }
 
 #if UNITY_EDITOR
+        protected const string CPositionLerp = "Position Lerp";
+        protected const string CRotationLerp = "Rotation Lerp";
+        protected const string TPositionLerp = "This Algorithm is based on the location that will always reach the destination after a certain period, for example, I can use the Projection type of ranged heroes in Dota2 or other strategy games.";
+        protected const string TRotationLerp = "This Algorithm, which is based on rotation, acts like a ballistic missile and tries to change direction towards the target, but there is no guarantee that it will always hit it.";
         protected void CastTypeField(SerializedProperty _moveType, SerializedProperty _speed, SerializedProperty _duration,
             SerializedProperty _curve)
         {
@@ -241,22 +282,16 @@
         }
 
         protected static readonly string[] events = new[] {nameof(onCast), nameof(onEndCast), nameof(onEnd)};
+
+        protected abstract void CollisionRayField(SerializedObject _so);
         protected void GeneralField(SerializedObject _so)
         {
             BeginVerticalBox();
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(lifeTime)), CLifeTime.ToContent(TLifeTime));
-            PropertyMaxField(_so.FindProperty(nameof(endDelay)), "End Delay".ToContent("Disable bullet before end"));
+            PropertyMaxField(_so.FindProperty(nameof(lifeTime)), -1f);
+            PropertyMaxField(_so.FindProperty(nameof(endDelay)));
             PropertyTimeModeField(_so.FindProperty(nameof(timeMode)));
-            var hasCollisionProp = _so.FindProperty(nameof(hasCollision));
-            EditorGUILayout.PropertyField(hasCollisionProp);
-            GUI.enabled = hasCollisionProp.boolValue;
-            DetectLayerField(_so);
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(length)),
-                CLength.ToContent(CLength));
-            RadiusField(_so);
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(offset)), COffset.ToContent(COffset));
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(planarSensitive)), CPlanarSensitive.ToContent(TPlanarSensitive));
-            GUI.enabled = true;
+            CollisionRayField(_so);
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(endOnCollide)));
             EndVertical();
             BeginVerticalBox();
             BeginHorizontal();
@@ -273,8 +308,9 @@
             EndHorizontal();
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(damage)));
             EndVertical();
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(bulletID)),
-                "BulletID".ToContent("Set it for renew bullet type in array casting mode."));
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(bulletID)));
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(unParentChild)));
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(trailRenderer)));
             BaseField(_so);
         }
 #endif

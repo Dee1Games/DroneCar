@@ -13,7 +13,7 @@
     using UnityEngine;
     
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(PathDetector))]
-    public class PathDetector : Detector
+    public class PathDetector : Detector, IPulse
     {
         public PathRay pathRay;
         
@@ -79,10 +79,7 @@
             foreach (var _dHit in DetectedHits) DetectedColliders.Add(_dHit.collider);
             
 #if UNITY_EDITOR
-            foreach (var c in DetectedColliders)
-            {
-                if (c) PassColliderGate(c);
-            }
+            foreach (var c in DetectedColliders) PassColliderGate(c);
 #endif
             if (onHit != null) foreach (var _member in DetectedHits) onHit.Invoke(_member);
             if (onNewHit != null) foreach (var _member in DetectedHits.Except(PreviousHits)) onNewHit.Invoke(_member);
@@ -94,7 +91,7 @@
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Receive all passing hits from the entered path ray." + HAccurate + HPathRay + HRDetector + HDependent;
+        private static string Info = "Receive all passing hits from the entered path ray." + HAccurate + HIPulse + HPathRay + HRDetector + HDependent;
 #pragma warning restore CS0414
 
         protected readonly string[] CEventNames = {"onHit", "onNewHit", "onLostHit", "onDetectCollider", "onNewCollider", "onLostCollider"};

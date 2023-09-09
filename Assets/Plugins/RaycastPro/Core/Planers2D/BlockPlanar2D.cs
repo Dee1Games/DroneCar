@@ -14,11 +14,6 @@
         public override void OnReceiveRay(RaySensor2D sensor)
         {
         }
-
-        internal override TransitionData[] GetTransitionData2D(RaycastHit2D hit, Vector2 direction)
-        {
-            return new TransitionData[] { };
-        }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Receiving and blocking impact from any Planar Sensitive 2D Ray";

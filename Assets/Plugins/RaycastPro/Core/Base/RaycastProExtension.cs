@@ -123,9 +123,7 @@
         internal static Vector3[] ToLocal(this Vector3[] points, Transform _t)
         {
             var newPoints = new Vector3[points.Length];
-            
             for (var i = 0; i < points.Length; i++)  newPoints[i] = _t.TransformPoint(points[i]);
-            
             return newPoints;
         }
         internal static Vector2[] ToLocal(this Vector2[] points, Transform _t)

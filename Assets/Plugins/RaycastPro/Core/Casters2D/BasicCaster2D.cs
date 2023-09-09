@@ -16,13 +16,16 @@ namespace RaycastPro.Casters2D
     public sealed class BasicCaster2D : GunCaster<Bullet2D, Collider2D, RaySensor2D>
     {
         public BulletEvent2D onCast;
+        
+        [Tooltip("Automatically, this ray will shoot along the LocalDirection and source BasePoint location.")]
+        public RaySensor2D raySource;
         protected override void OnCast() => Cast(index);
-        public override void Cast(int _index) => BulletCast(_index, null, b => onCast?.Invoke(b)); // basic caster inject start, end positions to bullets
+        public override void Cast(int _index) => BulletCast(_index, raySource, b => onCast?.Invoke(b)); // basic caster inject start, end positions to bullets
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info =
-            "A simple bullet that travels directly from the origin to the tip of the raySensor with avoiding the path." +
+            "A simple shooter with the ability to cover Basic Bullets that can help you to test and launch the gun immediately." +
             HAccurate + HDependent;
 #pragma warning restore CS0414
         internal override void OnGizmos()
@@ -35,6 +38,10 @@ namespace RaycastPro.Casters2D
             bool hasEvents = true,
             bool hasInfo = true)
         {
+            if (hasMain)
+            {
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(raySource)));
+            }
             if (hasGeneral) GeneralField(_so);
 
             if (hasEvents) 

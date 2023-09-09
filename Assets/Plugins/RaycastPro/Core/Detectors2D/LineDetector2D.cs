@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace RaycastPro.Detectors2D
 {
@@ -12,7 +13,7 @@ namespace RaycastPro.Detectors2D
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(LineDetector2D))]
-    public sealed class LineDetector2D : Detector2D, IRadius
+    public sealed class LineDetector2D : ColliderDetector2D, IRadius, IPulse
     {
         public List<RaycastHit2D> DetectedHits { get; private set; } = new List<RaycastHit2D>();
         private RaycastHit2D[] PreviousHits = Array.Empty<RaycastHit2D>();
@@ -71,6 +72,9 @@ namespace RaycastPro.Detectors2D
         private float angle;
         protected override void OnCast()
         {
+            PreviousColliders = DetectedColliders.ToArray();
+            DetectedColliders.Clear();
+            
             PreviousHits = DetectedHits.ToArray();
             if (limited)
             {
@@ -134,7 +138,11 @@ namespace RaycastPro.Detectors2D
                 }
             }
 
+            #region Events
             CallEvents(DetectedHits, PreviousHits, onHit, onNewHit, onLostHit);
+            DetectedColliders = DetectedHits.Select(hit => hit.collider).Distinct().ToList();
+            CallEvents(DetectedColliders, PreviousColliders, onDetectCollider, onNewCollider, onLostCollider);
+            #endregion
         }
         
 #if UNITY_EDITOR
@@ -143,7 +151,7 @@ namespace RaycastPro.Detectors2D
             nonAllocatedHits = new RaycastHit2D[limitCount];
         }  
 #else
-        protected void OnEnable()
+        private void OnEnable()
         {
             nonAllocatedHits = new RaycastHit2D[limitCount];
         }  
@@ -152,9 +160,13 @@ namespace RaycastPro.Detectors2D
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info =
-            "Sending a fixed 2D line in the form of Ray, Pipe or Box and collecting all Hits data." + HDirectional + HRDetector + HIRadius + HINonAllocator;
+            "Sending a fixed 2D line in the form of Ray, Pipe or Box and collecting all Hits data." + HDirectional + HRDetector + HIRadius + HIPulse + HINonAllocator;
 #pragma warning restore CS0414 
-        private readonly string[] CEventNames = {"onHit", "onNewHit", "onLostHit"};
+        private static readonly string[] events = new[]
+        {
+            nameof(onDetectCollider), nameof(onLostCollider), nameof(onLostCollider), nameof(onHit), nameof(onNewHit),
+            nameof(onLostHit)
+        };
         private readonly GUIContent[] tips =
         {
             "Ray".ToContent("Ray"),
@@ -252,7 +264,7 @@ namespace RaycastPro.Detectors2D
             if (hasEvents)
             {
                 EventField(_so);
-                if (EventFoldout) RCProEditor.EventField(_so, CEventNames);
+                if (EventFoldout) RCProEditor.EventField(_so, events);
             }
 
             if (hasInfo) InformationField(PanelGate);

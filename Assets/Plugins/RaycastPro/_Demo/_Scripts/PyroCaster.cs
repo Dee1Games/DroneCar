@@ -6,10 +6,14 @@ namespace Plugins.RaycastPro.Demo.Scripts
     public class PyroCaster : MonoBehaviour
     {
         private RaySensor raySensor; // Use "RaySensor" base for define any 3D Ray
+
+        public bool autoRayDetect = true;
         
         [SerializeField] private NeonMaterial[] neon;
         private void Start()
         {
+            if (!autoRayDetect) return;
+
             raySensor = GetComponentInChildren<RaySensor>();
             // Change neon color just by injecting the methods in OnBegin Event..
             raySensor.onBeginDetect.AddListener(_ =>
@@ -37,6 +41,11 @@ namespace Plugins.RaycastPro.Demo.Scripts
             });
         }
 
+        public void NeonTurn(bool perform)
+        {
+            foreach (var neonMaterial in neon) neonMaterial.SetNeonColor(perform);
+        }
+        
         [SerializeField] private bool clonePerform;
     
         private bool lastClonePerformed;

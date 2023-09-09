@@ -12,26 +12,24 @@
     {
         protected override void OnCast()
         {
-            if (raySource)
-            {
-                transform.position = raySource.BasePoint;
-                transform.forward = raySource.TargetDirection.normalized;
-            }
-            else
-            {
-                transform.position = caster.transform.position;
-                transform.forward = caster.transform.forward;
-            }
+
         }
         private float delta;
         private Vector3 _forward;
+
         public override void RuntimeUpdate()
         {
             delta = GetModeDeltaTime(timeMode);
             _forward = transform.forward;
             transform.position += _forward * (speed * delta);
             UpdateLifeProcess(delta);
-            CollisionRun(_forward, delta);
+            if (collisionRay) CollisionRun(delta);
+        }
+        
+        protected override void CollisionBehaviour()
+        {
+            transform.position = collisionRay.cloneRaySensor.BasePoint;
+            transform.forward = collisionRay.cloneRaySensor.Direction.normalized;
         }
         
 #if UNITY_EDITOR
@@ -46,8 +44,7 @@
         {
             if (hasMain)
             {
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(speed)),
-                    CSpeed.ToContent(CSpeed));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(speed)), CSpeed.ToContent());
             }
 
             if (hasGeneral) GeneralField(_so);
@@ -57,5 +54,6 @@
             if (hasInfo) InformationField();
         }
 #endif
+
     }
 }

@@ -24,8 +24,16 @@ namespace RaycastPro.RaySensors2D
 
             p1 = transform.position;
             p2 = transform.position + Direction.ToDepth();
+            if (IsManuelMode)
+            {
+                DrawLine(p1, p2);
+            }
+            else
+            {
+                DrawBlockLine(p1, p2, hit, z, 1);
+            }
+            DrawNormal2D(hit, z);
             DrawDepthLine(p1, p2);
-            DrawDetectLine2D(hit, p1, p2, z);
             DrawNormalFilter();
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true, bool hasEvents = true, bool hasInfo = true)

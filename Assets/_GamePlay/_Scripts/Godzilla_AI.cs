@@ -7,7 +7,7 @@ public class Godzilla_AI : AI_Core
 {
     void Update()
     {
-        if (playerVehicle)
+        if (carCore)
         {
             
         }

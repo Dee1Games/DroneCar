@@ -9,7 +9,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/"+nameof(RangeDetector2D))]
-    public sealed class RangeDetector2D : ColliderDetector2D, IRadius
+    public sealed class RangeDetector2D : ColliderDetector2D, IRadius, IPulse
     {
         [SerializeField] private float radius = 2f;
 
@@ -97,7 +97,7 @@
         
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Receiving colliders within the specified range along with a detect point solver."+HAccurate+HCDetector+HSmartSolver+HIRadius+HINonAllocator;
+        private static string Info = "Receiving colliders within the specified range along with a detect point solver."+HAccurate+HCDetector+HLOS_Solver+HIRadius+HIPulse+HINonAllocator;
 #pragma warning restore CS0414
 
         private Color col;

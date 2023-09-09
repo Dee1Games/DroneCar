@@ -29,11 +29,12 @@ Transform:
   m_GameObject: {fileID: 6097080984110957007}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.2}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.6}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1067744873462222929}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6139264935218956542
 MeshFilter:
@@ -118,22 +119,43 @@ MonoBehaviour:
   autoUpdate: 0
   gizmosUpdate: 0
   timeMode: 0
+  baseIgnoreTime: 0.1
   bulletID: 
+  unParentChild: 0
   onCast:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3502163139151078039}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onEndCast:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onEnd:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
-  hasCollision: 1
-  planarSensitive: 1
-  radius: 0.2
-  offset: 0
-  length: 0.5
   callMethod: OnBullet
   messageUpward: 0
   damage: 10
@@ -141,5 +163,80 @@ MonoBehaviour:
   lifeTime: 10
   endDelay: 0
   endFunction: 1
+  trailRenderer: {fileID: 0}
+  endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
+  collisionRay: {fileID: 0}
+  hitOffset: 0.1
+  endOnMiss: 1
+  forceToParentHit: 0
+--- !u!1001 &1397196370613702330
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 5870488291230682317}
+    m_Modifications:
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_RootOrder
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7763151684326707020, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+      propertyPath: m_Name
+      value: HitParticle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+--- !u!4 &1067744873462222929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2139969570009571051, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+  m_PrefabInstance: {fileID: 1397196370613702330}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3502163139151078039 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2592376167188409389, guid: 69dcd70443a37d240bec12ec04b701ad, type: 3}
+  m_PrefabInstance: {fileID: 1397196370613702330}
+  m_PrefabAsset: {fileID: 0}

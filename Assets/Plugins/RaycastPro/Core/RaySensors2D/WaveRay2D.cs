@@ -17,13 +17,13 @@ namespace RaycastPro.RaySensors2D
         public float power = 1;
         public float noise;
         public float scale = 1f;
-        [SerializeField] public float radius = .1f;
+        [SerializeField] public float radius = 0f;
         public float Radius
         {
             get => radius;
             set => radius = Mathf.Max(0,value);
         }
-        public AnimationCurve clump = AnimationCurve.Constant(0, 1, 1);
+        public AnimationCurve clump = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public int digitStep;
         private float cycle;
         private float Function(float x)
@@ -51,12 +51,12 @@ namespace RaycastPro.RaySensors2D
             UpdatePath();
             if (pathCast)
             {
-                PathCast(PathPoints, out hit, out DetectIndex, MinDepth, MaxDepth, radius);
+                DetectIndex = PathCast(out hit, radius);
                 isDetect = FilterCheck(hit);
             }
         }
         private float dt, step;
-        private void UpdatePath()
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             dt = GetModeDeltaTime(timeMode);
@@ -74,17 +74,7 @@ namespace RaycastPro.RaySensors2D
         {
             if (IsSceneView && !IsPlaying) cycle = Time.realtimeSinceStartup*waveSpeed % Mathf.PI*2;
             EditorUpdate();
-            if (IsManuelMode)
-            {
-                UpdatePath();
-                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, drawDisc: true,
-                    coneCap: true);
-            }
-            else
-            {
-                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, drawDisc: true,
-                    coneCap: true);
-            }
+            FullPathDraw(radius, true);
             DrawDepthLine(BasePoint, Tip);
             if (hit) DrawNormal(hit.point.ToDepth(z), hit.normal, hit.transform.name);
         }

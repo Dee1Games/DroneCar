@@ -54,7 +54,6 @@ namespace Plugins.RaycastPro.Demo.Scripts
                 guns[i].gameObject.SetActive(false);
             }
             guns[value].gameObject.SetActive(true);
-            guns[value].GetComponentInChildren<BaseCaster>().Reload(); // Manuel Reload
         }
     }
 }

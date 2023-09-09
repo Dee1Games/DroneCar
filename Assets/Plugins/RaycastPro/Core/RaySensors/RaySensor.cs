@@ -61,6 +61,13 @@
         /// Ray direction in Selected Space
         /// </summary>
         public Vector3 Direction => local ? LocalDirection : direction;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public Vector3 ScaledDirection => Vector3.Scale(transform.lossyScale, Direction);
+
+        public float Scale => (transform.lossyScale.x + transform.lossyScale.y) / 2;
         /// <summary>
         /// Ray direction in Local space.
         /// </summary>
@@ -305,33 +312,6 @@
         }
 
         #endregion
-
-        // PATH CAST Algorithm TO PROTECTED INSIDE RAY_SENSOR
-        protected int PathCast(List<Vector3> path, float radius = 0f)
-        {
-            if (radius > 0)
-            {
-                for (var i = 0; i < path.Count - 1; i++)
-                {
-                    var dir = path[i + 1] - path[i];
-                    if (!Physics.SphereCast(path[i], radius, dir.normalized, out hit, dir.magnitude,
-                            detectLayer.value, triggerInteraction)) continue;
-                    return i;
-                }
-            }
-            else
-            {
-                for (var i = 0; i < path.Count - 1; i++)
-                {
-                    if (!Physics.Linecast(path[i], path[i + 1], out hit, detectLayer.value, triggerInteraction))
-                        continue;
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
         public override bool ClonePerformed => CloneHit.transform;
         public RaycastHit CloneHit => cloneRaySensor ? cloneRaySensor.CloneHit : hit;
         public Vector3 Normal => hit.normal;
@@ -428,13 +408,6 @@
             
             else // when normal ray
             {
-                void SetDefaultPosition()
-                {
-                    liner.positionCount = 2;
-                    liner.SetPosition(0, Vector3.Lerp(BasePoint, Tip, 0));
-                    liner.SetPosition(1, Vector3.Lerp(BasePoint, Tip, 1));
-                }
-
                 if (useLinerClampedPosition)
                 {
                     var _pos =(HitDistance / RayLength);
@@ -509,21 +482,13 @@
         internal override void OnEndDetect()
         {
             onEndDetect?.Invoke(PreviousHit);
-
             if (stampAutoHide) stamp?.gameObject.SetActive(false);
-
             if (!planarSensitive) return;
-
             if (anyPlanar)
             {
                 if (!_planar) return;
-                
                 _planar.OnEndReceiveRay(this);
-
                 _planar.onEndReceiveRay?.Invoke(this);
-                
-                //CloneDestroy(this);
-                
                 _planar = null;
             }
             else
@@ -531,9 +496,7 @@
                 foreach (var p in planers)
                 {
                     if (!p || p.transform != PreviousHit.transform) continue;
-
                     p.OnEndReceiveRay(this);
-
                     p.onEndReceiveRay?.Invoke(this);
                 }
             }
@@ -541,19 +504,13 @@
         internal override void OnBeginDetect()
         {
             onBeginDetect?.Invoke(hit);
-
             if (stampAutoHide) stamp?.gameObject.SetActive(true);
-
             if (!planarSensitive) return;
-
             if (anyPlanar)
             {
                 _planar = hit.transform.GetComponent<Planar>();
-
                 if (!_planar) return;
-                
                 _planar.OnBeginReceiveRay(this);
-
                 _planar.onBeginReceiveRay?.Invoke(this);
             }
             else
@@ -561,9 +518,7 @@
                 foreach (var p in planers)
                 {
                     if (!p || p.transform != hit.transform) continue;
-
                     p.OnBeginReceiveRay(this);
-
                     p.onBeginReceiveRay?.Invoke(this);
                 }
             }
@@ -573,16 +528,23 @@
             while (true)
             {
                 if (!sensor || !sensor.gameObject) return;
-
                 if (sensor.cloneRaySensor)
                 {
                     sensor = sensor.cloneRaySensor;
                     continue;
                 }
                 Destroy(sensor.gameObject);
-
                 break;
             }
+        }
+        // This function will destroy every clone before destroy the main
+        internal override void SafeRemove()
+        {
+            if (cloneRaySensor)
+            {
+                cloneRaySensor.SafeRemove();
+            }
+            Destroy(gameObject);
         }
 
 #if UNITY_EDITOR
@@ -596,9 +558,8 @@
             }
 
             if (IsSceneView && !IsPlaying) OnCast();
-
             GizmoGate?.Invoke();
-
+            
             if (!IsManuelMode)
             {
                 UpdateStamp();
@@ -612,16 +573,12 @@
             Color color = default)
         {
             if (!hit.transform) return;
-
             Handles.color = color == default ? HelperColor : color;
-
             Handles.DrawWireDisc(hit.point, hit.normal, DiscSize);
-
             if (doubleDisc) Handles.DrawWireDisc(hit.point + hit.normal * DotSize, hit.normal, DiscSize);
-
+            
             Handles.DrawLine(hit.point, hit.point + hit.normal * LineSize);
-
-            if (label) Handles.Label(hit.point, hit.transform.name, RCProEditor.HeaderStyle);
+            if (label) Handles.Label(hit.point + hit.normal * DotSize, hit.transform.name, RCProEditor.HeaderStyle);
         }
         
         protected void GeneralField(SerializedObject _so)

@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RaycastPro.Casters;
 using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Giant_Core : MonoBehaviour
@@ -17,7 +19,11 @@ public class Giant_Core : MonoBehaviour
     [Header("Ragdoll Setup")]
     public float drag = 3;
     public float angularDrag = 3;
-    
+
+
+    [Header("Advance Casters")] 
+    public AdvanceCaster mainWeapon; // main Source of damage
+    public AdvanceCaster spamWeapon; // spam weapon
     private void Start()
     {
         aiCore = GetComponent<AI_Core>();
@@ -32,7 +38,6 @@ public class Giant_Core : MonoBehaviour
             limb.giantCore = this;
         }
     }
-
 
     [Button("Set Ragdoll")]
     private void SetRagdoll()
@@ -60,14 +65,11 @@ public class Giant_Core : MonoBehaviour
             limb.particle = particleSystem;
         }
     }
-
-
+    
     public void RagdollSetActive(bool phase)
     {
         aiCore.Active(!phase);
-
         if (fullBodyBipedIK) fullBodyBipedIK.enabled = !phase;
-
         foreach (var ragdollPart in ragdollParts)
         {
             if (ragdollPart)

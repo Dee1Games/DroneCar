@@ -8,7 +8,7 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(RangeDetector))]
-    public sealed class RangeDetector : ColliderDetector, IRadius
+    public sealed class RangeDetector : ColliderDetector, IRadius, IPulse
     {
         [SerializeField] private float radius = 2f;
 
@@ -144,7 +144,7 @@
 #pragma warning disable CS0414
         private static string Info =
             "Receiving colliders within the specified range along with a detect point solver." + HAccurate +
-            HCDetector + HSmartSolver + HIRadius + HRotatable + HINonAllocator;
+            HCDetector + HLOS_Solver + HIRadius + HRotatable + HINonAllocator;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {

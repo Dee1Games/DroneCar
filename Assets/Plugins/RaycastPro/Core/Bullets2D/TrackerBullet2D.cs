@@ -16,7 +16,7 @@
         public Vector3 targetPoint;
 
         public float distanceThreshold = .2f;
-        public float drag = 10;
+        public float drag = 2;
         public Vector3 trackOffset;
         public float turnSharpness = 15;
         
@@ -39,35 +39,45 @@
             transform.right = (target.position - transform.position).normalized;
             
             targetPoint = target.position;
-            _f = force;
+            currentForce = force;
         }
 
         private Transform _t;
-        private float _dis, _dt, _f;
+        private float _dis, _dt, currentForce;
         private Vector2 _dir;
         public override void RuntimeUpdate()
         {
-            _t = transform;
-            _dis = Vector3.Distance(_t.position, target ? target.position : targetPoint);
             _dt = GetModeDeltaTime(timeMode);
+            UpdateLifeProcess(_dt);
             
-            if (_dis <= distanceThreshold) OnEnd();
-            else
+            targetPoint = target ? target.position + trackOffset : _t.position;
+            _dis = Vector3.Distance(_t.position, targetPoint);
+            if (currentForce <= .1f)
             {
-                if (target) targetPoint = target.position.ToDepth(Z) + trackOffset;
-                _dir = targetPoint - _t.position;
-                switch (trackType)
-                {
-                    case TrackType.PositionLerp:
-                        var lerp = Vector3.Lerp(_t.position.ToDepth(Z), targetPoint.ToDepth(Z), _dt * speed);
-                        _t.position = lerp;
-                        break;
-                    case TrackType.RotationLerp:
-                        _f = Mathf.Lerp(_f, 0, 1 - Mathf.Exp(-drag * _dt));
-                        _t.position += _dir.normalized.ToDepth() * (_f * _dt);
-                        break;
-                }
+                OnEnd(caster);
+                return;
             }
+            if (target && _dis <= distanceThreshold)
+            {
+                OnEnd(caster);
+                return;
+            }
+            _dt = GetModeDeltaTime(timeMode);
+            _dir = targetPoint - _t.position;
+            
+            switch (trackType)
+            {
+                case TrackType.PositionLerp:
+                    var lerp = Vector3.Lerp(_t.position.ToDepth(Z), targetPoint.ToDepth(Z), _dt * speed);
+                    _t.position = lerp;
+                    break;
+                case TrackType.RotationLerp:
+                    currentForce = Mathf.Lerp(currentForce, 0, 1 - Mathf.Exp(-drag * _dt));
+                    _t.position += _dir.normalized.ToDepth() * (currentForce * _dt);
+                    break;
+            }
+            if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
+            if (collisionRay) CollisionRun(_dt);
         }
 
 #if UNITY_EDITOR
@@ -83,8 +93,8 @@
                 BeginVerticalBox();
                 PropertyEnumField(_so.FindProperty(nameof(trackType)), 2, "Track Type".ToContent(), new GUIContent[]
                 {
-                    "Position Lerp".ToContent("Position Lerp"),
-                    "Rotation Lerp".ToContent("Position Lerp"),
+                    CPositionLerp.ToContent(TPositionLerp),
+                    CRotationLerp.ToContent(TRotationLerp),
                 });
                 
                 if (trackType == TrackType.RotationLerp)
