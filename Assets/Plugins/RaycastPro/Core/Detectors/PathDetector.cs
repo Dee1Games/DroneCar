@@ -97,7 +97,7 @@
         protected readonly string[] CEventNames = {"onHit", "onNewHit", "onLostHit", "onDetectCollider", "onNewCollider", "onLostCollider"};
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
             DrawPath(pathRay.PathPoints, drawSphere:true, radius: (pathRay is IRadius _iRad ? _iRad.Radius+DotSize : 0f), dotted: true);
             Handles.color = DetectColor;
         }

@@ -44,28 +44,32 @@
         }
         
         public RaycastHit2D[] raycastHits;
-        private Vector3 _p;
+        private Vector3 _pos, tip;
         private float step, length;
         private Vector3 _l;
         private int trueHit;
+        private RaycastHit2D _hit;
         protected override void OnCast() 
         {
 #if UNITY_EDITOR
             GizmoGate = null;
 #endif
-            _p = transform.position;
+            _pos = transform.position;
             step = arcAngle / cuts;
             _l = Direction;
             
             RaycastHit2D LineCast(int stepIndex)
             {
 
-                var tip = Quaternion.AngleAxis(step * stepIndex, Vector3.forward) * _l;
-                var _hit = Physics2D.Linecast(_p, _p + tip, detectLayer.value, MinDepth, MaxDepth);
+                tip = Quaternion.AngleAxis(step * stepIndex, Vector3.forward) * _l;
+                _hit = Physics2D.Linecast(_pos, _pos + tip, detectLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
+                var _p = _hit.point.ToDepth(z)-transform.position;
+                bool _b = _hit.transform;
+                var _tDir = tip;
                 GizmoGate += () =>
                 {
-                    DrawBlockLine2D(transform.position, transform.position + tip,false, _hit);
+                    DrawBlockLine(transform.position, transform.position + _tDir, _b, _p+transform.position);
                 };
 #endif
                 return _hit;

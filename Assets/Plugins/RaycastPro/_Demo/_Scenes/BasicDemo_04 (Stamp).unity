@@ -266,6 +266,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 1870644313}
   local: 1
+  scalable: 0
   stampOnHit: 1
   stampAutoHide: 1
   stampOffset: 0.1
@@ -294,7 +295,7 @@ MonoBehaviour:
       m_Calls: []
   direction: {x: 0, y: 0, z: 8}
   mainCamera: {fileID: 1225270667}
-  radius: 0
+  radius: 0.1
   rayFromCamera: 0
   eyeType: 2
 --- !u!1001 &265147441
@@ -335,11 +336,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 273850450546115439, guid: a56f585fb7b9a314e820609936e7fa0d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000015358238
+      value: 0.0000016645698
       objectReference: {fileID: 0}
     - target: {fileID: 273850450546115439, guid: a56f585fb7b9a314e820609936e7fa0d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.58895
+      value: 5.3089504
       objectReference: {fileID: 0}
     - target: {fileID: 273850450546115439, guid: a56f585fb7b9a314e820609936e7fa0d, type: 3}
       propertyPath: m_LocalRotation.w

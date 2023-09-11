@@ -1,7 +1,6 @@
-﻿
-
-namespace RaycastPro.RaySensors2D
+﻿namespace RaycastPro.RaySensors2D
 {
+    using Planers2D;
     using System.Collections.Generic;
     using UnityEngine;
 
@@ -13,33 +12,31 @@ namespace RaycastPro.RaySensors2D
     [AddComponentMenu("")]
     public sealed class CloneRay2D : PathRay2D
     {
-        private Transform getter;
+        private Planar2D getter;
         private Transform outer;
 
         private RaySensor2D sensor;
         
         // Non Allocation 
-        private List<Vector2> _tPath = new List<Vector2>();
+        private readonly List<Vector2> _tPath = new List<Vector2>();
         
         private float radius;
 
-        internal void CopyFrom(RaySensor2D raySensor, Transform _getter, Transform _outer)
+        internal void CopyFrom(RaySensor2D raySensor, Planar2D _getter, Transform _outer)
         {
             getter = _getter;
             outer = _outer;
-
             sensor = raySensor;
-            minDepth = raySensor.minDepth;
-            maxDepth = raySensor.maxDepth;
-            minAngle = raySensor.minAngle;
-            maxAngle = raySensor.maxAngle;
             detectLayer = raySensor.detectLayer;
-
+            direction = raySensor.direction;
             planarSensitive = raySensor.planarSensitive;
             anyPlanar = raySensor.anyPlanar;
+            if (raySensor is PathRay2D pathRay)
+            {
+                pathCast = getter.clonePathCast && pathRay.pathCast;
+            }
             if (!anyPlanar) planers = raySensor.planers;
             if (raySensor is IRadius iRadius) radius = iRadius.Radius;
-
             planers = raySensor.planers;
             stamp = raySensor.stamp;
             stampAutoHide = raySensor.stampAutoHide;
@@ -54,43 +51,49 @@ namespace RaycastPro.RaySensors2D
             if (raySensor.liner)
             {
                 liner = CopyComponent(raySensor.liner, gameObject);
+                cutOnHit = raySensor.cutOnHit;
+                useLinerClampedPosition = raySensor.useLinerClampedPosition;
+                linerBasePosition = raySensor.linerBasePosition;
+                linerEndPosition = raySensor.linerEndPosition;
                 UpdateLiner();
             }
         }
 
+        private Vector3 _p;
         protected override void UpdatePath()
         {
             PathPoints.Clear();
             DetectIndex = -1;
 
-            if (sensor is PathRay2D pathRay)
+            if (baseRaySensor is PathRay2D pathRay)
             {
                 _tPath.Clear();
                 _tPath.Add(Vector2.zero);
                 for (var i = pathRay.DetectIndex + 1; i < pathRay.PathPoints.Count; i++)
-                    _tPath.Add(pathRay.PathPoints[i]-sensor.hit.point);
-
-                foreach (var p in _tPath) PathPoints.Add( transform.TransformDirection(getter.InverseTransformDirection(p))+transform.position);
+                {
+                    var _dir = pathRay.PathPoints[i] - pathRay.hit.point;
+                    _tPath.Add(_dir);
+                }
+                for (var index = 0; index < _tPath.Count; index++)
+                {
+                    _p = _tPath[index];
+                    _p = pathRay.transform.InverseTransformDirection(_p);
+                    PathPoints.Add(transform.TransformDirection(_p) + transform.position);
+                }
             }
             else
             {
-                var path = new List<Vector3>
-                {
-                    getter.transform.InverseTransformPoint(sensor.hit.point),
-                    getter.transform.InverseTransformPoint(sensor.Tip)
-                };
-
-                foreach (var p in path) PathPoints.Add(outer.TransformPoint(p));
+               PathPoints.Add(outer.TransformPoint(getter.transform.InverseTransformPoint(sensor.hit.point)).ToDepth(z));
+               PathPoints.Add(outer.TransformPoint(getter.transform.InverseTransformPoint(sensor.Tip)).ToDepth(z));
             }
-            if (sensor is IRadius iRadius) radius = iRadius.Radius;
-            DetectIndex = PathCast(out hit, radius);
-            isDetect = FilterCheck(hit);
         }
         protected override void OnCast()
         {
             UpdatePath();
+            
             if (pathCast)
             {
+                if (sensor is IRadius iRadius) radius = iRadius.Radius;
                 DetectIndex = PathCast(out hit, radius);
                 isDetect = FilterCheck(hit);
             }

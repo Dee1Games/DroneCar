@@ -91,7 +91,7 @@ namespace RaycastPro.Casters
             {
                 BeginVerticalBox();
                 RCProEditor.PropertyArrayField(_so.FindProperty(nameof(raySensors)),
-                    CRaySensor.ToContent(TRaySensor), i => $"RaySensors {i+1}".ToContent($"Index {i}"));
+                    CRaySensor.ToContent(TRaySensor), i => $"GunBarrel {i+1}".ToContent($"Index {i}"));
                 EndVertical();
                 BeginVerticalBox();
                 PropertyEnumField(_so.FindProperty(nameof(castType)), 4, CCastType.ToContent(TCastType), new GUIContent[]
@@ -102,6 +102,8 @@ namespace RaycastPro.Casters
                     CPingPong.ToContent(TPingPong),
                 });
                 EndVertical();
+                
+                GunField(_so);
             }
 
             if (hasGeneral) GeneralField(_so);
@@ -109,7 +111,7 @@ namespace RaycastPro.Casters
             if (hasEvents) 
             {
                 EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                    RCProEditor.HeaderFoldout());
+                    RCProEditor.HeaderFoldout);
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 if (EventFoldout) RCProEditor.EventField(_so, events);
             }

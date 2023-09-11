@@ -140,7 +140,7 @@ namespace RaycastPro.Detectors
         private float drawGizmosAlpha = 1f;
         internal override void OnGizmos() 
         {
-            EditorCast();
+            EditorUpdate();
             if (IsLabel)
             {
                 Handles.Label(Center,

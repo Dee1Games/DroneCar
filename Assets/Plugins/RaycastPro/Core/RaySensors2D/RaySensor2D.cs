@@ -29,7 +29,7 @@
         public float minAngle;
         public float maxAngle = 90;
         
-        internal RaySensor2D _baseRaySensor;
+        internal RaySensor2D baseRaySensor;
         internal RaySensor2D cloneRaySensor;
 
         [SerializeField] protected bool hitBackside;
@@ -49,6 +49,8 @@
         public virtual Vector2 HitDirection => hit ? hit.point.ToDepth(z) - BasePoint : LocalDirection3D;
         public float Length => direction.magnitude;
         public Vector2 Direction => local ? LocalDirection : direction;
+        public Vector2 ScaledDirection => Vector2.Scale(Direction, transform.lossyScale);
+        public Vector2 FullDirection => scalable ? ScaledDirection : Direction;
         
         /// <summary>
         /// Direction on Depth (Z)
@@ -57,6 +59,10 @@
         public Vector2 LocalDirection => transform.TransformDirection(direction);
         public Vector3 LocalDirection3D => transform.TransformDirection(direction);
         public float z => transform.position.z;
+
+        public float scaleY => transform.lossyScale.y;
+
+        public float scaleX => transform.lossyScale.x;
         public virtual float ContinuesDistance => Length - HitDistance;
         public float HitDistance => hit ? (hit.point.ToDepth(z) - BasePoint).magnitude : Length;
 
@@ -288,6 +294,7 @@
             return false;
         }
         private bool tQ, tHB;
+        
         private void SolvedQueriesCast()
         {
             tHB = Physics2D.queriesStartInColliders;
@@ -418,7 +425,8 @@
             {
                 cloneRaySensor.SafeRemove();
             }
-            Destroy(gameObject);
+
+            if (gameObject) Destroy(gameObject);
         }
         public static void CloneDestroy(RaySensor2D sensor)
         {

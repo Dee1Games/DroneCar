@@ -11,6 +11,9 @@
 
     [AddComponentMenu("RaycastPro/Rey Sensors/" + nameof(ChainRay))]
     public sealed class ChainRay : PathRay, IRadius
+        #if UnityEditor
+,ISceneGUI
+        #endif
     {
         public ChainReference chainReference = ChainReference.Point;
         [SerializeField] private float radius = 0f;
@@ -109,8 +112,11 @@
                     EditorGUILayout.PropertyField(_so.FindProperty(nameof(relative)),
                         CRelative.ToContent(TRelative), relative);
                 }
-                else RCProEditor.PropertyArrayField(_so.FindProperty(nameof(targets)), "Targets".ToContent(),
-                    (i) => $"Target {i+1}".ToContent($"Index {i}"));
+                else
+                {
+                    RCProEditor.PropertyArrayField(_so.FindProperty(nameof(targets)), "Targets".ToContent(),
+                        (i) => $"Target {i + 1}".ToContent($"Index {i}"));
+                }
                 
                 EndVertical();
                 RadiusField(_so);
@@ -121,6 +127,24 @@
             if (hasEvents) EventField(_so);
 
             if (hasInfo) InformationField();
+        }
+
+        private Vector3 _l;
+        public void OnSceneGUI()
+        {
+            return;
+            if (relative || chainReference == ChainReference.Transform) return;
+
+            for (int i = 0; i < chainPoints.Length; i++)
+            {
+                _l = chainPoints[i].ToLocal(transform);
+                var newPosition = Handles.DoPositionHandle(_l, Quaternion.identity);
+                if (_l != newPosition)
+                {
+                    Undo.RecordObject(this, "Move Bezier Control Point");
+                    chainPoints[i] = newPosition.ToWorld(transform);
+                }
+            }
         }
 #endif
     }

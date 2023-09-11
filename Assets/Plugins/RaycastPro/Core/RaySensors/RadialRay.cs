@@ -10,6 +10,33 @@ namespace RaycastPro.RaySensors
     using UnityEditor;
 #endif
 
+
+    [Serializable]
+    public class Data
+    {
+        public float length = 1f;
+        [SerializeField]
+        private float influence = 1f;
+
+        public float Influence
+        {
+            get => influence;
+            set => influence = Mathf.Clamp01(value);
+        }
+
+#if UNITY_EDITOR
+        internal void EditorPanel(SerializedProperty _sp)
+        {
+            RaycastCore.BeginVerticalBox();
+            RaycastCore.PropertySliderField(_sp.FindPropertyRelative(nameof(length)), 0f, 1f, "length".ToContent());
+            RaycastCore.PropertySliderField(_sp.FindPropertyRelative(nameof(influence)), 0f, 1f, "influence".ToContent());
+            RaycastCore.EndVertical();
+        }
+#endif
+    }
+    
+
+    
     [AddComponentMenu("RaycastPro/Rey Sensors/" + nameof(RadialRay))]
     public sealed class RadialRay : RaySensor
     {
@@ -24,51 +51,54 @@ namespace RaycastPro.RaySensors
         public int Subdivide
         {
             get => subdivide;
-            set
-            {
-                subdivide = (byte) Mathf.Max(1,value);
-            }
+            set => subdivide = (byte) Mathf.Max(1,value);
         }
         public Stack<RaycastHit> raycastHits = new Stack<RaycastHit>();
         public override Vector3 Tip => transform.position + Direction;
         public override float RayLength => TipLength;
         public override Vector3 BasePoint => transform.position;
 
-        private RaycastHit raycastHit;
-        private Vector3 _pos, _angledPos;
-        private float pow, step;
+        public int Count => Pow + 1;
+        private int Pow => (int) Mathf.Pow(2, subdivide);
+        
+        private RaycastHit _raycastHit;
+        private Vector3 _pos, _angledDir;
+        private float total, step;
         private bool condition;
         protected override void OnCast()
         {
 #if UNITY_EDITOR
-            CleanGate();
+            GizmoGate = null;
 #endif
             _pos = transform.position;
-            pow = Mathf.Pow(2, subdivide);
-            step = arcAngle / pow;
+            total = Pow;
+            step = arcAngle / total;
             hit = default;
-
+            
             raycastHits.Clear();
-            for (var i = 0; i <= pow; i++)
+            for (var i = 0; i <= total; i++)
             {
-                _angledPos = _pos + Quaternion.AngleAxis(step * i, transform.up) * ArcStartPoint;
-                condition = Physics.Linecast(_pos, _angledPos, out raycastHit, detectLayer.value, triggerInteraction);
+                _angledDir =  Quaternion.AngleAxis(step * i, transform.up) * ArcStartPoint;
 
-                if (!hit.transform) hit = raycastHit;
+                condition = Physics.Linecast(_pos, _pos + _angledDir, out _raycastHit, detectLayer.value, triggerInteraction);
 
-                raycastHits.Push(raycastHit);
+                if (!hit.transform) hit = _raycastHit;
+
+                raycastHits.Push(_raycastHit);
 #if UNITY_EDITOR
-                var clone = _angledPos;
-                var _p = raycastHit.point;
-                var _n = raycastHit.normal;
+                var _p = _raycastHit.point-transform.position;
+                var _n = _raycastHit.normal;
+                bool _b = _raycastHit.transform;
+                var _tDir = _angledDir;
                 GizmoGate += () =>
                 {
-                    DrawCross(_p, _n);
-                    Handles.color = condition ? DetectColor : DefaultColor;
-                    Handles.DrawLine(_pos, clone);
+                    GizmoColor = _b ? DetectColor : DefaultColor;
+                    DrawCross(transform.position + _p, _n);
+                    DrawBlockLine(transform.position, transform.position + _tDir, _b, transform.position +_p);
+
                 };
 #endif
-                if (condition && raycastHit.distance <= hit.distance) hit = raycastHit;
+                if (condition && _raycastHit.distance <= hit.distance) hit = _raycastHit;
             }
         }
 
@@ -76,15 +106,30 @@ namespace RaycastPro.RaySensors
 #pragma warning disable CS0414
         private static string Info = "Radial shape emitter, which detects the nearest point, can collect hit information." + HAccurate + HDirectional;
 #pragma warning restore CS0414
+
+        private RaycastHit[] _hits;
+
         internal override void OnGizmos()
         {
+
             EditorUpdate();
             var color = (Performed ? DetectColor : DefaultColor);
             DrawZTest(() => Handles.DrawSolidArc(transform.position, transform.up, ArcStartPoint, arcAngle, DirectionLength),
                 color.ToAlpha(RCProPanel.alphaAmount/2), color.ToAlpha(RCProPanel.alphaAmount));
 
             DrawNormal(hit);
+
+            if (RCProPanel.ShowLabels)
+            {
+                _hits = raycastHits.ToArray();
+                for (var index = 0; index < _hits.Length; index++)
+                {
+                    var raycastHit = _hits[index];
+                    Handles.Label(raycastHit.point, index.ToString());
+                }
+            }
         }
+        
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)
@@ -92,6 +137,7 @@ namespace RaycastPro.RaySensors
             if (hasMain)
             {
                 DirectionField(_so);
+                //RayDataField(_so);
                 PropertySliderField(_so.FindProperty(nameof(arcAngle)), 0f, 360f, CArcAngle.ToContent(CArcAngle));
                 PropertySliderField(_so.FindProperty(nameof(subdivide)), 0, RCProPanel.maxSubdivideTime, CSubdivide.ToContent(TSubdivide), _ => {});
             }
@@ -111,6 +157,5 @@ namespace RaycastPro.RaySensors
             }
         }
 #endif
-        public RaycastHit[] DetectedHits { get; set; } = Array.Empty<RaycastHit>();
     }
 }

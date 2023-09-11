@@ -14,7 +14,7 @@ namespace RaycastPro.RaySensors2D
         [SerializeField] private float radius = .4f;
         
         [SerializeField] private float height;
-        
+
         public float Height
         {
             get => height;
@@ -28,6 +28,7 @@ namespace RaycastPro.RaySensors2D
         }
 
         private float angle;
+
         protected override void OnCast()
         {
             if (height > 0)

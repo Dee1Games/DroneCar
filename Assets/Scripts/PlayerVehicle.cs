@@ -327,6 +327,7 @@ public class PlayerVehicle : MonoBehaviour
     public void Deactivate()
     {
         IsActive = false;
+        CarCore._.End(false);
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
         anim.SetBool(Hover, false);

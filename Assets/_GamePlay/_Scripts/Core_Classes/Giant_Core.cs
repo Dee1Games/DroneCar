@@ -1,27 +1,46 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using RaycastPro.Casters;
+using RootMotion;
 using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Giant_Core : MonoBehaviour
 {
+    public Monster monster;
     public Animator animator;
     public FullBodyBipedIK fullBodyBipedIK;
     
+    [Title("AI")]
     public AI_Core aiCore;
+
+    [Title("UI")]
+    public Sprite giantIcon;
 
     public List<Rigidbody> ragdollParts;
     public Limb[] limbs;
-    [Header("Ragdoll Setup")]
+    [Title("Ragdoll Setup")]
     public float drag = 3;
     public float angularDrag = 3;
-    
+
+
+    public Transform GetRandomMember()
+    {
+        var random = Random.Range(0, 5);
+
+        switch (random)
+        {
+            case 0: return fullBodyBipedIK.references.head;
+            case 1: return fullBodyBipedIK.references.leftUpperArm;
+            case 2: return fullBodyBipedIK.references.rightUpperArm;
+            case 3: return fullBodyBipedIK.references.leftThigh;
+            case 4: return fullBodyBipedIK.references.rightThigh;
+        }
+        return fullBodyBipedIK.references.head;
+    }
     private void Start()
     {
+        monster = GetComponentInParent<Monster>();
         aiCore = GetComponent<AI_Core>();
         animator = GetComponentInChildren<Animator>();
         fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
@@ -33,6 +52,8 @@ public class Giant_Core : MonoBehaviour
         {
             limb.giantCore = this;
         }
+
+        UI_Core._.giantIcon.sprite = giantIcon;
     }
 
     [Button("Set Ragdoll")]

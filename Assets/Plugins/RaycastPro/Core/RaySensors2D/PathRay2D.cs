@@ -9,8 +9,7 @@
 
     public abstract class PathRay2D : RaySensor2D
     {
-        [SerializeField]
-        protected bool pathCast = true;
+        public bool pathCast = true;
         public override Vector3 Tip => PathPoints.LastOrBase(transform.position).ToDepth(z);
         public override float RayLength => PathPoints.GetPathLength();
         public override Vector3 BasePoint => PathPoints.Count > 0 ? PathPoints[0].ToDepth(z) : transform.position;
@@ -75,12 +74,12 @@
             if (IsManuelMode)
             {
                 UpdatePath();
-                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, drawDisc: true,
+                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint: hit.point, radius: radius, detectIndex: DetectIndex,z: z, drawDisc: true,
                     coneCap: true);
             }
             else
             {
-                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, drawDisc: true,
+                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, z: z, drawDisc: true,
                     coneCap: true);
             }
         }

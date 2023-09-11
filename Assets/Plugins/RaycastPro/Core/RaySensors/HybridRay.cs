@@ -36,7 +36,7 @@
         protected override void OnCast()
         {
 #if UNITY_EDITOR
-            CleanGate();
+            GizmoGate = null;
 #endif
 
             _t = transform;

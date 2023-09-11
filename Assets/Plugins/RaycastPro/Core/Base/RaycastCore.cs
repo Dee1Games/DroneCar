@@ -23,6 +23,14 @@
         /// </summary>
         float Radius { get; set; }
     }
+    public interface ISceneGUI
+    {
+        public void OnSceneGUI();
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class RaycastCore : MonoBehaviour
     {
         #region Public Enums
@@ -148,7 +156,7 @@
             public void DampedSyncAxis(Transform _t, Vector3 forward, float dampSharpness = 15, in float deltaTime = .02f)
             {
                 _t.rotation = Quaternion.Lerp(_t.rotation, 
-                    Quaternion.LookRotation(forward * (flipAxis ? -1 : 1), Vector3.up)
+                    Quaternion.LookRotation(forward.normalized * (flipAxis ? -1 : 1), _t.up)
                     , 1 - Mathf.Exp(-dampSharpness * deltaTime));
             }
 
@@ -156,41 +164,25 @@
 #if UNITY_EDITOR
             
             private static GUIContent[] tips = new GUIContent[] {"X".ToContent(), "Y".ToContent(), "Z".ToContent()};
-            internal void EditorPanel(SerializedProperty axisRunProperty)
+            internal void EditorPanel(SerializedProperty axisRunProperty, bool withBox = false)
             {
-                BeginVerticalBox();
-                
+                if (withBox) BeginVerticalBox();
                 var rect = EditorGUILayout.GetControlRect(true, 18);
-                
                 var axisProp = axisRunProperty.FindPropertyRelative(nameof(axis));
-                
                 EditorGUI.BeginProperty(rect, "Axis".ToContent(), axisProp);
-                
-                                
                 EditorGUILayout.GetControlRect(true, -18);
-                
                 BeginHorizontal();
-
                 EditorGUILayout.PropertyField(axisRunProperty.FindPropertyRelative(nameof(syncAxis)),
                     CSyncAxis.ToContent(TSyncAxis));
                 GUI.enabled = syncAxis;
-                
                 EditorGUI.BeginChangeCheck();
-
                 var newValue = GUILayout.SelectionGrid(axisProp.enumValueIndex, tips, 3);
-
                 if (EditorGUI.EndChangeCheck()) axisProp.enumValueIndex = newValue;
-
                 EditorGUI.EndProperty();
-                
-                LocalField(axisRunProperty.FindPropertyRelative(nameof(flipAxis)), "F".ToContent("Flip"));
-
+                MiniField(axisRunProperty.FindPropertyRelative(nameof(flipAxis)), "F".ToContent("Flip"));
                 GUI.enabled = true;
-                
                 EndHorizontal();
-                
-                EndVertical();
-
+                if (withBox) EndVertical();
             }
 #endif
         }
@@ -707,26 +699,6 @@
         internal static bool IsDetectLine => RCProPanel.DrawDetectLine;
         internal static bool IsBlockLine => RCProPanel.DrawDetectLine;
         internal abstract void OnGizmos();
-        protected static void DrawDetectLine2D(RaycastHit2D hit, Vector3 p1, Vector3 p2, float depth)
-        {
-            Handles.color = DefaultColor;
-
-            Handles.DrawLine(p1, p2);
-
-            if (!hit) return;
-
-            DrawNormal2D(hit, depth);
-
-            Gizmos.color = DetectColor;
-
-            var hitPoint = hit.point.ToDepth(depth);
-
-            Gizmos.DrawLine(p1, hitPoint);
-
-            Handles.color = BlockColor;
-
-            Handles.DrawDottedLine(hitPoint, p2, StepSizeLine);
-        }
         protected static void DrawDetectLine(Vector3 p1, Vector3 p2, RaycastHit hit, bool isDetect)
         {
             if (isDetect)
@@ -754,7 +726,6 @@
         /// Set Gizmo And Handles Color Together;
         /// </summary>
         /// <param name="drawColor"></param>
-        
         protected void DrawArrows(float length = 1)
         {
             var position = transform.position;
@@ -776,20 +747,11 @@
             Handles.DrawLine(point - angleAxis * DotSize,
                 point + angleAxis * DotSize);
         }
-        protected static void DrawNormal(Vector3 point, Vector3 normal, string label = "")
+        protected static void DrawNormal(Vector3 point, Vector3 normal, string label = "",  float offset = 0, float radius = 0f)
         {
             Handles.color = HelperColor;
-            Handles.DrawWireDisc(point, normal, DiscSize);
-            Handles.DrawLine(point, point + normal * LineSize);
-            if (RCProPanel.ShowLabels && label != "")
-            {
-                Handles.Label(point, label, RCProEditor.HeaderStyle);
-            }
-        }
-        protected static void DrawNormal(Vector3 point, Vector3 normal, float offset, string label = "")
-        {
-            Handles.color = HelperColor;
-            Handles.DrawWireDisc(point, normal, offset);
+            
+            Handles.DrawWireDisc(point, normal, radius > 0 ? radius : DotSize);
             Handles.DrawLine(point, point + normal * offset);
             if (RCProPanel.ShowLabels && label != "")
             {
@@ -848,17 +810,18 @@
                 Handles.DrawDottedLine(blockPoint.point, p2, StepSizeLine);
             }
         }
-        protected void DrawBlockLine(Vector3 p1, Vector3 p2, RaycastHit blockPoint = default, float alpha = 1)
+        protected void DrawBlockLine(Vector3 p1, Vector3 p2, RaycastHit blockHit, float alpha = 1)
         {
-            if (blockPoint.transform)
+            DrawBlockLine(p1, p2, blockHit.transform, blockHit.point, alpha);
+        }
+        protected void DrawBlockLine(Vector3 p1, Vector3 p2, bool blocked, Vector3 blockPoint, float alpha = 1)
+        {
+            if (blocked)
             {
                 Handles.color = DetectColor.ToAlpha(alpha);
-                Handles.DrawLine(p1, blockPoint.point);
-                if (IsBlockLine)
-                {
-                    Handles.color = BlockColor.ToAlpha(alpha);
-                    Handles.DrawDottedLine(blockPoint.point, p2, StepSizeLine);
-                }
+                Handles.DrawLine(p1, blockPoint);
+                Handles.color = BlockColor.ToAlpha(alpha);
+                Handles.DrawDottedLine(blockPoint, p2, StepSizeLine);
             }
             else
             {
@@ -912,30 +875,6 @@
             if (drawSphereBase) DrawSphere(p1, planeNormal, radius);
             if (drawSphereTarget) DrawSphere(p2, planeNormal, radius);
         }
-        public void DrawBlockLine2D(Vector3 p1, Vector3 p2,
-            bool drawCross = true, RaycastHit2D blockHit = default)
-        {
-            if (blockHit)
-            {
-                if (RCProPanel.DrawBlockLine)
-                {
-                    var breakOn = blockHit.point.ToDepth(p1.z);
-                    Handles.color = DetectColor;
-                    DrawLine(p1, breakOn);
-                    if (drawCross) DrawCross(blockHit.point, Vector3.forward);
-                    Handles.color = BlockColor;
-                    DrawLine(breakOn, p2, true);
-                }
-            }
-            else
-            {
-                if (RCProPanel.DrawDetectLine)
-                {
-                    Handles.color = DefaultColor;
-                    DrawLine(p1, p2);
-                }
-            }
-        }
         protected static void DrawCapsuleLine(Vector3 p1, Vector3 p2, float radius, float height = 0f, bool dotted = false, bool forwardS = true, bool backS = true, Transform _t = default)
         {
             var direction = (p2 - p1).normalized;
@@ -951,26 +890,18 @@
                 forward = (p2 - p1).normalized;
                 up = Vector3.ProjectOnPlane(Vector3.up + Vector3.forward * .0001f, forward).normalized;
             }
-
             var dotZ = Vector3.Dot(forward, direction) > 0;
             var dotY = Vector3.Dot(up, direction) > 0;
-
             var h = height / 2;
-
             var projectDirection = Vector3.ProjectOnPlane(direction, up).normalized;
             var tAngle = Vector3.Angle(direction, projectDirection);
             float angle;
             if (dotY) angle = dotZ ? tAngle : 180 - tAngle;
             else angle = dotZ ? -tAngle : tAngle + 180;
-
             var cAngle = 90 - angle;
-
             var heightUp = up * h;
-
             var tRight = Vector3.Cross(direction, -up).normalized * radius;
-
             var rangeUp = Quaternion.AngleAxis(angle, tRight) * up * radius;
-
             var IRangeUp = Quaternion.AngleAxis(dotZ ? -angle : 180 - angle, dotZ ? tRight : -tRight) * up * radius;
 
             if (height > 0)
@@ -1146,9 +1077,7 @@
         protected internal static void DrawSphere(Vector3 position, Vector3 normal, float radius)
         {
             var transformUp = Vector3.ProjectOnPlane(Vector3.up + new Vector3(0, 0, 001f), normal).normalized * radius;
-
             var transformRight = Quaternion.AngleAxis(90, normal) * transformUp;
-
             void Draw()
             {
                 Handles.DrawWireDisc(position, normal, radius);
@@ -1158,8 +1087,12 @@
 
             DrawZTest(Draw, Handles.color.ToAlpha(RCProPanel.alphaAmount), Handles.color);
         }
-        protected internal static void DrawLine(Vector3 p1, Vector3 p2, bool dotted = false)
+        protected internal static void DrawLine(Vector3 p1, Vector3 p2, bool dotted = false, Color color = default)
         {
+            if (color != default)
+            {
+                Handles.color = color;
+            }
             if (dotted)
             {
                 DrawZTest(() => Handles.DrawDottedLine(p1, p2, StepSizeLine), Handles.color.ToAlpha(.2f),
@@ -1170,13 +1103,13 @@
                 DrawZTest(() => Handles.DrawLine(p1, p2), Handles.color.ToAlpha(.2f), Handles.color);
             }
         }
-        protected internal static void DrawBox(Transform p, Vector3 size, float zOffset = 0)
+        protected internal static void DrawBox(Transform _t, Vector3 size, float zOffset = 0, bool local = true)
         {
-            var pos = p.position;
-
-            var right = p.right;
-            var forward = p.forward;
-            var up = p.up;
+            var pos = _t.position;
+            
+            var right = local ? _t.right : Vector3.right;
+            var forward = local ? _t.forward : Vector3.forward;
+            var up = local ? _t.up : Vector3.up;
             var rightSize = right * size.x;
             var sizeX = rightSize / 2;
             var upSize = up * size.y;
@@ -1197,7 +1130,6 @@
             var right = local ? Vector3.ProjectOnPlane(p.right, Vector3.forward).normalized : Vector3.right;
             var forward = Vector3.forward;
             var up = Vector3.Cross(right, forward);
-            
             
             var rightSize = right * size.x;
             var sizeX = rightSize / 2;
@@ -1224,12 +1156,12 @@
             Handles.DrawSolidArc(center, normal, from, angle / 2, radius);
             Handles.DrawSolidArc(center, normal, from, -angle / 2, radius);
         }
-        protected internal static void DrawRectLines(Transform p, Vector3 size, float zOffset, float length)
+        protected internal static void DrawRectLines(Transform p, Vector3 size, float zOffset, float length, bool local = true)
         {
             var pos = p.position;
-            var forward = p.forward;
-            var up = p.up;
-            var right = p.right;
+            var forward = local ? p.forward : Vector3.forward;
+            var up = local ? p.up : Vector3.up;
+            var right = local ? p.right : Vector3.right;
             Gizmos.DrawRay(pos - right * size.x / 2 - up * size.y / 2 + forward * zOffset, forward * length);
             Gizmos.DrawRay(pos - right * size.x / 2 + up * size.y / 2 + forward * zOffset, forward * length);
 
@@ -1386,7 +1318,7 @@
         }
         protected static void DrawPath2D(List<Vector3> path, Vector3 breakPoint, bool isDetect = false,
             float radius = 0f, bool pointLabel = false, bool drawDisc = false, bool coneCap = false,
-            bool dotted = false, int detectIndex = -1, Color _color = default)
+            bool dotted = false, int detectIndex = -1, float z = 0, Color _color = default)
         {
             if (path.Count == 0) return;
 
@@ -1410,6 +1342,8 @@
                     {
                         GizmoColor = DetectColor;
                         var breakOn = radius > 0 ? GetNearestPointOnLine(path[i], path[i + 1], breakPoint) : breakPoint;
+                        breakOn = breakOn.ToDepth(z);
+                        
                         DrawCircleLine(path[i], breakOn, radius, forawrdHemi: false);
                         
                         GizmoColor = BlockColor;
@@ -1445,9 +1379,11 @@
         private bool InfoFoldout;
         protected void InformationField(Action action = null) // Information
         {
+            if (action == null) return;
+
             InfoFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(InfoFoldout, "Information".ToContent(),
-                RCProEditor.HeaderFoldout());
-            if (InfoFoldout && action != null)
+                RCProEditor.HeaderFoldout);
+            if (InfoFoldout)
             {
                 BeginVerticalBox();
                 action.Invoke();
@@ -1464,7 +1400,7 @@
         }
         internal static void PropertyTimeModeField(SerializedProperty _timeMode)
         {
-            PropertyEnumField(_timeMode, 5, "Time Mode".ToContent("Time Mode"), new []
+            PropertyEnumField(_timeMode, 5, "Time Mode".ToContent(), new []
             {
                 "DT".ToContent("Delta Time"),
                 "SDT".ToContent("Smooth Delta Time"),
@@ -1525,7 +1461,6 @@
                 
                 onChange?.Invoke(newValue);
             }
-            
             EditorGUI.EndProperty();
         }
         internal static void PropertyMinMaxField(SerializedProperty minProp, SerializedProperty maxProp, ref float min, ref float max, float minValue = 0f, float maxValue = 0f)
@@ -1558,7 +1493,7 @@
                 
                 guiStyle.fontStyle = FontStyle.Bold;
                 guiStyle.alignment = TextAnchor.UpperCenter;
-                
+
                 GUI.Label(rect, label, guiStyle);
             }
             else
@@ -1567,7 +1502,7 @@
                 
                 guiStyle.fontStyle = FontStyle.Normal;
                 guiStyle.alignment = TextAnchor.UpperCenter;
-                
+
                 GUI.Label(rect, label, guiStyle);
             }
 
@@ -1577,41 +1512,20 @@
             if (EditorGUI.EndChangeCheck()) property.enumValueIndex = newValue;
             EditorGUI.EndProperty();
         }
-        protected static void LocalField(SerializedProperty localProp)
+        protected static void LocalField(SerializedProperty localProp) => MiniField(localProp, "L".ToContent("Local"));
+        protected static void ScaleField(SerializedProperty localProp) => MiniField(localProp, "S".ToContent("Scalable"));
+        protected static void MiniField(SerializedProperty localProp, GUIContent content)
         {
             var style = new GUIStyle(EditorStyles.label);
-            
             if (localProp.prefabOverride)
             {
                 style.fontStyle = FontStyle.BoldAndItalic;
-
-                EditorGUILayout.LabelField( "L".ToContent("Local"), style, GUILayout.Width(15f));
+                EditorGUILayout.LabelField(content, style, GUILayout.Width(15f));
             }
             else
             {
                 style.fontStyle = FontStyle.Normal;
-                
-                EditorGUILayout.LabelField( "L".ToContent("Local"), style, GUILayout.Width(15f));
-            }
-            
-            EditorGUILayout.PropertyField(localProp, GUIContent.none,
-                true, GUILayout.Width(15f));
-        }
-        protected static void LocalField(SerializedProperty localProp, GUIContent content)
-        {
-            var style = new GUIStyle(EditorStyles.label);
-            
-            if (localProp.prefabOverride)
-            {
-                style.fontStyle = FontStyle.BoldAndItalic;
-
-                EditorGUILayout.LabelField( content, style, GUILayout.Width(15f));
-            }
-            else
-            {
-                style.fontStyle = FontStyle.Normal;
-                
-                EditorGUILayout.LabelField( content, style, GUILayout.Width(15f));
+                EditorGUILayout.LabelField(content, style, GUILayout.Width(15f));
             }
             
             EditorGUILayout.PropertyField(localProp, GUIContent.none,
@@ -1660,6 +1574,10 @@
                 {
                     BeginHorizontalBox();
                     EditorGUILayout.LabelField("Auto Update is OFF.".ToContent("You can manually trigger core via \"Cast()\" method"), RCProEditor.LabelStyle);
+                    if (IsPlaying && GUILayout.Button("Cast"))
+                    {
+                        OnCast();
+                    }
                     EndHorizontal();
                 }
             }

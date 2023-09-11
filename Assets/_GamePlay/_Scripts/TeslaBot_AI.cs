@@ -1,56 +1,57 @@
-using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using RaycastPro.Casters;
 using RaycastPro.RaySensors;
+using RootMotion;
+using RootMotion.FinalIK;
+using Sirenix.Serialization;
 using UnityEngine;
 
 public class TeslaBot_AI : AI_Core
 {
     [Header("Guns")]
     public AdvanceCaster TeslaGun;
-    public TargetRay laserGun;
+    public Shield shield;
+    
+    public float teslaReadyTime = 3f;
+    public Tween teslaTween;
 
-    public float TeslaTimer = 3f;
-    public float currentTeslaTimer;
-    public override void Update()
+    public void Start()
     {
-        base.Update();
+        shield.Activate(myCore.fullBodyBipedIK.references.head);
+    }
 
-        if (TeslaGun.trackTarget)
+    public void TurnTesla(bool active)
+    {
+        if (active)
         {
-            if (currentTeslaTimer < TeslaTimer)
-            {
-                currentTeslaTimer += Time.deltaTime;
-            }
-            else
+            UI_Core._.track.DoAlert(teslaReadyTime);
+            teslaTween = DOVirtual.DelayedCall(teslaReadyTime, () =>
             {
                 TeslaGun.enabled = true;
+            });
+            TeslaGun.trackTarget = carCore.transform;
+        }
+        else
+        {
+            UI_Core._.track.alertImage.fillAmount = 0;
+            TeslaGun.enabled = false;
+            TeslaGun.trackTarget = null;
+            if (teslaTween.IsPlaying())
+            {
+                teslaTween.Kill();
             }
         }
-        UIManager.Instance.SetGiantGunTimer(TeslaGun.ammo.currentReloadTime);
     }
 
-    public override void Active(bool phase)
-    {
-        base.Active(phase);
-        TeslaGun.enabled = phase;
-    }
     protected override void OnPlayerFound(CarCore vehicle)
     {
         base.OnPlayerFound(vehicle);
-        TeslaGun.trackTarget = vehicle.transform;
-        laserGun.target = vehicle.transform;
-        laserGun.gameObject.SetActive(true);
-        currentTeslaTimer = 0;
+        TurnTesla(true);
     }
     protected override void OnPlayerLost(CarCore vehicle)
     {
         base.OnPlayerLost(vehicle);
-        TeslaGun.trackTarget = null;
-        laserGun.gameObject.SetActive(false);
-        laserGun.target = null;
-        TeslaGun.enabled = false;
+        TurnTesla(false);
     }
-    
-    
 }

@@ -86,6 +86,8 @@
                     CRandom.ToContent(TRandom),
                     CPingPong.ToContent(TPingPong),
                 });
+                
+                GunField(_so);
             }
 
             if (hasGeneral) GeneralField(_so);
@@ -93,7 +95,7 @@
             if (hasEvents) 
             {
                 EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                    RCProEditor.HeaderFoldout());
+                    RCProEditor.HeaderFoldout);
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 if (EventFoldout) RCProEditor.EventField(_so, events);
             }

@@ -1,6 +1,8 @@
-﻿#if UNITY_EDITOR
+﻿
+#if UNITY_EDITOR
 namespace RaycastPro
 {
+    using UnityEngine;
     using UnityEditor;
     using Editor;
     
@@ -17,26 +19,26 @@ namespace RaycastPro
         private static void Quit() => EditorPrefs.DeleteKey(FIRST_TIME);
         private static void RunOnce()
         {
+            // Obsolete
             RCProPanel.RefreshIcons();
-            
             var firstTime = EditorPrefs.GetBool(FIRST_TIME, true);
-
             if (firstTime)
             {
+                Debug.Log(RCProEditor.RPro+"<color=#38FFD3>Welcome to Project.</color>");
                 EditorPrefs.SetBool(FIRST_TIME, false);
-
                 if (EditorPrefs.GetBool(RCProPanel.KEY + RCProPanel.CShowOnStart, true))
                 {
                     RCProPanel.LoadWhenOpen = true;
-
                     RCProPanel.Init();
-
                     RCProPanel.LoadWhenOpen = false;
+                }
+                else
+                {
+                    RCProPanel.LoadPreferences();
                 }
                 //
                 RCProPanel.RefreshIcons();
             }
-
             EditorApplication.update -= RunOnce;
         }
     }

@@ -143,12 +143,12 @@
 
             if (solverType == SolverType.Focused)
             {
-                var point = transform.TransformPoint(detectVector);
-                
-                {
-                    Gizmos.DrawLine(transform.position, point);
-                    Gizmos.DrawWireSphere(point, DotSize);
-                }
+                Gizmos.color = HelperColor;
+                var point = transform.TransformDirection(detectVector) + transform.position;
+
+                Gizmos.DrawLine(transform.position, point);
+                Gizmos.DrawWireSphere(point, DotSize);
+
                 if (RCProPanel.ShowLabels) Handles.Label(point, solverType + " Vector");
             }
 

@@ -123,7 +123,7 @@
         private Vector3 s1, s2, s3, s4;
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
 
             DrawDetectVector();
 

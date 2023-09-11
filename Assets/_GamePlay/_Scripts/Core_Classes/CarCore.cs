@@ -13,6 +13,7 @@ public class CarCore : MonoBehaviour
         set
         {
             hp = Mathf.Clamp(value, 0, maxHp);
+            UI_Core._.carHealth.UpdateHealthUI(hp, maxHp);
             if (hp <= 0)
             {
                 End();
@@ -34,13 +35,15 @@ public class CarCore : MonoBehaviour
     {
         Hp = MaxHp;
     }
-    public void End()
+    public void End(bool explode = true)
     {
         foreach (var aiCore in FindObjectsOfType<AI_Core>())
         {
             aiCore.OnEnd(this);
         }
-        vehicle.Explode();
+
+        if (explode) vehicle.Explode();
+
         foreach (var collider in GetComponentsInChildren<Collider>())
         {
             collider.enabled = false;

@@ -8,15 +8,12 @@ namespace RaycastPro.Editor
     internal class IconDrawer
     {
         private const int iconSize = 18;
-
         public static int OffsetFromName = 100;
-        
         static IconDrawer ()
         {
             RCProPanel.drawHierarchyIcons = true;
             SetEvent(true);
         }
-
         internal static void SetEvent(bool turn)
         {
             if (turn)
@@ -28,11 +25,9 @@ namespace RaycastPro.Editor
                 EditorApplication.hierarchyWindowItemOnGUI -= HierarchyItemCB;
             }
         }
-        
         private static void HierarchyItemCB (int instanceID, Rect rect)
         {
             if (!RCProPanel.drawHierarchyIcons) return;
-
             rect.width = iconSize;
             var obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
             if (obj == null)
@@ -50,8 +45,6 @@ namespace RaycastPro.Editor
             {
                 if (!(component is RaycastCore)) continue;
                 var icon = AssetPreview.GetMiniThumbnail(component);
-                
-                
                 GUI.Label(rect, icon);
                 rect.x += iconSize;
             }

@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1467396598836823321}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5241163784840663519}
@@ -147,7 +147,7 @@ MonoBehaviour:
   caster: {fileID: 0}
   raySource: {fileID: 0}
   collisionRay: {fileID: 5879414053087945655}
-  power: 4000
+  power: 1000
   forceMode: 0
   body: {fileID: 2905633037572630520}
 --- !u!1 &8211386891367722669
@@ -180,7 +180,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3817342509432198470}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5879414053087945655
 MonoBehaviour:

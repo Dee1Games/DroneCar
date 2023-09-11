@@ -14,7 +14,7 @@
         protected void EventsField()
         {
             EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                RCProEditor.HeaderFoldout());
+                RCProEditor.HeaderFoldout);
             if (EventFoldout)
             {
                 RCProEditor.EventField(new SerializedObject(this), new[]

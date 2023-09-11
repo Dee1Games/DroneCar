@@ -1,19 +1,17 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using RaycastPro.Detectors;
 using RootMotion.FinalIK;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
 /// Implementation basic AI features of all Giants
 /// </summary>
-public abstract class AI_Core : MonoBehaviour
+public class AI_Core : MonoBehaviour
 {
-    private Giant_Core _giantCore;
+    protected Giant_Core myCore;
 
-
-    
     [Range(0, 1)]
     public float hardiness = 0f;
     
@@ -31,7 +29,7 @@ public abstract class AI_Core : MonoBehaviour
 
     protected void Awake()
     {
-        _giantCore = GetComponent<Giant_Core>();
+        myCore = GetComponent<Giant_Core>();
         if (!animator)
         {
             animator = GetComponentInChildren<Animator>();
@@ -68,17 +66,18 @@ public abstract class AI_Core : MonoBehaviour
     
     private static readonly int TurnAngle = Animator.StringToHash("turnAngle");
     private static readonly int Mirror = Animator.StringToHash("mirror");
+    private static readonly int CarHeight = Animator.StringToHash("carHeight");
 
     private const string Sync = "Sync";
     
     private float signedAngle, absAngle;
-    public virtual void Update()
+    protected virtual void Update()
     {
-        if (allowTurning && !animator.GetCurrentAnimatorStateInfo(0).IsTag(Sync))
+        if (allowTurning)
         {
             if (carCore)
             {
-                _direction = carCore.transform.position - transform.position;
+                _direction = CarCore._.transform.position - transform.position;
                 _direction.y = 0;
                 signedAngle = Vector3.SignedAngle(_direction, transform.forward, transform.up);
                 absAngle = Mathf.Abs(signedAngle);
@@ -93,6 +92,7 @@ public abstract class AI_Core : MonoBehaviour
                 animator.SetFloat(TurnAngle, 0);
             }
         }
+        animator.SetFloat(CarHeight, CarCore._.transform.position.y);
     }
 
     public void OnEnd(CarCore vehicle)
@@ -112,10 +112,11 @@ public abstract class AI_Core : MonoBehaviour
     private float lookRateDelay = 1f;
 
 
-
     protected virtual void OnPlayerFound(CarCore vehicle)
     {
         Debug.Log($"<color=#83FF5F>{vehicle}</color> founded.");
+
+        UI_Core._.track.Begin();
 
         lookAtIK.solver.target = vehicle.transform;
         DOVirtual.Float(lookAtIK.solver.IKPositionWeight
@@ -124,6 +125,9 @@ public abstract class AI_Core : MonoBehaviour
     protected virtual void OnPlayerLost(CarCore vehicle)
     {
         Debug.Log($"<color=#83FF5F>{vehicle}</color> Lost.");
+        
+        UI_Core._.track.End();
+        
         DOVirtual.Float(lookAtIK.solver.IKPositionWeight
             ,0, lookRateDelay, f => lookAtIK.solver.IKPositionWeight = f).OnComplete(() =>
         {

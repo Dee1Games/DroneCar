@@ -34,8 +34,6 @@ namespace RaycastPro.Planers
         private static string Info = "Division of Planar Sensitive Ray in angles and count entered."+HDependent+HExperimental;
 #pragma warning restore CS0414
         
-
-
         internal override void OnGizmos()
         {
             points = CircularPoints(transform.position+transform.forward*forward, radius, transform.forward, transform.up, count, true);
@@ -73,7 +71,7 @@ namespace RaycastPro.Planers
             clone = sensor.cloneRaySensor;
             if (!clone) return;
             // // TEMP BASE RAY SENSOR DEBUG..
-            if (!clone._baseRaySensor) RaySensor.CloneDestroy(clone);
+            if (!clone.baseRaySensor) RaySensor.CloneDestroy(clone);
             
             GetForward(sensor, out _forward);
 
@@ -106,24 +104,12 @@ namespace RaycastPro.Planers
                         break;
                 }
                 
-                foreach (var miniClone in CloneProfile[clone])
-                {
-                    if (!miniClone) continue;
-
-                    miniClone.transform.position = _cloneT.position;
-                    miniClone.transform.localScale = sensor.transform.localScale;
-                    miniClone.direction = _dir;
-                    
-                    if (miniClone.liner) miniClone.liner.enabled = sensor.liner.enabled;
-                    if (miniClone.stamp) miniClone.stamp.gameObject.SetActive(sensor.stamp.gameObject.activeInHierarchy);
-                }
             }
 
-            for (i = 0; i < cloneCount; i++)
+
+            for (int j = 0; j < _cloneT.childCount; j++)
             {
-                if (!clone) return;
-                if (!CloneProfile[clone][i]) continue;
-                CloneProfile[clone][i].transform.rotation = Quaternion.LookRotation(points[i]);
+                _cloneT.GetChild(j).transform.rotation = Quaternion.LookRotation(points[j]);
             }
         }
 
@@ -131,6 +117,10 @@ namespace RaycastPro.Planers
         private int i;
         internal override void OnBeginReceiveRay(RaySensor sensor)
         {
+            if (Vector3.Distance(sensor.transform.position, sensor.hit.point) < .4f)
+            {
+                return;
+            }
             base.OnBeginReceiveRay(sensor);
             clone = sensor.cloneRaySensor;
             ApplyLengthControl(sensor);
@@ -139,21 +129,21 @@ namespace RaycastPro.Planers
             CloneProfile.Add(clone, clones);
             foreach (var c in clones)
             {
-                c._baseRaySensor = sensor;
-                c.transform.parent = clone.transform;
-                if (sensor.stamp) //STAMP Reservation
+#if UNITY_EDITOR
+                RenameClone(c, "C_Divide");
+#endif
+                c.baseRaySensor = sensor;
+                if (c is PathRay _pR)
                 {
-                    c.stamp = Instantiate(sensor.stamp);
-                    c.stampOffset = sensor.stampOffset;
-                    c.stampAutoHide = sensor.stampAutoHide;
-                    c.stampOnHit = sensor.stampOnHit;
+                    _pR.pathCast &= clonePathCast;
                 }
+                c.transform.SetParent(clone.transform, true);
+                c.transform.localPosition = Vector3.zero;
             }
             OnReceiveRay(sensor);
             Destroy(clone.liner);
             clone.enabled = false;
-            //clone.stamp = null;
-            
+
 #if UNITY_EDITOR
             clone.gizmosUpdate = GizmosMode.Off;
 #endif
@@ -161,8 +151,7 @@ namespace RaycastPro.Planers
 
         internal override bool OnEndReceiveRay(RaySensor sensor)
         {
-            sensor.cloneRaySensor.SafeRemove();
-
+            sensor.cloneRaySensor?.SafeRemove();
             return true;
         }
     }

@@ -164,7 +164,7 @@
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
 
             GizmoColor = minRadius > maxRadius ? BlockColor : DefaultColor;
             

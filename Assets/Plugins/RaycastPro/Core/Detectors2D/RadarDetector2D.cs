@@ -76,9 +76,6 @@
                 
                 if (IsIgnoreSolver)
                 {
-#if UNITY_EDITOR
-                    PassColliderGate(tCollider);
-#endif
                     _colliders.Add(tCollider);
                     continue;
                 }
@@ -145,9 +142,18 @@
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
+            
             DrawDepthCircle(radius);
+            
+            foreach (var key in DetectProfile.Keys.ToArray())
+            {
+                Gizmos.color = DetectColor.ToAlpha(DetectProfile[key] / cacheTime);
+                Gizmos.DrawWireCube(key.bounds.center, key.bounds.size);
+            }
         }
+        
+        private readonly string[] events = new []{nameof(onDetectCollider), nameof(onNewCollider), nameof(onLostCollider)};
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)
@@ -182,12 +188,24 @@
             if (hasEvents)
             {
                 EventField(_so);
-                if (EventFoldout) RCProEditor.EventField(_so, new []{nameof(onDetectCollider), nameof(onNewCollider), nameof(onLostCollider)});
+                if (EventFoldout) RCProEditor.EventField(_so, events);
             }
 
             if (hasInfo)
             {
-                InformationField(PanelGate);
+                if (hasInfo) InformationField(() =>
+                {
+                    BeginVertical();
+                    foreach (var key in DetectProfile.Keys.ToArray())
+                    {
+                        BeginHorizontal();
+                        EditorGUILayout.LabelField($"{key.gameObject.name}: ",
+                            GUILayout.Width(160));
+                        ProgressField(DetectProfile[key] / cacheTime, "Life");
+                        EndHorizontal();
+                    }
+                    EndVertical();
+                });
             }
         }
 #endif

@@ -1,11 +1,9 @@
-﻿using System;
-using RaycastPro.RaySensors;
-
-namespace RaycastPro.Bullets
+﻿namespace RaycastPro.Bullets
 {
     using UnityEngine;
 
 #if UNITY_EDITOR
+    using Editor;
     using UnityEditor;
 #endif
 
@@ -38,6 +36,13 @@ namespace RaycastPro.Bullets
                 transform.position = raySource.BasePoint;
                 transform.rotation = Quaternion.LookRotation(raySource.LocalDirection, transform.up);
             }
+
+#if UNITY_EDITOR
+            if (!target)
+            {
+                Debug.Log(RCProEditor.RPro+$"<color=#4AFF98>{caster.name}</color> missing <color=#FF1E21>TrackTarget</color> transform!");
+            }
+#endif
 
             targetPoint = target.position;
             currentForce = force;

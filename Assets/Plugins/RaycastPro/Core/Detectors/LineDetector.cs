@@ -186,7 +186,7 @@ namespace RaycastPro.Detectors
 
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
 
             // === Gizmo Gate Are Written Here because of avoiding #IF UNITY EDITOR check in main class
             var position = transform.position;

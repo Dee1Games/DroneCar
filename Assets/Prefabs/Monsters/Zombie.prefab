@@ -3991,6 +3991,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6585125943231258043}
   - component: {fileID: 2871592192213755009}
+  - component: {fileID: -259871104969069513}
+  - component: {fileID: 403617440990135278}
   m_Layer: 9
   m_Name: Zombie
   m_TagString: Untagged
@@ -4026,13 +4028,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a1234bfbd3984479946a278303978a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 367025784059216407}
   weakPoints:
   - {fileID: 5712839373120024678}
   - {fileID: 5712839372845924260}
   - {fileID: 5712839372353391162}
   - {fileID: 5712839373155179940}
   - {fileID: 5712839372040954116}
+  health: 100
+--- !u!114 &-259871104969069513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2871592192213755010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1983839848b72f14e839dd3ff1544ef1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardiness: 0
+  sightDetector: {fileID: 0}
+  lookAtIK: {fileID: 0}
+  allowTurning: 0
+--- !u!114 &403617440990135278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2871592192213755010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4d041e49afe4944a1480e09432adba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  fullBodyBipedIK: {fileID: 0}
+  aiCore: {fileID: 0}
+  giantIcon: {fileID: 21300000, guid: ff8bd3884ea38464081ae8d15a849298, type: 3}
+  ragdollParts: []
+  limbs: []
+  drag: 3
+  angularDrag: 3
+  particleSystem: {fileID: 0}
 --- !u!1 &2989092247227730342
 GameObject:
   m_ObjectHideFlags: 0

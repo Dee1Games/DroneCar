@@ -41,13 +41,15 @@ namespace RaycastPro.Casters2D
             if (hasMain)
             {
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(raySource)));
+                
+                GunField(_so);
             }
             if (hasGeneral) GeneralField(_so);
 
             if (hasEvents) 
             {
                 EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                    RCProEditor.HeaderFoldout());
+                    RCProEditor.HeaderFoldout);
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 if (EventFoldout) RCProEditor.EventField(_so, events);
             }

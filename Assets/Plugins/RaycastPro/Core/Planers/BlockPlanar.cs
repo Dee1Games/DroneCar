@@ -42,7 +42,7 @@
             if (hasEvents)
             {
                 EventFoldout =
-                    EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents, RCProEditor.HeaderFoldout());
+                    EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents, RCProEditor.HeaderFoldout);
 
                 if (EventFoldout)
                 {

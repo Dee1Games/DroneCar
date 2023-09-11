@@ -80,9 +80,14 @@
         public Transform stamp;
 
         /// <summary>
-        /// The local space uses transform directions
+        /// The local space affect rotation
         /// </summary>
         public bool local = true;
+
+        /// <summary>
+        /// This ray will affect of Lossy Scale.
+        /// </summary>
+        public bool scalable = false;
 
         public bool stampOnHit;
         public bool stampAutoHide;
@@ -229,12 +234,6 @@
             SafeRemove();
         }
         internal abstract void SafeRemove();
-        protected void CleanGate()
-        {
-#if UNITY_EDITOR
-            GizmoGate = null;
-#endif
-        }
 
 #if UNITY_EDITOR
         protected abstract void EditorUpdate();
@@ -340,7 +339,7 @@
         protected void EventField(SerializedObject _so)
         {
             EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                RCProEditor.HeaderFoldout());
+                RCProEditor.HeaderFoldout);
             if (EventFoldout)  RCProEditor.EventField(_so, CEventNames);
 
             EditorGUILayout.EndFoldoutHeaderGroup();

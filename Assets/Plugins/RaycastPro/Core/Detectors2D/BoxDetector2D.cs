@@ -141,7 +141,7 @@
         private Vector3[] points = new Vector3[4];
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
             if (IsIgnoreSolver) return;
             DrawDetectVector();
             

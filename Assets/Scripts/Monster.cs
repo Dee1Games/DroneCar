@@ -11,6 +11,7 @@ public class Monster : MonoBehaviour
     
     [SerializeField] private float health = 100f;
 
+
     public static System.Action<float, float> OnHealthChange;
 
     private MonsterData data;

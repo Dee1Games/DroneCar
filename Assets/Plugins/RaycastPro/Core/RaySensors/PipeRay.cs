@@ -24,28 +24,26 @@
             set => height = Mathf.Max(0, value);
         }
 
-        private Vector3 _tDir;
-        private Transform _t;
+        private Vector3 _dir;
         protected override void OnCast()
         {
-            _t = transform;
-            _tDir = ScaledDirection;
+            _dir = scalable ? ScaledDirection : Direction;
             if (height > 0)
             {
-                var up = _t.up * (height * _t.lossyScale.y)/2 ;
-                Physics.CapsuleCast(_t.position+up, _t.position-up, radius*Scale, _tDir, out hit, _tDir.magnitude,
+                var up = (local ? transform.up : Vector3.up) * (height * (scalable ? transform.lossyScale.y : 1))/2;
+                Physics.CapsuleCast(transform.position+up, transform.position-up, radius, _dir, out hit, _dir.magnitude,
                     detectLayer.value, triggerInteraction);
             }
             else
             {
-                Physics.SphereCast(_t.position, radius*Scale, _tDir, out hit, _tDir.magnitude,
+                Physics.SphereCast(transform.position, radius, _dir, out hit, _dir.magnitude,
                     detectLayer.value, triggerInteraction);
             }
         }
         
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Emit a pipe ray in the specified direction and return the Hit information." + HAccurate + HDirectional + HIRadius;
+        private static string Info = "Emit a pipe ray in the specified direction and return the Hit information." + HAccurate + HDirectional + HIRadius + HScalable;
 #pragma warning restore CS0414
         
         /// <summary>
@@ -83,7 +81,8 @@
             EditorUpdate();
             var position = transform.position;
             Handles.color = Performed ? DetectColor : DefaultColor;
-            DrawCapsuleLine(position, position + ScaledDirection, radius*Scale, height*transform.lossyScale.y, _t: transform);
+            DrawCapsuleLine(position, position + (scalable ? ScaledDirection : Direction), radius, height *
+                (scalable ? Mathf.Abs(transform.lossyScale.y) : 1), _t: transform);
             Handles.color = DetectColor;
             if (Performed) DrawNormal(Hit);
         }
@@ -96,7 +95,11 @@
             {
                 DirectionField(_so);
                 RadiusField(_so);
+                
+                BeginHorizontal();
                 HeightField(_so);
+                ScaleField(_so.FindProperty(nameof(scalable)));
+                EndHorizontal();
             }
 
             if (hasGeneral) GeneralField(_so);

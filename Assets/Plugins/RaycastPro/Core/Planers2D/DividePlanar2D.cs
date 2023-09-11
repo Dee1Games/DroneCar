@@ -10,9 +10,9 @@
 #endif
 
     [AddComponentMenu("RaycastPro/Planers/" + nameof(DividePlanar2D))]
-    abstract class DividePlanar2D : Planar2D
+    public class DividePlanar2D : Planar2D
     {
-        public float arcAngle = 0f;
+        public float arcAngle = 30f;
 
         public int count = 5;
 
@@ -38,84 +38,62 @@
 
         public readonly Dictionary<RaySensor2D, List<RaySensor2D>> CloneProfile =
             new Dictionary<RaySensor2D, List<RaySensor2D>>();
+
+        private Vector3 point, forward;
+        private int cloneCount;
+        private float step;
+
+        private RaySensor2D _tRay;
         public override void OnReceiveRay(RaySensor2D sensor)
         {
             if (!sensor.cloneRaySensor) return;
 
-            var clone = sensor.cloneRaySensor;
-
-            var forward = GetForward(sensor, transform.right);
-
-            var point = sensor.hit.point;
-
+            clone = sensor.cloneRaySensor;
+            forward = GetForward(sensor, transform.right);
+            point = sensor.HitPointZ;
             clone.transform.position = point;
-            
             clone.transform.right = forward;
-
+            clone.transform.position += forward * offset;
             ApplyLengthControl(sensor);
-
             if (!CloneProfile.ContainsKey(clone)) return;
 
-            var cloneCount = CloneProfile[clone].Count;
+            cloneCount = CloneProfile[clone].Count;
+            step = arcAngle / cloneCount;
 
-            var step = arcAngle / cloneCount;
-
-            var directions = new List<Vector2> {forward};
-
-            for (var i = 1; i <= cloneCount / 2; i++)
+            for (var index = 0; index < CloneProfile[clone].Count; index++)
             {
-                directions.Add(Quaternion.AngleAxis(step * i, Vector3.forward) * forward);
-            }
-
-            for (var i = -1; i >= -cloneCount / 2; i--)
-            {
-                directions.Add(Quaternion.AngleAxis(step * i, Vector3.forward) * forward);
-            }
-
-            CloneProfile[clone].ForEach(c =>
-            {
-                c.transform.position = point;
-
-                c.direction = clone.direction;
-            });
-
-            for (var i = 0; i < cloneCount; i++)
-            {
-                CloneProfile[clone][i].transform.right = directions[i];
+                _tRay = CloneProfile[clone][index];
+                _tRay.transform.right = Quaternion.AngleAxis(step * index - arcAngle / 2, Vector3.forward) * forward;
             }
         }
+
+        private RaySensor2D clone;
+        private readonly List<RaySensor2D> clones = new List<RaySensor2D>();
 
         public override void OnBeginReceiveRay(RaySensor2D sensor)
         {
             base.OnBeginReceiveRay(sensor);
-
-            var clone = sensor.cloneRaySensor;
-            
+            clone = sensor.cloneRaySensor;
             ApplyLengthControl(sensor);
-            
-            var clones = new List<RaySensor2D>();
-            
+            clones.Clear();
             for (var i = 0; i < count; i++) clones.Add(Instantiate(clone));
-            
             CloneProfile.Add(clone, clones);
-
             foreach (var c in clones)
             {
-                c.transform.parent = clone.transform;
-
-                if (sensor.stamp) //STAMP Reservation
+#if UNITY_EDITOR
+                RenameClone(c, "C_Divide");
+#endif
+                c.baseRaySensor = sensor;
+                if (c is PathRay2D _pR)
                 {
-                    c.stamp = Instantiate(sensor.stamp);
-                    c.stampOffset = sensor.stampOffset;
-                    c.stampAutoHide = sensor.stampAutoHide;
-                    c.stampOnHit = sensor.stampOnHit;
+                    _pR.pathCast &= clonePathCast;
                 }
+                c.transform.SetParent(clone.transform, true);
+                c.transform.localPosition = Vector3.zero;
             }
 
             OnReceiveRay(sensor);
-            
             Destroy(clone.liner);
-            
             clone.enabled = false;
 
 #if UNITY_EDITOR
@@ -124,16 +102,7 @@
         }
         public override bool OnEndReceiveRay(RaySensor2D sensor)
         {
-            if (base.OnEndReceiveRay(sensor))
-            {
-                if (sensor.stamp)
-                {
-                    foreach (var raySensor in CloneProfile[sensor.cloneRaySensor]) Destroy(raySensor.stamp.gameObject);
-                }
-
-                CloneProfile.Remove(sensor.cloneRaySensor);
-            }
-
+            sensor.cloneRaySensor?.SafeRemove();
             return true;
         }
 #if UNITY_EDITOR

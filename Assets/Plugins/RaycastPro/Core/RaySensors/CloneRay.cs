@@ -17,7 +17,7 @@
         private float radius;
         
         // Non Allocation 
-        private List<Vector3> _tPath = new List<Vector3>();
+        private readonly List<Vector3> _tPath = new List<Vector3>();
         private Vector3 forward;
         internal void CopyFrom(RaySensor raySensor, Planar _getter, Transform _outer)
         {
@@ -28,6 +28,10 @@
             direction = raySensor.direction;
             planarSensitive = raySensor.planarSensitive;
             anyPlanar = raySensor.anyPlanar;
+            if (raySensor is PathRay pathRay)
+            {
+                pathCast = getter.clonePathCast && pathRay.pathCast;
+            }
             if (!anyPlanar) planers = raySensor.planers;
             if (raySensor is IRadius iRadius) radius = iRadius.Radius;
             planers = raySensor.planers;
@@ -44,7 +48,10 @@
             if (raySensor.liner)
             {
                 liner = CopyComponent(raySensor.liner, gameObject);
-
+                cutOnHit = raySensor.cutOnHit;
+                useLinerClampedPosition = raySensor.useLinerClampedPosition;
+                linerBasePosition = raySensor.linerBasePosition;
+                linerEndPosition = raySensor.linerEndPosition;
                 UpdateLiner();
             }
         }
@@ -52,38 +59,39 @@
         protected override void OnCast()
         {
             UpdatePath();
-            DetectIndex = PathCast(radius);
+            if (pathCast)
+            {
+                if (sensor is IRadius iRadius) radius = iRadius.Radius;
+                DetectIndex = PathCast(radius);
+            }
         }
+
+        private Vector3 _p, p0;
         private void UpdatePath()
         {
             PathPoints.Clear();
             DetectIndex = -1;
-            if (sensor is PathRay pathRay) // THIS FORMULA SUPPORT'S ALL PATH AS WELL
+            if (baseRaySensor is PathRay pathRay) // THIS FORMULA SUPPORT'S ALL PATH AS WELL
             {
                 _tPath.Clear();
                 _tPath.Add(Vector3.zero);
                 for (var i = pathRay.DetectIndex + 1; i < pathRay.PathPoints.Count; i++)
-                    _tPath.Add(pathRay.PathPoints[i]-sensor.hit.point);
-                if (transform.parent)
                 {
-                    foreach (var p in _tPath)
-                    {
-                        PathPoints.Add( transform.TransformDirection(p) + transform.parent.position);
-                    }
+                    var _dir = pathRay.PathPoints[i] - pathRay.hit.point;
+                    _tPath.Add( _dir);
                 }
-                else
+
+                for (var index = 0; index < _tPath.Count; index++)
                 {
-                    foreach (var p in _tPath)
-                    {
-                        PathPoints.Add(transform.TransformDirection(getter.transform.InverseTransformDirection(p)) +
-                                       transform.position);
-                    }
+                    _p = _tPath[index];
+                    _p = pathRay.transform.InverseTransformDirection(_p);
+                    PathPoints.Add(transform.TransformDirection(_p) + transform.position);
                 }
             }
             else
             {
                 // This algorithm for single phase rays
-                getter.GetForward(_baseRaySensor, out forward);
+                getter.GetForward(baseRaySensor, out forward);
                 PathPoints.Add( transform.TransformDirection(getter.transform.InverseTransformDirection(Vector3.zero))+transform.position);
                 if (transform.parent)
                 {
@@ -93,10 +101,7 @@
                 {
                     PathPoints.Add( transform.TransformDirection((forward*sensor.ContinuesDistance))+transform.position);
                 }
-                
             }
-            if (sensor is IRadius iRadius) radius = iRadius.Radius;
-            DetectIndex = PathCast(radius);
         }
 
 #if UNITY_EDITOR
@@ -104,20 +109,25 @@
         private static string Info =
             "This ray executes a copy of the input ray to the planar and is simply not adjustable." + HAccurate + HVirtual;
 #pragma warning restore CS0414
+
+        [SerializeField] private bool showGizmos;
         internal override void OnGizmos()
         {
-            EditorUpdate();
-
-            if (PathPoints.Count == 0) return;
-            if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
-            if (IsManuelMode)
+            if (showGizmos)
             {
-                UpdatePath();
-                DrawPath(PathPoints, hit, radius, detectIndex: DetectIndex, drawSphere: true);
-            }
-            else
-            {
-                DrawPath(PathPoints, hit, radius,  detectIndex: DetectIndex, drawSphere: true);
+                EditorUpdate();
+            
+                if (PathPoints.Count == 0) return;
+                if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
+                if (IsManuelMode)
+                {
+                    UpdatePath();
+                    DrawPath(PathPoints, hit, radius, detectIndex: DetectIndex, drawSphere: true);
+                }
+                else
+                {
+                    DrawPath(PathPoints, hit, radius,  detectIndex: DetectIndex, drawSphere: true);
+                }
             }
         }
 
@@ -126,8 +136,11 @@
             bool hasInfo = true)
         {
             BeginVerticalBox();
+
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(showGizmos)));
             if (IsPlaying)
             {
+                if (baseRaySensor) EditorGUILayout.LabelField("Base From: " + baseRaySensor.gameObject.name);
                 if (sensor) EditorGUILayout.LabelField("Clone From: " + sensor.gameObject.name);
                 if (getter) EditorGUILayout.LabelField("Getter: " + getter.gameObject.name);
                 if (outer) EditorGUILayout.LabelField("Outer: " + outer.gameObject.name);

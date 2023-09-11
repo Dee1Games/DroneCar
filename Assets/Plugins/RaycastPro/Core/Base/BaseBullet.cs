@@ -277,7 +277,7 @@
         protected void EventField(SerializedObject _so)
         {
             EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                RCProEditor.HeaderFoldout());
+                RCProEditor.HeaderFoldout);
             if (EventFoldout) RCProEditor.EventField(_so, events); EditorGUILayout.EndFoldoutHeaderGroup();
         }
 
@@ -304,7 +304,7 @@
                 "\n -------------------------------------"+
                 "\n(Just leave it empty to cancel messaging.)"));
 
-            LocalField(_so.FindProperty(nameof(messageUpward)), "U".ToContent("Calls the method on every ancestor of the behaviour in addition to every MonoBehaviour."));
+            MiniField(_so.FindProperty(nameof(messageUpward)), "U".ToContent("Calls the method on every ancestor of the behaviour in addition to every MonoBehaviour."));
             EndHorizontal();
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(damage)));
             EndVertical();
