@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weakPoints: []
+  health: 100
 --- !u!1001 &627134597408734364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57,6 +58,10 @@ PrefabInstance:
       propertyPath: lookAtIK
       value: 
       objectReference: {fileID: 2783422500222829946}
+    - target: {fileID: 3733590649604366500, guid: 78caa72002b64db4c96f9e51d069fee9, type: 3}
+      propertyPath: allowTurning
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7469692341050224178, guid: 78caa72002b64db4c96f9e51d069fee9, type: 3}
       propertyPath: m_Name
       value: Colossal_Titan

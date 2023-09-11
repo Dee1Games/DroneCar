@@ -1026,10 +1026,10 @@ MonoBehaviour:
   gizmosUpdate: 0
   blockLayer:
     serializedVersion: 2
-    m_Bits: 0
-  boundsSolver: 0
-  boundsCenter: 0
-  solverType: 0
+    m_Bits: 256
+  boundsSolver: 1
+  boundsCenter: 1
+  solverType: 2
   checkLineOfSight: 1
   usingTagFilter: 0
   tagFilter: Untagged
@@ -1053,12 +1053,12 @@ MonoBehaviour:
       m_Calls: []
   ignoreList: []
   colliders: []
-  angleX: 120
-  angleY: 90
-  radius: 60
+  angleX: 160
+  angleY: 160
+  radius: 100
   limited: 0
   limitCount: 3
-  minRadius: 1
+  minRadius: 4
   fullAwareness: 30
 --- !u!1 &1556214368756338911
 GameObject:
@@ -4433,6 +4433,7 @@ MonoBehaviour:
   hardiness: 0
   sightDetector: {fileID: 9202017216509293706}
   lookAtIK: {fileID: 3320476272198105574}
+  allowTurning: 1
 --- !u!114 &4548264050632333833
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -19,11 +19,7 @@ public class Giant_Core : MonoBehaviour
     [Header("Ragdoll Setup")]
     public float drag = 3;
     public float angularDrag = 3;
-
-
-    [Header("Advance Casters")] 
-    public AdvanceCaster mainWeapon; // main Source of damage
-    public AdvanceCaster spamWeapon; // spam weapon
+    
     private void Start()
     {
         aiCore = GetComponent<AI_Core>();
