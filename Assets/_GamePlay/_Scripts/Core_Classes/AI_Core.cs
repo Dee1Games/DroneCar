@@ -23,6 +23,8 @@ public class AI_Core : MonoBehaviour
 
     [Header("Animation")]
     public bool allowTurning;
+
+    public bool allowSitting;
     public NavMeshAgent Agent => agent;
     
     protected CarCore carCore;
@@ -92,7 +94,15 @@ public class AI_Core : MonoBehaviour
                 animator.SetFloat(TurnAngle, 0);
             }
         }
-        animator.SetFloat(CarHeight, CarCore._.transform.position.y);
+
+        if (allowSitting)
+        {
+            animator.SetFloat(CarHeight, CarCore._.transform.position.y);
+        }
+        else
+        {
+            
+        }
     }
 
     public void OnEnd(CarCore vehicle)

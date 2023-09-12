@@ -5,7 +5,8 @@ using UnityEngine;
 public class WeakPoint : MonoBehaviour
 {
     private Explodable explodable;
-    
+
+    public Limb attachedLimb;
     private void Awake()
     {
         explodable = GetComponentInChildren<Explodable>();
@@ -15,5 +16,6 @@ public class WeakPoint : MonoBehaviour
     {
         explodable.transform.parent = null;
         explodable.Explode(transform.position, 10f, 50f);
+        attachedLimb?.Dismember();
     }
 }

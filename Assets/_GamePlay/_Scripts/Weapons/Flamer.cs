@@ -1,23 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using RaycastPro.RaySensors;
 using UnityEngine;
 
 public class Flamer : MonoBehaviour
 {
-    public bool stop;
-    
-    public float periodTimer;
-    public float flameTime;
-    public float currentTime;
-    
+    // public bool stop;
+    //
+    // public float periodTimer = 4f;
+    // public float flameTime = 2f;
+    // private float currentTime;
+
+    public float DPS = 4;
+
+    public RaySensor raySensor;
+    public Vector3 rayDirection;
     public ParticleSystem flamer;
-    void Update()
+    
+    private void Start()
     {
-        currentTime += Time.deltaTime;
-        if (!stop)
+        raySensor.onDetect.AddListener(c =>
         {
-            
-        }
-        flamer.Play();
+            if (c.transform.TryGetComponent(out CarCore carCore))
+            {
+                carCore.TakeDamage(DPS * Time.fixedDeltaTime);
+            }
+        });
+    }
+
+    public void FireOn()
+    {
+        flamer.Play(true);
+        DOVirtual.Float(0f, 1f, .6f, f =>
+        {
+            raySensor.direction = f * rayDirection;
+        });
+    }
+
+    public void FireOff()
+    {
+        flamer.Stop(true);
+        DOVirtual.Float(1f, 0f, .6f, f =>
+        {
+            raySensor.direction = f * rayDirection;
+        });
     }
 }
