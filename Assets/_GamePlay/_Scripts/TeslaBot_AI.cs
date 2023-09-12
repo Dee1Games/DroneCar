@@ -18,13 +18,17 @@ public class TeslaBot_AI : AI_Core
 
     public void Start()
     {
-        shield.Activate(myCore.fullBodyBipedIK.references.head);
+        shield.Activate(myCore.fullBodyBipedIK.references.head, myCore);
     }
+
+    private bool isAlerting;
 
     public void TurnTesla(bool active)
     {
         if (active)
         {
+            if (isAlerting) return;
+            isAlerting = true;
             UI_Core._.track.DoAlert(teslaReadyTime);
             teslaTween = DOVirtual.DelayedCall(teslaReadyTime, () =>
             {
@@ -37,9 +41,10 @@ public class TeslaBot_AI : AI_Core
             UI_Core._.track.alertImage.fillAmount = 0;
             TeslaGun.enabled = false;
             TeslaGun.trackTarget = null;
-            if (teslaTween.IsPlaying())
+            if (teslaTween != null && teslaTween.IsPlaying())
             {
                 teslaTween.Kill();
+                isAlerting = false;
             }
         }
     }

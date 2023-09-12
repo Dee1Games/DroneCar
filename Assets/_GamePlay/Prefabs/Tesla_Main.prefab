@@ -92,7 +92,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 2.4772224
+  m_Radius: 1.6184012
   m_Height: 13.339339
   m_Direction: 1
   m_Center: {x: -0.0000015497208, y: 7.4081035, z: 0.00000071525574}
@@ -517,7 +517,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 2.8293874
+  m_Radius: 2.4108355
   m_Height: 13.832561
   m_Direction: 1
   m_Center: {x: 0.00000047683716, y: 8.070972, z: 0.000001013279}
@@ -637,7 +637,7 @@ MonoBehaviour:
   particle: {fileID: 198000011976894484, guid: 684f5cefd3dc47f48a2e35d37ba8e2e0, type: 3}
   member: {fileID: 484656016274254462, guid: 82d54ba7390a33d47bdff1572dd04a3c, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 101
+  pressToDismember: 99
 --- !u!1 &1104287596236033555
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,94 +894,6 @@ Transform:
   m_Father: {fileID: 8051622594074192260}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2013746448356793964
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3016044845780675692}
-  - component: {fileID: 3639435380251199152}
-  m_Layer: 0
-  m_Name: Pipe Ray
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3016044845780675692
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013746448356793964}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 22.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 519840663236343926}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3639435380251199152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013746448356793964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0f5e5ef95f4013bd73cc752faef470, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  influence: 1
-  triggerInteraction: 0
-  detectLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  autoUpdate: 0
-  gizmosUpdate: 2
-  liner: {fileID: 0}
-  useLinerClampedPosition: 0
-  cutOnHit: 0
-  linerEndPosition: 1
-  linerBasePosition: 0
-  stamp: {fileID: 0}
-  local: 1
-  scalable: 0
-  stampOnHit: 0
-  stampAutoHide: 0
-  stampOffset: 0
-  syncStamp:
-    axis: 0
-    syncAxis: 0
-    flipAxis: 0
-  planarSensitive: 0
-  _planar: {fileID: 0}
-  planers: []
-  anyPlanar: 1
-  onCast:
-    m_PersistentCalls:
-      m_Calls: []
-  onDetect:
-    m_PersistentCalls:
-      m_Calls: []
-  onChange:
-    m_PersistentCalls:
-      m_Calls: []
-  onBeginDetect:
-    m_PersistentCalls:
-      m_Calls: []
-  onEndDetect:
-    m_PersistentCalls:
-      m_Calls: []
-  direction: {x: 0, y: 0, z: 12}
-  radius: 6
-  height: 40
 --- !u!1 &2083106458896374038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,7 +957,7 @@ Transform:
   - {fileID: 2614464552722291125}
   - {fileID: 1892020169021955950}
   m_Father: {fileID: 519840663236343926}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2280901407178920339
 GameObject:
@@ -1109,10 +1021,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.8497447
-  m_Height: 8.236993
+  m_Radius: 1.058404
+  m_Height: 8.181413
   m_Direction: 1
-  m_Center: {x: -0.0000016093254, y: 3.78557, z: -0.0000014305115}
+  m_Center: {x: -0.0000019967556, y: 2.1610413, z: -0.0000009536743}
 --- !u!153 &1954697950
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -1229,7 +1141,7 @@ MonoBehaviour:
   particle: {fileID: 198000011976894484, guid: 684f5cefd3dc47f48a2e35d37ba8e2e0, type: 3}
   member: {fileID: 3598213387965540660, guid: 133880c136e62674e911e35b0e14ddf2, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 122
+  pressToDismember: 101
 --- !u!1 &2302136200433511706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,10 +1517,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.8091265
-  m_Height: 8.834338
+  m_Radius: 1.3294075
+  m_Height: 8.78306
   m_Direction: 1
-  m_Center: {x: 0.000000923872, y: 3.784597, z: -0.00000023841858}
+  m_Center: {x: 0.00000047683716, y: 3.0906205, z: 0.00000047683716}
 --- !u!153 &1841186711
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -1725,7 +1637,7 @@ MonoBehaviour:
   particle: {fileID: 198000011976894484, guid: 684f5cefd3dc47f48a2e35d37ba8e2e0, type: 3}
   member: {fileID: 7643440178601871733, guid: 42ef13b0251d8c949947f8afe5a82b6d, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 99
+  pressToDismember: 113
 --- !u!1 &3383676076287519389
 GameObject:
   m_ObjectHideFlags: 0
@@ -2266,7 +2178,7 @@ MonoBehaviour:
   detectLayer:
     serializedVersion: 2
     m_Bits: 64
-  autoUpdate: 0
+  autoUpdate: 1
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -2275,17 +2187,17 @@ MonoBehaviour:
   boundsCenter: 0
   solverType: 4
   checkLineOfSight: 1
-  usingTagFilter: 0
-  tagFilter: Untagged
+  usingTagFilter: 1
+  tagFilter: Player
   onCast:
     m_PersistentCalls:
       m_Calls: []
   onDetect:
     m_PersistentCalls:
       m_Calls: []
-  pulseTime: 0
+  pulseTime: 1
   blockSolverOffset: {x: 0, y: 0, z: 0}
-  detectVector: {x: 0, y: 0, z: 40}
+  detectVector: {x: 0, y: 0, z: 80}
   onDetectCollider:
     m_PersistentCalls:
       m_Calls: []
@@ -2296,7 +2208,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ignoreList: []
-  colliders: []
+  colliders:
+  - {fileID: 0}
   angleX: 120
   angleY: 190
   radius: 80
@@ -2459,10 +2372,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.6824036
-  m_Height: 6.7580233
+  m_Radius: 1.1321946
+  m_Height: 6.42165
   m_Direction: 1
-  m_Center: {x: -0.0000006556511, y: 3.7314658, z: -0.0000017397106}
+  m_Center: {x: -0.00000008940697, y: 3.002646, z: -0.0000026635826}
 --- !u!153 &1747511414
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -2808,10 +2721,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.3937428
-  m_Height: 7.657088
+  m_Radius: 1.030146
+  m_Height: 6.610302
   m_Direction: 1
-  m_Center: {x: -0.0000037550926, y: 3.731238, z: -0.00000064074993}
+  m_Center: {x: -0.000005841255, y: 2.9471374, z: -0.0000003837049}
 --- !u!153 &375095017
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -3081,6 +2994,7 @@ GameObject:
   - component: {fileID: 5375698166003736570}
   - component: {fileID: 3706410302250827293}
   - component: {fileID: 5837943786222951911}
+  - component: {fileID: 5024315831904413370}
   m_Layer: 0
   m_Name: Tesla_Main
   m_TagString: Untagged
@@ -3097,11 +3011,10 @@ Transform:
   m_GameObject: {fileID: 6059983145876167463}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3987965060183998041}
-  - {fileID: 3016044845780675692}
   - {fileID: 1591097367839811285}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -3144,6 +3057,7 @@ MonoBehaviour:
   - {fileID: 1665644766876989808}
   - {fileID: 64561835642396268}
   - {fileID: 8703899031480314635}
+  mass: 15
   drag: 1
   angularDrag: 1
   particleSystem: {fileID: 198000011976894484, guid: 684f5cefd3dc47f48a2e35d37ba8e2e0, type: 3}
@@ -3668,6 +3582,22 @@ MonoBehaviour:
     spineStiffness: 0.5
     pullBodyVertical: 0.5
     pullBodyHorizontal: 0
+--- !u!114 &5024315831904413370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6059983145876167463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d25a140bfa1c49bfafcaa11cff00f2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedRigidbody: {fileID: 963035608}
+  selectedCollider: {fileID: 2076590827}
+  symmetry: 1
+  mode: 0
 --- !u!1 &6115311181793193977
 GameObject:
   m_ObjectHideFlags: 0
@@ -3733,10 +3663,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.486627
-  m_Height: 4.3607726
+  m_Radius: 1.5583453
+  m_Height: 4.0266023
   m_Direction: 1
-  m_Center: {x: -0.00000795722, y: 2.0888236, z: -0.0000067055225}
+  m_Center: {x: -0.000019423664, y: 1.6444114, z: 0.34430128}
 --- !u!153 &343770180
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -3927,7 +3857,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 2.8298163
+  m_Radius: 2.3959987
   m_Height: 13.834659
   m_Direction: 1
   m_Center: {x: -0.000000834465, y: 8.072208, z: -0.00000023841858}
@@ -4047,7 +3977,7 @@ MonoBehaviour:
   particle: {fileID: 198000011976894484, guid: 684f5cefd3dc47f48a2e35d37ba8e2e0, type: 3}
   member: {fileID: 1546980109635400151, guid: f7959e0b3b884504c94b64240a259b47, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 113
+  pressToDismember: 122
 --- !u!1 &6180192262774922003
 GameObject:
   m_ObjectHideFlags: 0
@@ -4298,7 +4228,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 2.1213958
+  m_Radius: 1.7344496
   m_Height: 13.583823
   m_Direction: 1
   m_Center: {x: 0.000001847744, y: 7.406939, z: 0.0000030994415}
@@ -4463,10 +4393,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.5794866
-  m_Height: 4.6331606
+  m_Radius: 1.1593329
+  m_Height: 3.210835
   m_Direction: 1
-  m_Center: {x: -0.0000012814999, y: 2.0449119, z: -0.0000022351742}
+  m_Center: {x: 0.000000834465, y: 1.7259754, z: -0.0000037699938}
 --- !u!153 &1399754076
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -4724,7 +4654,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10.727813, y: 4.2475014, z: 4.5321984}
+  m_Size: {x: 7.635837, y: 3.7096763, z: 2.5628655}
   m_Center: {x: 0.020194976, y: 2.6529515, z: 0.041944504}
 --- !u!153 &152739628
 ConfigurableJoint:

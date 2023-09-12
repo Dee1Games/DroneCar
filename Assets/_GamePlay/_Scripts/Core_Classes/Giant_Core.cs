@@ -19,11 +19,10 @@ public class Giant_Core : MonoBehaviour
 
     public List<Rigidbody> ragdollParts;
     public Limb[] limbs;
-    [Title("Ragdoll Setup")]
+    [Title("Ragdoll Setup")] public float mass = 15;
     public float drag = 3;
     public float angularDrag = 3;
-
-
+    
     public Transform GetRandomMember()
     {
         var random = Random.Range(0, 5);
@@ -62,6 +61,7 @@ public class Giant_Core : MonoBehaviour
         ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
         foreach (var ragdollPart in ragdollParts)
         {
+            ragdollPart.mass = mass;
             ragdollPart.drag = drag;
             ragdollPart.angularDrag = angularDrag;
         }
@@ -82,9 +82,13 @@ public class Giant_Core : MonoBehaviour
             limb.particle = particleSystem;
         }
     }
-    
+
+    private bool isDead;
+
+    public bool IsDead => isDead;
     public void RagdollSetActive(bool phase)
     {
+        isDead = phase;
         aiCore.Active(!phase);
         if (fullBodyBipedIK) fullBodyBipedIK.enabled = !phase;
         foreach (var ragdollPart in ragdollParts)

@@ -96,7 +96,8 @@ public class Limb : MonoBehaviour
         if (particle) Instantiate(particle, transform.position, transform.rotation, transform.root);
         if (member)
         {
-            Instantiate(member, transform.position, transform.rotation, transform.root);
+            var gameObject = Instantiate(member, transform.position, transform.rotation, null);
+            gameObject.transform.localScale = giantCore.transform.localScale;
         }
         
         if (ragdollActivator)

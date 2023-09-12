@@ -29,13 +29,13 @@ public class Shield : MonoBehaviour
         }
     }
 
-    public void Activate(Transform _track)
+    public void Activate(Transform _track, Giant_Core core)
     {
         trackTransform = _track;
         tween = DOVirtual.DelayedCall(activePeriod, () =>
         {
             _collider.enabled = !_collider.enabled;
-            if (_collider.enabled)
+            if (_collider.enabled && !core.IsDead)
             {
                 transform.DOScale(activeScale, fadeInDuration).SetEase(ease);
                 UI_Core._.shieldIcon.DOFillAmount(1, fadeInDuration).SetEase(ease);

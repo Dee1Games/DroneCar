@@ -105,10 +105,12 @@ public class AI_Core : MonoBehaviour
     /// <param name="phase"></param>
     public virtual void Active(bool phase)
     {
+
         animator.enabled = phase;
         sightDetector.enabled = phase;
         lookAtIK.enabled = phase;
     }
+
     private float lookRateDelay = 1f;
 
 
