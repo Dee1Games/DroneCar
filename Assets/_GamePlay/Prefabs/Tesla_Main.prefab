@@ -2231,7 +2231,7 @@ MonoBehaviour:
   fixTransforms: 1
   solver:
     executedInEditor: 0
-    IKPosition: {x: -0.1376983, y: 75.14323, z: 0.59760094}
+    IKPosition: {x: -0.12671524, y: 37.696457, z: 1.7924757}
     IKPositionWeight: 0
     root: {fileID: 6552889157057785545}
     target: {fileID: 0}
@@ -2278,11 +2278,11 @@ MonoBehaviour:
       axis: {x: -5.354138e-10, y: -0.0000000012689645, z: 1}
       baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
     eyes: []
-    bodyWeight: 0.4
-    headWeight: 0.4
+    bodyWeight: 0.3
+    headWeight: 0.2
     eyesWeight: 0
-    clampWeight: 0.4
-    clampWeightHead: 0.5
+    clampWeight: 0.27
+    clampWeightHead: 0.3
     clampWeightEyes: 0.5
     clampSmoothing: 2
     spineWeightCurve:
@@ -3099,6 +3099,7 @@ MonoBehaviour:
   lookAtIK: {fileID: 6501133328931147986}
   allowTurning: 1
   allowSitting: 1
+  handsUp: 0
   TeslaGun: {fileID: 2717226869014377564}
   shield: {fileID: 736603079217907178}
   teslaReadyTime: 3
@@ -4099,7 +4100,6 @@ MonoBehaviour:
   - {fileID: 933962082041472004}
   - {fileID: 2051809494313184877}
   currentIndex: 0
-  pingPongPhase: 0
   castType: 1
   onCast:
     m_PersistentCalls:
