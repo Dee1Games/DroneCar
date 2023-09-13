@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using RootMotion;
 using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Giant_Core : MonoBehaviour

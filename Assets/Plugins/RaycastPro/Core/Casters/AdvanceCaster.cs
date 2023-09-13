@@ -21,9 +21,7 @@ namespace RaycastPro.Casters
         public RaySensor[] raySensors = Array.Empty<RaySensor>();
         
         public int currentIndex;
-        
-        public bool pingPongPhase;
-
+        private bool pingPongPhase;
         public CastType castType = CastType.Together;
 
         public BulletEvent onCast;

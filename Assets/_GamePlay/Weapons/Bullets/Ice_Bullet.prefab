@@ -77,7 +77,7 @@ TrailRenderer:
   m_Time: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1.5
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -254,7 +254,7 @@ Transform:
   m_GameObject: {fileID: 3892361128834090598}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1388906069209387575}
@@ -345,7 +345,19 @@ MonoBehaviour:
       m_Calls: []
   onEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2781381987886351431}
+        m_TargetAssemblyTypeName: BulletCore, Assembly-CSharp
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   moveType: 0
   callMethod: OnBullet
   messageUpward: 1
@@ -362,8 +374,8 @@ MonoBehaviour:
   target: {fileID: 0}
   body: {fileID: 0}
   targetPoint: {x: 0, y: 0, z: 0}
-  force: 120
-  drag: 4
+  force: 70
+  drag: 2
   trackOffset: {x: 0, y: 0, z: 0}
   distanceThreshold: 2
   turnSharpness: 12
@@ -382,7 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explodeArea: {fileID: 3961936137387844215}
   damage: 30
-  effects: {fileID: 10984143438720838, guid: 0e531f88eac1db146a9056ec95d66254, type: 3}
+  effects: {fileID: 10984143438720838, guid: 62f5fb1c51cc65a4cbb08252a991d8f0, type: 3}
 --- !u!1 &7310630571765667455
 GameObject:
   m_ObjectHideFlags: 0

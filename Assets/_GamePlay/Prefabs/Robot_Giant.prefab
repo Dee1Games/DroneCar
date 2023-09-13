@@ -868,6 +868,7 @@ GameObject:
   - component: {fileID: 4078757680213490852}
   - component: {fileID: 4078757680213490854}
   - component: {fileID: 6243893966014514836}
+  - component: {fileID: 8429885679778753706}
   m_Layer: 0
   m_Name: Robot_Giant
   m_TagString: Untagged
@@ -1418,6 +1419,38 @@ MonoBehaviour:
   drag: 3
   angularDrag: 3
   particleSystem: {fileID: 198000011976894484, guid: 684f5cefd3dc47f48a2e35d37ba8e2e0, type: 3}
+--- !u!114 &8429885679778753706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4078757680213319839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a77a574f6354144b32ef8349aac9ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generateOnStart: 1
+  enableUpdatingOnStart: 0
+  immediateStartupCollision: 0
+  useThreadedColMeshBaking: 1
+  onlyUniqueTriangles: 1
+  convexMeshColliders: 1
+  splitCollisionMeshesByMaterial: 0
+  zeroBoneMeshAlternateTransform: 0
+  clearAllMeshColliders: 0
+  physicsMaterial: {fileID: 0}
+  maxColliderTriangles: 5000
+  boneWeightThreshold: 0
+  materialAssociationList: []
+  idleCpuBudget: 0.2
+  activeCpuBudget: 1
+  meshUpdateThreshold: 0.02
+  excludedSkins: []
+  excludedBones: []
+  excludedMaterials: []
+  skinfos: []
 --- !u!1 &4078757680213319873
 GameObject:
   m_ObjectHideFlags: 0

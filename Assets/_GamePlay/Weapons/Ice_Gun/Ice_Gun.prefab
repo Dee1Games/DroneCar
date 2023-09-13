@@ -69,10 +69,10 @@ MonoBehaviour:
   - {fileID: 0}
   ignoreColliders: []
   ammo:
-    infiniteAmmo: 0
+    infiniteAmmo: 1
     amount: 12
     magazineCapacity: 10
-    magazineAmount: 6
+    magazineAmount: 3
     reloadTime: 2
     inBetweenTime: 1
     inRate: 0
@@ -84,9 +84,8 @@ MonoBehaviour:
   arrayCasting: 1
   arrayCapacity: 10
   raySensors:
-  - {fileID: 7876663439717599898}
+  - {fileID: 6613833461234445679}
   currentIndex: 0
-  pingPongPhase: 0
   castType: 0
   onCast:
     m_PersistentCalls:
@@ -103,9 +102,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63746274d563b134e9832ab381fb16a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  caster: {fileID: 0}
-  alertColor: {r: 1, g: 0, b: 0, a: 1}
+  caster: {fileID: 45381060556009206}
+  alertColor: {r: 0, g: 1, b: 0.8083575, a: 1}
   alertDelay: 1
+  onCastParticle: {fileID: 198000011976894484, guid: 754db3e042b687d47b44a5609b03dead, type: 3}
   alertTime: 1
   trackTime: 6
 --- !u!1 &4581079279948187950
@@ -203,7 +203,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7876663439717599901}
-  - component: {fileID: 7876663439717599898}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -224,26 +223,59 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3807956186817794964}
+  - {fileID: 7245043943432826710}
   m_Father: {fileID: 45381060556009207}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 9, y: 0, z: 0}
---- !u!114 &7876663439717599898
+--- !u!1 &9029736561877825141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7245043943432826710}
+  - component: {fileID: 6613833461234445679}
+  m_Layer: 0
+  m_Name: Basic Ray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7245043943432826710
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9029736561877825141}
+  m_LocalRotation: {x: -0.034899585, y: 0, z: 0, w: 0.99939084}
+  m_LocalPosition: {x: 0, y: -0.091, z: 0.652}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7876663439717599901}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: -4, y: 0, z: 0}
+--- !u!114 &6613833461234445679
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4603409832978288636}
-  m_Enabled: 0
+  m_GameObject: {fileID: 9029736561877825141}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0f5e5ef95f4013bd73cc752faef470, type: 3}
+  m_Script: {fileID: 11500000, guid: 84a47bd12f7f4a769b997acbbcf1e8c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   influence: 1
   triggerInteraction: 0
   detectLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1
   autoUpdate: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
@@ -280,6 +312,4 @@ MonoBehaviour:
   onEndDetect:
     m_PersistentCalls:
       m_Calls: []
-  direction: {x: 0, y: 0, z: 140}
-  radius: 15
-  height: 8
+  direction: {x: 0, y: 0, z: 10}

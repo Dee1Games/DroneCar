@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RaycastPro.Detectors;
 using UnityEngine;
 
-public class TeslaBullet : MonoBehaviour
+public class BulletCore : MonoBehaviour
 {
     public RangeDetector explodeArea;
     public float damage = 70f;
