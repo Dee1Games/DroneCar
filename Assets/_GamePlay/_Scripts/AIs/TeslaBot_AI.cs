@@ -20,7 +20,10 @@ public class TeslaBot_AI : AI_Core
 
     public void Start()
     {
-        shield.Activate(myCore.fullBodyBipedIK.references.head, myCore);
+        if (shield)
+        {
+            shield.Activate(myCore.fullBodyBipedIK.references.head, myCore);
+        }
     }
 
     private bool isAlerting;
@@ -43,10 +46,10 @@ public class TeslaBot_AI : AI_Core
             TeslaGun.enabled = false;
             TeslaGun.trackTarget = null;
             UI_Core._.track.ResetAlert();
+            isAlerting = false;
             if (teslaTween != null && teslaTween.IsPlaying())
             {
                 teslaTween.Kill();
-                isAlerting = false;
             }
         }
     }

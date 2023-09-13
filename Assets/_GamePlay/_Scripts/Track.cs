@@ -13,6 +13,8 @@ public class Track : MonoBehaviour
 
     public Ease easeType = Ease.OutElastic;
 
+    public bool debug;
+
     private void Awake()
     {
         alertImage = GetComponent<Image>();
@@ -60,7 +62,9 @@ public class Track : MonoBehaviour
         {
             trackTween.Kill();
         }
-        Debug.Log("Track Begins");
+
+        if (debug) Debug.Log("Track Begin.");
+        
         alertImage.fillAmount = 0;
         gameObject.SetActive(true);
         trackTween = transform.DOScale(Vector3.one, fadeIn).SetEase(easeType).OnComplete(() =>

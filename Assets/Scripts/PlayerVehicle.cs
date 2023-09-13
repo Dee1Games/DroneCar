@@ -5,6 +5,7 @@ using System.Linq;
 using MoreMountains.Feedbacks;
 using SupersonicWisdomSDK;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerVehicle : MonoBehaviour
@@ -27,6 +28,8 @@ public class PlayerVehicle : MonoBehaviour
     private float maxSpeed;
     private float handeling;
     private float bomb;
+    public float Bomb => bomb;
+    
     private float gun;
     private float jumpForce;
     private Dictionary<UpgradeType, Dictionary<int, List<UpgradeItem>>> upgradeItems;
@@ -307,10 +310,6 @@ public class PlayerVehicle : MonoBehaviour
         
         CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
 
-        foreach (var colliders in GetComponentsInChildren<Collider>())
-        {
-            colliders.enabled = false;
-        }
         explodeFeedback.PlayFeedbacks();
         Deactivate();
         Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
@@ -346,31 +345,8 @@ public class PlayerVehicle : MonoBehaviour
             visual.SetActive(value);
         }
     }
-    
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!IsActive)
-            return;
-        Monster monster = collision.gameObject.GetComponentInParent<Monster>();
-        if (monster != null)
-        {
-            #region Added Limb
 
-            if (collision.transform.TryGetComponent(out Limb limb))
-            {
-                limb.Dismember();
-            }
-
-            #endregion
-
-            
-            monster.TakeDamage(bomb, transform.position);
-            // Camera Take a long shot move on Explode, Cuz of calling it in bullet.
-            Explode();
-        }
-        
-        
-    }
+    // I Move collision code to CarCore for control damage System.
 
     private void ConvertToCar()
     {

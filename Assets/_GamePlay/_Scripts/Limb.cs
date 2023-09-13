@@ -1,26 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Limb : MonoBehaviour
+public enum LimbType
+{
+    Head,
+    LeftHand,
+    RightHand,
+    LeftFoot,
+    RightFoot,
+}
+public class Limb : MonoBehaviour, IHitable
 {
     private List<Limb> childLimbs;
 
     private Rigidbody _rigidbody;
     private Collider _collider;
     private Joint _joint;
-    [HideInInspector]
-    public Giant_Core giantCore;
-
+    
+    [HideInInspector] public Giant_Core giantCore;
+    
     [Header("General")]
+    public LimbType limbType;
+
+    [Range(0, 1)]
+    public float armor;
     public float health = 100f;
     public float maxHealth = 100f;
 
+    public float Health
+    {
+        get => health;
+        set
+        {
+            health = value;
+            health = Mathf.Clamp(health, 0f, maxHealth);
+
+            if (health <= 0)
+            {
+                Dismember();
+            }
+        }
+    }
     /// <summary>
     /// For parts like foot and head
     /// </summary>
-    public bool ragdollActivator;
+    public bool giantFinisher;
     
     /// <summary>
     /// This will stop run dismember Method
@@ -39,32 +66,13 @@ public class Limb : MonoBehaviour
         _collider = GetComponent<Collider>();
         childLimbs = GetComponentsInChildren<Limb>().ToList();
     }
-
-#if UNITY_EDITOR
-    [Header("Debug")] public KeyCode pressToDismember;
-    private void Update()
-    {
-        if (pressToDismember != null)
-        {
-            if (Input.GetKeyDown(pressToDismember))
-            {
-                Dismember();
-            }
-        }
-    }
-#endif
-
-
     public void TakeDamage(float amount)
     {
-        health -= amount;
-
-        amount = Mathf.Clamp(amount, 0f, maxHealth);
-        if (amount <= 0)
-        {
-            Dismember();
-        }
+        amount *= (1 - armor);
+        Health -= amount;
+        giantCore.TakeDamage(amount);
     }
+    
 
     public void GetHit()
     {
@@ -76,6 +84,7 @@ public class Limb : MonoBehaviour
         
         Destroy(this);
     }
+    
     public void Dismember()
     {
         if (unbreakable) return;
@@ -100,9 +109,12 @@ public class Limb : MonoBehaviour
             gameObject.transform.localScale = giantCore.transform.localScale;
         }
         
-        if (ragdollActivator)
+        if (giantFinisher)
         {
-            giantCore.RagdollSetActive(true);
+            // Ultra Damage
+            giantCore.SetHealth(0);
         }
     }
+
+    public void OnHit(CarCore core, float damage) => TakeDamage(damage);
 }

@@ -4,11 +4,16 @@ using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Giant_Core : MonoBehaviour
+public class Giant_Core : MonoBehaviour, IHitable
 {
     public Monster monster;
     public Animator animator;
+    
     public FullBodyBipedIK fullBodyBipedIK;
+
+    [Title("Options", titleAlignment: TitleAlignments.Centered)]
+    [Range(0, 1)]
+    public float armor;
     
     [Title("AI")]
     public AI_Core aiCore;
@@ -50,10 +55,10 @@ public class Giant_Core : MonoBehaviour
         {
             limb.giantCore = this;
         }
-
+        
         UI_Core._.giantIcon.sprite = giantIcon;
     }
-
+    
     [Button("Set Ragdoll")]
     private void SetRagdoll()
     {
@@ -63,6 +68,17 @@ public class Giant_Core : MonoBehaviour
             ragdollPart.mass = mass;
             ragdollPart.drag = drag;
             ragdollPart.angularDrag = angularDrag;
+        }
+    }
+
+    [Button("Remove Mesh Colliders")]
+    public void RemoveMeshColliders()
+    {
+        var children = GetComponentsInChildren<MeshCollider>();
+        for (var index = 0; index < children.Length; index++)
+        {
+            var child = children[index];
+            DestroyImmediate(child);
         }
     }
     [Button("Find Limbs")]
@@ -83,9 +99,13 @@ public class Giant_Core : MonoBehaviour
     }
 
     private bool isDead;
-
     public bool IsDead => isDead;
-    public void RagdollSetActive(bool phase)
+    
+    /// <summary>
+    /// False = die
+    /// </summary>
+    /// <param name="phase"></param>
+    public void SetFinish(bool phase)
     {
         isDead = phase;
         aiCore.Active(!phase);
@@ -99,4 +119,22 @@ public class Giant_Core : MonoBehaviour
             }
         }
     }
+    
+    public void TakeDamage(float damage)
+    {
+        monster.Health -= damage * (1-armor);
+        if (monster.Health <= 0)
+        {
+            SetFinish(true);
+        }
+    }
+    public void SetHealth(float amount)
+    {
+        monster.Health = amount;
+        if (amount <= 0)
+        {
+            SetFinish(true);
+        }
+    }
+    public void OnHit(CarCore core, float damage) => TakeDamage(damage);
 }

@@ -12,6 +12,20 @@ public class Monster : MonoBehaviour
     [SerializeField] private List<WeakPoint> weakPoints;
     
     [SerializeField] private float health = 100f;
+    [SerializeField] private float maxHealth = 100f;
+
+    /// <summary>
+    /// Auto property health for better managing
+    /// </summary>
+    public float Health
+    {
+        get => health;
+        set
+        {
+            health = value;
+            OnHealthChange?.Invoke(health, data.Health);
+        }
+    }
 
     public static System.Action<float, float> OnHealthChange;
 
@@ -19,42 +33,19 @@ public class Monster : MonoBehaviour
 
     public bool IsDead => (health <= 0f);
 
-    [Button("Find Weak Points")]
+    [Button("WeakPoints Setup")]
     public void FindWeakPoints()
     {
         weakPoints = GetComponentsInChildren<WeakPoint>().ToList();
+        foreach (var weakPoint in weakPoints)
+        {
+            weakPoint.FindCore();
+        }
     }
 
     public void Init(MonsterData data)
     {
         this.data = data;
-        health = data.Health;
-        OnHealthChange?.Invoke(health, data.Health);
-    }
-    public void TakeDamage(float damage, Vector3 pos)
-    {
-        bool weakPoint = false;
-
-        Collider[] colls = Physics.OverlapSphere(pos, 5f);
-        foreach (Collider coll in colls)
-        {
-            WeakPoint point  = coll.gameObject.GetComponent<WeakPoint>();
-            if (point != null)
-            {
-                point.Hit();
-                weakPoint = true;
-                damage *= 2f;
-                coll.gameObject.SetActive(false);
-                Debug.Log("Hit Weak Point");
-            }
-        }
-        
-        health -= damage;
-        OnHealthChange?.Invoke(health, data.Health);
-
-        if (health <= 0f)
-        {
-            //animator.SetTrigger("die");
-        }
+        Health = data.Health;
     }
 }

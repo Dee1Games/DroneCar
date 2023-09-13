@@ -5,6 +5,9 @@ using UnityEngine;
 public class Explodable : MonoBehaviour
 {
     [SerializeField] private float fadeDelay = 10f;
+
+    public float radius = 20;
+    public float force;
     
     private Rigidbody[] rigidbodies;
     
@@ -25,7 +28,7 @@ public class Explodable : MonoBehaviour
         exploded = false;
     }
 
-    public void Explode(Vector3 pos, float radius, float force)
+    public void Explode(Vector3 pos)
     {
         if (exploded)
             return;
