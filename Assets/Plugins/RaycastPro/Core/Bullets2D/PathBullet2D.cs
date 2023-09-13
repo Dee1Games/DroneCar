@@ -30,20 +30,40 @@
         // Cached Variables
         private Vector3 _pos, _dir;
         private float _dt;
-        protected override void OnCast()
+        protected override void OnCast() => PathSetup(raySource);
+
+        public void PathSetup(RaySensor2D raySensor)
         {
-            if (raySource is PathRay2D _pathRay)
+            Path = new List<Vector2>();
+            do
             {
-                Path = local ? new List<Vector2>(_pathRay.PathPoints) : _pathRay.PathPoints;
-            }
-            else
-            {
-                Path = new List<Vector2> {raySource.BasePoint, raySource.Tip};
-            }
-            
+                if (raySensor is PathRay2D _pathRay)
+                {
+                    if (_pathRay.DetectIndex > -1)
+                    {
+                        for (var i = 0; i <= _pathRay.DetectIndex; i++)
+                        {
+                            Path.Add(_pathRay.PathPoints[i]);
+                        }
+                        Path.Add(raySensor.hit.point);
+                    }
+                    else
+                    {
+                        Path.AddRange(local ? new List<Vector2>(_pathRay.PathPoints) : _pathRay.PathPoints);
+                    }
+                }
+                else
+                {
+                    Path.Add(raySensor.BasePoint);
+                    Path.Add(raySensor.TipTarget);
+                }
+                
+                raySensor = raySensor.cloneRaySensor;
+                
+            } while (raySensor);
+
             pathLength = Path.GetPathLength();
         }
-        
         public override void RuntimeUpdate()
         {
             position = Mathf.Clamp01(position);

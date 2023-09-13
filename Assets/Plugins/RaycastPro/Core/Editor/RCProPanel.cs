@@ -17,6 +17,7 @@ namespace RaycastPro.Editor
     using RaySensors2D;
     using UnityEditor;
     using UnityEngine;
+    using Sensor;
     public sealed class RCProPanel : EditorWindow
     {
         internal const string KEY = "RaycastPro_Key : ";
@@ -62,9 +63,9 @@ namespace RaycastPro.Editor
         internal static bool LoadWhenOpen = false;
         private Texture2D headerTexture;
         private Vector2 scrollPos;
-        /// DONT TOUCH ME ALERT :) This is not bug, You can browse the resource folder externally from panel :).
         internal static string ResourcePath => EditorPrefs.GetString(CResourcePath, "Assets/Plugins/RaycastPro/Resources");
 
+        private float timer;
         private void OnEnable()
         {
             LoadPreferences();
@@ -77,36 +78,49 @@ namespace RaycastPro.Editor
             SavePreferences();
             EditorPrefs.SetBool(KEY + CShowOnStart, showOnStart);
         }
+
+        private List<Type> cores = new List<Type>();
+
+        private Color randomColor;
         private void OnGUI()
         {
+            randomColor = Color.HSVToRGB(Time.time % 1f, 1, 1f);
             GUI.color = Color.white;
-
             var boxStyle = new GUIStyle(GUI.skin.box)
             {
+                margin = new RectOffset(0, 0, 0, 0),
                 alignment = TextAnchor.UpperCenter
             };
             if (headerTexture) GUILayout.Box(headerTexture, boxStyle, GUILayout.Width(width), GUILayout.Height(153));
-
-            RCProEditor.GUILine(RCProEditor.Aqua);
-
+            RCProEditor.GUILine(randomColor);
             var labelStyle = new GUIStyle(EditorStyles.boldLabel)
             {
                 alignment = TextAnchor.UpperCenter,
                 richText = true
             };
-
-            GUILayout.Label("<b>RAYCAST_PRO V1.0</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
-
-            RCProEditor.GUILine(RCProEditor.Aqua);
+            GUILayout.Label($"<b>RAYCAST_PRO 1.0.6</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
+            RCProEditor.GUILine(randomColor);
             #region Content Buttons
             GUI.contentColor = RCProEditor.Aqua;
             GUI.backgroundColor = RCProEditor.Violet;
-            var enumInt = GUILayout.SelectionGrid((int) mode, new[] {"2D", "3D"}, 2);
+            var enumInt = GUILayout.SelectionGrid((int) mode, new[] {"Utility","2D", "3D"}, 3);
             mode = (Mode) Enum.ToObject(typeof(Mode), enumInt);
-            var coreInt = GUILayout.SelectionGrid((int) coreMode, Enum.GetNames(typeof(CoreMode)), 5);
-            coreMode = (CoreMode) Enum.ToObject(typeof(CoreMode), coreInt);
-            var cores = new List<Type>();
-            if (mode == Mode.ThreeD)
+
+            cores.Clear();
+            
+            if (mode == Mode.Utility)
+            {
+                cores = new List<Type>
+                {
+                    typeof(RayManager), typeof(PointSensor)
+                };
+            }
+            else
+            {
+                var coreInt = GUILayout.SelectionGrid((int) coreMode, Enum.GetNames(typeof(CoreMode)), 5);
+                coreMode = (CoreMode) Enum.ToObject(typeof(CoreMode), coreInt);
+                
+                if (mode == Mode.ThreeD)
                 switch (coreMode)
                 {
                     case CoreMode.RaySensors:
@@ -154,7 +168,7 @@ namespace RaycastPro.Editor
                     case CoreMode.Detectors:
                         cores = new List<Type>
                         {
-                            typeof(LineDetector2D), typeof(RangeDetector2D), typeof(BoxDetector2D),
+                            typeof(LineDetector2D), typeof(RangeDetector2D), typeof(BoxDetector2D), typeof(PolyDetector2D),
                             typeof(TargetDetector2D),
                             typeof(SteeringDetector2D), typeof(RadarDetector2D), typeof(PathDetector2D)
                         };
@@ -163,7 +177,7 @@ namespace RaycastPro.Editor
                         cores = new List<Type>
                         {
                             typeof(BlockPlanar2D), typeof(ReflectPlanar2D), typeof(RefractPlanar2D),
-                            typeof(PortalPlanar2D)
+                            typeof(PortalPlanar2D), typeof(DividePlanar2D)
                         };
                         break;
                     case CoreMode.Casters:
@@ -180,19 +194,23 @@ namespace RaycastPro.Editor
                         };
                         break;
                 }
+            }
+            
 
             #endregion
 
             IconLayout(cores, 7);
-            RCProEditor.GUILine(Color.white);
-            GUILayout.Space(2);
+            
+            GUILayout.Space(4);
+            RCProEditor.GUILine(randomColor);
+
 
             scrollPos = GUILayout.BeginScrollView(scrollPos);
             // UNDO SYSTEM
             EditorGUI.BeginChangeCheck();
 
             settingFoldout[0] = EditorGUILayout.BeginFoldoutHeaderGroup(settingFoldout[0],
-                "General Settings".ToContent(), RCProEditor.HeaderFoldout());
+                "General Settings".ToContent(), RCProEditor.HeaderFoldout);
             if (settingFoldout[0])
             {
                 EditorGUILayout.BeginVertical(RCProEditor.BoxStyle);
@@ -209,6 +227,15 @@ namespace RaycastPro.Editor
                 EditorGUI.BeginChangeCheck();
                 ShowLabels = EditorGUILayout.Toggle("Show Labels", ShowLabels);
                 if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
+                
+                EditorGUI.BeginChangeCheck();
+                DrawBlockLine = EditorGUILayout.Toggle("Draw Block Line", DrawBlockLine);
+                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
+
+                EditorGUI.BeginChangeCheck();
+                DrawDetectLine = EditorGUILayout.Toggle("Draw Detect Line", DrawDetectLine);
+                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
+
                 
                 EditorGUI.BeginChangeCheck();
                 drawHierarchyIcons = EditorGUILayout.Toggle("Draw Hierarchy Icons", drawHierarchyIcons);
@@ -242,7 +269,7 @@ namespace RaycastPro.Editor
             GUILayout.Space(2);
 
             settingFoldout[1] = EditorGUILayout.BeginFoldoutHeaderGroup(settingFoldout[1], "RaySensors".ToContent(),
-                RCProEditor.HeaderFoldout());
+                RCProEditor.HeaderFoldout);
             if (settingFoldout[1])
             {
                 EditorGUILayout.BeginVertical(RCProEditor.BoxStyle);
@@ -257,18 +284,10 @@ namespace RaycastPro.Editor
             GUILayout.Space(2);
 
             settingFoldout[2] = EditorGUILayout.BeginFoldoutHeaderGroup(settingFoldout[2], "Detectors".ToContent(),
-                RCProEditor.HeaderFoldout());
+                RCProEditor.HeaderFoldout);
             if (settingFoldout[2])
             {
                 EditorGUILayout.BeginVertical(RCProEditor.BoxStyle);
-                EditorGUI.BeginChangeCheck();
-                DrawBlockLine = EditorGUILayout.Toggle("Draw Block Line", DrawBlockLine);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-
-                EditorGUI.BeginChangeCheck();
-                DrawDetectLine = EditorGUILayout.Toggle("Draw Detect Line", DrawDetectLine);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-
                 EditorGUILayout.BeginHorizontal();
                 
                 EditorGUI.BeginChangeCheck();
@@ -283,16 +302,24 @@ namespace RaycastPro.Editor
                 EditorGUILayout.EndVertical();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
-            GUILayout.Space(2);
-            RCProEditor.GUILine(Color.white);
-            if (GUILayout.Button("Browse Icons Folder"))
+            GUILayout.Space(4);
+            RCProEditor.GUILine(randomColor);
+            
+            if (GUILayout.Button("Refresh Icons"))
             {
-                var path = EditorUtility.OpenFolderPanel("Select Resource folder", ResourcePath, "")
-                    .Replace(Application.dataPath, "Assets");
-
-                EditorPrefs.SetString(CResourcePath, path);
+                string folderPath = "";
+                string[] guids = AssetDatabase.FindAssets("Resources" + " t:Folder");
+                foreach (string guid in guids)
+                {
+                    folderPath = AssetDatabase.GUIDToAssetPath(guid);
+                    if (folderPath.Contains("RaycastPro"))
+                    {
+                        EditorPrefs.SetString(CResourcePath, folderPath);
+                        headerTexture = IconManager.GetHeader();
+                        RefreshIcons();
+                    }
+                }
             }
-            if (GUILayout.Button("Refresh Icons")) RefreshIcons();
             if (GUILayout.Button("Reset Settings")) ResetSettings();
             GUILayout.EndScrollView();
             GUILayout.Space(2);
@@ -305,7 +332,7 @@ namespace RaycastPro.Editor
             RCProEditor.GUILine(Color.white);
         }
 
-        [MenuItem("Tools/RaycastPro Panel", priority = -10000)]
+        [MenuItem("Tools/RaycastPro", priority = -10000)]
         public static void Init()
         {
             // Get existing open window or if none, make a new one:
@@ -315,9 +342,7 @@ namespace RaycastPro.Editor
             window.minSize = new Vector2(width, height);
 
             window.Show();
-
-            ICON_DICTIONARY = IconManager.GetIcons();
-
+            
             mode = SceneView.lastActiveSceneView.in2DMode ? Mode.TwoD : Mode.ThreeD;
         }
         private static void ResetSettings()
@@ -350,7 +375,11 @@ namespace RaycastPro.Editor
         }
         public static void SavePreferences()
         {
-            foreach (var fieldInfo in typeof(RCProPanel).GetFields())
+            Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Saves.</color>");
+            var type = typeof(RCProPanel);
+            FieldInfo[] fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
+            
+            foreach (var fieldInfo in fields)
             {
                 if (fieldInfo.GetCustomAttribute(typeof(SavePreference)) == null) continue;
 
@@ -366,17 +395,18 @@ namespace RaycastPro.Editor
                     SaveColor(KEY + fieldInfo.Name, (Color) fieldInfo.GetValue(null));
             }
         }
-        public static void LoadPreferences(bool message = false)
+        public static void LoadPreferences()
         {
-            if (message) Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Update.</color>");
-            foreach (var fieldInfo in typeof(RCProPanel).GetFields())
+            Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Loaded.</color>");
+            var type = typeof(RCProPanel);
+            FieldInfo[] fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
+            foreach (var fieldInfo in fields)
             {
                 if (fieldInfo.GetCustomAttribute(typeof(SavePreference)) == null) continue;
                 if (!EditorPrefs.HasKey(KEY + fieldInfo.Name)) continue;
                 if (fieldInfo.FieldType == typeof(bool))
                 {
                     fieldInfo.SetValue(null, EditorPrefs.GetBool(KEY + fieldInfo.Name));
-                    Debug.Log(fieldInfo.Name);
                 }
                 else if (fieldInfo.FieldType == typeof(float))
                 {
@@ -415,6 +445,10 @@ namespace RaycastPro.Editor
             };
             return col;
         }
+        
+        /// <summary>
+        /// Create every component once for catching their icons
+        /// </summary>
         public static void RefreshIcons()
         {
             ICON_DICTIONARY = IconManager.GetIcons();
@@ -425,6 +459,7 @@ namespace RaycastPro.Editor
                 {
                     var obj = new GameObject();
                     var component = obj.AddComponent(type);
+                    
                     component.SetIcon(ICON_DICTIONARY[type]);
                     DestroyImmediate(obj);
                 }
@@ -439,7 +474,6 @@ namespace RaycastPro.Editor
         public static void IconLayout(List<Type> types, int columnWidth)
         {
             var rows = types.Count / columnWidth;
-
             var guiStyle = new GUIStyle
             {
                 alignment = TextAnchor.UpperCenter
@@ -516,13 +550,15 @@ namespace RaycastPro.Editor
                 name = name.Replace("Bullet2D", "");
             }
 
-            style = RCProEditor.BoxStyle;
-            style.wordWrap = true;
-            style.padding = new RectOffset(0, 0, 0, 0);
-            style.border = new RectOffset(0, 0, 0, 0);
-            style.margin = new RectOffset(6, 6, 2, 2);
-            
-            GUILayout.Box($"<color=#2BC6D2>{name.ToRegex()}</color>", style, GUILayout.Width(60), GUILayout.Height(20));
+            style = new GUIStyle(RCProEditor.BoxStyle)
+            {
+                wordWrap = true,
+                alignment = TextAnchor.MiddleCenter,
+                padding = new RectOffset(2, 2, 2, 2),
+                margin = new RectOffset(4, 4, 0, 2)
+            };
+
+            GUILayout.Box($"<color=#2BC6D2>{name.ToRegex()}</color>", style, GUILayout.Width(60), GUILayout.Height(30));
             EditorGUILayout.EndVertical();
             GUI.contentColor = RCProEditor.Aqua;
             GUI.backgroundColor = RCProEditor.Violet;
@@ -624,6 +660,7 @@ namespace RaycastPro.Editor
 
         internal enum Mode
         {
+            Utility,
             TwoD,
             ThreeD
         }

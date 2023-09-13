@@ -223,14 +223,16 @@
             // Add Track Target 
             if (trackTarget)
             {
-                if (_bullet is TrackerBullet _trB) _trB.target = trackTarget;
-                else if (_bullet is TrackerBullet2D _trB2D)  _trB2D.target = trackTarget;
+                if (_bullet is TrackerBullet _trB) _trB.target = trackTarget.transform;
+                else if (_bullet is TrackerBullet2D _trB2D)  _trB2D.target = trackTarget.transform;
             }
             // Rotation Fixer
             _bullet.transform.up = transform.up;
         }
         
         protected Coroutine multiCast;
+
+        public void SetTarget(Transform _target) => trackTarget = _target;
         protected IEnumerator IMultiCast(int _index, int count)
         {
             if (ammo.magazineAmount == 0) ammo.IReload();
@@ -284,9 +286,10 @@
             }
             EditorGUI.EndProperty();
         }
-        protected void GeneralField(SerializedObject _so)
+
+        protected void GunField(SerializedObject _so)
         {
-            #region ArrayCastingField
+                        #region ArrayCastingField
             BeginHorizontal();
 
             GUI.enabled = !Application.isPlaying;
@@ -320,10 +323,8 @@
                 I => { });
             EndVertical();
 
-            if (!(this is BasicCaster || this is BasicCaster2D))
-            {
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(trackTarget)));
-            }
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(trackTarget)));
+            
             BeginVerticalBox();
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(usingAmmo)));
             if (usingAmmo)
@@ -334,10 +335,10 @@
             }
             else ammo = null;
             EndVertical();
-            
-            
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(createPoolAtStart)));
-
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(poolManager)));
+        }
+        protected void GeneralField(SerializedObject _so)
+        {
             BaseField(_so, hasInteraction: false);
             
             BeginVerticalBox();
@@ -347,10 +348,10 @@
         }
         protected void InformationField()
         {
+            if (!IsPlaying || cloneBullets == null) return;
+            
             InformationField(() =>
             {
-                if (cloneBullets == null) return;
-
                 for (var i = 0; i < cloneBullets.Length; i++)
                 {
                     if (!cloneBullets[i]) continue;

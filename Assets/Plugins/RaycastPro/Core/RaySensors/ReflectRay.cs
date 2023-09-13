@@ -27,9 +27,13 @@
         public Axis planeAxis;
         public bool hasFreezeAxis;
 
+        [Tooltip("The number of ray reflection that will be cut off when reaching it. Negative numbers use free direction length.")]
+        public int maxReflect = -1;
+
         private Vector3 point, _direction;
         private float distance;
         private RaycastHit _tHit;
+        private int DI;
         private void ReflectCast()
         {
             Vector3 ApplyFreeze(Vector3 dir)
@@ -55,10 +59,11 @@
             // Strictly Queries Hit back most be false
             var physicsSetting = Physics.queriesHitBackfaces;
             Physics.queriesHitBackfaces = false;
-            var DI = -1;
+            DI = -1;
             while (true)
             {
                 DI++;
+                if (maxReflect > 0 && DI+1 > maxReflect) break;
                 _tHit = new RaycastHit();
                 if (radius > 0)
                 {
@@ -86,6 +91,8 @@
                     continue;
                 }
                 PathPoints.Add(point + _direction.normalized * distance);
+                
+                
                 break;
             }
             Physics.queriesHitBackfaces = physicsSetting;
@@ -116,7 +123,16 @@
                 Handles.DrawDottedLine(transform.position, PathPoints.Last(), StepSizeLine);
             }
 
-            reflectHits.ForEach(p => DrawNormal(p.point, p.normal, p.transform.name));
+            for (var index = 0; index < reflectHits.Count-1; index++)
+            {
+                var _hit = reflectHits[index];
+                DrawCross(_hit.point, _hit.normal);
+            }
+
+            if (reflectHits.Count > 0)
+            {
+                DrawNormal(reflectHits[^1]);
+            }
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true, bool hasInfo = true)
@@ -132,6 +148,7 @@
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
                 RadiusField(_so);
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(maxReflect)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(reflectLayer)),
                     CReflectLayer.ToContent(TReflectLayer));
             }

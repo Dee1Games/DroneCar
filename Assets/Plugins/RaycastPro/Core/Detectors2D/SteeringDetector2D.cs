@@ -223,15 +223,12 @@
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
 
             if (IsGuide && IsPlaying)
             {
-                DrawNormal(transform.position, SteeringDirection, DiscSize * radius,
-                    "Steering Direction");
+                DrawNormal(transform.position, SteeringDirection, "Steering Direction", radius, DiscSize);
             }
-
-            SceneView.RepaintAll();
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

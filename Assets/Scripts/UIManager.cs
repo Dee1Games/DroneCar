@@ -9,21 +9,11 @@ public class UIManager : MonoBehaviour
 
     private UIScreen currentScreen;
 
-    public Image giantGunTimer;
-    
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-        }
-    }
-
-    public void SetGiantGunTimer(float value)
-    {
-        if (giantGunTimer)
-        {
-            giantGunTimer.fillAmount = value;
         }
     }
 

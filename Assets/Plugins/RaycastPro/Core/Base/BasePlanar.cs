@@ -40,10 +40,21 @@ namespace RaycastPro
         }
 
         public DirectionOutput baseDirection = DirectionOutput.PlanarForward;
-        protected override void OnCast() { } // NOTHING FOR NOW
 
-#if UNITY_EDITOR
+        [Tooltip("Clones no longer continue RayCasting when disabled. This option has no effect on Line Renderer (except CutOnHit) and can help to optimize and secure cloning.")]
+        public bool clonePathCast = true;
+        protected override void OnCast() { } // NOTHING FOR NOW
         
+#if UNITY_EDITOR
+
+        protected static void RenameClone(RaycastCore sensor, string key = "C")
+        {
+            sensor.gameObject.name = $"{key}: {sensor.GetInstanceID().ToString()}";
+        }
+        protected void PlanarBaseField(SerializedObject _so)
+        {
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(clonePathCast)));
+        }
         protected void OuterField(SerializedProperty property, SerializedProperty _outerRay)
         {
             BeginVerticalBox();

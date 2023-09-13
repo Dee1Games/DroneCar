@@ -51,7 +51,7 @@ namespace RaycastPro.Planers2D
             switch (baseDirection)
             {
                 case DirectionOutput.NegativeHitNormal: return -innerRay.hit.normal;
-                case DirectionOutput.HitDirection: return innerRay.HitDirection;
+                case DirectionOutput.HitDirection: return innerRay.HitDirection.normalized;
                 case DirectionOutput.SensorLocal: return innerRay.LocalDirection.normalized;
                 case DirectionOutput.PlanarForward: return _default;
                 default: return _default;
@@ -82,7 +82,7 @@ namespace RaycastPro.Planers2D
         protected void EventField(SerializedObject _so)
         {
             EventFoldout =
-                EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents, RCProEditor.HeaderFoldout());
+                EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents, RCProEditor.HeaderFoldout);
 
             if (EventFoldout) RCProEditor.EventField(_so, CEventNames);
             EditorGUILayout.EndFoldoutHeaderGroup();
@@ -91,9 +91,7 @@ namespace RaycastPro.Planers2D
         public void CloneInstantiate(RaySensor2D raySensor)
         {
             if (!raySensor) return;
-
             if (!InLayer(raySensor.gameObject) || raySensor.hit.transform != transform) return;
-
             switch (outerType)
             {
                 case OuterType.Auto:
@@ -124,36 +122,47 @@ namespace RaycastPro.Planers2D
         {
             // Double supported Clone Sensors
             raySensor.cloneRaySensor = Instantiate(outerRay ? outerRay : raySensor);
-            raySensor.cloneRaySensor._baseRaySensor = raySensor;
-        } 
+            
+#if UNITY_EDITOR
+           RenameClone(raySensor.cloneRaySensor);
+#endif
+            
+            raySensor.cloneRaySensor.baseRaySensor = raySensor;
+        }
+
+        private GameObject _tObj;
+        private CloneRay2D cloneRay;
         private void InstantiateClone(RaySensor2D raySensor)
         {
-            var obj = new GameObject();
-
+            _tObj = new GameObject();
             //Scene Debugging
-            SceneManager.MoveGameObjectToScene(obj, raySensor.gameObject.scene);
+            SceneManager.MoveGameObjectToScene(_tObj, raySensor.gameObject.scene);
+            cloneRay = _tObj.AddComponent<CloneRay2D>();
+            cloneRay.transform.parent = poolManager;
+            
+#if UNITY_EDITOR
+            RenameClone(cloneRay);
+#endif
 
-            var cloneRay = obj.AddComponent<CloneRay2D>();
-
-            cloneRay.name = $"Clone of {raySensor.GetType().Name} ({raySensor.name})";
             if (this is PortalPlanar2D planar)
             {
-                cloneRay.CopyFrom(raySensor, transform, transform);
+                cloneRay.CopyFrom(raySensor, planar, transform);
             }
             else
             {
-                cloneRay.CopyFrom(raySensor, transform, transform);
+                cloneRay.CopyFrom(raySensor, this, transform);
             }
 
             // Double supported Clone Sensors
-            cloneRay._baseRaySensor = raySensor;
+            cloneRay.baseRaySensor = raySensor;
             raySensor.cloneRaySensor = cloneRay;
         }
         public abstract void OnReceiveRay(RaySensor2D sensor);
         public virtual void OnBeginReceiveRay(RaySensor2D sensor)
         {
+            if (this is BlockPlanar2D) return;
+            
             CloneInstantiate(sensor);
-
             sensor.cloneRaySensor?.transform.RemoveChildren();
 
             OnCloneRay(sensor.cloneRaySensor);

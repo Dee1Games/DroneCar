@@ -24,9 +24,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225926019386286178}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5132417721369839215}
@@ -48,7 +48,7 @@ MonoBehaviour:
   triggerInteraction: 0
   detectLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   autoUpdate: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
@@ -58,6 +58,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -65,7 +66,7 @@ MonoBehaviour:
     axis: 0
     syncAxis: 0
     flipAxis: 0
-  planarSensitive: 1
+  planarSensitive: 0
   _planar: {fileID: 0}
   planers: []
   anyPlanar: 1
@@ -112,9 +113,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1194152673979011353}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5132417721369839215}
@@ -4910,7 +4911,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!1 &8578613652135235011
+--- !u!1 &2127199274788439890
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4918,49 +4919,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5132417721369839215}
-  - component: {fileID: 929588614569161697}
-  - component: {fileID: 1364284274588564374}
-  - component: {fileID: 4781650211989754357}
+  - component: {fileID: 3292709033152531710}
+  - component: {fileID: 7380977823391545712}
+  - component: {fileID: 8675875186172309767}
   m_Layer: 2
-  m_Name: Path Bullet
+  m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5132417721369839215
+--- !u!4 &3292709033152531710
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8578613652135235011}
+  m_GameObject: {fileID: 2127199274788439890}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5063463050208136665}
-  - {fileID: 3661984695992159503}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_Children: []
+  m_Father: {fileID: 5132417721369839215}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &929588614569161697
+--- !u!33 &7380977823391545712
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8578613652135235011}
+  m_GameObject: {fileID: 2127199274788439890}
   m_Mesh: {fileID: -7204647971529134275, guid: 40bddb44ac2274243b40a42b32857593, type: 3}
---- !u!23 &1364284274588564374
+--- !u!23 &8675875186172309767
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8578613652135235011}
+  m_GameObject: {fileID: 2127199274788439890}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -4997,6 +4995,41 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8578613652135235011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5132417721369839215}
+  - component: {fileID: 4781650211989754357}
+  m_Layer: 0
+  m_Name: Path Bullet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5132417721369839215
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8578613652135235011}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3292709033152531710}
+  - {fileID: 5063463050208136665}
+  - {fileID: 3661984695992159503}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4781650211989754357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5029,12 +5062,12 @@ MonoBehaviour:
   onEnd:
     m_PersistentCalls:
       m_Calls: []
-  moveType: 1
+  moveType: 0
   callMethod: OnBullet
   messageUpward: 0
   damage: 10
-  speed: 3
-  lifeTime: 10
+  speed: 1
+  lifeTime: 20
   endDelay: 0
   endFunction: 1
   trailRenderer: {fileID: 0}
@@ -5042,7 +5075,7 @@ MonoBehaviour:
   caster: {fileID: 0}
   raySource: {fileID: 0}
   collisionRay: {fileID: 5154096257278649631}
-  duration: 1
+  duration: 5
   curve:
     serializedVersion: 2
     m_Curve:

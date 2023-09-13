@@ -102,7 +102,7 @@ namespace RaycastPro.Detectors2D
 #pragma warning disable CS0414
         private static string Info = "Examining Target points and detecting the blocking of the connection line."+HAccurate+HIRadius+HIPulse;
 #pragma warning restore CS0414
-        internal override void OnGizmos() => EditorCast();
+        internal override void OnGizmos() => EditorUpdate();
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)

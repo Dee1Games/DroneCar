@@ -9,10 +9,15 @@
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(RangeDetector))]
     public sealed class RangeDetector : ColliderDetector, IRadius, IPulse
+#if UNITY_EDITOR
+        ,ISceneGUI
+#endif
     {
         [SerializeField] private float radius = 2f;
 
         [SerializeField] private float height;
+
+        [SerializeField] public bool local = true;
 
         public float Height
         {
@@ -74,6 +79,7 @@
 #if UNITY_EDITOR
             CleanGate();
 #endif
+            
             PreviousColliders = DetectedColliders.ToArray();
             _t = transform;
             if (limited)
@@ -83,7 +89,7 @@
                 if (height > 0)
                 {
                     cylinderH = height - radius;
-                    h = _t.up * height/2;
+                    h =  (local ? _t.up : Vector3.up);
                     Physics.OverlapCapsuleNonAlloc(_t.position - h, _t.position + h, radius, colliders,
                         detectLayer.value, triggerInteraction);
                 }
@@ -98,7 +104,7 @@
                 if (height > 0)
                 {
                     cylinderH = height - radius;
-                    h = _t.up * height/2;
+                    h = (local ?_t.up : Vector3.up) * height/2;
                     colliders = Physics.OverlapCapsule(_t.position - h, _t.position + h, radius, detectLayer.value,
                         triggerInteraction);
                 }
@@ -148,13 +154,13 @@
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
             DrawDetectVector();
             GizmoColor = DefaultColor;
             _t = transform;
             if (height > 0)
             {
-                h = _t.up * (height / 2);
+                h = (local ? _t.up : Vector3.up) * (height / 2);
                 DrawCapsuleLine(_t.position - h, _t.position + h, radius, _t: transform);
             }
             else
@@ -167,7 +173,11 @@
         {
             if (hasMain)
             {
+                BeginHorizontal();
                 RadiusField(_so);
+                LocalField(_so.FindProperty(nameof(local)));
+                EndHorizontal();
+                
                 HeightField(_so);
             }
             if (hasGeneral) ColliderDetectorGeneralField(_so);
@@ -182,6 +192,7 @@
 
         private Vector3 direct, cross;
         private float distance;
+        private ISceneGUI _sceneGUIImplementation;
         protected override void DrawDetectorGuide(Vector3 point)
         {
             if (!GuideCondition) return;
@@ -203,6 +214,18 @@
                 Handles.DrawDottedLine(point, _t.position + direct.normalized * radius, StepSizeLine);
             }
         }
+        
+        public void OnSceneGUI()
+        {
+            return;
+            var newRadius = Handles.RadiusHandle(local ? transform.rotation : Quaternion.identity, transform.position, Radius);
+            if (newRadius != radius)
+            {
+                Undo.RecordObject(this, "Change Sphere Radius");
+                Radius = newRadius;
+            }
+        }
 #endif
+
     }
 }

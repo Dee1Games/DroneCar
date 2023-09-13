@@ -90,19 +90,28 @@
         {
             // Double supported Clone Sensors
             raySensor.cloneRaySensor = Instantiate(outerRay ? outerRay : raySensor, poolManager);
-            raySensor.cloneRaySensor._baseRaySensor = raySensor;
+#if UNITY_EDITOR
+            RenameClone(raySensor.cloneRaySensor);
+#endif
+            raySensor.cloneRaySensor.baseRaySensor = raySensor;
         } 
+        private GameObject _tObj;
+        protected CloneRay cloneRay;
         private void InstantiateClone(RaySensor raySensor)
         {
-            var obj = new GameObject();
+            _tObj = new GameObject();
             //Scene Debugging
-            SceneManager.MoveGameObjectToScene(obj, raySensor.gameObject.scene);
-            var cloneRay = obj.AddComponent<CloneRay>();
+            SceneManager.MoveGameObjectToScene(_tObj, raySensor.gameObject.scene);
+            cloneRay = _tObj.AddComponent<CloneRay>();
             cloneRay.transform.parent = poolManager;
-            cloneRay.name = $"Clone of {raySensor.GetType().Name} ({raySensor.name})";
+            
+#if UNITY_EDITOR
+            RenameClone(cloneRay);
+#endif
             cloneRay.CopyFrom(raySensor, this, (this is PortalPlanar planar) ? planar.outer : transform);
             // Double supported Clone Sensors
-            cloneRay._baseRaySensor = raySensor;
+            
+            cloneRay.baseRaySensor = raySensor;
             raySensor.cloneRaySensor = cloneRay;
         }
 #if UNITY_EDITOR
@@ -150,6 +159,7 @@
         protected void GeneralField(SerializedObject _so, bool lengthControlField = true, bool outerField = true)
         {
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(poolManager)), CPoolManager.ToContent(TPoolManager));
+            PlanarBaseField(_so);
             DetectLayerField(_so);
             BaseDirectionField(_so);
             PropertyMaxField(_so.FindProperty(nameof(offset)),  COffset.ToContent(), 0.02f);
@@ -161,7 +171,7 @@
         protected void EventField(SerializedObject _so)
         {
             EventFoldout =
-                EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents, RCProEditor.HeaderFoldout());
+                EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents, RCProEditor.HeaderFoldout);
 
             if (EventFoldout)  RCProEditor.EventField(_so, new[] {nameof(onReceiveRay), nameof(onCloneRay), nameof(onBeginReceiveRay), nameof(onEndReceiveRay)});
         }
@@ -170,6 +180,8 @@
 
         internal virtual void OnBeginReceiveRay(RaySensor sensor)
         {
+            if (this is BlockPlanar) return;
+            
             CloneInstantiate(sensor);
             sensor.cloneRaySensor?.transform.RemoveChildren();
             OnCloneRay(sensor.cloneRaySensor);

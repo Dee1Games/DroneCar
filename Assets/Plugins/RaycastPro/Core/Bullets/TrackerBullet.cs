@@ -1,11 +1,9 @@
-﻿using System;
-using RaycastPro.RaySensors;
-
-namespace RaycastPro.Bullets
+﻿namespace RaycastPro.Bullets
 {
     using UnityEngine;
 
 #if UNITY_EDITOR
+    using Editor;
     using UnityEditor;
 #endif
 
@@ -39,6 +37,14 @@ namespace RaycastPro.Bullets
                 transform.rotation = Quaternion.LookRotation(raySource.LocalDirection, transform.up);
             }
 
+#if UNITY_EDITOR
+            if (!target)
+            {
+                Debug.Log(RCProEditor.RPro+$"<color=#4AFF98>{caster.name}</color> missing <color=#FF1E21>TrackTarget</color> transform!");
+            }
+#endif
+
+
             targetPoint = target.position;
             currentForce = force;
             _t = transform;
@@ -52,7 +58,7 @@ namespace RaycastPro.Bullets
         {
             _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
-            
+            _t = transform;            
             targetPoint = target ? target.position + trackOffset : _t.position;
             _dis = Vector3.Distance(_t.position, targetPoint);
             if (currentForce <= .1f)

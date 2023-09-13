@@ -17,7 +17,7 @@ namespace RaycastPro.Planers2D
         private Vector2 point;
         private RaySensor2D clone;
         private Transform _tOuter;
-        private Vector3 forward, inverse;
+        private Vector2 forward, inverse;
         public override void OnReceiveRay(RaySensor2D sensor)
         {
             if (!sensor.cloneRaySensor) return;
@@ -26,14 +26,8 @@ namespace RaycastPro.Planers2D
             if (!clone) return;
             if (clone.liner) clone.liner.enabled = sensor.liner.enabled;
             _tOuter = outer ? outer : transform;
-            forward = new Vector3();
-            switch (baseDirection)
-            {
-                case DirectionOutput.NegativeHitNormal: forward = -sensor.hit.normal; break;
-                case DirectionOutput.HitDirection: forward = sensor.HitDirection; break;
-                case DirectionOutput.SensorLocal: forward = sensor.LocalDirection; break;
-                case DirectionOutput.PlanarForward: forward = transform.right; break;
-            }
+            forward = GetForward(sensor, transform.right);
+
 
             clone.transform.position = _tOuter.PortalPoint(transform, point).ToDepth(_tOuter.position.z);
             inverse = transform.InverseTransformDirection(forward);

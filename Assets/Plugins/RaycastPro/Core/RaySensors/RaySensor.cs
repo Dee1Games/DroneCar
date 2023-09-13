@@ -28,7 +28,7 @@
             return hit.transform && mask == (mask | 1 << hit.transform.gameObject.layer);
         }
         
-        internal RaySensor _baseRaySensor;
+        internal RaySensor baseRaySensor;
         internal RaySensor cloneRaySensor;
         /// <summary>
         /// Ray direction in World space.
@@ -63,11 +63,12 @@
         public Vector3 Direction => local ? LocalDirection : direction;
         
         /// <summary>
-        /// 
+        /// Ray direction in Selected Space with full scaling direction
         /// </summary>
         public Vector3 ScaledDirection => Vector3.Scale(transform.lossyScale, Direction);
 
-        public float Scale => (transform.lossyScale.x + transform.lossyScale.y) / 2;
+        public float FlatScale => (transform.lossyScale.x + transform.lossyScale.y) / 2f;
+        
         /// <summary>
         /// Ray direction in Local space.
         /// </summary>
@@ -458,13 +459,11 @@
             onDetect?.Invoke(hit);
 
             if (!planarSensitive) return;
-
             if (anyPlanar)
             {
                 if (!_planar) return;
 
                 _planar.OnReceiveRay(this);
-
                 _planar.onReceiveRay?.Invoke(this);
             }
             else
@@ -474,7 +473,6 @@
                     if (!p || p.transform != hit.transform) continue;
 
                     p.OnReceiveRay(this);
-
                     p.onReceiveRay?.Invoke(this);
                 }
             }
@@ -544,7 +542,8 @@
             {
                 cloneRaySensor.SafeRemove();
             }
-            Destroy(gameObject);
+
+            if (gameObject) Destroy(gameObject);
         }
 
 #if UNITY_EDITOR
@@ -592,13 +591,9 @@
 
         protected void InformationField()
         {
+            if (!hit.transform) return;
             InformationField(() =>
             {
-                if (!hit.transform)
-                {
-                    GUILayout.Label($"Performed <color=#FF4F52>False</color>", RCProEditor.LabelStyle);
-                    return;
-                }
                 var ID = hit.transform.gameObject.GetInstanceID();
                 GUILayout.Label($"Hit: {hit.transform.name}".ToContent(
                     $"Instance ID: {ID}, Located at: {hit.transform.position}, Offset from transform: {hit.transform.position - Hit.point}"));

@@ -171,7 +171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &76848959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 237475887}
   local: 1
+  scalable: 0
   stampOnHit: 1
   stampAutoHide: 1
   stampOffset: 0
@@ -406,6 +407,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -628,6 +630,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -719,7 +722,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120565709}
   m_LocalRotation: {x: 0, y: 0, z: 0.9799692, w: -0.1991493}
-  m_LocalPosition: {x: -3.2156425, y: -1.4934106, z: 0}
+  m_LocalPosition: {x: -3.2156425, y: -1.4934103, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -888,6 +891,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -973,7 +977,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &237475886
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1246,6 +1250,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -1440,7 +1445,6 @@ Transform:
   - {fileID: 1206288201}
   - {fileID: 95541957}
   - {fileID: 962206976}
-  - {fileID: 1863692309}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1651,6 +1655,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -1728,6 +1733,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -2091,6 +2097,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -2235,6 +2242,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -2298,7 +2306,8 @@ Transform:
   m_LocalPosition: {x: -1.75, y: -2.75, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1863692309}
   m_Father: {fileID: 388446180}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2576,6 +2585,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -2829,6 +2839,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3019,6 +3030,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3086,8 +3098,7 @@ MonoBehaviour:
     m_Bits: 1
   autoUpdate: 0
   gizmosUpdate: 0
-  createPoolAtStart: 1
-  poolManager: {fileID: 0}
+  poolManager: {fileID: 870932187}
   bullets:
   - {fileID: 7803423184118914761, guid: 60186596eda54ec488b1bc06d5964268, type: 3}
   cloneBullets:
@@ -3141,6 +3152,37 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   raySource: {fileID: 843568134}
+--- !u!1 &870932186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 870932187}
+  m_Layer: 0
+  m_Name: Pool.2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &870932187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870932186}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.8899484, y: 4.4233494, z: 0.45043147}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &962206973
 GameObject:
   m_ObjectHideFlags: 0
@@ -3206,8 +3248,7 @@ LineRenderer:
   - {x: 8, y: -0.8699999, z: 0}
   - {x: 8, y: 1.1300001, z: 0}
   - {x: 9, y: 1.1300001, z: 0}
-  - {x: 9, y: -0.8699999, z: 0}
-  - {x: 8, y: -0.8699999, z: 0}
+  - {x: 9, y: 0.5045001, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -3301,6 +3342,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3539,6 +3581,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3606,8 +3649,7 @@ MonoBehaviour:
     m_Bits: 1
   autoUpdate: 0
   gizmosUpdate: 0
-  createPoolAtStart: 1
-  poolManager: {fileID: 0}
+  poolManager: {fileID: 1398621925}
   bullets:
   - {fileID: 7803423184118914761, guid: 60186596eda54ec488b1bc06d5964268, type: 3}
   cloneBullets:
@@ -3737,8 +3779,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -3.2156425, y: -1.4934106, z: 0}
-  - {x: -2.0445018, y: -1.6377374, z: 0}
+  - {x: -3.2156425, y: -1.4934103, z: 0}
+  - {x: -2.0445018, y: -1.6377372, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -3832,6 +3874,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -4036,6 +4079,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -4229,6 +4273,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -4342,6 +4387,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -4377,25 +4423,25 @@ MonoBehaviour:
   direction: {x: 2.4, y: 0}
   pathCast: 1
   PathPoints:
-  - {x: 0.68195057, y: -0.87130773}
-  - {x: 0.583499, y: -0.75637376}
-  - {x: 0.5342473, y: -0.6412375}
-  - {x: 0.5251501, y: -0.5259361}
-  - {x: 0.55461717, y: -0.41047618}
-  - {x: 0.6249014, y: -0.29484838}
-  - {x: 0.7475064, y: -0.17900538}
-  - {x: 1.1364273, y: -0.06206727}
-  - {x: 1.3759272, y: 0.05425644}
-  - {x: 1.4888482, y: 0.17005944}
-  - {x: 1.5525695, y: 0.28566027}
-  - {x: 1.576136, y: 0.40109587}
-  - {x: 1.5611384, y: 0.51637316}
-  - {x: 1.5053238, y: 0.6314825}
-  - {x: 1.3971881, y: 0.74637663}
-  - {x: 1.0227364, y: 0.8601755}
-  - {x: 0.79770607, y: 0.9745889}
-  - {x: 0.69925463, y: 1.0895231}
-  - {x: 0.6500027, y: 1.2046592}
+  - {x: 0.543839, y: -0.87187564}
+  - {x: 0.5143446, y: -0.7566582}
+  - {x: 0.52374256, y: -0.6412808}
+  - {x: 0.57223386, y: -0.52574253}
+  - {x: 0.6649637, y: -0.4100224}
+  - {x: 0.8293796, y: -0.29400754}
+  - {x: 1.2746242, y: -0.17683774}
+  - {x: 1.4268696, y: -0.06087303}
+  - {x: 1.5140388, y: 0.054824233}
+  - {x: 1.5580026, y: 0.17034388}
+  - {x: 1.5630741, y: 0.28570354}
+  - {x: 1.5290523, y: 0.4009024}
+  - {x: 1.4507918, y: 0.51591945}
+  - {x: 1.3008454, y: 0.6306416}
+  - {x: 0.8700703, y: 0.74420893}
+  - {x: 0.73229426, y: 0.85898113}
+  - {x: 0.6595944, y: 0.9740211}
+  - {x: 0.63010025, y: 1.0892386}
+  - {x: 0.63949805, y: 1.2046161}
   DetectIndex: -1
   timeMode: 0
   segments: 18
@@ -4472,25 +4518,25 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0.68195057, y: -0.87130773, z: 0}
-  - {x: 0.583499, y: -0.75637376, z: 0}
-  - {x: 0.5342473, y: -0.6412375, z: 0}
-  - {x: 0.5251501, y: -0.5259361, z: 0}
-  - {x: 0.55461717, y: -0.41047618, z: 0}
-  - {x: 0.6249014, y: -0.29484838, z: 0}
-  - {x: 0.7475064, y: -0.17900538, z: 0}
-  - {x: 1.1364273, y: -0.06206727, z: 0}
-  - {x: 1.3759272, y: 0.05425644, z: 0}
-  - {x: 1.4888482, y: 0.17005944, z: 0}
-  - {x: 1.5525695, y: 0.28566027, z: 0}
-  - {x: 1.576136, y: 0.40109587, z: 0}
-  - {x: 1.5611384, y: 0.51637316, z: 0}
-  - {x: 1.5053238, y: 0.6314825, z: 0}
-  - {x: 1.3971881, y: 0.74637663, z: 0}
-  - {x: 1.0227364, y: 0.8601755, z: 0}
-  - {x: 0.79770607, y: 0.9745889, z: 0}
-  - {x: 0.69925463, y: 1.0895231, z: 0}
-  - {x: 0.6500027, y: 1.2046592, z: 0}
+  - {x: 0.543839, y: -0.87187564, z: 0}
+  - {x: 0.5143446, y: -0.7566582, z: 0}
+  - {x: 0.52374256, y: -0.6412808, z: 0}
+  - {x: 0.57223386, y: -0.52574253, z: 0}
+  - {x: 0.6649637, y: -0.4100224, z: 0}
+  - {x: 0.8293796, y: -0.29400754, z: 0}
+  - {x: 1.2746242, y: -0.17683774, z: 0}
+  - {x: 1.4268696, y: -0.06087303, z: 0}
+  - {x: 1.5140388, y: 0.054824233, z: 0}
+  - {x: 1.5580026, y: 0.17034388, z: 0}
+  - {x: 1.5630741, y: 0.28570354, z: 0}
+  - {x: 1.5290523, y: 0.4009024, z: 0}
+  - {x: 1.4507918, y: 0.51591945, z: 0}
+  - {x: 1.3008454, y: 0.6306416, z: 0}
+  - {x: 0.8700703, y: 0.74420893, z: 0}
+  - {x: 0.73229426, y: 0.85898113, z: 0}
+  - {x: 0.6595944, y: 0.9740211, z: 0}
+  - {x: 0.63010025, y: 1.0892386, z: 0}
+  - {x: 0.63949805, y: 1.2046161, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -4753,6 +4799,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5012,6 +5059,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5051,6 +5099,7 @@ MonoBehaviour:
   - {x: -6.7953596, y: -1.9503598}
   - {x: -5.753004, y: -3.0865355}
   DetectIndex: -1
+  maxReflect: -1
   reflectLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -5139,6 +5188,37 @@ Material:
     - _InvFade: 1
     m_Colors: []
   m_BuildTextureStacks: []
+--- !u!1 &1398621924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1398621925}
+  m_Layer: 0
+  m_Name: Pool.1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1398621925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398621924}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.8899484, y: 4.4233494, z: 0.45043147}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1480434005
 GameObject:
   m_ObjectHideFlags: 0
@@ -5295,6 +5375,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5511,6 +5592,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5648,8 +5730,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -3.2156425, y: -1.4934106, z: 0}
-  - {x: -2.5050802, y: -0.55133724, z: 0}
+  - {x: -3.2156425, y: -1.4934103, z: 0}
+  - {x: -2.5050802, y: -0.551337, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -5743,6 +5825,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5934,6 +6017,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -6153,6 +6237,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -6384,6 +6469,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -6430,7 +6516,7 @@ GameObject:
   - component: {fileID: 1863692307}
   - component: {fileID: 1863692310}
   m_Layer: 0
-  m_Name: Reflect Ray2D
+  m_Name: R.Reflect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6479,9 +6565,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -50
   m_Positions:
-  - {x: -6.5, y: 1.6800001, z: 0}
-  - {x: 4.2697287, y: 1.6800001, z: 0}
-  - {x: -3.2156425, y: -1.4934106, z: 0}
+  - {x: -6.5, y: 1.6800003, z: 0}
+  - {x: 4.2697287, y: 1.6800003, z: 0}
+  - {x: -3.2156425, y: -1.4934103, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -6575,6 +6661,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 120565710}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -6610,10 +6697,11 @@ MonoBehaviour:
   direction: {x: 18.9, y: 0}
   pathCast: 1
   PathPoints:
-  - {x: -6.5, y: 1.6800001}
-  - {x: 4.2697287, y: 1.6800001}
-  - {x: -3.2156425, y: -1.4934106}
+  - {x: -6.5, y: 1.6800003}
+  - {x: 4.2697287, y: 1.6800003}
+  - {x: -3.2156425, y: -1.4934103}
   DetectIndex: -1
+  maxReflect: -1
   reflectLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -6626,11 +6714,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1863692306}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.1666667, y: 1.7, z: 0}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 388446180}
+  m_Father: {fileID: 644860414}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1863692310

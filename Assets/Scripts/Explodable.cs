@@ -38,17 +38,7 @@ public class Explodable : MonoBehaviour
         }
 
         exploded = true;
-        Fade();
-    }
-
-    public void Fade()
-    {
-        StartCoroutine(fade());
-    }
-
-    private IEnumerator fade()
-    {
-        yield return new WaitForSeconds(fadeDelay);
-        Destroy(gameObject);
+        
+        Destroy(gameObject, fadeDelay);
     }
 }

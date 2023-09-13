@@ -16,6 +16,9 @@
         [SerializeField] private bool limited;
         [SerializeField] private int limitCount = 3;
         
+        [SerializeField] public bool local = true;
+
+        
         public bool Limited
         {
             get => limited;
@@ -48,13 +51,13 @@
             {
                 for (var i = 0; i < colliders.Length; i++) colliders[i] = null;
 
-                Physics.OverlapBoxNonAlloc(TDP, extents / 2, colliders, transform.rotation,
+                Physics.OverlapBoxNonAlloc(TDP, extents / 2, colliders, local ? transform.rotation : Quaternion.identity,
                     detectLayer.value,
                     triggerInteraction);
             }
             else
             {
-                colliders = Physics.OverlapBox(TDP, extents / 2, transform.rotation, detectLayer.value,
+                colliders = Physics.OverlapBox(TDP, extents / 2, local ? transform.rotation : Quaternion.identity, detectLayer.value,
                     triggerInteraction);
             }
             DetectedColliders.Clear();
@@ -77,7 +80,7 @@
                 {
                     if (!CheckGeneralPass(c)) continue;
                     TDP = DetectFunction(c); 
-                    boundPoint = transform.InverseTransformPoint(TDP);
+                    boundPoint = local ? transform.InverseTransformPoint(TDP) : TDP - transform.position;
                     if (new Bounds(Vector3.zero, extents).Contains(boundPoint) && CheckSolverPass(TDP, c)) DetectedColliders.Add(c);
                 }
             }
@@ -95,41 +98,37 @@
         protected override void DrawDetectorGuide(Vector3 point)
         {
             if (!RCProPanel.DrawGuide) return;
-
             var p = transform.position;
-
             var pDirection = point - p;
-
-            var reflectF = Vector3.Reflect(pDirection, transform.forward);
-
+            var reflectF = Vector3.Reflect(pDirection, local ? transform.forward : Vector3.forward);
             var color = DetectColor;
-
             color.a = RCProPanel.alphaAmount;
-
             Gizmos.color = color;
-
             Gizmos.DrawLine(p + reflectF, p + pDirection);
-
             Gizmos.DrawLine(p + reflectF, p - pDirection);
-
             Gizmos.DrawLine(p - reflectF, p - pDirection);
-
             Gizmos.DrawLine(p - reflectF, p + pDirection);
         }
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
             DrawDetectVector();
             GizmoColor = DefaultColor;
-            DrawRectLines(transform, new Vector3(extents.x, extents.y), -extents.z / 2, extents.z);
-            DrawBox(transform, new Vector3(extents.x, extents.y), -extents.z / 2);
-            DrawBox(transform, new Vector3(extents.x, extents.y), +extents.z / 2);
+            DrawRectLines(transform, new Vector3(extents.x, extents.y), -extents.z / 2, extents.z, local);
+            DrawBox(transform, new Vector3(extents.x, extents.y), -extents.z / 2, local);
+            DrawBox(transform, new Vector3(extents.x, extents.y), +extents.z / 2, local);
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)
         {
-            if (hasMain)  ExtentsField(_so);
+            if (hasMain)
+            {
+                BeginHorizontal();
+                ExtentsField(_so);
+                LocalField(_so.FindProperty(nameof(local)));
+                EndHorizontal();
+            }
             if (hasGeneral) ColliderDetectorGeneralField(_so);
             if (hasEvents)
             {

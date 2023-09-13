@@ -11,6 +11,7 @@ namespace RaycastPro.Editor
     using UnityEngine;
     using Object = UnityEngine.Object;
     
+    
     [CustomEditor(typeof(RaycastCore), true), CanEditMultipleObjects]
     public sealed class RCProEditor : Editor
     {
@@ -30,6 +31,9 @@ namespace RaycastPro.Editor
         private SerializedProperty _cProp;
         private SerializedObject _cSO;
         private RaycastCore[] _cores;
+        
+        // [RCProPanel.SavePreference]
+        // public bool sceneGUI;
         public override void OnInspectorGUI()
         {
             if (!target || !(target is RaycastCore pro)) return;
@@ -44,13 +48,25 @@ namespace RaycastPro.Editor
             EditorGUILayout.BeginVertical();
             
             _cSO = _isMulti ? new SerializedObject(_cores) : new SerializedObject(pro);
+            _cSO.Update();
+            
+            EditorGUI.BeginChangeCheck();
             pro.EditorPanel(_cSO);
+            if (EditorGUI.EndChangeCheck()) _cSO.ApplyModifiedProperties();
             
-            if (GUI.changed) _cSO.ApplyModifiedProperties();
             EditorGUILayout.EndVertical();
-            
-
-            // END UNDO SYSTEM
+        }
+        
+        public void OnSceneGUI()
+        {
+            if (target is ISceneGUI iScene && target is RaycastCore core)
+            {
+                _cSO = new SerializedObject(core);
+                _cSO.Update();
+                EditorGUI.BeginChangeCheck();
+                iScene.OnSceneGUI();
+                if (EditorGUI.EndChangeCheck()) _cSO.ApplyModifiedProperties();
+            }
         }
         internal static GUIStyle HeaderStyle =>
             new GUIStyle(EditorStyles.boldLabel)
@@ -59,12 +75,13 @@ namespace RaycastPro.Editor
             };
 
         internal static GUIStyle BoxStyle =>
-            new GUIStyle(GUI.skin.box)
+            new GUIStyle(EditorStyles.helpBox)
             {
                 richText = true,
+                contentOffset = Vector2.zero,
                 alignment = TextAnchor.MiddleCenter,
-                margin = new RectOffset(5,5,5,5),
-                padding = new RectOffset(5,5,5,5),
+                margin = new RectOffset(4,4,4,4),
+                padding = new RectOffset(4,4,4,4),
             };
         internal static GUIStyle LabelStyle =>
             new GUIStyle(GUI.skin.label)
@@ -73,22 +90,19 @@ namespace RaycastPro.Editor
                 richText = true
             };
 
-        internal static GUIStyle HeaderFoldout(int leftMargin = 10)
+        internal static GUIStyle HeaderFoldout
         {
-            var style = new GUIStyle(EditorStyles.foldoutHeader)
+            get
             {
-                alignment = TextAnchor.MiddleCenter,
-                margin = new RectOffset(leftMargin,10,0,0),
-                padding = new RectOffset(5,5,5,5),
-            };
-            return style;
+                var style = new GUIStyle(EditorStyles.toolbarButton)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    margin = new RectOffset(12, 4, 2, 2),
+                    padding = new RectOffset(0, 0, 0, 0),
+                };
+                return style;
+            }
         }
-        internal static GUIStyle FoldoutStyle =>
-            
-            new GUIStyle(EditorStyles.foldout)
-            {
-                margin = new RectOffset(10, 0, 0, 0)
-            };
         internal static void EventField(SerializedObject serializedObject, IEnumerable<string> propertyNames)
         {
             serializedObject.Update();
@@ -102,6 +116,7 @@ namespace RaycastPro.Editor
         }
         internal static void HeaderField(string header, string tooltip = "")
         {
+           
             GUILayout.Space(4);
             
             GUILine(Color.white);
@@ -379,8 +394,7 @@ namespace RaycastPro.Editor
         internal static void PropertyArrayField(SerializedProperty arrayProp, GUIContent arrayLabel, Func<int, GUIContent> label)
         {
             GUILayout.BeginHorizontal();
-            
-            GUILayout.Label(arrayLabel,LabelStyle);
+            GUILayout.Button(arrayLabel,LabelStyle);
 
             if (arrayProp.arraySize > 0 && GUILayout.Button("-".ToContent("Remove"), GUILayout.Width(30)))
             {
@@ -392,13 +406,10 @@ namespace RaycastPro.Editor
             }
             
             GUILayout.EndHorizontal();
-            
             for (var i = 0; i < arrayProp.arraySize; i++)
             {
                 GUILayout.BeginHorizontal();
-                
                 EditorGUILayout.PropertyField(arrayProp.GetArrayElementAtIndex(i), label.Invoke(i));
-                
                 GUILayout.EndHorizontal();
             }
         }
@@ -453,17 +464,11 @@ namespace RaycastPro.Editor
         public override void OnInspectorGUI()
         {
             //base.OnInspectorGUI();
-            
             var info = target as Info;
-            
             GUI.color = Color.white;
-            
             GUI.backgroundColor = RCProEditor.Violet;
-            
             GUI.contentColor = RCProEditor.Aqua;
-            
             RCProEditor.HeaderField(info.header);
-            
             EditorGUILayout.LabelField(info.description,RCProEditor.BoxStyle);
         }
     }

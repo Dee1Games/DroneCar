@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MoreMountains.Tools;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
@@ -17,13 +19,18 @@ public class Monster : MonoBehaviour
 
     public bool IsDead => (health <= 0f);
 
+    [Button("Find Weak Points")]
+    public void FindWeakPoints()
+    {
+        weakPoints = GetComponentsInChildren<WeakPoint>().ToList();
+    }
+
     public void Init(MonsterData data)
     {
         this.data = data;
         health = data.Health;
         OnHealthChange?.Invoke(health, data.Health);
     }
-
     public void TakeDamage(float damage, Vector3 pos)
     {
         bool weakPoint = false;

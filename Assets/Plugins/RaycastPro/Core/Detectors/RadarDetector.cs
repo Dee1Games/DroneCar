@@ -43,7 +43,7 @@ namespace RaycastPro.Detectors
         private Transform _t;
         private Vector3 tUp, tForward, _dir, point;
         private Collider tCollider;
-        private HashSet<Collider> _colliders = new HashSet<Collider>();
+        private readonly HashSet<Collider> _colliders = new HashSet<Collider>();
         protected override void OnCast()
         {
 #if UNITY_EDITOR
@@ -87,26 +87,12 @@ namespace RaycastPro.Detectors
                 if (!CheckGeneralPass(tCollider)) continue;
                 if (IsIgnoreSolver)
                 {
-#if UNITY_EDITOR
-                    PassColliderGate(tCollider);
-#endif
                     _colliders.Add(tCollider);
                     continue;
                 }
                 point = DetectFunction(tCollider); // 1: Get Detect Point
                 if (CheckSolverPass(point, tCollider)) _colliders.Add(tCollider);
             }
-
-#if UNITY_EDITOR
-            GizmoGate += () =>
-            {
-                Handles.color = (DetectProfile.Keys.Count > 0 ? DetectColor : DefaultColor).ToAlpha(.2f);
-                Handles.DrawSolidArc(_t.position, tUp, _dir, -Mathf.Clamp01(cacheTime / loopTime) * 360f,
-                    radius);
-                Gizmos.DrawLine(_t.position, _t.position + _dir * radius);
-                DrawWidthLine(_t.position, _t.position + _dir * radius, tUp * height);
-            };
-#endif
 
             #region Add or Refresh Colliders
             foreach (var col in _colliders)
@@ -137,6 +123,18 @@ namespace RaycastPro.Detectors
                 }
             }
             #endregion
+            
+            
+#if UNITY_EDITOR
+            GizmoGate += () =>
+            {
+                Handles.color = (DetectProfile.Keys.Count > 0 ? DetectColor : DefaultColor).ToAlpha(.2f);
+                Handles.DrawSolidArc(_t.position, tUp, _dir, -Mathf.Clamp01(cacheTime / loopTime) * 360f,
+                    radius);
+                Gizmos.DrawLine(_t.position, _t.position + _dir * radius);
+                DrawWidthLine(_t.position, _t.position + _dir * radius, tUp * height);
+            };
+#endif
         }
 
 #if UNITY_EDITOR
@@ -147,13 +145,19 @@ namespace RaycastPro.Detectors
 #pragma warning restore CS0414
 
         private static readonly string[] events = new string[]{"onDetectCollider", "onRadarDetect", "onNewCollider", "onLostCollider"};
+        
         internal override void OnGizmos()
         {
-            EditorCast();
-            
-            if (IsManuelMode) SceneView.RepaintAll();
+            EditorUpdate();
 
+            if (IsManuelMode) SceneView.RepaintAll();
             DrawDetectVector();
+
+            foreach (var key in DetectProfile.Keys.ToArray())
+            {
+                Gizmos.color = DetectColor.ToAlpha(DetectProfile[key] / cacheTime);
+                Gizmos.DrawWireCube(key.bounds.center, key.bounds.size);
+            }
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true, bool hasEvents = true, bool hasInfo = true)
@@ -201,7 +205,19 @@ namespace RaycastPro.Detectors
 
                 if (EventFoldout) RCProEditor.EventField(_so, events);
             }
-            if (hasInfo) InformationField(PanelGate);
+            if (hasInfo) InformationField(() =>
+            {
+                BeginVertical();
+                foreach (var key in DetectProfile.Keys.ToArray())
+                {
+                    BeginHorizontal();
+                    EditorGUILayout.LabelField($"{key.gameObject.name}: ",
+                        GUILayout.Width(160));
+                    ProgressField(DetectProfile[key] / cacheTime, "Life");
+                    EndHorizontal();
+                }
+                EndVertical();
+            });
         }
         
         protected override void DrawDetectorGuide(Vector3 point) { }

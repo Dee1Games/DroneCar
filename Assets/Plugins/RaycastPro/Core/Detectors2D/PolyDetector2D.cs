@@ -11,7 +11,7 @@ namespace RaycastPro.Detectors2D
 #endif
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(PolyDetector2D))]
-    abstract class PolyDetector2D : ColliderDetector2D, IPulse
+    public class PolyDetector2D : ColliderDetector2D, IPulse
     {
         [SerializeField] private float minRadius = 4f;
         [SerializeField] private float maxRadius = 8f;
@@ -117,7 +117,9 @@ namespace RaycastPro.Detectors2D
             }
             
             DetectedColliders.Clear();
+            
             CalculatePoints();
+            
             foreach (var c in colliders)
             {
                 if (!CheckGeneralPass(c)) continue;
@@ -150,7 +152,7 @@ namespace RaycastPro.Detectors2D
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
             
              if (edgeCount == 0 || worldPointsFar == null) return;
              
@@ -193,7 +195,7 @@ namespace RaycastPro.Detectors2D
             {
                 RadiusField(_so, nameof(minRadius), CMinRadius.ToContent(TMinRadius));
                 RadiusField(_so, nameof(maxRadius), CMaxRadius.ToContent(TMaxRadius));
-                PropertySliderField(_so.FindProperty(nameof(edgeCount)), 3, 32, CEdgeCount.ToContent(TEdgeCount));
+                PropertyIntSliderField(_so.FindProperty(nameof(edgeCount)), 3, 32, CEdgeCount.ToContent(TEdgeCount));
             }
 
             if (hasGeneral)

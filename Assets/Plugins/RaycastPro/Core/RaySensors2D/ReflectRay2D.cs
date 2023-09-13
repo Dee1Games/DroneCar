@@ -16,7 +16,10 @@
         /// </summary>
         public readonly List<RaycastHit2D> RaycastHits = new List<RaycastHit2D>();
 
+        [Tooltip("The number of ray reflection that will be cut off when reaching it. Negative numbers use free direction length.")]
+        public int maxReflect = -1;
         public LayerMask reflectLayer;
+
 
         [SerializeField] private float radius;
 
@@ -30,7 +33,7 @@
         private Vector3 _tPosition;
         private float distance;
         private RaycastHit2D h;
-        
+        private int DI;
         private void ReflectCast()
         {
             PathPoints.Clear();
@@ -40,13 +43,14 @@
             _direction = Direction;
             PathPoints.Add(_tPosition);
             distance = direction.magnitude;
-
-            DetectIndex = -1;
+            DI = -1;
             hit = default;
             var queriesSetting = Physics2D.queriesStartInColliders;
             Physics2D.queriesStartInColliders = false;
             while (true)
             {
+                DI++;
+                if (maxReflect > 0 && DI+1 > maxReflect) break;
                 h = new RaycastHit2D();
                 if (radius > 0)
                 {
@@ -65,7 +69,7 @@
                     var onHit = detectLayer.InLayer(h.transform.gameObject);
                     if (onHit)
                     {
-                        DetectIndex = PathPoints.Count - 1;
+                        DetectIndex = DI;
                         isDetect = FilterCheck(h);
                         break;
                     }
@@ -111,6 +115,7 @@
             {
                 DirectionField(_so);
                 RadiusField(_so);
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(maxReflect)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(reflectLayer)), CReflectLayer.ToContent(TReflectLayer));
             }
 

@@ -10,7 +10,7 @@
 #endif
     
     [AddComponentMenu("RaycastPro/Casters/" + nameof(BasicCaster))]
-    public sealed class BasicCaster : GunCaster<BasicBullet, Collider, RaySensor>
+    public sealed class BasicCaster : GunCaster<Bullet, Collider, RaySensor>
     {
         [SerializeField]
         public BulletEvent onCast;
@@ -44,13 +44,15 @@
             if (hasMain)
             {
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(raySource)));
+                
+                GunField(_so);
             }
             if (hasGeneral) GeneralField(_so);
 
             if (hasEvents) 
             {
                 EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                    RCProEditor.HeaderFoldout());
+                    RCProEditor.HeaderFoldout);
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 if (EventFoldout) RCProEditor.EventField(_so, events);
             }

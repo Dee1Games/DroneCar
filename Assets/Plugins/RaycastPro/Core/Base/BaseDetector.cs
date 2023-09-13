@@ -148,7 +148,7 @@
                 }
             };
         }
-        
+
         protected void PassColliderGate(Collider2D c)
         {
             PanelGate += () => DetectorInfoField(c.transform, c.transform.position, false);
@@ -163,16 +163,18 @@
                 }
             };
         }
+        
+        /// <summary>
+        /// Panel and Gizmo gate clean (Without IF #UnityEditor)
+        /// </summary>
         protected void CleanGate() { GizmoGate = PanelGate = null; }
         /// <summary>
         /// Includes OnCast + GizmoGate?.Invoke(), Avoiding core Process in editor scene.
         /// </summary>
-        protected void EditorCast()
+        protected void EditorUpdate()
         {
             if(!RCProPanel.realtimeEditor) return;
-
             if (IsSceneView && !IsPlaying) OnCast();
-            
             GizmoGate?.Invoke();
         }
         protected static void DrawBlockLine2D(Vector2 p1, Vector2 p2, float depth,
@@ -263,7 +265,7 @@
         protected void EventField(SerializedObject _so)
         {
             EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
-                RCProEditor.HeaderFoldout());
+                RCProEditor.HeaderFoldout);
             EditorGUILayout.EndFoldoutHeaderGroup();
             if (!EventFoldout) return;
             RCProEditor.EventField(_so, events);

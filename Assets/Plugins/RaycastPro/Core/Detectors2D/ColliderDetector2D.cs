@@ -119,7 +119,14 @@
         protected override void AfterValidate() => DetectFunction = SetupDetectFunction();
         protected Color GetPolygonColor(bool blockCondition = false) =>
             (blockCondition ? BlockColor : DetectedColliders.Any() ? DetectColor : DefaultColor).ToAlpha(RCProPanel.alphaAmount);
-        protected void IgnoreListField(SerializedObject _so) => EditorGUILayout.PropertyField(_so.FindProperty(nameof(ignoreList)), "Ignore Colliders".ToContent("Ignore Colliders"));
+
+        protected void IgnoreListField(SerializedObject _so)
+        {
+            BeginVerticalBox();
+            RCProEditor.PropertyArrayField(_so.FindProperty(nameof(ignoreList)), "Ignore List".ToContent(),
+                (i) => $"Collider {i+1}".ToContent($"Index {i}"));
+            EndVertical();
+        }
 #endif
     }
 }

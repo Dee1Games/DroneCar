@@ -59,19 +59,14 @@
             if (detectIndex > -1)
             {
                 liner.positionCount = detectIndex+2;
-                
                 for (var i = 0; i <= detectIndex; i++)
                 {
                     liner.SetPosition(i, list[i]);
                 }
-            
                 liner.SetPosition(detectIndex+1, hitPoint);
-                        
                 return;
             }
-                    
             liner.positionCount = list.Count;
-                        
             liner.SetPositions(list.ToArray());
         }
         internal static bool InColorTolerance(this Color color, Color targetColor, Color tolerance)
@@ -126,6 +121,9 @@
             for (var i = 0; i < points.Length; i++)  newPoints[i] = _t.TransformPoint(points[i]);
             return newPoints;
         }
+        
+        internal static Vector3 ToWorld(this Vector3 point, Transform _t) => _t.InverseTransformPoint(point);
+        internal static Vector3 ToLocal(this Vector3 point, Transform _t) => _t.TransformPoint(point);
         internal static Vector2[] ToLocal(this Vector2[] points, Transform _t)
         {
             var newPoints = new Vector2[points.Length];

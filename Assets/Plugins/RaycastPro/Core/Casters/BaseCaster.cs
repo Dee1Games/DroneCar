@@ -19,12 +19,9 @@ namespace RaycastPro
         /// </summary>
         /// <param name="_index">Bullet Array Index</param>
         public abstract void Cast(int _index);
-
-        [Tooltip("Automatic creation of Pool object at start.")]
-        [SerializeField] protected bool createPoolAtStart = true;
         
         [Tooltip("Automatically instantiate into this object.")]
-        [SerializeField] public Transform poolManager;
+        public Transform poolManager;
         public abstract void Reload();
         #region Update
         protected void Update()
@@ -62,43 +59,25 @@ namespace RaycastPro
             }
         }
 
-        private void Awake()
-        {
-            if (createPoolAtStart)
-            {
-                poolManager = new GameObject($"==={name} Pool===").transform;
-            }
-        }
-
         [Serializable]
         public class Ammo
         {
-            /// <summary>
-            /// If it is active, the cost of shooting will be zero.
-            /// </summary>
+            [Tooltip("When activate, the cost of shooting will be zero.")]
             [SerializeField] public bool infiniteAmmo;
-            /// <summary>
-            /// The total number of bullets out of the magazine
-            /// </summary>
+            
+            [Tooltip("The total number of bullets out of the magazine")]
             [SerializeField] public int amount = 12;
-
-            /// <summary>
-            /// The Capacity of each magazine that will enter the reload time when it runs out.
-            /// </summary>
+            
+            [Tooltip("The Capacity of each magazine that will enter the reload time when it runs out.")]
             [SerializeField] public int magazineCapacity = 6;
-            /// <summary>
-            /// The number of bullets in the current magazine.
-            /// </summary>
+            
+            [Tooltip("The number of bullets in the current magazine.")]
             [SerializeField] public int magazineAmount = 6;
 
-            /// <summary>
-            /// Interruption time until the magazine is filled
-            /// </summary>
+            [Tooltip("Interruption time until the magazine is filled")]
             [SerializeField] public float reloadTime = 2f;
             
-            /// <summary>
-            /// The firing pause time between each shot
-            /// </summary>
+            [Tooltip("The firing pause time between each shot")]
             [SerializeField] public float inBetweenTime = .1f;
 
             /// <summary>
@@ -155,10 +134,9 @@ namespace RaycastPro
             }
 
             public float currentReloadTime { get; private set; } = 0f;
-            private float dt;
             internal IEnumerator IReload()
             {
-                while (currentReloadTime < reloadTime)
+                while (currentReloadTime <= reloadTime)
                 {
                     currentReloadTime += Time.deltaTime;
                     yield return new WaitForSeconds(Time.deltaTime);
@@ -184,23 +162,14 @@ namespace RaycastPro
             internal void EditorPanel(SerializedProperty serializedProperty)
             {
                 BeginHorizontal();
-                
-                EditorGUILayout.PropertyField(serializedProperty.FindPropertyRelative(nameof(amount)),
-                    "Amount".ToContent("Amount"));
-                
-                LocalField(serializedProperty.FindPropertyRelative(nameof(infiniteAmmo)), "I".ToContent("Infinite Ammo"));
-                
+                EditorGUILayout.PropertyField(serializedProperty.FindPropertyRelative(nameof(amount)));
+                MiniField(serializedProperty.FindPropertyRelative(nameof(infiniteAmmo)), "I".ToContent("Infinite Ammo"));
                 EndHorizontal();
-
                 var mCapProp = serializedProperty.FindPropertyRelative(nameof(magazineCapacity));
-                PropertyMaxIntField(mCapProp, "Magazine Capacity".ToContent("Magazine Capacity"));
-                
-                
+                PropertyMaxIntField(mCapProp, "Magazine Capacity".ToContent());
                 PropertySliderField(serializedProperty.FindPropertyRelative(nameof(magazineAmount)), 0, mCapProp.intValue, "Magazine Amount".ToContent(), i => {});
-
-                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(reloadTime)), "Reload Time".ToContent("Reload Time"));
-                
-                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(inBetweenTime)), "In Between Time".ToContent("In Between Time"));
+                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(reloadTime)), "Reload Time".ToContent());
+                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(inBetweenTime)), "In Between Time".ToContent());
             }
 #endif
         }

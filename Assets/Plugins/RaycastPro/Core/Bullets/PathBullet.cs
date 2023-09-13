@@ -31,20 +31,40 @@ namespace RaycastPro.Bullets
         // Cached Variables
         private Vector3 _pos, _dir;
         private float _dt;
-        protected override void OnCast()
+        protected override void OnCast() => PathSetup(raySource);
+
+        public void PathSetup(RaySensor raySensor)
         {
-            if (raySource is PathRay _pathRay)
+            Path = new List<Vector3>();
+            do
             {
-                Path = local ? new List<Vector3>(_pathRay.PathPoints) : _pathRay.PathPoints;
-            }
-            else
-            {
-                Path = new List<Vector3> {raySource.BasePoint, raySource.Tip};
-            }
-            
+                if (raySensor is PathRay _pathRay)
+                {
+                    if (_pathRay.DetectIndex > -1)
+                    {
+                        for (var i = 0; i <= _pathRay.DetectIndex; i++)
+                        {
+                            Path.Add(_pathRay.PathPoints[i]);
+                        }
+                        Path.Add(raySensor.HitPoint);
+                    }
+                    else
+                    {
+                        Path.AddRange(local ? new List<Vector3>(_pathRay.PathPoints) : _pathRay.PathPoints);
+                    }
+                }
+                else
+                {
+                    Path.Add(raySensor.BasePoint);
+                    Path.Add(raySensor.TipTarget);
+                }
+                
+                raySensor = raySensor.cloneRaySensor;
+                
+            } while (raySensor);
+
             pathLength = Path.GetPathLength();
         }
-
         public override void RuntimeUpdate()
         {
             position = Mathf.Clamp01(position);
@@ -73,8 +93,11 @@ namespace RaycastPro.Bullets
                     position += _dt / duration;
                     break;
             }
-
-            if (position >= 1) OnEnd(caster);
+            
+            if (position >= 1)
+            {
+                OnEnd(caster);
+            }
             
             for (var i = 1; i < Path.Count; i++)
             {
@@ -93,10 +116,8 @@ namespace RaycastPro.Bullets
             if (rigidBody) rigidBody.MovePosition(_pos);
             else transform.position = _pos;
             if (collisionRay) CollisionRun(_dt);
-            if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
+            if (axisRun.syncAxis) axisRun.DampedSyncAxis(transform, _dir, 4);
         }
-        
-        // need to setup a formula for path binding
         protected override void CollisionBehaviour() { }
 #if UNITY_EDITOR
 #pragma warning disable CS0414

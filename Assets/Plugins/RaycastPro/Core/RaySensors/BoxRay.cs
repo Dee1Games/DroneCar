@@ -16,14 +16,26 @@ namespace RaycastPro.RaySensors
         private static string Info =
 #pragma warning restore CS0414
             "Emit a box shape line in the specified direction with defined extents and return the Hit information." +
-            HAccurate + HDirectional;
+            HAccurate + HDirectional + HScalable;
 #endif
         
         public Vector3 extents = new Vector3(.4f, .4f, 0f);
+
+        private Vector3 _dir, sExtents;
         protected override void OnCast()
         {
-            Physics.BoxCast(transform.position, extents / 2, Direction, out hit, transform.rotation,
-                direction.magnitude, detectLayer.value, triggerInteraction);
+            if (scalable)
+            {
+                _dir = ScaledDirection;
+                sExtents = Vector3.Scale(transform.lossyScale, extents);
+            }
+            else
+            {
+                _dir = Direction;
+                sExtents = extents; 
+            }
+            Physics.BoxCast(transform.position, sExtents / 2, _dir, out hit, transform.rotation,
+                _dir.magnitude, detectLayer.value, triggerInteraction);
         }
 
 #if UNITY_EDITOR
@@ -62,7 +74,8 @@ namespace RaycastPro.RaySensors
         {
             EditorUpdate();
             GizmoColor = Performed ? DetectColor : DefaultColor;
-            DrawBoxLine(transform.position, transform.position + Direction, extents, true);
+            sExtents = scalable ? Vector3.Scale(transform.lossyScale, extents) : extents;
+            DrawBoxLine(transform.position, transform.position + (scalable ? ScaledDirection : Direction), sExtents, true);
             DrawNormal(hit);
         }
 
@@ -73,7 +86,10 @@ namespace RaycastPro.RaySensors
             if (hasMain)
             {
                 DirectionField(_so);
+                BeginHorizontal();
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(extents)));
+                ScaleField(_so.FindProperty(nameof(scalable)));
+                EndHorizontal();
             }
             if (hasGeneral) GeneralField(_so);
             if (hasEvents) EventField(_so);

@@ -103,7 +103,7 @@
         private Color col;
         internal override void OnGizmos()
         {
-            EditorCast();
+            EditorUpdate();
 
             Handles.color = DetectedColliders.Count > 0 ? DetectColor : DefaultColor;
             Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
@@ -149,10 +149,11 @@
 
             if (hasEvents)
             {
+                EventField(_so);
                 if (EventFoldout) RCProEditor.EventField(_so, CEventNames);
             }
 
-            if (hasInfo)   InformationField(PanelGate);
+            if (hasInfo) InformationField(PanelGate);
         }
 #endif
     }

@@ -81,7 +81,7 @@
 #pragma warning restore CS0414
         
         private readonly string[] CEventNames = {"onDetectLight", "onNewLight", "onLostLight"};
-        internal override void OnGizmos() => EditorCast();
+        internal override void OnGizmos() => EditorUpdate();
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)
