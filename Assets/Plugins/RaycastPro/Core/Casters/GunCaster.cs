@@ -223,14 +223,16 @@
             // Add Track Target 
             if (trackTarget)
             {
-                if (_bullet is TrackerBullet _trB) _trB.target = trackTarget;
-                else if (_bullet is TrackerBullet2D _trB2D)  _trB2D.target = trackTarget;
+                if (_bullet is TrackerBullet _trB) _trB.target = trackTarget.transform;
+                else if (_bullet is TrackerBullet2D _trB2D)  _trB2D.target = trackTarget.transform;
             }
             // Rotation Fixer
             _bullet.transform.up = transform.up;
         }
         
         protected Coroutine multiCast;
+
+        public void SetTarget(Transform _target) => trackTarget = _target;
         protected IEnumerator IMultiCast(int _index, int count)
         {
             if (ammo.magazineAmount == 0) ammo.IReload();

@@ -44,6 +44,7 @@
             }
 #endif
 
+
             targetPoint = target.position;
             currentForce = force;
             _t = transform;
@@ -57,7 +58,7 @@
         {
             _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
-            
+            _t = transform;            
             targetPoint = target ? target.position + trackOffset : _t.position;
             _dis = Vector3.Distance(_t.position, targetPoint);
             if (currentForce <= .1f)

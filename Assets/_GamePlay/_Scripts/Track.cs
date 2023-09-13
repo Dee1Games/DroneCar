@@ -22,23 +22,22 @@ public class Track : MonoBehaviour
     }
 
     private Tweener alertTween;
-    public void DoAlert(float duration)
+    public void DoAlert(float duration = 1f, Color color = default)
     {
         alertTween = alertImage.DOFillAmount(1, duration).OnComplete(() =>
         {
-            alertImage.DOColor(Color.red, .4f);
+            alertImage.DOColor(color == default ? Color.white : color, .4f);
             alertImage.transform.DOPunchScale(Vector3.one * 0.5f, .4f);
         });
     }
-    public void ResetAlert(float duration)
+    public void ResetAlert()
     {
         if (alertTween != null && alertTween.IsPlaying())
         {
             alertTween.Kill();
         }
-        alertTween = alertImage.DOFillAmount(0, duration).OnComplete(() =>
+        alertTween = alertImage.DOFillAmount(0, .5f).OnComplete(() =>
         {
-            alertImage.transform.DOPunchScale(Vector3.one * 0.5f, .4f);
             alertImage.DOColor(Color.white, .4f);
         });
     }
