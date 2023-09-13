@@ -21,13 +21,26 @@ public class AI_Core : MonoBehaviour
     protected Animator animator;
     protected NavMeshAgent agent;
 
-    [Header("Animation")]
+    [Title("Animation")]
     public bool allowTurning;
-
     public bool allowSitting;
+    [Range(0, 1)]
+    [SerializeField] private float handsUp;
+    public float HandsUp
+    {
+        get => handsUp;
+        set
+        {
+            handsUp = value;
+            animator.SetLayerWeight(1, value);
+        }
+    }
+    
+    
     public NavMeshAgent Agent => agent;
     
     protected CarCore carCore;
+    
 
     protected void Awake()
     {
@@ -97,11 +110,10 @@ public class AI_Core : MonoBehaviour
 
         if (allowSitting)
         {
-            animator.SetFloat(CarHeight, CarCore._.transform.position.y);
-        }
-        else
-        {
-            
+            if (CarCore._)
+            {
+                animator.SetFloat(CarHeight, CarCore._.transform.position.y);
+            }
         }
     }
 

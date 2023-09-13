@@ -3911,6 +3911,8 @@ MonoBehaviour:
   sightDetector: {fileID: 3824651866571034326}
   lookAtIK: {fileID: 3144465148580157165}
   allowTurning: 1
+  allowSitting: 0
+  handsUp: 0
 --- !u!114 &403617440990135278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6505,7 +6507,7 @@ Animator:
   m_GameObject: {fileID: 4597466075415245713}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 83aa3850a5f710c458535e4f6716d12a, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6cd7fb32493a4f648b2e2961a0e08d78, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3f65521efbd46ea49946007f4955cb8b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -10130,8 +10132,8 @@ MonoBehaviour:
       axis: {x: 3.4617509e-22, y: -9.326978e-22, z: 1}
       baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
     eyes: []
-    bodyWeight: 0.5
-    headWeight: 0.5
+    bodyWeight: 0.2
+    headWeight: 0.2
     eyesWeight: 1
     clampWeight: 0.5
     clampWeightHead: 0.5

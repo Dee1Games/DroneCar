@@ -3908,7 +3908,7 @@ Transform:
   m_GameObject: {fileID: 7469692341050224178}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8293323318651608808}
@@ -4434,6 +4434,7 @@ MonoBehaviour:
   sightDetector: {fileID: 9202017216509293706}
   lookAtIK: {fileID: 3320476272198105574}
   allowTurning: 1
+  allowSitting: 0
 --- !u!114 &4548264050632333833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4446,9 +4447,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4d041e49afe4944a1480e09432adba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monster: {fileID: 0}
   animator: {fileID: 9058511651547221735}
   fullBodyBipedIK: {fileID: 8442034397922681878}
   aiCore: {fileID: 3733590649604366500}
+  giantIcon: {fileID: 0}
   ragdollParts: []
   limbs:
   - {fileID: 627134596835580687}
@@ -4456,10 +4459,9 @@ MonoBehaviour:
   - {fileID: 627134597523012222}
   - {fileID: 8531056221374988024}
   - {fileID: 627134596093754504}
+  mass: 15
   drag: 3
   angularDrag: 3
-  mainWeapon: {fileID: 0}
-  spamWeapon: {fileID: 0}
   particleSystem: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
 --- !u!114 &3320476272198105574
 MonoBehaviour:
