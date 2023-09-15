@@ -1,6 +1,14 @@
 using System;
+using DG.Tweening;
 using RaycastPro.RaySensors;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
+
+public interface IHitable
+{
+    void OnHit(CarCore core, float damage);
+}
 public class CarCore : MonoBehaviour
 {
     public static CarCore _;
@@ -12,7 +20,44 @@ public class CarCore : MonoBehaviour
     [SerializeField] private float maxHp = 100f;
 
     [Header("Debug")] public bool debug;
+
+
+    #region Buff System
     
+    private Tween slowMotion;
+    [SerializeField] private AnimationCurve slowMotionCurve = AnimationCurve.EaseInOut(0, 0f, 1, 1);
+    
+    private Tween fastMotion;
+
+    #endregion
+    public float ApplySpeedBuff(float currentSpeed)
+    {
+        if (HasBuff(slowMotion))
+        {
+            var pos = slowMotion.position / slowMotion.Duration();
+            return currentSpeed * slowMotionCurve.Evaluate(pos);
+        }
+        return currentSpeed;
+    }
+
+    public static bool HasBuff(Tween tween) => tween != null && tween.IsPlaying();
+    public static void BuffPlay(ref Tween buff, float time = 6f)
+    {
+        if (HasBuff(buff))
+        {
+            buff.Restart();
+            return;
+        }
+        buff = DOVirtual.DelayedCall(time, () => { Debug.Log($"{nameof(buff)} has been finished!"); });
+    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            BuffPlay(ref slowMotion, 6);
+        }
+    }
+
     public float Hp
     {
         get => hp;
@@ -43,9 +88,11 @@ public class CarCore : MonoBehaviour
         _colliders = GetComponentsInChildren<Collider>();
         _ = this;
 
-        if (!FRay) FRay = GetComponentInChildren<RaySensor>();
-
-        FRay.onBeginDetect.AddListener(OnRayHit);
+        if (!FRay)
+        {
+            FRay = GetComponentInChildren<RaySensor>();
+        }
+        FRay?.onBeginDetect.AddListener(OnRayHit);
     }
 
     public void OnRayHit(RaycastHit hit)

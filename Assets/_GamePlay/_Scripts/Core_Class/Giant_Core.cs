@@ -11,6 +11,7 @@ public class Giant_Core : MonoBehaviour, IHitable
     
     public FullBodyBipedIK fullBodyBipedIK;
 
+    
     [Title("Options", titleAlignment: TitleAlignments.Centered)]
     [Range(0, 1)]
     public float armor;
@@ -21,9 +22,12 @@ public class Giant_Core : MonoBehaviour, IHitable
     [Title("UI")]
     public Sprite giantIcon;
 
+
+
+    [Title("Ragdoll Setup")] public bool hasRagdoll;
     public List<Rigidbody> ragdollParts;
     public Limb[] limbs;
-    [Title("Ragdoll Setup")] public float mass = 15;
+    public float mass = 15;
     public float drag = 3;
     public float angularDrag = 3;
     
@@ -55,8 +59,11 @@ public class Giant_Core : MonoBehaviour, IHitable
         {
             limb.giantCore = this;
         }
-        
-        UI_Core._.giantIcon.sprite = giantIcon;
+
+        if (UI_Core._)
+        {
+            UI_Core._.giantIcon.sprite = giantIcon;
+        }
     }
     
     [Button("Set Ragdoll")]
@@ -98,34 +105,47 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
     }
 
+    private static readonly int Die = Animator.StringToHash("die");
+    
     private bool isDead;
+
     public bool IsDead => isDead;
     
     /// <summary>
     /// False = die
     /// </summary>
     /// <param name="phase"></param>
-    public void SetFinish(bool phase)
+    public void OnDie()
     {
-        isDead = phase;
-        aiCore.Active(!phase);
-        if (fullBodyBipedIK) fullBodyBipedIK.enabled = !phase;
-        foreach (var ragdollPart in ragdollParts)
+        isDead = true;
+        aiCore.Active(false);
+
+        if (hasRagdoll)
         {
-            if (ragdollPart)
+            animator.enabled = false;
+            if (fullBodyBipedIK) fullBodyBipedIK.enabled = false;
+            foreach (var ragdollPart in ragdollParts)
             {
-                ragdollPart.isKinematic = !phase;
-                ragdollPart.useGravity = phase;
+                if (ragdollPart)
+                {
+                    ragdollPart.isKinematic = false;
+                    ragdollPart.useGravity = true;
+                }
             }
         }
+        else
+        {
+            animator.SetLayerWeight(1, 0);
+            animator.SetLayerWeight(2, 0);
+            animator.SetTrigger(Die);
+        }
     }
-    
     public void TakeDamage(float damage)
     {
         monster.Health -= damage * (1-armor);
         if (monster.Health <= 0)
         {
-            SetFinish(true);
+            OnDie();
         }
     }
     public void SetHealth(float amount)
@@ -133,7 +153,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         monster.Health = amount;
         if (amount <= 0)
         {
-            SetFinish(true);
+            OnDie();
         }
     }
     public void OnHit(CarCore core, float damage) => TakeDamage(damage);

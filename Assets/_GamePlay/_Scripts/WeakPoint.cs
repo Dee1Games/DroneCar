@@ -4,10 +4,6 @@ using Sirenix.OdinInspector;
 using Unity.Mathematics;
 using UnityEngine;
 
-public interface IHitable
-{
-    void OnHit(CarCore core, float damage);
-}
 public class WeakPoint : MonoBehaviour, IHitable
 {
     public Giant_Core myCore;

@@ -1,9 +1,11 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class Shield : MonoBehaviour
+public class Shield : MonoBehaviour, IHitable
 {
     public Transform trackTransform;
+    public float health = 100;
+    public float maxHealth = 100;
     
     private Collider _collider;
     
@@ -54,5 +56,10 @@ public class Shield : MonoBehaviour
         {
             tween.Kill();
         }
+    }
+
+    public void OnHit(CarCore core, float damage)
+    {
+        
     }
 }

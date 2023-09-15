@@ -24,6 +24,8 @@ public class AI_Core : MonoBehaviour
     [Title("Animation")]
     public bool allowTurning;
     public bool allowSitting;
+
+    [Title("IKs")] public AimIK[] aimIks;
     [Range(0, 1)]
     [SerializeField] private float handsUp;
     public float HandsUp
@@ -96,10 +98,14 @@ public class AI_Core : MonoBehaviour
                 _direction.y = 0;
                 signedAngle = Vector3.SignedAngle(_direction, transform.forward, transform.up);
                 absAngle = Mathf.Abs(signedAngle);
-                if (absAngle > 10)
+                if (absAngle > 25)
                 {
                     animator.SetBool(Mirror, signedAngle > 0);
                     animator.SetFloat(TurnAngle, absAngle);
+                }
+                else
+                {
+                    animator.SetFloat(TurnAngle, 0);
                 }
             }
             else
@@ -127,35 +133,56 @@ public class AI_Core : MonoBehaviour
     /// <param name="phase"></param>
     public virtual void Active(bool phase)
     {
-
-        animator.enabled = phase;
         sightDetector.enabled = phase;
         lookAtIK.enabled = phase;
     }
 
-    private float lookRateDelay = 1f;
+    private float IKDelay = 1f;
+    private float weight = 0;
 
+    protected void SetIKsTarget(Transform _target)
+    {
+        Debug.Log($"Set Target to: {_target}");
+        lookAtIK.solver.target = _target;
+        foreach (var aimIk in aimIks)
+        {
+            aimIk.solver.target = _target;
+        }
+    }
 
+    private Tween IkTween;
     protected virtual void OnPlayerFound(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> founded.");
-
-        UI_Core._.track.Begin();
-
-        lookAtIK.solver.target = _core.transform;
-        DOVirtual.Float(lookAtIK.solver.IKPositionWeight
-            ,1, lookRateDelay, f => lookAtIK.solver.IKPositionWeight = f);
+        UI_Core._?.track.Begin();
+        SetIKsTarget(_core.transform);
+        if (CarCore.HasBuff(IkTween)) IkTween.Kill();
+        
+        IkTween = DOVirtual.Float(weight, 1, IKDelay, f =>
+        {
+            weight = f;
+            lookAtIK.solver.IKPositionWeight = weight;
+            foreach (var aimIk in aimIks)
+            {
+                aimIk.solver.IKPositionWeight = weight;
+            }
+        });
     }
     protected virtual void OnPlayerLost(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> Lost.");
+        UI_Core._?.track.End();
         
-        UI_Core._.track.End();
-        
-        DOVirtual.Float(lookAtIK.solver.IKPositionWeight
-            ,0, lookRateDelay, f => lookAtIK.solver.IKPositionWeight = f).OnComplete(() =>
+        if (CarCore.HasBuff(IkTween)) IkTween.Kill();
+
+        IkTween = DOVirtual.Float(weight, 0, IKDelay, f =>
         {
-            lookAtIK.solver.target = null;
-        });
+            weight = f;
+            lookAtIK.solver.IKPositionWeight = weight;
+            foreach (var aimIk in aimIks)
+            {
+                aimIk.solver.IKPositionWeight = weight;
+            }
+        }).OnComplete(() =>  SetIKsTarget(null));
     }
 }

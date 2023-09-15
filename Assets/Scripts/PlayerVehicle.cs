@@ -209,6 +209,7 @@ public class PlayerVehicle : MonoBehaviour
             {
                 currentSpeed = 0f;
             }
+            // باف سرعت رو داخل کور اصلی حساب میکنه
 
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
             direction = new Vector3(input.Right, 0f, inputForward);
@@ -236,7 +237,7 @@ public class PlayerVehicle : MonoBehaviour
             {
                 currentSpeed = 0f;
             }
-            
+
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
             transform.Rotate(Vector3.up, input.JoystickX*handeling);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
@@ -291,7 +292,9 @@ public class PlayerVehicle : MonoBehaviour
         
         if (isHovering)
         {
-            rigidbody.velocity = transform.forward * currentSpeed;
+
+            
+            rigidbody.velocity = transform.forward * core.ApplySpeedBuff(currentSpeed);
             rigidbody.angularVelocity = Vector3.zero;
         }
         else
