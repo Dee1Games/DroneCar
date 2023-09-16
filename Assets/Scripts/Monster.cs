@@ -14,6 +14,7 @@ public class Monster : MonoBehaviour
     
     [SerializeField] private float health = 100f;
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private Transform com;
 
     /// <summary>
     /// Auto property health for better managing
@@ -48,5 +49,10 @@ public class Monster : MonoBehaviour
     {
         this.data = data;
         Health = data.Health;
+    }
+
+    public Vector3 GetCOMPos()
+    {
+        return com.position;
     }
 }
