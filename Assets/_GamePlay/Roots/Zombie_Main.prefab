@@ -3912,6 +3912,7 @@ MonoBehaviour:
   lookAtIK: {fileID: 3144465148580157165}
   allowTurning: 1
   allowSitting: 0
+  aimIks: []
   handsUp: 0
 --- !u!114 &403617440990135278
 MonoBehaviour:
@@ -3928,8 +3929,10 @@ MonoBehaviour:
   monster: {fileID: 0}
   animator: {fileID: 0}
   fullBodyBipedIK: {fileID: 0}
+  armor: 0
   aiCore: {fileID: 0}
   giantIcon: {fileID: 21300000, guid: ff8bd3884ea38464081ae8d15a849298, type: 3}
+  hasRagdoll: 0
   ragdollParts:
   - {fileID: 807681136386775128}
   - {fileID: 4822818504289344076}
@@ -4393,6 +4396,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDelay: 5
+  radius: 20
+  force: 0
 --- !u!1 &3282533308990846965
 GameObject:
   m_ObjectHideFlags: 0
@@ -4989,6 +4994,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDelay: 5
+  radius: 20
+  force: 0
 --- !u!1 &3956119377265180002
 GameObject:
   m_ObjectHideFlags: 0
@@ -8039,6 +8046,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDelay: 5
+  radius: 20
+  force: 0
 --- !u!1 &5675384581869296676
 GameObject:
   m_ObjectHideFlags: 0
@@ -8501,6 +8510,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c38da1785fe49b49b6fd62dd2354c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCore: {fileID: 0}
+  damagePlus: 0
+  damageMultiplier: 0
   attachedLimb: {fileID: 0}
   explodeEffect: {fileID: 0}
 --- !u!65 &9105958712208069674
@@ -8640,6 +8652,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c38da1785fe49b49b6fd62dd2354c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCore: {fileID: 0}
+  damagePlus: 0
+  damageMultiplier: 0
   attachedLimb: {fileID: 8474095370791055843}
   explodeEffect: {fileID: 198000011976894484, guid: 99a224ef4e84eff40b63e42a7c693c04, type: 3}
 --- !u!65 &9105958712208069677
@@ -8950,6 +8965,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c38da1785fe49b49b6fd62dd2354c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCore: {fileID: 0}
+  damagePlus: 0
+  damageMultiplier: 0
   attachedLimb: {fileID: 0}
   explodeEffect: {fileID: 0}
 --- !u!114 &5712839372845924251
@@ -8964,6 +8982,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c38da1785fe49b49b6fd62dd2354c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCore: {fileID: 0}
+  damagePlus: 0
+  damageMultiplier: 0
   attachedLimb: {fileID: 0}
   explodeEffect: {fileID: 0}
 --- !u!65 &9105958712208069678
@@ -9101,6 +9122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c38da1785fe49b49b6fd62dd2354c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCore: {fileID: 0}
+  damagePlus: 0
+  damageMultiplier: 0
   attachedLimb: {fileID: 0}
   explodeEffect: {fileID: 0}
 --- !u!65 &9105958712208069675
@@ -9164,6 +9188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c38da1785fe49b49b6fd62dd2354c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCore: {fileID: 0}
+  damagePlus: 0
+  damageMultiplier: 0
   attachedLimb: {fileID: 0}
   explodeEffect: {fileID: 0}
 --- !u!65 &9105958712208069676
@@ -10013,14 +10040,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giantCore: {fileID: 0}
+  limbType: 0
+  armor: 0
   health: 100
   maxHealth: 100
-  ragdollActivator: 0
+  giantFinisher: 0
   unbreakable: 0
   particle: {fileID: 198000011976894484, guid: 684f5cefd3dc47f48a2e35d37ba8e2e0, type: 3}
   member: {fileID: 5379585287650483275, guid: 14cd1e1850859164b9c7717bbe17244c, type: 3}
   forceToDeScale: {fileID: 1467853843005284788}
-  pressToDismember: 104
 --- !u!114 &3824651866571034326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10039,6 +10067,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   blockLayer:
     serializedVersion: 2
@@ -12730,6 +12759,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDelay: 5
+  radius: 20
+  force: 0
 --- !u!1 &7885891929461107306
 GameObject:
   m_ObjectHideFlags: 0
@@ -15058,6 +15089,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDelay: 5
+  radius: 20
+  force: 0
 --- !u!1 &9182847863182714782
 GameObject:
   m_ObjectHideFlags: 0

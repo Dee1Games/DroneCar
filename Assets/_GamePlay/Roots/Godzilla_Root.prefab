@@ -2035,6 +2035,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   blockLayer:
     serializedVersion: 2
@@ -6257,6 +6258,7 @@ MonoBehaviour:
   armor: 0
   aiCore: {fileID: 0}
   giantIcon: {fileID: 21300000, guid: 236f54c8844a3d54cafdeba6e89b8717, type: 3}
+  hasRagdoll: 0
   ragdollParts:
   - {fileID: 806224339}
   - {fileID: 1854275130}
@@ -6315,6 +6317,7 @@ MonoBehaviour:
   lookAtIK: {fileID: 1623228273772317047}
   allowTurning: 1
   allowSitting: 0
+  aimIks: []
   handsUp: 0
 --- !u!1 &8171348620732027413
 GameObject:
@@ -7927,6 +7930,10 @@ PrefabInstance:
     - target: {fileID: 1500986296244452954, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3314086863624622361, guid: 59fde5727206f964499889104c26df0a, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4285440315423560780, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: m_Name

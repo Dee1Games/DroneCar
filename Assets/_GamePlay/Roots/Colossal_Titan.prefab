@@ -557,14 +557,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giantCore: {fileID: 0}
+  limbType: 0
+  armor: 0
   health: 100
   maxHealth: 100
-  ragdollActivator: 1
+  giantFinisher: 0
   unbreakable: 0
   particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
   member: {fileID: 4808516981990968083, guid: 1f719bbde11c6ba45a90fb4bd5dc193c, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 104
 --- !u!1 &961678026068915907
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,14 +934,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giantCore: {fileID: 0}
+  limbType: 0
+  armor: 0
   health: 100
   maxHealth: 100
-  ragdollActivator: 0
+  giantFinisher: 0
   unbreakable: 0
   particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
   member: {fileID: 7603181022967865126, guid: ae97b6e20df1dac4ba5f29392356abc5, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 101
 --- !u!1 &1385760950272392780
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,6 +1025,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   blockLayer:
     serializedVersion: 2
@@ -2098,14 +2101,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giantCore: {fileID: 0}
+  limbType: 0
+  armor: 0
   health: 100
   maxHealth: 100
-  ragdollActivator: 1
+  giantFinisher: 0
   unbreakable: 0
   particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
   member: {fileID: 2327193940012865126, guid: ed638f17890f39f4da39f88d48077e56, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 122
 --- !u!1 &4626826646389328213
 GameObject:
   m_ObjectHideFlags: 0
@@ -2452,14 +2456,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giantCore: {fileID: 0}
+  limbType: 0
+  armor: 0
   health: 100
   maxHealth: 100
-  ragdollActivator: 1
+  giantFinisher: 0
   unbreakable: 0
   particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
   member: {fileID: 7821287561367336861, guid: 2c3fbbf3cf4e3ad43b741f6604c4f752, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 99
 --- !u!1 &4693565184113485457
 GameObject:
   m_ObjectHideFlags: 0
@@ -4435,6 +4440,7 @@ MonoBehaviour:
   lookAtIK: {fileID: 3320476272198105574}
   allowTurning: 1
   allowSitting: 0
+  aimIks: []
   handsUp: 0
 --- !u!114 &4548264050632333833
 MonoBehaviour:
@@ -4451,8 +4457,10 @@ MonoBehaviour:
   monster: {fileID: 0}
   animator: {fileID: 9058511651547221735}
   fullBodyBipedIK: {fileID: 8442034397922681878}
+  armor: 0
   aiCore: {fileID: 3733590649604366500}
   giantIcon: {fileID: 0}
+  hasRagdoll: 0
   ragdollParts: []
   limbs:
   - {fileID: 627134596835580687}
@@ -5192,14 +5200,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giantCore: {fileID: 0}
+  limbType: 0
+  armor: 0
   health: 100
   maxHealth: 100
-  ragdollActivator: 0
+  giantFinisher: 0
   unbreakable: 0
   particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
   member: {fileID: 5090391746820865518, guid: 392f4a94629f9594f962a075f15e588b, type: 3}
   forceToDeScale: {fileID: 0}
-  pressToDismember: 113
 --- !u!1 &7730518213596143002
 GameObject:
   m_ObjectHideFlags: 0

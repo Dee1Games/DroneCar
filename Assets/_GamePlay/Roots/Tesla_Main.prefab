@@ -1228,6 +1228,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 2494197094012908871}
   useLinerClampedPosition: 0
@@ -1422,6 +1423,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -1788,6 +1790,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 7024854310010137309}
   useLinerClampedPosition: 0
@@ -2183,6 +2186,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   autoUpdate: 1
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -3039,6 +3043,7 @@ MonoBehaviour:
   armor: 0.5
   aiCore: {fileID: 5375698166003736570}
   giantIcon: {fileID: 21300000, guid: bf604ce0780145347832061e8d21d005, type: 3}
+  hasRagdoll: 0
   ragdollParts:
   - {fileID: 963035608}
   - {fileID: 1776378146}
@@ -3103,6 +3108,7 @@ MonoBehaviour:
   lookAtIK: {fileID: 6501133328931147986}
   allowTurning: 1
   allowSitting: 1
+  aimIks: []
   handsUp: 0
   TeslaGun: {fileID: 2717226869014377564}
   shield: {fileID: 736603079217907178}
@@ -4053,7 +4059,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
+  onReload:
+    m_PersistentCalls:
+      m_Calls: []
   poolManager: {fileID: 0}
   bullets:
   - {fileID: 9189085495217955049, guid: 120c44fc5d499174ea7e1f8191c949a7, type: 3}
@@ -4089,6 +4099,7 @@ MonoBehaviour:
   - {fileID: 933962082041472004}
   - {fileID: 2051809494313184877}
   currentIndex: 0
+  pingPongPhase: 0
   castType: 1
   onCast:
     m_PersistentCalls:
@@ -4792,6 +4803,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 9120330250611816644}
   useLinerClampedPosition: 0
@@ -5230,7 +5242,7 @@ GameObject:
   - component: {fileID: 2172972209659939421}
   - component: {fileID: 2475072850194043465}
   - component: {fileID: 736603079217907178}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5328,6 +5340,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackTransform: {fileID: 0}
+  health: 100
+  maxHealth: 100
   activePeriod: 5
   activeScale: {x: 20, y: 20, z: 20}
   fadeInDuration: 1
