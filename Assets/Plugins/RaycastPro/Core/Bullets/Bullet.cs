@@ -33,6 +33,11 @@ namespace RaycastPro.Bullets
                 transform.position = caster.transform.position;
                 transform.forward = caster.transform.forward;
             }
+            else
+            {
+                transform.position = raySource.Base;
+                transform.forward = raySource.Direction;
+            }
 
 
             OnCast(); // Auto Setup 3D Bullet

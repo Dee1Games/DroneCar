@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 400000}
   - component: {fileID: 3300002}
   - component: {fileID: 2300002}
+  - component: {fileID: 6016454708523915122}
   m_Layer: 0
   m_Name: Gadget_Minigun_Barrel_Geom
   m_TagString: Untagged
@@ -166,6 +167,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6016454708523915122
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: a5b4b778d5f1248458a40efeff55f0d0, type: 3}
 --- !u!1 &100004
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,6 +356,7 @@ GameObject:
   - component: {fileID: 400014}
   - component: {fileID: 9500000}
   - component: {fileID: 2966922001645151554}
+  - component: {fileID: 8549112768865580011}
   m_Layer: 0
   m_Name: Gadget_Weapon_Minigun_Lvl2
   m_TagString: Untagged
@@ -392,7 +408,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100014}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0aea4f039d54275960047154c0caedb, type: 3}
   m_Name: 
@@ -406,23 +422,30 @@ MonoBehaviour:
   EventFoldout: 0
   gizmosUpdate: 0
   poolManager: {fileID: 0}
-  bullets: []
-  cloneBullets: []
+  bullets:
+  - {fileID: 6216544658122314629, guid: 34538988dad064d4a920f1954a15f2fd, type: 3}
+  cloneBullets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   ignoreColliders: []
   ammo:
-    infiniteAmmo: 0
+    infiniteAmmo: 1
     amount: 12
-    magazineCapacity: 6
-    magazineAmount: 6
-    reloadTime: 2
-    inBetweenTime: 0.1
+    magazineCapacity: 60
+    magazineAmount: 60
+    reloadTime: 4
+    inBetweenTime: 0.15
     inRate: 0
     inReload: 0
   trackTarget: {fileID: 0}
   index: 0
   cloneIndex: 0
   usingAmmo: 1
-  arrayCasting: 0
+  arrayCasting: 1
   arrayCapacity: 6
   raySensors:
   - {fileID: 6765878126707736187}
@@ -434,6 +457,21 @@ MonoBehaviour:
   onCast:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8549112768865580011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758e04374f2a4b04c9cc92cec9950414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _advanceCaster: {fileID: 0}
+  maxSpeed: 1.5
+  tweenDuration: 1
 --- !u!1 &3866139814193353775
 GameObject:
   m_ObjectHideFlags: 0

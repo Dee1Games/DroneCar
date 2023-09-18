@@ -115,7 +115,6 @@ namespace RaycastPro.Casters
             if (hasInfo) InformationField();
 
         }
-        private static readonly string[] events = new[] {nameof(onCast)};
 #endif
     }
 }

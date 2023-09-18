@@ -415,9 +415,8 @@ public class PlayerVehicle : MonoBehaviour
 
     private float getDistanceToGround()
     {
-        RaycastHit hit;
         Ray ray = new Ray(pivot.position+(Vector3.up*10f), Vector3.down);
-        if(Physics.Raycast(ray, out hit, 9999f, groundLayer.value))
+        if(Physics.Raycast(ray, out var hit, 9999f, groundLayer.value))
         {
             return hit.distance-10f;
         }

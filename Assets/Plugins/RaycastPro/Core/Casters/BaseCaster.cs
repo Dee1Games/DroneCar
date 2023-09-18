@@ -1,4 +1,6 @@
-﻿namespace RaycastPro
+﻿using UnityEngine.Events;
+
+namespace RaycastPro
 {
     using System;
     using System.Collections;
@@ -17,7 +19,10 @@
         /// </summary>
         /// <param name="_index">Bullet Array Index</param>
         public abstract void Cast(int _index);
+
+        public UnityEvent onReload;
         
+
         [Tooltip("Automatically instantiate into this object.")]
         public Transform poolManager;
         public abstract void Reload();
@@ -39,7 +44,6 @@
         }
 
         #endregion
-
         protected static void CopyBullet<T>(T to, T from)
         {
             var fields = to.GetType().GetFields();
@@ -56,7 +60,7 @@
                 prop.SetValue(to, prop.GetValue(from, null), null);
             }
         }
-
+        
         [Serializable]
         public class Ammo
         {
@@ -113,6 +117,7 @@
                 {
                     inReload = true;
                     _caster.StartCoroutine(IReload());
+                    _caster.onReload?.Invoke();
                     
                     return false;
                 }
@@ -157,7 +162,6 @@
             }
 
 #if UNITY_EDITOR
-            
             internal void EditorPanel(SerializedProperty serializedProperty)
             {
                 BeginHorizontal();

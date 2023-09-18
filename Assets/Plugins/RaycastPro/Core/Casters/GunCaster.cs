@@ -1,4 +1,6 @@
-﻿namespace RaycastPro
+﻿using Palmmedia.ReportGenerator.Core.Reporting.Builders;
+
+namespace RaycastPro
 {
     using UnityEngine;
     using System;
@@ -268,7 +270,8 @@
         public void BulletActive(Bullet2D bullet) => bullet.gameObject.SetActive(true);
 #if UNITY_EDITOR
 
-
+        protected static readonly string[] events = new[] {"onCast", nameof(onReload)};   
+        
         protected const string CTogether = "Together";
         protected const string CSequence = "Sequence"; 
         protected const string CRandom = "Random"; 
