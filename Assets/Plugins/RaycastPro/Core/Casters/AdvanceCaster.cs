@@ -21,14 +21,20 @@ namespace RaycastPro.Casters
         public RaySensor[] raySensors = Array.Empty<RaySensor>();
         
         public int currentIndex;
-        private bool pingPongPhase;
+        
+        public bool pingPongPhase;
+
         public CastType castType = CastType.Together;
 
         public BulletEvent onCast;
         protected override void OnCast() => Cast(index);
+
         // ReSharper disable Unity.PerformanceAnalysis
         public override void Cast(int _index)
         {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
             // Last Note: Adding Index debugging. Bullet cast returning true when successfully shot
             switch (castType)
             {
@@ -68,17 +74,10 @@ namespace RaycastPro.Casters
         {
             foreach (var sensor in raySensors)
             {
-                if (sensor is PathRay _pathSensor)
-                {
-                    DrawPath(_pathSensor.PathPoints, _pathSensor.hit, .1f, true, true, drawSphere: false, -1, HelperColor);
-                }
-                else
-                {
-                    tip = sensor ? sensor.Tip : transform.position + transform.forward;
-                    position = sensor ? sensor.BasePoint : transform.position;
-                    DrawCapLine(position, tip);
-                }
-
+                if (!sensor) continue;
+                
+                position = sensor ? sensor.Base : transform.position;
+                DrawCapLine(position, position + sensor.Direction);
             }
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

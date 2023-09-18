@@ -18,7 +18,8 @@
         [SerializeField] private Rigidbody body;
 
         private float _dt;
-        public override void RuntimeUpdate()
+
+        internal override void RuntimeUpdate()
         {
             _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
@@ -26,7 +27,7 @@
         }
         protected override void CollisionBehaviour()
         {
-            body.position = collisionRay.cloneRaySensor.BasePoint;
+            body.position = collisionRay.cloneRaySensor.Base;
             body.velocity = collisionRay.cloneRaySensor.Direction.normalized * body.velocity.magnitude;
         }
         protected override void OnCast()
@@ -34,7 +35,7 @@
             if (!body) body = GetComponent<Rigidbody>();
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
-            body.position = raySource.BasePoint;
+            body.position = raySource.Base;
             transform.forward = raySource.TipDirection.normalized;
             body.AddForce(transform.forward * power, forceMode);
             

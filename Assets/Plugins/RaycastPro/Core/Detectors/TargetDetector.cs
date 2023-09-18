@@ -78,7 +78,6 @@ namespace RaycastPro.Detectors
         {
 #if UNITY_EDITOR
             CleanGate();
-            drawGizmosAlpha = 1f;
 #endif
             PreviousBlockedTargets = BlockedTargets.ToArray();
             BlockedTargets.Clear();
@@ -102,11 +101,10 @@ namespace RaycastPro.Detectors
                 PanelGate += () => DetectorInfoField(_t, _rHit.point, !pass);
                 GizmoGate += () =>
                 {
-                    if (drawGizmosAlpha > 0)
+                    if (alphaCharge > 0)
                     {
                         DrawBlockLine(TDP, _t.position, _dir, radius, drawCross: true,
-                            drawSphereBase: false, drawSphereTarget: true, _rHit, alpha: drawGizmosAlpha);
-                        drawGizmosAlpha -= Time.deltaTime;
+                            drawSphereBase: false, drawSphereTarget: true, _rHit, alphaCharge);
                     }
                 };
 #endif
@@ -136,8 +134,6 @@ namespace RaycastPro.Detectors
 #pragma warning disable CS0414
         private static string Info = "Examining Target points and detecting the blocking of the connection line."+HAccurate+HIRadius;
 #pragma warning restore CS0414
-        
-        private float drawGizmosAlpha = 1f;
         internal override void OnGizmos() 
         {
             EditorUpdate();

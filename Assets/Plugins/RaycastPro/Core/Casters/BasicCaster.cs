@@ -19,7 +19,10 @@
         public RaySensor raySource;
         
         // ReSharper disable Unity.PerformanceAnalysis
-        public override void Cast(int _index) => BulletCast(_index, raySource, b => onCast?.Invoke(b));
+        public override void Cast(int _index)
+        {
+            BulletCast(_index, raySource, b => onCast?.Invoke(b));
+        }
         protected override void OnCast() => Cast(index);
 
 #if UNITY_EDITOR
@@ -32,7 +35,7 @@
         {
             if (raySource)
             {
-                _p1 = raySource.BasePoint;
+                _p1 = raySource.Base;
                 _p2 = _p1 + raySource.LocalDirection;
                 DrawCapLine(_p1, _p2);
             }

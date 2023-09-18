@@ -86,9 +86,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4261400191248178308}
     m_Modifications:
+    - target: {fileID: 100000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
+      propertyPath: m_Name
+      value: Weapon_Shield_Left_Lvl3_No_Skin
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -117,6 +121,18 @@ PrefabInstance:
     - target: {fileID: 400000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d835e58ae6ee08e48911cccd3804be2a, type: 3}
@@ -165,6 +181,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 100000, guid: 8e50671efe76c1c41b7eb02e3f5ef420, type: 3}
+      propertyPath: m_Name
+      value: Mech_Walker_Shield_Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 8e50671efe76c1c41b7eb02e3f5ef420, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -174,7 +194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8e50671efe76c1c41b7eb02e3f5ef420, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8e50671efe76c1c41b7eb02e3f5ef420, type: 3}
       propertyPath: m_LocalPosition.y

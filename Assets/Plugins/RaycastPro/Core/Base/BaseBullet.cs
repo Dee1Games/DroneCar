@@ -23,25 +23,34 @@
 
     public abstract class BaseBullet : RaycastCore
     {
-
         #region Public Methods
 
-        public void UnParent(Transform child)
+        public void UnParent(Transform child) => child.parent = null;
+        public void DetachTrail()
         {
-            child.parent = null;
-        }
-
-        public void UnParentAllChildren()
-        {
-            if (unParentChild)
+            var _trail = GetComponentInChildren<TrailRenderer>();
+            if (_trail)
             {
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    transform.GetChild(i).parent = null;
-                }
+                _trail.transform.parent = null;
             }
         }
-
+        public void DestroyTrail(float delay)
+        {
+            var _trail = GetComponentInChildren<TrailRenderer>();
+            if (_trail) Destroy(_trail.gameObject, delay);
+        }
+        public void DestroyAllTrails(float delay)
+        {
+            foreach (var _tR in GetComponentsInChildren<TrailRenderer>())
+            {
+                Destroy(_tR.gameObject, delay);
+            }
+        }
+        public void ClearTrail()
+        {
+            var _trail = GetComponentInChildren<TrailRenderer>();
+            _trail.Clear();
+        }
         #endregion
         
         public override bool Performed { get => false; protected set {} }
@@ -54,9 +63,6 @@
         [Tooltip("If you are using ArrayCasting, this option will help the caster to separate the bullets and respawn them if needed.")]
         public string bulletID;
 
-        [Tooltip("This option will un parent the child transform when end casting. using for save particle or tail animation without breaking.")]
-        public bool unParentChild;
-        
         /// <summary>
         /// Invoke on Cast
         /// </summary>
@@ -69,7 +75,9 @@
         /// Ending On Delay
         /// </summary>
         public CasterEvent onEnd;
-        
+
+        public UnityEvent onPlanar;
+
         //protected Coroutine RunCoroutine;
         public MoveType moveType = MoveType.Speed;
 
@@ -104,17 +112,16 @@
 
         [SerializeField]
         public EndType endFunction = EndType.Destroy;
-        
-        [Tooltip("Auto clear Tail Renderer on cast and unParent it on end.")]
-        public TrailRenderer trailRenderer;
 
         [Tooltip("If it is active after collision Ray with an object other than Planar, the life of the bullet ends.")]
         public bool endOnCollide = true;
         public abstract void SetCollision(bool turn);
 
         protected abstract void CollisionRun(float delta);
-        
+
         #region Updates
+
+        internal abstract void RuntimeUpdate();
         protected void Update()
         {
             if (autoUpdate != UpdateMode.Normal) return;
@@ -130,40 +137,18 @@
             if (autoUpdate != UpdateMode.Fixed) return;
             RuntimeUpdate();
         }
-        public abstract void RuntimeUpdate();
         #endregion
         internal abstract void Cast<R>(BaseCaster _caster, R raySensor);
 
-        protected void TrailSetup()
-        {
-            if (trailRenderer.transform.parent != transform)
-            {
-                trailRenderer.transform.parent = transform;
-                trailRenderer.transform.localPosition = Vector3.zero;
-                trailRenderer.transform.localEulerAngles = Vector3.zero;
-                trailRenderer.Clear();
-            }
-        }
-
         internal bool ended;
-        protected void OnEnd<B>(B _caster) where B : BaseCaster// Review
+        protected void OnEndCast<B>(B _caster) where B : BaseCaster// Review
         {
             if (ended) return;
             ended = true;
             
             position = 1;
             onEndCast?.Invoke(_caster);
-            if (trailRenderer)
-            {
-                trailRenderer.transform.parent = _caster.poolManager;
-            }
-            if (unParentChild)
-            {
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    transform.GetChild(i).parent = _caster.poolManager;
-                }
-            }
+            
             StartCoroutine(DelayRun(endDelay, () =>
             {
                 if (endFunction == EndType.Destroy) // In Normal Casting
@@ -221,11 +206,11 @@
                 // On End Run to End Delay
                 if (this is Bullet bullet)
                 {
-                    OnEnd(bullet.caster);
+                    OnEndCast(bullet.caster);
                 }
                 else if (this is Bullet2D bullet2D)
                 {
-                    OnEnd(bullet2D.caster);
+                    OnEndCast(bullet2D.caster);
                 }
             }
             else life += delta;
@@ -284,6 +269,14 @@
         protected static readonly string[] events = new[] {nameof(onCast), nameof(onEndCast), nameof(onEnd)};
 
         protected abstract void CollisionRayField(SerializedObject _so);
+
+        protected void BulletInfoField()
+        {
+            InformationField(() =>
+            {
+                ProgressField(life/lifeTime, "Life");
+            });
+        }
         protected void GeneralField(SerializedObject _so)
         {
             BeginVerticalBox();
@@ -309,8 +302,6 @@
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(damage)));
             EndVertical();
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(bulletID)));
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(unParentChild)));
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(trailRenderer)));
             BaseField(_so);
         }
 #endif

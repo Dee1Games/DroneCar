@@ -112,11 +112,11 @@
         private Vector3 radiusVector => direction.normalized * radius;
         public override Vector3 Tip => transform.position + Direction;
         
-        public Vector3 RadiusBase => BasePoint - radiusVector;
+        public Vector3 RadiusBase => Base - radiusVector;
         
         public Vector3 RadiusTip => Tip + radiusVector;
 
         public override float RayLength => direction.magnitude + radius;
-        public override Vector3 BasePoint => transform.position;
+        public override Vector3 Base => transform.position;
     }
 }

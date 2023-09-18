@@ -30,15 +30,12 @@
                 return length;
             }
         }
-        public override Vector3 BasePoint => raySensors.First().BasePoint;
+        public override Vector3 Base => raySensors.First().Base;
         private Transform _t;
         private int i, l;
-        protected override void OnCast()
-        {
-#if UNITY_EDITOR
-            GizmoGate = null;
-#endif
 
+        protected override void UpdatePath()
+        {
             _t = transform;
             PathPoints.Clear();
             PathPoints.Add(_t.position);
@@ -59,6 +56,14 @@
                 
                 l = i;
             }
+        }
+
+        protected override void OnCast()
+        {
+#if UNITY_EDITOR
+            GizmoGate = null;
+#endif
+            UpdatePath();
 
             if (pathCast) DetectIndex = PathCast(radius);
             else if (sequenceCast)
@@ -94,8 +99,10 @@
         internal override void OnGizmos()
         {
             EditorUpdate();
+            
             if (pathCast)
             {
+                FullPathDraw(radius, true, true);
                 DrawPath(PathPoints, radius: radius, coneCap: true, dotted: true, _color: HelperColor);
             }
             else

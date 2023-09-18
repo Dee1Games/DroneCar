@@ -166,27 +166,21 @@
         {
             EditorUpdate();
 
-            GizmoColor = minRadius > maxRadius ? BlockColor : DefaultColor;
+            GizmoColor = (minRadius > maxRadius ? BlockColor : DefaultColor);
             
             for (var i = 0; i < edgeCount; i++)
             {
                 if (minRadius > 0)
                 {
                     Handles.DrawLine(worldPointsNear[i], worldPointsNear[i + 1]);
-
                     Handles.DrawLine(upPointsNear[i], upPointsNear[i + 1]);
-
                     Handles.DrawLine(downPointsNear[i], downPointsNear[i + 1]);
-
                     Handles.DrawLine(upPointsNear[i], downPointsNear[i]);
                 }
 
                 Handles.DrawLine(worldPointsFar[i], worldPointsFar[i + 1]);
-
                 Handles.DrawLine(upPointsFar[i], upPointsFar[i + 1]);
-
                 Handles.DrawLine(downPointsFar[i], downPointsFar[i + 1]);
-
                 Handles.DrawLine(upPointsFar[i], downPointsFar[i]);
             }
 
@@ -214,9 +208,7 @@
             if (hasInfo) InformationField(PanelGate);
         }
 
-        protected override void DrawDetectorGuide(Vector3 point)
-        {
-        }
+        protected override void DrawDetectorGuide(Vector3 point) { }
 #endif
     }
 }

@@ -35,7 +35,7 @@
 
         protected override void OnCast()
         {
-            transform.position = raySource.BasePoint;
+            transform.position = raySource.Base;
             transform.right = (target.position - transform.position).normalized;
             
             targetPoint = target.position;
@@ -45,7 +45,8 @@
         private Transform _t;
         private float _dis, _dt, currentForce;
         private Vector2 _dir;
-        public override void RuntimeUpdate()
+
+        internal override void RuntimeUpdate()
         {
             _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
@@ -54,12 +55,12 @@
             _dis = Vector3.Distance(_t.position, targetPoint);
             if (currentForce <= .1f)
             {
-                OnEnd(caster);
+                OnEndCast(caster);
                 return;
             }
             if (target && _dis <= distanceThreshold)
             {
-                OnEnd(caster);
+                OnEndCast(caster);
                 return;
             }
             _dt = GetModeDeltaTime(timeMode);

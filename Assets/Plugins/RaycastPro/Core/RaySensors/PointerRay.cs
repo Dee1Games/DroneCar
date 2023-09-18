@@ -51,10 +51,11 @@
         }
 
         public override float RayLength => TipLength;
-        public override Vector3 BasePoint => rayFromCamera ? mainCamera.transform.position : transform.position;
+        public override Vector3 Base => rayFromCamera ? mainCamera.transform.position : transform.position;
 
         private Vector3 input;
         private RaycastHit mouseHit;
+        
         protected override void OnCast()
         {
             if (!mainCamera) return;
@@ -167,14 +168,14 @@
             }
 
         }
-
+        
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "A mouse location tracker that is able to emit from the desired object and is used to immediately launch this feature."+HAccurate+HIRadius+HDependent;
 #pragma warning restore CS0414
         internal override void OnGizmos() => EditorUpdate();
         private bool InEditMode => IsSceneView || !Application.isPlaying;
-
+        
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)

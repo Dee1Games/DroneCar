@@ -24,8 +24,12 @@
         public CastType castType = CastType.Together;
         
         protected override void OnCast() => Cast(index);
+
         public override void Cast(int _index)
         {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
             // Last Note: Adding Index debugging. Bullet cast returning true when successfully shot
             switch (castType)
             {
@@ -63,7 +67,7 @@
             foreach (var sensor in raySensors)
             {
                 var tip = sensor ? sensor.Tip : transform.position + transform.forward;
-                var position = sensor ? sensor.BasePoint : transform.position;
+                var position = sensor ? sensor.Base : transform.position;
 
                 DrawCapLine2D(position, tip);
             }

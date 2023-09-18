@@ -162,7 +162,22 @@
 
             return newPoints;
         }
+
+        public static bool IsInTag(this RaycastHit hit, string _tag)
+        {
+            return hit.transform && hit.transform.CompareTag(_tag);
+        }
+        public static bool IsInTag(this RaycastHit2D hit, string _tag)
+        {
+            return hit.transform && hit.transform.CompareTag(_tag);
+        }
         
+        public static bool IsInLayerMask(this RaycastHit hit, LayerMask mask) {
+            return mask == ( mask | ( 1 << hit.transform.gameObject.layer ) );
+        }
+        public static bool IsInLayerMask(this RaycastHit2D hit, LayerMask mask) {
+            return mask == ( mask | ( 1 << hit.transform.gameObject.layer ) );
+        }
         internal static Vector3 LastDirection(this List<Vector3> points, Vector3 defaultDir) => points.Count > 1 ?
             points[points.Count - 1] - points[points.Count - 2] : defaultDir;
         internal static Vector2 LastDirection(this List<Vector2> points, Vector2 defaultDir) => points.Count > 1 ?
@@ -203,24 +218,27 @@
             
             return distance;
         }
-        internal static float GetPathLength(this IEnumerable<Vector3> points, int index)
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="index">Index 1 mean (point[1] - point[0]).magnitude</param>
+        /// <returns></returns>
+        internal static float GetEdgeLength(this IEnumerable<Vector3> points, int index)
         {
             var list = points.ToList();
-            
             return (list[index] - list[index - 1]).magnitude;
         }
-        internal static float GetPathLength(this IEnumerable<Vector2> points, int index)
+        internal static float GetEdgeLength(this IEnumerable<Vector2> points, int index)
         {
             var list = points.ToList();
-            
             return (list[index] - list[index - 1]).magnitude;
         }
         internal static float GetPathLength(this IEnumerable<Vector3> points, int startIndex, int lastIndex)
         {
             var distance = 0f;
-
             var list = points.ToList();
-            
             for (var i = startIndex; i < lastIndex; i++)
             {
                 distance += (list[i+1] - list[i]).magnitude;
@@ -235,7 +253,7 @@
             var p = Vector3.zero;
             for (var i = 1; i < list.Count; i++)
             {
-                var lineDistance = list.GetPathLength(i);
+                var lineDistance = list.GetEdgeLength(i);
                 if (posM <= lineDistance) return Vector3.Lerp(list[i - 1], list[i], posM / lineDistance);
                 posM -= lineDistance;
             }
@@ -247,7 +265,7 @@
 
             for (var i = 1; i < path.Count; i++)
             {
-                var lineDistance = path.GetPathLength(i);
+                var lineDistance = path.GetEdgeLength(i);
                 
                 if (posM <= lineDistance) return (Vector3.Lerp(path[i - 1], path[i], posM / lineDistance), i);
 
@@ -264,7 +282,7 @@
             var p = Vector3.zero;
             for (var i = 1; i < path.Count; i++)
             {
-                var lineDistance = path.GetPathLength(i);
+                var lineDistance = path.GetEdgeLength(i);
                 if (posM <= lineDistance)
                 {
                     p = Vector3.Lerp(path[i - 1], path[i], posM / lineDistance);
@@ -280,8 +298,7 @@
 
             for (var i = 1; i < path.Count; i++)
             {
-                var lineDistance = path.GetPathLength(i);
-                
+                var lineDistance = path.GetEdgeLength(i);
                 if (posM <= lineDistance) return (Vector3.Lerp(path[i - 1], path[i], posM / lineDistance), i);
 
                 posM -= lineDistance;

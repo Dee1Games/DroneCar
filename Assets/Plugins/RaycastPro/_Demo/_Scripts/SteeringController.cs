@@ -50,7 +50,7 @@ namespace Plugins.RaycastPro.Demo.Scripts
                 else
                 {
                     rb.rotation = Quaternion.Lerp(rb.rotation,
-                        Quaternion.LookRotation(detector.SteeringDirection, Vector3.up),
+                        Quaternion.LookRotation(detector.SteeringDirection == Vector3.zero ? transform.forward : detector.SteeringDirection, Vector3.up),
                         1 - Mathf.Exp(-turnRate * Time.deltaTime));
                 }
             }

@@ -139,7 +139,7 @@
                     }
                     else
                     {
-                        if (Vector3.Distance(TDP, _t.position) <= radius && CheckSolverPass(TDP, c)) DetectedColliders.Add(c);
+                        if ((_t.position-TDP).sqrMagnitude <= radius*radius && CheckSolverPass(TDP, c)) DetectedColliders.Add(c);
                     }
                 }
             }

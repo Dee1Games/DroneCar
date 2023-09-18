@@ -10,14 +10,15 @@
     public abstract class BaseSensor : RaycastCore
     {
         public UnityEvent onDetect;
+        
 #if UNITY_EDITOR
-        protected void EventsField()
+        protected void EventsField(SerializedObject _so)
         {
             EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
                 RCProEditor.HeaderFoldout);
             if (EventFoldout)
             {
-                RCProEditor.EventField(new SerializedObject(this), new[]
+                RCProEditor.EventField(_so, new[]
                 {
                     nameof(onDetect)
                 });

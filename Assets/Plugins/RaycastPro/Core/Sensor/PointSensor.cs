@@ -6,7 +6,7 @@
     using UnityEditor;
 #endif
 
-    [AddComponentMenu("RaycastPro/Sensors/" + nameof(PointSensor))]
+    [AddComponentMenu("RaycastPro/Utility/" + nameof(PointSensor))]
     public sealed class PointSensor : BaseSensor, IRadius
     {
         public enum DotType
@@ -66,7 +66,7 @@
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Simple Point that returns if collider on it." + HAccurate + HIRadius;
+        private static string Info = "Simple Point that returns if collider on it."+ HUtility + HAccurate + HIRadius;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
@@ -107,35 +107,45 @@
             bool hasEvents = true,
             bool hasInfo = true)
         {
-            dotType = RCProEditor.EnumLabelField(dotType, "Dot Type".ToContent("Dot Type"), 2);
-            
-            RCProEditor.LayerField(CDetectLayer.ToContent(TDetectLayer), ref detectLayer);
-            
-            switch (dotType)
+            if (hasMain)
             {
-                case DotType.Sphere:
-                    Radius = EditorGUILayout.FloatField(CRadius, radius);
+                dotType = RCProEditor.EnumLabelField(dotType, "Dot Type".ToContent(), 2);
+                RCProEditor.LayerField(CDetectLayer.ToContent(TDetectLayer), ref detectLayer);
+                switch (dotType)
+                {
+                    case DotType.Sphere:
+                        Radius = EditorGUILayout.FloatField(CRadius, radius);
 
-                    Height = EditorGUILayout.FloatField(CHeight, height);
-                    break;
-                case DotType.Box:
-                    extents = EditorGUILayout.Vector3Field(CExtents, extents);
-                    break;
+                        Height = EditorGUILayout.FloatField(CHeight, height);
+                        break;
+                    case DotType.Box:
+                        extents = EditorGUILayout.Vector3Field(CExtents, extents);
+                        break;
+                }
             }
 
-            BaseField(_so);
-            
-            EventsField();
-
-            InformationField(() =>
+            if (hasGeneral)
             {
-                BeginHorizontal();
-                GUILayout.Label("Is Detect");
-                GUI.contentColor = Performed ? DetectColor : DefaultColor;
-                GUILayout.Label(Performed.ToString());
-                GUI.contentColor = RCProEditor.Aqua;
-                EndHorizontal();
-            });
+                BaseField(_so);
+            }
+
+            if (hasEvents)
+            {
+                EventsField(_so);
+            }
+
+            if (hasInfo)
+            {
+                InformationField(() =>
+                {
+                    BeginHorizontal();
+                    GUILayout.Label("Performed");
+                    GUI.contentColor = Performed ? DetectColor : DefaultColor;
+                    GUILayout.Label(Performed.ToString());
+                    GUI.contentColor = RCProEditor.Aqua;
+                    EndHorizontal();
+                });
+            }
         }
 #endif
     }

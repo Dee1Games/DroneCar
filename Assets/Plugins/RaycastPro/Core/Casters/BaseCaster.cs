@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace RaycastPro
+﻿namespace RaycastPro
 {
     using System;
     using System.Collections;
@@ -107,20 +105,20 @@ namespace RaycastPro
             }
             public bool Use(BaseCaster _caster, int _amount = 1)
             {
-                if (!inRate && !inReload && (magazineAmount >= _amount || infiniteAmmo))
+                if (inRate) return false;
+                if (inReload) return false;
+
+                magazineAmount -= _amount;
+                if (magazineAmount < _amount)
                 {
-                    inRate = true;
-                    _inRateC = _caster.StartCoroutine(IRate());
+                    inReload = true;
+                    _caster.StartCoroutine(IReload());
                     
-                    magazineAmount -= _amount;
-                    if (magazineAmount < _amount)
-                    {
-                        inReload = true;
-                        _caster.StartCoroutine(IReload());
-                    }
-                    return true;
+                    return false;
                 }
-                return false;
+                inRate = true;
+                _inRateC = _caster.StartCoroutine(IRate());
+                return true;
             }
 
             private Coroutine _inRateC;
@@ -129,6 +127,7 @@ namespace RaycastPro
             /// </summary>
             internal IEnumerator IRate()
             {
+
                 yield return new WaitForSeconds(inBetweenTime);
                 inRate = false;
             }

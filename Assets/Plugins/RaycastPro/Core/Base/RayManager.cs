@@ -7,9 +7,10 @@
     using UnityEditor;
 #endif
 
-
+    [AddComponentMenu("RaycastPro/Utility/" + nameof(RayManager))]
     public class RayManager : RaycastCore
     {
+        public Transform referenceObject;
         [SerializeField] private RaycastCore[] cores;
 
         [SerializeField] private bool[] _bools;
@@ -22,7 +23,8 @@
 
         protected void Reset()
         {
-            cores = GetComponentsInChildren<RaycastCore>(true).Skip(1).ToArray();
+            if (!referenceObject) referenceObject = transform;
+            cores = referenceObject.GetComponentsInChildren<RaycastCore>(true).Where(c => !(c is RayManager)).ToArray();
             _bools = new bool[cores.Length];
         }
 
@@ -32,11 +34,11 @@
         
         protected override void AfterValidate()
         {
-            
+            Reset();
         }
 
 #pragma warning disable CS0414
-        private static string Info = "The ray control and management tool automatically detects children rays."+HDependent;
+        private static string Info = "The ray control and management tool automatically detects children rays."+HUtility+HDependent;
 #pragma warning restore CS0414
         internal override void OnGizmos() { }
 
@@ -51,6 +53,7 @@
             bool hasEvents = true,
             bool hasInfo = true)
         {
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(referenceObject)));
             if (GUILayout.Button("Refresh"))
             {
                 Reset();
@@ -59,9 +62,11 @@
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(showMain)));
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(showGeneral)));
             EndVertical();
+            if (!referenceObject) return;
+
             for (var index = 0; index < cores.Length; index++)
             {
-                var raySensor = cores[index];
+                var core = cores[index];
                 EditorGUILayout.BeginVertical(new GUIStyle
                 {
                     margin = new RectOffset(0, 0, 2, 2),
@@ -88,7 +93,7 @@
                     alignment = TextAnchor.MiddleCenter, wordWrap = true
                 }, GUILayout.ExpandWidth(false));
 
-                _bools[index] = EditorGUILayout.BeginFoldoutHeaderGroup(_bools[index], raySensor.name,
+                _bools[index] = EditorGUILayout.BeginFoldoutHeaderGroup(_bools[index], core.name,
                     foldoutHeadStyle, rect => { });
 
                 
@@ -126,17 +131,23 @@
                     GUILayout.Box("Off", RCProEditor.BoxStyle, GUILayout.Width(60), GUILayout.Height(20));
                 }
 
-                GUI.backgroundColor = (raySensor.Performed ? DetectColor : BlockColor).ToAlpha(1);
-                GUILayout.Box(raySensor.Performed ? "<color=#61FF38>✓</color>" : "<color=#FF3822>x</color>", RCProEditor.BoxStyle, GUILayout.Width(40), GUILayout.Height(20));
+                GUI.backgroundColor = (core.Performed ? DetectColor : BlockColor).ToAlpha(1);
+                if (GUILayout.Button("Cast", GUILayout.Width(60f)))
+                {
+                    core.TestCast();
+                }
+
+                
+                //GUILayout.Box(raySensor.Performed ? "<color=#61FF38>✓</color>" : "<color=#FF3822>x</color>", RCProEditor.BoxStyle, GUILayout.Width(40), GUILayout.Height(20));
                 EndHorizontal();
                 GUI.backgroundColor = RCProEditor.Violet;
                 
             if (_bools[index])
             {
-                var _cSO = new SerializedObject(raySensor);
+                var _cSO = new SerializedObject(core);
                 _cSO.Update();
                 EditorGUI.BeginChangeCheck();
-                raySensor.EditorPanel(_cSO, showMain, showGeneral, false, false);
+                core.EditorPanel(_cSO, showMain, showGeneral, false, false);
                 if (EditorGUI.EndChangeCheck()) _cSO.ApplyModifiedProperties();
             }
             

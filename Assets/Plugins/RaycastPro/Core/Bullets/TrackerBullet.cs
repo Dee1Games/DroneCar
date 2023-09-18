@@ -33,7 +33,7 @@
         {
             if (raySource)
             {
-                transform.position = raySource.BasePoint;
+                transform.position = raySource.Base;
                 transform.rotation = Quaternion.LookRotation(raySource.LocalDirection, transform.up);
             }
 
@@ -44,7 +44,6 @@
             }
 #endif
 
-
             targetPoint = target.position;
             currentForce = force;
             _t = transform;
@@ -54,21 +53,22 @@
         private float _dis, _dt, currentForce;
         private Vector3 _dir;
         private Quaternion look;
-        public override void RuntimeUpdate()
+
+        internal override void RuntimeUpdate()
         {
             _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
-            _t = transform;            
+            
             targetPoint = target ? target.position + trackOffset : _t.position;
             _dis = Vector3.Distance(_t.position, targetPoint);
             if (currentForce <= .1f)
             {
-                OnEnd(caster);
+                OnEndCast(caster);
                 return;
             }
             if (target && _dis <= distanceThreshold)
             {
-                OnEnd(caster);
+                OnEndCast(caster);
                 return;
             }
             _dt = GetModeDeltaTime(timeMode);
@@ -108,7 +108,7 @@
         
         protected override void CollisionBehaviour()
         {
-            transform.position = collisionRay.cloneRaySensor.BasePoint;
+            transform.position = collisionRay.cloneRaySensor.Base;
             transform.forward = collisionRay.cloneRaySensor.Direction.normalized;
         }
 #if UNITY_EDITOR

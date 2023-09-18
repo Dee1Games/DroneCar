@@ -34,7 +34,7 @@
         private float distance;
         private RaycastHit _tHit;
         private int DI;
-        private void ReflectCast()
+        protected override void UpdatePath()
         {
             Vector3 ApplyFreeze(Vector3 dir)
             {
@@ -98,7 +98,7 @@
             Physics.queriesHitBackfaces = physicsSetting;
         }
 
-        protected override void OnCast() => ReflectCast();
+        protected override void OnCast() => UpdatePath();
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -109,19 +109,7 @@
         {
             EditorUpdate();
 
-            if (IsManuelMode)
-            {
-                ReflectCast();
-                DrawPath(PathPoints, hit, radius, coneCap: true, detectIndex: DetectIndex);
-                Handles.color = HelperColor;
-                Handles.DrawDottedLine(transform.position, Tip, StepSizeLine);
-            }
-            else
-            {
-                DrawPath(PathPoints, hit, radius: radius, coneCap: true, detectIndex: DetectIndex);
-                Handles.color = HelperColor;
-                Handles.DrawDottedLine(transform.position, PathPoints.Last(), StepSizeLine);
-            }
+            FullPathDraw(radius, true);
 
             for (var index = 0; index < reflectHits.Count-1; index++)
             {
@@ -131,7 +119,7 @@
 
             if (reflectHits.Count > 0)
             {
-                DrawNormal(reflectHits[^1]);
+                DrawNormal(reflectHits[reflectHits.Count-1]);
             }
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

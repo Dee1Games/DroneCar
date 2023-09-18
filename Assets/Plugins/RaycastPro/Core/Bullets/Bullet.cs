@@ -17,15 +17,23 @@ namespace RaycastPro.Bullets
         public RaySensor collisionRay;
 
         protected float ignoreTime;
+        
         private void OnDestroy() => onEnd?.Invoke(caster);
         internal override void Cast<R>(BaseCaster _caster, R raySensor)
         {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
             raySource = raySensor as RaySensor;
-            
-            transform.forward = raySource.LocalDirection;
-            transform.position = raySource.BasePoint;
-            
+
             caster = _caster;
+            
+            if (!raySource)
+            {
+                transform.position = caster.transform.position;
+                transform.forward = caster.transform.forward;
+            }
+
 
             OnCast(); // Auto Setup 3D Bullet
             onCast?.Invoke(caster);
@@ -33,7 +41,6 @@ namespace RaycastPro.Bullets
             {
                 collisionRay.enabled = false;
             }
-            // if (trailRenderer) TrailSetup();
         }
 
         public override void SetCollision(bool turn) => collisionRay.enabled = turn;
@@ -51,12 +58,14 @@ namespace RaycastPro.Bullets
             if (collisionRay.cloneRaySensor)
             {
                 ignoreTime = baseIgnoreTime;
+
                 CollisionBehaviour();
+                onPlanar?.Invoke();
             }
             else
             {
                 InvokeDamageEvent(collisionRay.hit.transform);
-                if (endOnCollide) OnEnd(caster);
+                if (endOnCollide) OnEndCast(caster);
             }
         }
 

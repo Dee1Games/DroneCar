@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8961977321086818342}
-  - component: {fileID: 2957392415754230812}
+  - component: {fileID: 1726740973542078880}
   m_Layer: 0
   m_Name: Box Ray
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 2743829846746528736}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2957392415754230812
+--- !u!114 &1726740973542078880
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +41,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5364060202978589993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceccf93237b784244bc7cb9366b999b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b0f5e5ef95f4013bd73cc752faef470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   influence: 1
   triggerInteraction: 0
   detectLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 320
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -66,7 +67,7 @@ MonoBehaviour:
     axis: 0
     syncAxis: 0
     flipAxis: 0
-  planarSensitive: 1
+  planarSensitive: 0
   _planar: {fileID: 0}
   planers: []
   anyPlanar: 1
@@ -85,8 +86,9 @@ MonoBehaviour:
   onEndDetect:
     m_PersistentCalls:
       m_Calls: []
-  direction: {x: 0, y: 0, z: 0.6}
-  extents: {x: 0.4, y: 0.4, z: 0}
+  direction: {x: 0, y: 0, z: 5.86}
+  radius: 0.7
+  height: 0
 --- !u!1 &8846488544990437296
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,11 +141,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls:
@@ -177,6 +179,9 @@ MonoBehaviour:
   onEnd:
     m_PersistentCalls:
       m_Calls: []
+  onPlanar:
+    m_PersistentCalls:
+      m_Calls: []
   moveType: 0
   callMethod: OnBullet
   messageUpward: 0
@@ -185,11 +190,10 @@ MonoBehaviour:
   lifeTime: 4
   endDelay: 2
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
-  collisionRay: {fileID: 2957392415754230812}
+  collisionRay: {fileID: 0}
 --- !u!1001 &3911478759142237584
 PrefabInstance:
   m_ObjectHideFlags: 0

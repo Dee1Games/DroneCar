@@ -19,6 +19,8 @@ namespace RaycastPro
         private static void Quit() => EditorPrefs.DeleteKey(FIRST_TIME);
         private static void RunOnce()
         {
+            // need scriptable object System
+            RCProPanel.LoadPreferences(false);
             // Obsolete
             RCProPanel.RefreshIcons();
             var firstTime = EditorPrefs.GetBool(FIRST_TIME, true);

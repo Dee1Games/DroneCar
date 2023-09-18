@@ -71,6 +71,6 @@ namespace RaycastPro.RaySensors
 #endif
         public override Vector3 Tip => transform.position + Direction;
         public override float RayLength => direction.magnitude;
-        public override Vector3 BasePoint => transform.position;
+        public override Vector3 Base => transform.position;
     }
 }

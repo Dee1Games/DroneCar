@@ -199,7 +199,7 @@
         
         protected readonly string[] CEventNames = {"onDetectCollider", "onNewCollider", "onLostCollider"};
         protected bool GuideCondition =>
-            RCProPanel.DrawGuide && DetectedColliders.Count <= RCProPanel.DrawGuideLimitCount;
+            RCProPanel.DrawGuide && DetectedColliders.Count <= RCProPanel.DrawGuideLimitCount && gizmosUpdate == GizmosMode.Select;
         protected override void AfterValidate() => DetectFunction = SetupDetectFunction();
         protected void ColliderDetectorGeneralField(SerializedObject _so)
         {

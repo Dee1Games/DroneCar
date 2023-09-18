@@ -38,26 +38,25 @@
 
         protected override void OnCast()
         {
-            UpdatePath(PathPoints);
+            UpdatePath();
             if (pathCast) DetectIndex = PathCast(radius);
-            else DetectIndex = -1;
         }
 
         private Transform target;
-        private void UpdatePath(List<Vector3> path)
+        protected override void UpdatePath()
         {
-            path.Clear();
-            path.Add(transform.position);
+            PathPoints.Clear();
+            PathPoints.Add(transform.position);
             switch (chainReference)
             {
                 case ChainReference.Point:
-                    path.AddRange((relative ? chainPoints.ToRelative() : chainPoints).ToLocal(transform));
+                    PathPoints.AddRange((relative ? chainPoints.ToRelative() : chainPoints).ToLocal(transform));
                     break;
                 case ChainReference.Transform:
                 {
                     for (var index = 0; index < targets.Length; index++) // For is fastest
                     {
-                        if (targets[index]) path.Add(targets[index].position);
+                        if (targets[index]) PathPoints.Add(targets[index].position);
                     }
                     break;
                 }
@@ -72,24 +71,17 @@
             EditorUpdate();
             if (PathPoints.Count == 0) return;
             if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
-            if (IsManuelMode)
-            {
-                UpdatePath(PathPoints);
-                DrawPath(PathPoints, hit, radius, detectIndex: DetectIndex, drawSphere: true);
-            }
-            else
-            {
-                DrawPath(PathPoints, hit, radius,  detectIndex: DetectIndex, drawSphere: true);
-            }
 
+            FullPathDraw(radius);
+            
             if (RCProPanel.DrawGuide)
             {
                 Handles.color = Gizmos.color = HelperColor;
-                Handles.DrawDottedLine(BasePoint, Tip, StepSizeLine);
+                Handles.DrawDottedLine(Base, Tip, StepSizeLine);
                 DrawCap(PathPoints.Last(), PathPoints.LastDirection(TipDirection));
                 if (RCProPanel.ShowLabels)
                 {
-                    Handles.Label((BasePoint + Tip) / 2,
+                    Handles.Label((Base + Tip) / 2,
                         "<color=#2BC6D2>Distance:</color> <color=#FFFFFF>" + TipLength.ToString("F2") + "</color>", new GUIStyle {richText = true});
                 }
             }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.13359609, g: 0.16466227, b: 0.3118877, a: 1}
+  m_IndirectSpecularColor: {r: 0.0931321, g: 0.11173099, b: 0.06432287, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -173,6 +173,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -181,6 +182,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -261,6 +263,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   poolManager: {fileID: 0}
   offset: 0.05
@@ -268,6 +271,7 @@ MonoBehaviour:
   length: 1
   outerType: 0
   baseDirection: 0
+  clonePathCast: 1
   outerRay: {fileID: 0}
   onReceiveRay:
     m_PersistentCalls:
@@ -402,6 +406,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -489,6 +494,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 178712310}
   useLinerClampedPosition: 0
@@ -497,6 +503,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -530,13 +537,13 @@ MonoBehaviour:
   - {x: 7.975, y: 0, z: 0.7940191}
   - {x: 8.436956, y: 0, z: 0.4984392}
   - {x: 8.436955, y: 0, z: 1.6556004}
-  DetectIndex: -1
   reflectLayer:
     serializedVersion: 2
     m_Bits: 1
   radius: 0.05
   planeAxis: 0
   hasFreezeAxis: 0
+  maxReflect: -1
 --- !u!120 &178712310
 LineRenderer:
   serializedVersion: 2
@@ -953,6 +960,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -961,6 +969,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -1042,6 +1051,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 3
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -1219,6 +1229,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 495695063}
   useLinerClampedPosition: 0
@@ -1227,6 +1238,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -1272,7 +1284,6 @@ MonoBehaviour:
   - {x: 6, y: 0.23111117, z: 0.86666673}
   - {x: 6, y: 0.124444604, z: 0.93333334}
   - {x: 6, y: 0, z: 1}
-  DetectIndex: -1
   segments: 15
   elapsedTime: 5
   velocityLocal: 1
@@ -1554,6 +1565,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -1644,11 +1656,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -1656,6 +1668,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlanar:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
@@ -1666,7 +1681,6 @@ MonoBehaviour:
   lifeTime: 10
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
@@ -1774,6 +1788,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -1865,6 +1880,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 3
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -1963,6 +1979,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 776772565}
   useLinerClampedPosition: 0
@@ -1971,6 +1988,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -2186,8 +2204,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
-  createPoolAtStart: 1
   poolManager: {fileID: 0}
   bullets:
   - {fileID: 1549138427}
@@ -2224,7 +2242,7 @@ MonoBehaviour:
       - m_Target: {fileID: 784106918}
         m_TargetAssemblyTypeName: RaycastPro.GunCaster`3[[RaycastPro.Bullets.BasicBullet,
           RaycastPro
-        m_MethodName: BulletOn
+        m_MethodName: BulletActive
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2271,6 +2289,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 804850921}
   useLinerClampedPosition: 0
@@ -2279,6 +2298,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -2517,6 +2537,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -2710,6 +2731,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 1
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -2718,6 +2740,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -2800,6 +2823,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   poolManager: {fileID: 0}
   offset: 0.05
@@ -2807,6 +2831,7 @@ MonoBehaviour:
   length: 1
   outerType: 0
   baseDirection: 0
+  clonePathCast: 1
   outerRay: {fileID: 0}
   onReceiveRay:
     m_PersistentCalls:
@@ -2938,6 +2963,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 1
+  EventFoldout: 0
   gizmosUpdate: 2
   poolManager: {fileID: 0}
   offset: 0.05
@@ -2945,6 +2971,7 @@ MonoBehaviour:
   length: 1
   outerType: 0
   baseDirection: 0
+  clonePathCast: 1
   outerRay: {fileID: 0}
   onReceiveRay:
     m_PersistentCalls:
@@ -3072,6 +3099,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -3080,6 +3108,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3359,6 +3388,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 1
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -3367,6 +3397,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3431,6 +3462,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -3439,6 +3471,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3632,6 +3665,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 1252417386}
   useLinerClampedPosition: 0
@@ -3640,6 +3674,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -3816,6 +3851,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 1288775647}
   useLinerClampedPosition: 0
@@ -3824,6 +3860,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -4025,6 +4062,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 1
+  EventFoldout: 0
   gizmosUpdate: 2
   onDetect:
     m_PersistentCalls:
@@ -4098,6 +4136,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -4194,7 +4233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1090231600675573113, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1090231600675573113, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4450,11 +4489,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -4462,6 +4501,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlanar:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
@@ -4472,11 +4514,12 @@ MonoBehaviour:
   lifeTime: 4
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
   collisionRay: {fileID: 0}
+  Path: []
+  turnSharpness: 15
   duration: 1
   curve:
     serializedVersion: 2
@@ -4507,7 +4550,8 @@ MonoBehaviour:
     axis: 2
     syncAxis: 1
     flipAxis: 0
-  local: 0
+  live: 1
+  onHit: 1
 --- !u!33 &1370086663
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4900,6 +4944,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 1408978707}
   useLinerClampedPosition: 0
@@ -4908,6 +4953,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5125,6 +5171,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   poolManager: {fileID: 0}
   offset: 0.05
@@ -5132,6 +5179,7 @@ MonoBehaviour:
   length: 1
   outerType: 0
   baseDirection: 0
+  clonePathCast: 1
   outerRay: {fileID: 0}
   onReceiveRay:
     m_PersistentCalls:
@@ -5486,6 +5534,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -5494,6 +5543,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5573,6 +5623,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -5697,7 +5748,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1526973316
 GameObject:
@@ -5814,11 +5865,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   timeMode: 3
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -5826,6 +5877,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlanar:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
@@ -5836,7 +5890,6 @@ MonoBehaviour:
   lifeTime: 1
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
@@ -5892,6 +5945,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 1554436713}
   useLinerClampedPosition: 1
@@ -5900,6 +5954,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 0
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -5930,23 +5985,22 @@ MonoBehaviour:
   pathCast: 0
   PathPoints:
   - {x: 7, y: 0, z: 0}
-  - {x: 7, y: -0.0010160444, z: 0.0625}
-  - {x: 7, y: -0.0019377711, z: 0.125}
-  - {x: 7, y: 0.0010881984, z: 0.1875}
-  - {x: 7, y: 0.011325712, z: 0.25}
-  - {x: 7, y: 0.029675959, z: 0.3125}
-  - {x: 7, y: 0.05347814, z: 0.375}
-  - {x: 7, y: 0.07633292, z: 0.4375}
-  - {x: 7, y: 0.089149594, z: 0.5}
-  - {x: 7, y: 0.08229959, z: 0.5625}
-  - {x: 7, y: 0.04844427, z: 0.625}
-  - {x: 7, y: -0.014630257, z: 0.6875}
-  - {x: 7, y: -0.10193144, z: 0.75}
-  - {x: 7, y: -0.20060948, z: 0.8125}
-  - {x: 7, y: -0.29115877, z: 0.875}
-  - {x: 7, y: -0.3505083, z: 0.9375}
-  - {x: 7, y: -0.3565984, z: 1}
-  DetectIndex: -1
+  - {x: 7, y: -0.0005186923, z: 0.0625}
+  - {x: 7, y: 0.00033930317, z: 0.125}
+  - {x: 7, y: 0.006078869, z: 0.1875}
+  - {x: 7, y: 0.018611295, z: 0.25}
+  - {x: 7, y: 0.03684736, z: 0.3125}
+  - {x: 7, y: 0.056167047, z: 0.375}
+  - {x: 7, y: 0.069039606, z: 0.4375}
+  - {x: 7, y: 0.06676762, z: 0.5}
+  - {x: 7, y: 0.04201407, z: 0.5625}
+  - {x: 7, y: -0.008482612, z: 0.625}
+  - {x: 7, y: -0.081727035, z: 0.6875}
+  - {x: 7, y: -0.16750166, z: 0.75}
+  - {x: 7, y: -0.24908817, z: 0.8125}
+  - {x: 7, y: -0.30579835, z: 0.875}
+  - {x: 7, y: -0.3170186, z: 0.9375}
+  - {x: 7, y: -0.26707044, z: 1}
   timeMode: 0
   segments: 16
   radius: 0
@@ -6048,22 +6102,22 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 7, y: 0, z: 0}
-  - {x: 7, y: -0.0010160444, z: 0.0625}
-  - {x: 7, y: -0.0019377711, z: 0.125}
-  - {x: 7, y: 0.0010881984, z: 0.1875}
-  - {x: 7, y: 0.011325712, z: 0.25}
-  - {x: 7, y: 0.029675959, z: 0.3125}
-  - {x: 7, y: 0.05347814, z: 0.375}
-  - {x: 7, y: 0.07633292, z: 0.4375}
-  - {x: 7, y: 0.089149594, z: 0.5}
-  - {x: 7, y: 0.08229959, z: 0.5625}
-  - {x: 7, y: 0.04844427, z: 0.625}
-  - {x: 7, y: -0.014630257, z: 0.6875}
-  - {x: 7, y: -0.10193144, z: 0.75}
-  - {x: 7, y: -0.20060948, z: 0.8125}
-  - {x: 7, y: -0.29115877, z: 0.875}
-  - {x: 7, y: -0.3505083, z: 0.9375}
-  - {x: 7, y: -0.3565984, z: 1}
+  - {x: 7, y: -0.0005186923, z: 0.0625}
+  - {x: 7, y: 0.00033930317, z: 0.125}
+  - {x: 7, y: 0.006078869, z: 0.1875}
+  - {x: 7, y: 0.018611295, z: 0.25}
+  - {x: 7, y: 0.03684736, z: 0.3125}
+  - {x: 7, y: 0.056167047, z: 0.375}
+  - {x: 7, y: 0.069039606, z: 0.4375}
+  - {x: 7, y: 0.06676762, z: 0.5}
+  - {x: 7, y: 0.04201407, z: 0.5625}
+  - {x: 7, y: -0.008482612, z: 0.625}
+  - {x: 7, y: -0.081727035, z: 0.6875}
+  - {x: 7, y: -0.16750166, z: 0.75}
+  - {x: 7, y: -0.24908817, z: 0.8125}
+  - {x: 7, y: -0.30579835, z: 0.875}
+  - {x: 7, y: -0.3170186, z: 0.9375}
+  - {x: 7, y: -0.26707044, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -6571,11 +6625,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -6583,6 +6637,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlanar:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
@@ -6593,7 +6650,6 @@ MonoBehaviour:
   lifeTime: 1
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
@@ -6942,6 +6998,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 3
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -6984,6 +7041,7 @@ MonoBehaviour:
   - {fileID: 0}
   radius: 0.5
   height: 0
+  local: 1
   limited: 1
   limitCount: 10
 --- !u!1 &1694756703
@@ -7037,6 +7095,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 1
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -7059,11 +7118,15 @@ MonoBehaviour:
   destination: {fileID: 234626683}
   colliderSize: 0.1
   radius: 5
+  angleX: 120
+  angleY: 90
   local: 1
   iteration: 8
   sharpness: 6
   markSolverCount: 10
   markSolverInfluence: 1
+  obstacleNormalInfluence: 1
+  obstacleDistanceInfluence: 1
   spiderSolver: 0
   timeMode: 0
 --- !u!1 &1722964950
@@ -7174,7 +7237,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738970007}
-  m_LocalRotation: {x: 0.18938139, y: 0.68127435, z: 0.68127435, w: -0.18938139}
+  m_LocalRotation: {x: 0.6850517, y: -0.17522627, z: -0.17522627, w: -0.6850517}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7287,8 +7350,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
-  createPoolAtStart: 1
   poolManager: {fileID: 0}
   bullets:
   - {fileID: 1370086662}
@@ -7328,7 +7391,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1766430906}
         m_TargetAssemblyTypeName: RaycastPro.GunCaster`3[[RaycastPro.Bullets.Bullet,
           RaycastPro
-        m_MethodName: BulletOn
+        m_MethodName: BulletActive
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7501,6 +7564,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 1784079355}
   useLinerClampedPosition: 0
@@ -7509,6 +7573,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -7615,6 +7680,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   poolManager: {fileID: 0}
   offset: 0.05
@@ -7622,6 +7688,7 @@ MonoBehaviour:
   length: 1
   outerType: 0
   baseDirection: 0
+  clonePathCast: 1
   outerRay: {fileID: 0}
   onReceiveRay:
     m_PersistentCalls:
@@ -7770,11 +7837,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -7782,6 +7849,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlanar:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
@@ -7792,7 +7862,6 @@ MonoBehaviour:
   lifeTime: 1
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
@@ -7909,6 +7978,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -7917,6 +7987,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -7953,7 +8024,6 @@ MonoBehaviour:
   - {x: 10.723394, y: 0, z: 0.26461208}
   - {x: 10.723394, y: 0, z: 0.26461208}
   - {x: 10.723394, y: 1, z: 0.264615}
-  DetectIndex: -1
   raySensors:
   - {fileID: 1978987995}
   - {fileID: 1186611390}
@@ -7999,6 +8069,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   poolManager: {fileID: 0}
   offset: 0.05
@@ -8006,6 +8077,7 @@ MonoBehaviour:
   length: 1
   outerType: 0
   baseDirection: 0
+  clonePathCast: 1
   outerRay: {fileID: 0}
   onReceiveRay:
     m_PersistentCalls:
@@ -8149,6 +8221,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 1831800167}
   useLinerClampedPosition: 0
@@ -8157,6 +8230,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -8190,7 +8264,6 @@ MonoBehaviour:
   - {x: 9, y: 0, z: 0.6}
   - {x: 9.6, y: 0, z: 0.6}
   - {x: 9.6, y: 0.6, z: 0.6}
-  DetectIndex: -1
   chainReference: 1
   radius: 0.05
   chainPoints:
@@ -8535,100 +8608,6 @@ MonoBehaviour:
   header: Planer
   description: They work together with RaySensors and can specifically manage them
     by applying reorientation or divisibility.
---- !u!1 &1886772450
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1886772452}
-  - component: {fileID: 1886772451}
-  m_Layer: 0
-  m_Name: Directional Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &1886772451
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886772450}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 1
-  m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 10
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &1886772452
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886772450}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 6.1115255, y: 2.22, z: 4.2307286}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1887623376
 GameObject:
   m_ObjectHideFlags: 0
@@ -8808,6 +8787,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 1952401267}
   useLinerClampedPosition: 0
@@ -8816,6 +8796,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -9032,6 +9013,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 1
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -9040,6 +9022,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -9216,6 +9199,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 1995828232}
   useLinerClampedPosition: 0
@@ -9224,6 +9208,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -9422,6 +9407,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   poolManager: {fileID: 0}
   offset: 0.05
@@ -9429,6 +9415,7 @@ MonoBehaviour:
   length: 1
   outerType: 0
   baseDirection: 0
+  clonePathCast: 1
   outerRay: {fileID: 0}
   onReceiveRay:
     m_PersistentCalls:
@@ -9720,6 +9707,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 3
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -9817,6 +9805,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -9825,6 +9814,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -9961,6 +9951,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -10046,6 +10037,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 1
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -10054,6 +10046,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -10087,7 +10080,6 @@ MonoBehaviour:
   - {x: 8, y: 0, z: 2.6}
   - {x: 8.6, y: 0, z: 2}
   - {x: 8, y: 0.6, z: 2}
-  DetectIndex: -1
   chainReference: 1
   radius: 0.05
   chainPoints:
@@ -10146,6 +10138,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -10182,6 +10175,7 @@ MonoBehaviour:
   extents: {x: 0.5, y: 0.5, z: 0.5}
   limited: 1
   limitCount: 3
+  local: 1
 --- !u!4 &543450652159286802
 Transform:
   m_ObjectHideFlags: 0

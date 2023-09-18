@@ -31,7 +31,7 @@ namespace RaycastPro.RaySensors2D
         internal override void OnGizmos()
         {
             EditorUpdate();
-            p1 = BasePoint;
+            p1 = Base;
             p2 = Tip;
             DrawDepthLine(p1, p2);
             GizmoColor = Performed ? DetectColor : DefaultColor;
@@ -57,6 +57,6 @@ namespace RaycastPro.RaySensors2D
 #endif
         public override Vector3 Tip => transform.position + Direction.ToDepth();
         public override float RayLength => direction.magnitude + size.x;
-        public override Vector3 BasePoint => transform.position;
+        public override Vector3 Base => transform.position;
     }
 }

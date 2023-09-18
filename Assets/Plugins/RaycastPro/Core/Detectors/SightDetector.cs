@@ -88,11 +88,11 @@
                 if (!CheckGeneralPass(c)) continue;
                 
                 _point = DetectFunction(c);
-                tempDis = Vector3.Distance(_point, _p);
+                tempDis = (_point- _p).sqrMagnitude;
 
-                if (tempDis > fullAwareness) // Full Awareness Shortcut
+                if (tempDis > fullAwareness*fullAwareness) // Full Awareness Shortcut
                 {
-                    if (tempDis > radius || tempDis < minRadius) continue;
+                    if (tempDis > radius*radius || tempDis < minRadius*minRadius) continue;
                     if (Vector3.Angle(Vector3.ProjectOnPlane(_point - _p, _t.up), _t.forward) > angleX / 2) continue;
                     if (Vector3.Angle(Vector3.ProjectOnPlane(_point - _p, _t.right), _t.forward) > angleY / 2) continue;
                 }

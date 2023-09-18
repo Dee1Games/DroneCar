@@ -56,7 +56,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5411629460257615451, guid: df1f55928e304bd4998685cde925d7ee, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: df1f55928e304bd4998685cde925d7ee, type: 3}
 --- !u!1 &7901559726072155924 stripped
@@ -84,6 +85,9 @@ MonoBehaviour:
   autoUpdate: 0
   gizmosUpdate: 0
   timeMode: 0
+  baseIgnoreTime: 0.1
+  bulletID: 
+  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -94,11 +98,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
-  hasCollision: 1
-  planarSensitive: 1
-  radius: 0.2
-  offset: 0
-  length: 0.3
   callMethod: OnBullet
   messageUpward: 0
   damage: 10
@@ -106,5 +105,8 @@ MonoBehaviour:
   lifeTime: 10
   endDelay: 0
   endFunction: 1
+  trailRenderer: {fileID: 0}
+  endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
+  collisionRay: {fileID: 0}

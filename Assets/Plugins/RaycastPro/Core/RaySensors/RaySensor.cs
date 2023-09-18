@@ -22,7 +22,7 @@
         /// </summary>
         /// <param name="_tag"></param>
         /// <returns></returns>
-        public bool HitInTag(string _tag) => hit.transform && hit.transform.CompareTag(_tag);
+        public bool HitInTag(string _tag) => hit.transform.CompareTag(_tag);
         public bool HitInLayer(LayerMask mask)
         {
             return hit.transform && mask == (mask | 1 << hit.transform.gameObject.layer);
@@ -50,15 +50,20 @@
         /// <summary>
         /// The distance of the ray to the hit point. returns Length If there is not Hit.
         /// </summary>
-        public float HitDistance => hit.transform ? (hit.point - BasePoint).magnitude : DirectionLength;
-
-        /// <summary>
-        /// The direction of the ray at the Hit Point.
-        /// </summary>
-        public virtual Vector3 HitDirection => hit.transform ? hit.point - BasePoint : Direction;
+        public float HitDistance => hit.transform ? (hit.point - Base).magnitude : direction.magnitude;
         
         /// <summary>
-        /// Ray direction in Selected Space
+        /// The length traveled from Ray to reach the target point
+        /// </summary>
+        public virtual float HitLength => HitDistance;
+
+        /// <summary>
+        /// The direction of the ray at the Hit Point. (not Normalized)
+        /// </summary>
+        public virtual Vector3 HitDirection => hit.transform ? hit.point - Base : Direction;
+        
+        /// <summary>
+        /// Ray direction in Selected Space. (not Normalized)
         /// </summary>
         public Vector3 Direction => local ? LocalDirection : direction;
         
@@ -70,7 +75,7 @@
         public float FlatScale => (transform.lossyScale.x + transform.lossyScale.y) / 2f;
         
         /// <summary>
-        /// Ray direction in Local space.
+        /// Ray direction in Local space. (not Normalized)
         /// </summary>
         public Vector3 LocalDirection => transform.TransformDirection(direction);
 
@@ -79,6 +84,9 @@
         /// </summary>
         public virtual float ContinuesDistance => hit.transform ? (Tip-hit.point).magnitude : DirectionLength;
 
+        /// <summary>
+        /// In case of collision, it returns the direction of Flat normal, otherwise it returns the direction base to the tip.
+        /// </summary>
         public override Vector3 TargetDirection => hit.transform ? -hit.normal : TipDirection;
 
         public RaySensor LastClone
@@ -196,38 +204,29 @@
         {
             get
             {
-                if (!hit.transform) return Color.black;
-                
-                if (hit.collider is MeshCollider meshCollider && !meshCollider.convex)
+                var material = HitMaterial;
+                if (!material) return Color.black;
+                var tex = material.mainTexture as Texture2D;
+                if (tex)
                 {
-
-                    var rend = hit.transform.GetComponent<MeshRenderer>();
-                    var tex = rend.material.mainTexture as Texture2D;
-                    if (tex)
+                    if (tex.isReadable)
                     {
-                        if (tex.isReadable)
-                        {
-                            var scale = rend.material.mainTextureScale;
-                            var offset = rend.material.mainTextureOffset;
-                            var pixelUV = hit.textureCoord;
-                            pixelUV.x *= tex.width*scale.x;
-                            pixelUV.y *= tex.height*scale.y;
-                            offset.x *= tex.width;
-                            offset.y *= tex.height;
+                        var scale = material.mainTextureScale;
+                        var offset = material.mainTextureOffset;
+                        var pixelUV = hit.textureCoord;
+                        pixelUV.x *= tex.width*scale.x;
+                        pixelUV.y *= tex.height*scale.y;
+                        offset.x *= tex.width;
+                        offset.y *= tex.height;
                         
-                            return tex.GetPixel((int) (offset.x + pixelUV.x), (int) (offset.y + pixelUV.y)) * rend.material.color;
-                        }
-#if UNITY_EDITOR
-                        Debug.LogWarning(RCProEditor.RPro+$"{hit.transform.name} material texture isn't readable!");
-#endif
-                        return rend.material.color;
+                        return tex.GetPixel((int) (offset.x + pixelUV.x), (int) (offset.y + pixelUV.y)) * material.color;
                     }
-                    return rend.material.color;
-                }
 #if UNITY_EDITOR
-                Debug.LogWarning(RCProEditor.RPro+"HitColor reading is possible only for Non-Convex MeshCollider users.");
+                    Debug.LogWarning(RCProEditor.RPro+$"{hit.transform.name} material texture isn't readable!");
 #endif
-                return Color.black;
+                    return material.color;
+                }
+                return material.color;
             }
         }
         /// <summary>
@@ -317,6 +316,11 @@
         public RaycastHit CloneHit => cloneRaySensor ? cloneRaySensor.CloneHit : hit;
         public Vector3 Normal => hit.normal;
         public Vector3 HitPoint => hit.point;
+
+        public virtual void GetPath(ref List<Vector3> path, bool onHit = false)
+        {
+            path = new List<Vector3>() {Base, onHit ? TipTarget : Tip};
+        }
 
         /// <summary>
         /// Update attached Stamp Transform
@@ -416,22 +420,22 @@
                     if (_pos >= linerBasePosition)
                     {
                         liner.positionCount = 2;
-                        liner.SetPosition(0, Vector3.Lerp(BasePoint, Tip, linerBasePosition));
-                        liner.SetPosition(1, _pos < linerEndPosition ? TipTarget : Vector3.Lerp(BasePoint, Tip, linerEndPosition));
+                        liner.SetPosition(0, Vector3.Lerp(Base, Tip, linerBasePosition));
+                        liner.SetPosition(1, _pos < linerEndPosition ? TipTarget : Vector3.Lerp(Base, Tip, linerEndPosition));
                     }
                     else liner.positionCount = 0;
                 }
                 else // USE Full Clamp
                 {
                     liner.positionCount = 2;
-                    liner.SetPosition(0, BasePoint);
+                    liner.SetPosition(0, Base);
                     liner.SetPosition(1, cutOnHit ? TipTarget : Tip);
                 }
             }
         }
         
         // ReSharper disable Unity.PerformanceAnalysis
-        protected override void RuntimeUpdate()
+        internal override void RuntimeUpdate()
         {
             OnCast();
             onCast?.Invoke();
@@ -452,8 +456,6 @@
             }
             PreviousHit = hit;
         }
-
-
         internal override void OnDetect()
         {
             onDetect?.Invoke(hit);
@@ -542,7 +544,6 @@
             {
                 cloneRaySensor.SafeRemove();
             }
-
             if (gameObject) Destroy(gameObject);
         }
 
@@ -588,7 +589,7 @@
             PlanarField(_so);
             BaseField(_so);
         }
-
+        
         protected void InformationField()
         {
             if (!hit.transform) return;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.13359609, g: 0.16466227, b: 0.3118877, a: 1}
+  m_IndirectSpecularColor: {r: 0.0931321, g: 0.11173099, b: 0.06432287, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -219,7 +219,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 45}
 --- !u!114 &241451243
 MonoBehaviour:
@@ -239,6 +239,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 65
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 0}
   useLinerClampedPosition: 1
@@ -247,6 +248,7 @@ MonoBehaviour:
   linerBasePosition: 0.22184297
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -287,7 +289,6 @@ MonoBehaviour:
   - {x: -0.0000008955362, y: -0.68999934, z: -3.2610497}
   - {x: -0.0000008955362, y: -0.69000006, z: -7.2610497}
   - {x: 0.9999991, y: -0.69000006, z: -7.2610497}
-  DetectIndex: -1
   chainReference: 1
   radius: 0
   chainPoints:
@@ -413,6 +414,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -421,6 +423,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -454,13 +457,13 @@ MonoBehaviour:
   - {x: -1.0000014, y: -0.37, z: -5.818213}
   - {x: -1.870782, y: -0.36999798, z: -5.8182106}
   - {x: -1.8708173, y: -0.3699461, z: 0.1638465}
-  DetectIndex: -1
   reflectLayer:
     serializedVersion: 2
     m_Bits: 64
   radius: 0
   planeAxis: 0
   hasFreezeAxis: 0
+  maxReflect: -1
 --- !u!4 &321815709
 Transform:
   m_ObjectHideFlags: 0
@@ -511,6 +514,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -519,6 +523,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -559,7 +564,6 @@ MonoBehaviour:
   - {x: -0.60000116, y: 0.47480083, z: -2.2610507}
   - {x: -0.8000011, y: 0.109200954, z: -2.261051}
   - {x: -1.0000012, y: -0.36999893, z: -2.261051}
-  DetectIndex: -1
   segments: 10
   elapsedTime: 4
   velocityLocal: 0
@@ -580,100 +584,6 @@ Transform:
   m_Father: {fileID: 1305368850}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!1 &440579561
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 440579563}
-  - component: {fileID: 440579562}
-  m_Layer: 0
-  m_Name: Directional Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &440579562
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 440579561}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 1
-  m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &440579563
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 440579561}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 1.7296793, y: 0.64777386, z: -3.1766899}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &517892101
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,7 +680,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -45}
 --- !u!114 &592821001
 MonoBehaviour:
@@ -785,6 +695,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   raySensor: {fileID: 1305368849}
+  raySensor2D: {fileID: 0}
+  speed: 1
+  width: 0.2
 --- !u!1001 &1144658525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -980,6 +893,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
   useLinerClampedPosition: 1
@@ -988,6 +902,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -1083,7 +998,6 @@ MonoBehaviour:
   - {x: -1.0000014, y: -0.37, z: -5.818213}
   - {x: -1.870782, y: -0.36999798, z: -5.8182106}
   - {x: -1.8707997, y: -0.36997217, z: -2.8397293}
-  DetectIndex: -1
   raySensors:
   - {fileID: 241451243}
   - {fileID: 1673076777}
@@ -1562,6 +1476,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -1570,6 +1485,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -1600,45 +1516,44 @@ MonoBehaviour:
   pathCast: 1
   PathPoints:
   - {x: 0.9999991, y: -0.69000006, z: -7.2610497}
-  - {x: 0.9999991, y: -0.6318282, z: -7.129471}
-  - {x: 0.9999991, y: -0.56766087, z: -6.997892}
-  - {x: 0.9999991, y: -0.5132873, z: -6.866313}
-  - {x: 0.9999991, y: -0.48828068, z: -6.734734}
-  - {x: 0.9999991, y: -0.52591735, z: -6.603155}
-  - {x: 0.9999991, y: -0.84777284, z: -6.471576}
-  - {x: 0.9999991, y: -1.03633, z: -6.339997}
-  - {x: 0.9999991, y: -1.1874774, z: -6.208418}
-  - {x: 0.9999991, y: -1.305809, z: -6.076839}
-  - {x: 0.9999991, y: -1.3785685, z: -5.94526}
-  - {x: 0.9999991, y: -1.3894169, z: -5.813681}
-  - {x: 0.9999991, y: -1.3171785, z: -5.682102}
-  - {x: 0.9999991, y: -1.1147485, z: -5.5505233}
-  - {x: 0.9999991, y: -0.33791336, z: -5.4189444}
-  - {x: 0.9999991, y: -0.00867182, z: -5.2873654}
-  - {x: 0.9999991, y: 0.18559152, z: -5.1557865}
-  - {x: 0.9999991, y: 0.28911614, z: -5.024208}
-  - {x: 0.9999991, y: 0.30487132, z: -4.8926287}
-  - {x: 0.9999991, y: 0.23226899, z: -4.76105}
-  - {x: 0.9999991, y: 0.06751853, z: -4.629471}
-  - {x: 0.9999991, y: -0.21872252, z: -4.4978914}
-  - {x: 0.9999991, y: -1.0497104, z: -4.366313}
-  - {x: 0.9999991, y: -1.3321629, z: -4.2347336}
-  - {x: 0.9999991, y: -1.4525144, z: -4.1031547}
-  - {x: 0.9999991, y: -1.4788458, z: -3.9715757}
-  - {x: 0.9999991, y: -1.4323115, z: -3.8399968}
-  - {x: 0.9999991, y: -1.3269191, z: -3.7084181}
-  - {x: 0.9999991, y: -1.1728451, z: -3.576839}
-  - {x: 0.9999991, y: -0.9658861, z: -3.44526}
-  - {x: 0.9999991, y: -0.49805605, z: -3.3136811}
-  - {x: 0.9999991, y: -0.38105768, z: -3.1821022}
-  - {x: 0.9999991, y: -0.3644257, z: -3.0505233}
-  - {x: 0.9999991, y: -0.3979013, z: -2.9189444}
-  - {x: 0.9999991, y: -0.45991674, z: -2.7873654}
-  - {x: 0.9999991, y: -0.53414977, z: -2.6557865}
-  - {x: 0.9999991, y: -0.60652816, z: -2.5242076}
-  - {x: 0.9999991, y: -0.6645275, z: -2.3926287}
+  - {x: 0.9999991, y: -0.653817, z: -7.129471}
+  - {x: 0.9999991, y: -0.7008131, z: -6.997892}
+  - {x: 0.9999991, y: -0.8092221, z: -6.866313}
+  - {x: 0.9999991, y: -0.91100484, z: -6.734734}
+  - {x: 0.9999991, y: -1.01213, z: -6.603155}
+  - {x: 0.9999991, y: -1.0983243, z: -6.4715757}
+  - {x: 0.9999991, y: -1.1525239, z: -6.339997}
+  - {x: 0.9999991, y: -1.1545103, z: -6.208418}
+  - {x: 0.9999991, y: -1.0730349, z: -6.076839}
+  - {x: 0.9999991, y: -0.6291396, z: -5.94526}
+  - {x: 0.9999991, y: -0.21812662, z: -5.8136816}
+  - {x: 0.9999991, y: -0.0028589964, z: -5.682102}
+  - {x: 0.9999991, y: 0.14387506, z: -5.5505238}
+  - {x: 0.9999991, y: 0.22121733, z: -5.4189444}
+  - {x: 0.9999991, y: 0.21991408, z: -5.2873654}
+  - {x: 0.9999991, y: 0.12756717, z: -5.1557865}
+  - {x: 0.9999991, y: -0.08098686, z: -5.0242076}
+  - {x: 0.9999991, y: -0.77793366, z: -4.8926287}
+  - {x: 0.9999991, y: -1.3122234, z: -4.7610497}
+  - {x: 0.9999991, y: -1.5199411, z: -4.629471}
+  - {x: 0.9999991, y: -1.6152198, z: -4.4978914}
+  - {x: 0.9999991, y: -1.620949, z: -4.3663125}
+  - {x: 0.9999991, y: -1.5476089, z: -4.2347336}
+  - {x: 0.9999991, y: -1.4019834, z: -4.1031547}
+  - {x: 0.9999991, y: -1.1806641, z: -3.971576}
+  - {x: 0.9999991, y: -0.6243881, z: -3.839997}
+  - {x: 0.9999991, y: -0.2602909, z: -3.7084181}
+  - {x: 0.9999991, y: -0.16099072, z: -3.576839}
+  - {x: 0.9999991, y: -0.14837307, z: -3.44526}
+  - {x: 0.9999991, y: -0.19324109, z: -3.3136811}
+  - {x: 0.9999991, y: -0.27740768, z: -3.1821022}
+  - {x: 0.9999991, y: -0.386001, z: -3.0505233}
+  - {x: 0.9999991, y: -0.5083135, z: -2.9189444}
+  - {x: 0.9999991, y: -0.71033555, z: -2.7873654}
+  - {x: 0.9999991, y: -0.7951457, z: -2.6557865}
+  - {x: 0.9999991, y: -0.7814506, z: -2.5242076}
+  - {x: 0.9999991, y: -0.74000573, z: -2.3926287}
   - {x: 0.9999991, y: -0.68999916, z: -2.2610497}
-  DetectIndex: -1
   timeMode: 0
   segments: 38
   radius: 0

@@ -100,8 +100,8 @@ namespace RaycastPro.RaySensors
         private Vector3 ExtentLengthZ => LocalDirection.normalized * extents.z / 2;
         public override Vector3 Tip => transform.position + Direction ;
         public override float RayLength => direction.magnitude + extents.z;
-        public override Vector3 BasePoint => transform.position;
-        public Vector3 ExtentBase => BasePoint - ExtentLengthZ;
+        public override Vector3 Base => transform.position;
+        public Vector3 ExtentBase => Base - ExtentLengthZ;
         public Vector3 ExtentTip => Tip + ExtentLengthZ;
     }
 }
