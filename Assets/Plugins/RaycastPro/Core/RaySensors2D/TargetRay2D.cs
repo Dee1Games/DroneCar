@@ -125,6 +125,6 @@ namespace RaycastPro.RaySensors2D
         }
 
         public override float RayLength => TipLength;
-        public override Vector3 BasePoint => transform.position;
+        public override Vector3 Base => transform.position;
     }
 }

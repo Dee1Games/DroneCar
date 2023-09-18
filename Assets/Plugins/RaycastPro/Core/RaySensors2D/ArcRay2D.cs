@@ -66,7 +66,7 @@
         {
             EditorUpdate();
             FullPathDraw(radius, true);
-            DrawDepthLine(BasePoint, Tip);
+            DrawDepthLine(Base, Tip);
             DrawNormal2D(hit, z);
             DrawNormalFilter();
         }

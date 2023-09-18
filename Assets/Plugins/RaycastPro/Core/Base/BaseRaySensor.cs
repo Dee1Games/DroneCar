@@ -3,7 +3,7 @@
     using System;
     using UnityEngine;
     using UnityEngine.Events;
-
+    using System.Collections.Generic;
 #if UNITY_EDITOR
     using Editor;
     using UnityEditor;
@@ -56,16 +56,14 @@
         /// </summary>
         public R PreviousHit { protected set; get; }
         
-        /// <summary>
-        /// A line renderer extension that follow the ray path.
-        /// </summary>
+        [Tooltip("In short of line renderer, that full follow the ray path")]
         public LineRenderer liner;
 
         /// <summary>
         /// When true, you can setup liner end position manually.
         /// </summary>
         public bool useLinerClampedPosition;
-
+        
         public bool cutOnHit;
         /// <summary>
         /// End point of liner in percent value between(0, 1).
@@ -74,11 +72,8 @@
 
         public float linerBasePosition;
         
-        /// <summary>
-        /// A Transform handler on tip of the ray.
-        /// </summary>
+        [Tooltip("A Transform handler on ray body with controlling option")]
         public Transform stamp;
-
         /// <summary>
         /// The local space affect rotation
         /// </summary>
@@ -154,7 +149,7 @@
         /// <summary>
         /// return's vector of base ray point to tip. (Form: Tip - BasePoint)
         /// </summary>
-        public Vector3 TipDirection => Tip - BasePoint;
+        public Vector3 TipDirection => Tip - Base;
         /// <summary>
         /// return's "-Hit.Normal" when detect and "HitDirection" in default.
         /// </summary>
@@ -163,7 +158,7 @@
         /// return's vector of base ray point to tip. (Form: TipDirection.magnitude)
         /// </summary>
         public float TipLength => TipDirection.magnitude;
-        public abstract Vector3 BasePoint { get; }
+        public abstract Vector3 Base { get; }
         public abstract bool ClonePerformed { get; }
 
         #region Public Methods
@@ -189,13 +184,35 @@
             stamp = newStamp;
             UpdateStamp();
         }
+        
+        public Vector3 GetPositionOnPath(float pos, ref List<Vector3> path, out Vector3 forward)
+        {
+            forward = path.LastDirection(Vector3.up);
+            for (var i = 1; i < path.Count; i++)
+            {
+                var _lDistance = path.GetEdgeLength(i);
+                if (pos < _lDistance)
+                {
+                    forward = path[i] - path[i - 1];
+                    return Vector3.Lerp(path[i - 1], path[i], pos / _lDistance);
+                }
+                pos -= _lDistance;
+            }
+
+            return path.LastOrBase(Vector3.zero);
+        }
         #endregion
 
         #region Updates
 
+        internal abstract void RuntimeUpdate();
+
         // ReSharper disable Unity.PerformanceAnalysis
         public bool Cast()
         {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
             RuntimeUpdate();
             return Performed;
         }
@@ -219,7 +236,6 @@
         /// <summary>
         /// To use this method, set the update mode to manual. This code updates "IsDetect, Hit, Liner, Stamp and Events".
         /// </summary>
-        protected abstract void RuntimeUpdate();
 
         /// <summary>
         /// Update the Line Renderer points on the ray path.
@@ -237,12 +253,17 @@
 
 #if UNITY_EDITOR
         protected abstract void EditorUpdate();
-        protected void DirectionField(SerializedObject _so)
+        protected void DirectionField(SerializedObject _so, bool _local = true)
         {
-            BeginHorizontal();
+            if (_local) BeginHorizontal();
+            
             EditorGUILayout.PropertyField(_so.FindProperty("direction"), CDirection.ToContent(TDirection));
-            LocalField(_so.FindProperty("local"));
-            EndHorizontal();
+
+            if (_local)
+            {
+                LocalField(_so.FindProperty("local"));
+                EndHorizontal();
+            }
         }
         protected void PlanarField(SerializedObject _so)
         {

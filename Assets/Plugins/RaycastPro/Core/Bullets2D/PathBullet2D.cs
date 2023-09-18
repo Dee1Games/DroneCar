@@ -32,7 +32,7 @@
         private float _dt;
         protected override void OnCast() => PathSetup(raySource);
 
-        public void PathSetup(RaySensor2D raySensor)
+        private void PathSetup(RaySensor2D raySensor)
         {
             Path = new List<Vector2>();
             do
@@ -54,7 +54,7 @@
                 }
                 else
                 {
-                    Path.Add(raySensor.BasePoint);
+                    Path.Add(raySensor.Base);
                     Path.Add(raySensor.TipTarget);
                 }
                 
@@ -64,10 +64,13 @@
 
             pathLength = Path.GetPathLength();
         }
-        public override void RuntimeUpdate()
+
+        private float posM;
+
+        internal override void RuntimeUpdate()
         {
             position = Mathf.Clamp01(position);
-            float posM;
+
             if (moveType == MoveType.Curve)
             {
                 posM = curve.Evaluate(position) * pathLength;
@@ -90,19 +93,17 @@
                     position += _dt / duration;
                     break;
             }
-            if (position >= 1) OnEnd(caster);
+            if (position >= 1) OnEndCast(caster);
             for (var i = 1; i < Path.Count; i++)
             {
-                var lineDistance = Path.GetPathLength(i);
-
-                if (posM < lineDistance)
+                lineDistance = Path.GetEdgeLength(i);
+                if (posM <= lineDistance)
                 {
                     _pos = Vector3.Lerp(Path[i - 1], Path[i], posM / lineDistance);
                     _dir = Path[i] - Path[i - 1];
 
                     break;
                 }
-
                 posM -= lineDistance;
             }
             if (rigidBody) rigidBody.MovePosition(_pos);
@@ -110,7 +111,7 @@
             if (axisRun.syncAxis) axisRun.SyncAxis(transform, _dir);
             if (collisionRay) CollisionRun(_dt);
         }
-
+        private float lineDistance;
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "A smart bullet that can recognize the path of the PathRay and move on it." + HAccurate + HDependent;

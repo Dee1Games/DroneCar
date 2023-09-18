@@ -10,14 +10,12 @@
 
     public sealed class BasicBullet : Bullet
     {
-        protected override void OnCast()
-        {
-
-        }
+        protected override void OnCast() { }
+        
         private float delta;
         private Vector3 _forward;
 
-        public override void RuntimeUpdate()
+        internal override void RuntimeUpdate()
         {
             delta = GetModeDeltaTime(timeMode);
             _forward = transform.forward;
@@ -28,10 +26,10 @@
         
         protected override void CollisionBehaviour()
         {
-            transform.position = collisionRay.cloneRaySensor.BasePoint;
+            transform.position = collisionRay.cloneRaySensor.Base;
             transform.forward = collisionRay.cloneRaySensor.Direction.normalized;
         }
-        
+
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info =

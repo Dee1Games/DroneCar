@@ -87,7 +87,10 @@ namespace RaycastPro.Editor
             return texture;
         }
         //private static string Resource_Path = "Assets/Plugins/RaycastPro/Resources";
-        public static Texture2D GetHeader() => AssetDatabase.LoadAssetAtPath<Texture2D>(RCProPanel.ResourcePath + "/RaycastPro_Header.png");
+        public static Texture2D GetHeader()
+        {
+          return AssetDatabase.LoadAssetAtPath<Texture2D>(RCProPanel.ResourcePath + "/RaycastPro_Header.png");   
+        }
         public static IEnumerable<Texture2D> GetResources()
         {
             var textureGUIDs = AssetDatabase.FindAssets("t:Texture", new[] { RCProPanel.ResourcePath });

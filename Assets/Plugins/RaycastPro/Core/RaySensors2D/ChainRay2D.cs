@@ -51,9 +51,8 @@ namespace RaycastPro.RaySensors2D
                     PathPoints.Clear();
                     foreach (var t in targets)
                     {
-                        if (!t) continue;
+                        if (t) PathPoints.Add(t.position.To2D());
                         
-                        PathPoints.Add(t.position.To2D());
                     }
                     break;
             }

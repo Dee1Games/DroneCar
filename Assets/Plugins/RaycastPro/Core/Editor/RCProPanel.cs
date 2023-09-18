@@ -23,7 +23,7 @@ namespace RaycastPro.Editor
         internal const string KEY = "RaycastPro_Key : ";
         internal const string CResourcePath = "Resource_Path";
         internal const string CShowOnStart = "Show On Startup";
-        private const int width = 460;
+        private const int width = 450;
         private const int height = 600;
 
         internal static Mode mode = Mode.TwoD;
@@ -41,7 +41,8 @@ namespace RaycastPro.Editor
         [SavePreference] internal static float normalDiscRadius = .2f;
         [SavePreference] internal static float elementDotSize = .05f;
         [SavePreference] internal static float alphaAmount = .2f;
-
+        [SavePreference] internal static float gizmosOffTime = 4f;
+        
         [SavePreference] internal static float raysStepSize = 4f;
         [SavePreference] internal static float normalFilterRadius = 1f;
         [SavePreference] internal static float linerMaxWidth = 1f;
@@ -56,6 +57,7 @@ namespace RaycastPro.Editor
 
         [SavePreference] internal static bool drawHierarchyIcons = true;
         [SavePreference] internal static int hierarchyIconsOffset = 100;
+        
 
         private static readonly bool[] settingFoldout = new bool[5];
         internal static Dictionary<Type, Texture2D> ICON_DICTIONARY = new Dictionary<Type, Texture2D>();
@@ -63,7 +65,23 @@ namespace RaycastPro.Editor
         internal static bool LoadWhenOpen = false;
         private Texture2D headerTexture;
         private Vector2 scrollPos;
-        internal static string ResourcePath => EditorPrefs.GetString(CResourcePath, "Assets/Plugins/RaycastPro/Resources");
+        internal static string ResourcePath => GetFolderPath("Resource", "RaycastPro");
+        public static string GetFolderPath(string currentFolderName, string parentFolderName)
+        {
+            string[] guids = AssetDatabase.FindAssets($"t:Folder {currentFolderName}");
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                string[] pathParts = path.Split('/');
+
+                if (pathParts.Length >= 2 && pathParts[pathParts.Length - 2] == parentFolderName)
+                {
+                    return path;
+                }
+
+            }
+            return string.Empty;
+        }
 
         private float timer;
         private void OnEnable()
@@ -98,7 +116,7 @@ namespace RaycastPro.Editor
                 alignment = TextAnchor.UpperCenter,
                 richText = true
             };
-            GUILayout.Label($"<b>RAYCAST_PRO 1.0.6</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
+            GUILayout.Label($"<b>RAYCAST_PRO 1.0.7X</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
             RCProEditor.GUILine(randomColor);
             #region Content Buttons
             GUI.contentColor = RCProEditor.Aqua;
@@ -112,7 +130,7 @@ namespace RaycastPro.Editor
             {
                 cores = new List<Type>
                 {
-                    typeof(RayManager), typeof(PointSensor)
+                    typeof(RayManager), typeof(PointSensor), typeof(RayStamp), typeof(RayLiner)
                 };
             }
             else
@@ -250,12 +268,14 @@ namespace RaycastPro.Editor
                     hierarchyIconsOffset = EditorGUILayout.IntField("Icons Offset", hierarchyIconsOffset);
                 
                 EditorGUI.BeginChangeCheck();
-                DefaultColor = EditorGUILayout.ColorField("Default Color", DefaultColor);
-                DetectColor = EditorGUILayout.ColorField("Detect Color", DetectColor);
-                HelperColor = EditorGUILayout.ColorField("Helper Color", HelperColor);
-                BlockColor = EditorGUILayout.ColorField("Block Color", BlockColor);
+                DefaultColor = EditorGUILayout.ColorField("Default Color".ToContent("When your Core is ready to work without detection and in normal mode."), DefaultColor);
+                DetectColor = EditorGUILayout.ColorField("Detect Color".ToContent("When your Core is in its Perform mode."), DetectColor);
+                HelperColor = EditorGUILayout.ColorField("Helper Color".ToContent("Secondary auxiliary lines that appear in Ray to give more information or a specific message."), HelperColor);
+                BlockColor = EditorGUILayout.ColorField("Block Color".ToContent("blocked lines behind Detect."), BlockColor);
 
                 defaultValue = EditorGUILayout.FloatField("Default Value", defaultValue);
+                alphaAmount = EditorGUILayout.FloatField("Alpha Amount", alphaAmount);
+                gizmosOffTime = EditorGUILayout.FloatField("Gizmos Off Time", gizmosOffTime);
                 raysStepSize = EditorGUILayout.FloatField("Dotted Rays Step", raysStepSize);
                 normalDiscRadius = EditorGUILayout.FloatField("Normal Disc Radius", normalDiscRadius);
                 elementDotSize = EditorGUILayout.FloatField("Element Dot Size", elementDotSize);
@@ -295,7 +315,7 @@ namespace RaycastPro.Editor
                 if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
 
                 EditorGUI.BeginChangeCheck();
-                DrawGuideLimitCount = EditorGUILayout.IntField("Limit Count", DrawGuideLimitCount);
+                DrawGuideLimitCount = EditorGUILayout.IntField("Limit Count".ToContent("If you limit this variable. The number of drawing guide items in Detector does not exceed this value, so that many gizmos do not disturb the view."), DrawGuideLimitCount);
                 if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
                 EditorGUILayout.EndHorizontal();
                 
@@ -305,21 +325,6 @@ namespace RaycastPro.Editor
             GUILayout.Space(4);
             RCProEditor.GUILine(randomColor);
             
-            if (GUILayout.Button("Refresh Icons"))
-            {
-                string folderPath = "";
-                string[] guids = AssetDatabase.FindAssets("Resources" + " t:Folder");
-                foreach (string guid in guids)
-                {
-                    folderPath = AssetDatabase.GUIDToAssetPath(guid);
-                    if (folderPath.Contains("RaycastPro"))
-                    {
-                        EditorPrefs.SetString(CResourcePath, folderPath);
-                        headerTexture = IconManager.GetHeader();
-                        RefreshIcons();
-                    }
-                }
-            }
             if (GUILayout.Button("Reset Settings")) ResetSettings();
             GUILayout.EndScrollView();
             GUILayout.Space(2);
@@ -395,9 +400,10 @@ namespace RaycastPro.Editor
                     SaveColor(KEY + fieldInfo.Name, (Color) fieldInfo.GetValue(null));
             }
         }
-        public static void LoadPreferences()
+        public static void LoadPreferences(bool message = true)
         {
-            Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Loaded.</color>");
+            if (message) Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Loaded.</color>");
+
             var type = typeof(RCProPanel);
             FieldInfo[] fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
             foreach (var fieldInfo in fields)
@@ -511,7 +517,7 @@ namespace RaycastPro.Editor
             var info = infoFiled != null ? infoFiled.GetValue(null).ToString() : "No information";
             var content = ICON_DICTIONARY.Keys.Contains(type)
                 ? new GUIContent(ICON_DICTIONARY[type], info)
-                : new GUIContent(type.Name, info);
+                : new GUIContent(ICON_DICTIONARY[typeof(PointSensor)], info);
 
             var style = new GUIStyle(GUI.skin.button)
             {
@@ -662,7 +668,7 @@ namespace RaycastPro.Editor
         {
             Utility,
             TwoD,
-            ThreeD
+            ThreeD,
         }
     }
 }

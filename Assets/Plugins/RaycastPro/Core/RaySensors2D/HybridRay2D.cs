@@ -30,7 +30,7 @@
                 return length;
             }
         }
-        public override Vector3 BasePoint => raySensors.First().BasePoint;
+        public override Vector3 Base => raySensors.First().Base;
 
         private Transform _t;
         protected override void OnCast()

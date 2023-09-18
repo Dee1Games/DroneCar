@@ -67,7 +67,7 @@
         }
 
         private Vector3 _p, p0;
-        private void UpdatePath()
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             DetectIndex = -1;
@@ -116,18 +116,10 @@
             if (showGizmos)
             {
                 EditorUpdate();
-            
                 if (PathPoints.Count == 0) return;
                 if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
-                if (IsManuelMode)
-                {
-                    UpdatePath();
-                    DrawPath(PathPoints, hit, radius, detectIndex: DetectIndex, drawSphere: true);
-                }
-                else
-                {
-                    DrawPath(PathPoints, hit, radius,  detectIndex: DetectIndex, drawSphere: true);
-                }
+                if (IsManuelMode) UpdatePath();
+                DrawPath(PathPoints, hit, radius, detectIndex: DetectIndex, drawSphere: true);
             }
         }
 

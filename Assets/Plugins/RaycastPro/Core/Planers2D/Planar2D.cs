@@ -57,8 +57,6 @@ namespace RaycastPro.Planers2D
                 default: return _default;
             }
         }
-        
-
 
 #if UNITY_EDITOR
 

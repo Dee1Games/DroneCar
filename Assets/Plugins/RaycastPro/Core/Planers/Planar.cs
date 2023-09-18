@@ -36,7 +36,7 @@
         /// 
         /// </summary>
         public RaySensorEvent onEndReceiveRay;
-        
+
         public abstract void GetForward(RaySensor raySensor, out Vector3 forward);
         protected void ApplyLengthControl(RaySensor raySensor)
         {
@@ -195,8 +195,8 @@
 
         internal virtual bool OnEndReceiveRay(RaySensor sensor)
         {
-            sensor.cloneRaySensor.SafeRemove();
-            //CloneDestroy(sensor.cloneRaySensor);
+            sensor.cloneRaySensor?.SafeRemove();
+            
             return true;
         }
 

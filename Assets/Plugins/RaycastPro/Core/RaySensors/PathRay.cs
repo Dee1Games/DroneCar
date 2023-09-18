@@ -17,14 +17,60 @@
         public override Vector3 Tip => PathPoints.LastOrBase(transform.position);
         
         /// <summary>
-        /// return's direction of 2 last points of ray hit.
+        /// return's direction of 2 last points of ray hit. (not Normalized)
         /// </summary>
         public override Vector3 HitDirection => PathPoints.LastDirection(LocalDirection);
+        public override float HitLength
+        {
+            get
+            {
+                var len = 0f;
+                if (hit.transform)
+                {
+                    len = Vector3.Distance(hit.point,PathPoints[DetectIndex]);
+                    for (var i = 1; i <= DetectIndex; i++)
+                    {
+                        len += PathPoints.GetEdgeLength(i);
+                    }
+                }
+                else
+                {
+                    len = PathPoints.GetPathLength();
+                }
+                return len;
+            }
+        }
+
+        public override void GetPath(ref List<Vector3> path, bool OnHit)
+        {
+            if (OnHit)
+            {
+                if (DetectIndex > -1)
+                {
+                    path = new List<Vector3>();
+                    for (int i = 0; i < DetectIndex; i++)
+                    {
+                        path.Add(PathPoints[i]);
+                    }
+                    path.Add(hit.point);
+                }
+                else
+                {
+                    path = PathPoints;
+                }
+            }
+            else
+            {
+                path = PathPoints;
+            }
+        }
 
         /// <summary>
         /// return's total distance of the path. Alternative: PathPoints.GetPathLength().
         /// </summary>
         public override float RayLength => PathPoints.GetPathLength();
+
+        protected abstract void UpdatePath();
         
         protected int PathCast(float radius = 0f)
         {
@@ -49,13 +95,7 @@
             }
             return -1;
         }
-
-        // /// <summary>
-        // /// Let ray to process path cast or only update path points.
-        // /// </summary>
-        // public bool processPathCast;
-        //
-        public override Vector3 BasePoint => PathPoints.Count > 0 ? PathPoints.First() : transform.position;
+        public override Vector3 Base => PathPoints.Count > 0 ? PathPoints.First() : transform.position;
         public override float ContinuesDistance
         {
             get
@@ -86,9 +126,16 @@
         /// <summary>
         /// Index of Detection PathPoint. Default when no detection: -1;
         /// </summary>
-        public int DetectIndex = -1;
+        public int DetectIndex { get; internal set; } = -1;
 
 #if UNITY_EDITOR
+
+        protected void FullPathDraw(float radius = 0f, bool cap = false, bool dotted = false)
+        {
+            if (IsManuelMode) UpdatePath();
+            DrawPath(PathPoints, hit, radius, detectIndex: DetectIndex, drawSphere: true, dotted: dotted, coneCap: cap);
+        }
+
         protected void PathRayGeneralField(SerializedObject _so)
         {
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(pathCast)));

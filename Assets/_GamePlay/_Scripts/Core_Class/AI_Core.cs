@@ -156,8 +156,7 @@ public class AI_Core : MonoBehaviour
         Debug.Log($"<color=#83FF5F>{_core}</color> founded.");
         UI_Core._?.track.Begin();
         SetIKsTarget(_core.transform);
-        if (CarCore.HasBuff(IkTween)) IkTween.Kill();
-        
+        IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 1, IKDelay, f =>
         {
             weight = f;
@@ -172,9 +171,7 @@ public class AI_Core : MonoBehaviour
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> Lost.");
         UI_Core._?.track.End();
-        
-        if (CarCore.HasBuff(IkTween)) IkTween.Kill();
-
+        IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 0, IKDelay, f =>
         {
             weight = f;

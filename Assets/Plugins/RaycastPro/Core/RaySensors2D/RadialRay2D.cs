@@ -133,7 +133,7 @@
             
             var dir = Direction.ToDepth();
             DrawDepthLine(transform.position, Tip);
-            DrawNormal2D(Hit, z);
+            DrawNormal2D(hit, z);
             var col = hit ? (isDetect ? DetectColor : BlockColor) : DefaultColor;
             Handles.color = col.ToAlpha(RCProPanel.alphaAmount);
             Handles.DrawSolidArc(transform.position, Vector3.forward, dir, arcAngle / 2, dir.magnitude);
@@ -181,6 +181,6 @@
 
         public override float RayLength => direction.magnitude;
 
-        public override Vector3 BasePoint => transform.position;
+        public override Vector3 Base => transform.position;
     }
 }

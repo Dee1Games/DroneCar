@@ -17,7 +17,7 @@
             if (!body2D) body2D = GetComponent<Rigidbody2D>();
 
             
-            transform.position = raySource.BasePoint;
+            transform.position = raySource.Base;
             transform.right = raySource.TipDirection;
 
             body2D.angularVelocity = 0;
@@ -25,8 +25,8 @@
             
             body2D.AddForce(transform.right * power, forceMode);
         }
-        
-        public override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
+
+        internal override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
         public float power = 1f;
 
         public ForceMode2D forceMode = ForceMode2D.Force;

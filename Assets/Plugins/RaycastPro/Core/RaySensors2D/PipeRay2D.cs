@@ -33,7 +33,7 @@ namespace RaycastPro.RaySensors2D
         {
             if (height > 0)
             {
-                angle = local ? -Vector2.Angle(transform.right.To2D(), Vector2.right) : 0;
+                angle = local ? -Vector2.SignedAngle(transform.right, Vector2.right) : 0;
                 hit = Physics2D.CapsuleCast(transform.position, new Vector2(Mathf.Max(radius*2, 0.001f), height+radius*2), CapsuleDirection2D.Vertical, angle, Direction, direction.magnitude, detectLayer.value, MinDepth, MaxDepth);
             }
             else
@@ -53,11 +53,11 @@ namespace RaycastPro.RaySensors2D
         internal override void OnGizmos()
         {
             EditorUpdate();
-            p1 = BasePoint;
+            p1 = Base;
             p2 = Tip;
             DrawDepthLine(p1, p2);
             Handles.color = Performed ? DetectColor : DefaultColor;
-            DrawCircleRay(p1, direction, Direction, local, radius, height);
+            DrawCircleRay(p1, direction,Direction, local, radius, height);
             if (!hit) return;
             DrawNormal(hit.point.ToDepth(z), hit.normal);
             DrawNormalFilter();
@@ -81,9 +81,9 @@ namespace RaycastPro.RaySensors2D
             if (hasInfo) HitInformationField();
         }
 #endif
-        public override Vector3 Tip => transform.position + LocalDirection3D;
+        public override Vector3 Tip => transform.position + Direction3D;
 
-        public override float RayLength => LocalDirection.magnitude + radius;
-        public override Vector3 BasePoint => transform.position;
+        public override float RayLength => direction.magnitude + radius;
+        public override Vector3 Base => transform.position;
     }
 }

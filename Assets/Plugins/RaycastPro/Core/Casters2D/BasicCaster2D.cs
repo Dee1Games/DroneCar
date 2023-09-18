@@ -1,7 +1,4 @@
-﻿using System;
-using RaycastPro.RaySensors;
-
-namespace RaycastPro.Casters2D
+﻿namespace RaycastPro.Casters2D
 {
     using UnityEngine;
     using RaySensors2D;
@@ -20,7 +17,13 @@ namespace RaycastPro.Casters2D
         [Tooltip("Automatically, this ray will shoot along the LocalDirection and source BasePoint location.")]
         public RaySensor2D raySource;
         protected override void OnCast() => Cast(index);
-        public override void Cast(int _index) => BulletCast(_index, raySource, b => onCast?.Invoke(b)); // basic caster inject start, end positions to bullets
+        public override void Cast(int _index)
+        {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
+            BulletCast(_index, raySource, b => onCast?.Invoke(b)); // basic caster inject start, end positions to bullets
+        }
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414

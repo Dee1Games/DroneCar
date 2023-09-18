@@ -18,7 +18,8 @@ namespace RaycastPro.Bullets
         
         [Tooltip("If the desired object is not fixed, you can activate this option so that the parenting action is performed and the bullet remains move along with that object.")]
         public bool forceToParentHit;
-        public override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
+
+        internal override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
 
         private RaySensor lastClone;
         private Vector3 hitDirection;
@@ -36,7 +37,7 @@ namespace RaycastPro.Bullets
             }
             else if (endOnMiss)
             {
-                 OnEnd(caster);
+                 OnEndCast(caster);
             }
         }
         protected override void CollisionBehaviour() { }

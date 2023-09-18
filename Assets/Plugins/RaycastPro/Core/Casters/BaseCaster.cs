@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using UnityEngine.Events;
 
 namespace RaycastPro
 {
@@ -19,7 +19,10 @@ namespace RaycastPro
         /// </summary>
         /// <param name="_index">Bullet Array Index</param>
         public abstract void Cast(int _index);
+
+        public UnityEvent onReload;
         
+
         [Tooltip("Automatically instantiate into this object.")]
         public Transform poolManager;
         public abstract void Reload();
@@ -41,7 +44,6 @@ namespace RaycastPro
         }
 
         #endregion
-
         protected static void CopyBullet<T>(T to, T from)
         {
             var fields = to.GetType().GetFields();
@@ -58,7 +60,7 @@ namespace RaycastPro
                 prop.SetValue(to, prop.GetValue(from, null), null);
             }
         }
-
+        
         [Serializable]
         public class Ammo
         {
@@ -107,20 +109,21 @@ namespace RaycastPro
             }
             public bool Use(BaseCaster _caster, int _amount = 1)
             {
-                if (!inRate && !inReload && (magazineAmount >= _amount || infiniteAmmo))
+                if (inRate) return false;
+                if (inReload) return false;
+
+                magazineAmount -= _amount;
+                if (magazineAmount < _amount)
                 {
-                    inRate = true;
-                    _inRateC = _caster.StartCoroutine(IRate());
+                    inReload = true;
+                    _caster.StartCoroutine(IReload());
+                    _caster.onReload?.Invoke();
                     
-                    magazineAmount -= _amount;
-                    if (magazineAmount < _amount)
-                    {
-                        inReload = true;
-                        _caster.StartCoroutine(IReload());
-                    }
-                    return true;
+                    return false;
                 }
-                return false;
+                inRate = true;
+                _inRateC = _caster.StartCoroutine(IRate());
+                return true;
             }
 
             private Coroutine _inRateC;
@@ -129,6 +132,7 @@ namespace RaycastPro
             /// </summary>
             internal IEnumerator IRate()
             {
+
                 yield return new WaitForSeconds(inBetweenTime);
                 inRate = false;
             }
@@ -158,7 +162,6 @@ namespace RaycastPro
             }
 
 #if UNITY_EDITOR
-            
             internal void EditorPanel(SerializedProperty serializedProperty)
             {
                 BeginHorizontal();

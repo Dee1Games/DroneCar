@@ -13,18 +13,24 @@
         public RaySensor2D raySource;
         public RaySensor2D collisionRay;
         public float Z => transform.position.z;
+        
         internal override void Cast<R>(BaseCaster _caster, R raySensor)
         {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
             caster = _caster;
             
             raySource = raySensor as RaySensor2D;
             
-            transform.forward = raySource.LocalDirection;
-            transform.position = raySource.BasePoint;
+            if (!raySource)
+            {
+                transform.position = caster.transform.position;
+                transform.forward = caster.transform.right;
+            }
             
             OnCast(); // Auto Setup 3D Bullet
             onCast?.Invoke(caster);
-            if (trailRenderer) TrailSetup();
             if (collisionRay)
             {
                 collisionRay.enabled = false;
@@ -52,13 +58,14 @@
             if (collisionRay.cloneRaySensor)
             {
                 ignoreTime = baseIgnoreTime;
-                transform.position = collisionRay.cloneRaySensor.BasePoint;
+                transform.position = collisionRay.cloneRaySensor.Base;
                 transform.right = collisionRay.cloneRaySensor.Direction;
+                onPlanar?.Invoke();
             }
             else
             {
                 InvokeDamageEvent(collisionRay.hit.transform);
-                if (endOnCollide) OnEnd(caster);
+                if (endOnCollide) OnEndCast(caster);
             }
         }
 

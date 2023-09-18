@@ -105,14 +105,10 @@ namespace RaycastPro.Editor
         }
         internal static void EventField(SerializedObject serializedObject, IEnumerable<string> propertyNames)
         {
-            serializedObject.Update();
-
             var style = new GUIStyle { alignment = TextAnchor.MiddleCenter };
             EditorGUILayout.BeginVertical(style);
             foreach (var propertyName in propertyNames) EditorGUILayout.PropertyField(serializedObject.FindProperty(propertyName));
             EditorGUILayout.EndVertical();
-            
-            serializedObject.ApplyModifiedProperties();
         }
         internal static void HeaderField(string header, string tooltip = "")
         {

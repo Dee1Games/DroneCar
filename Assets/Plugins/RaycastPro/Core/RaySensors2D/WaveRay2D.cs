@@ -62,7 +62,6 @@ namespace RaycastPro.RaySensors2D
             dt = GetModeDeltaTime(timeMode);
             cycle += dt * waveSpeed % Mathf.PI * 2;
             step = direction.x / segments;
-            DetectIndex = -1;
             for (var i = 0; i <= segments; i++) PathPoints.Add(Function3D(i, step));
         }
 
@@ -75,7 +74,7 @@ namespace RaycastPro.RaySensors2D
             if (IsSceneView && !IsPlaying) cycle = Time.realtimeSinceStartup*waveSpeed % Mathf.PI*2;
             EditorUpdate();
             FullPathDraw(radius, true);
-            DrawDepthLine(BasePoint, Tip);
+            DrawDepthLine(Base, Tip);
             if (hit) DrawNormal(hit.point.ToDepth(z), hit.normal, hit.transform.name);
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

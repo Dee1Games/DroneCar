@@ -37,7 +37,12 @@
 
             if (direction.y != 0)
             {
-                mousePoint += local ? transform.up * direction.y : Vector2.up * direction.y;
+#if UNITY_2021_2
+                mousePoint += local ? transform.up * direction.y : Vector2.up * direction.y;  
+#else
+                mousePoint += local ? transform.up * direction.y : Vector3.up * direction.y;  
+#endif
+
             }
             if (radius > 0)
             {
@@ -61,7 +66,7 @@
         {
             EditorUpdate();
             GizmoColor = Performed ? DetectColor : DefaultColor;
-            basePoint = BasePoint;
+            basePoint = Base;
             tip = Tip;
             DrawCircleLine(basePoint, tip, radius, true, hit);
             DrawDepthLine(basePoint, tip);
@@ -103,6 +108,6 @@
         public override Vector3 Tip => Vector3.Lerp(transform.position, mousePoint, direction.x / RayLength).ToDepth(z);
 #endif
         public override float RayLength => Vector2.Distance(transform.position, mousePoint);
-        public override Vector3 BasePoint => transform.position;
+        public override Vector3 Base => transform.position;
     }
 }

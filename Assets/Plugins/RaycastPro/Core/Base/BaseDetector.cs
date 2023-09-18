@@ -57,6 +57,9 @@
         /// <returns></returns>
         public bool Cast()
         {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
             OnCast();
             return Performed;
         }
@@ -64,7 +67,7 @@
         public float pulseTime;
         private float currentPulse;
 
-        private void PulseUpdate()
+        protected void PulseUpdate()
         {
             if (pulseTime > 0)
             {

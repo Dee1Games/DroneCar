@@ -20,6 +20,8 @@ public class InGameScreen : UIScreen
     {
         Monster.OnHealthChange += UpdateMonsterHealthBar;
         PlayerVehicle.OnExploded += HideRetryButton;
+        
+        _camera = Camera.main;
     }
 
     private void OnDisable()
@@ -56,6 +58,8 @@ public class InGameScreen : UIScreen
         GameManager.Instance.GoToUpgradeMode();
     }
 
+    private Camera _camera;
+
     private void RefreshMonsterPointer()
     {
         if (GameManager.Instance.Monster != null)
@@ -63,12 +67,11 @@ public class InGameScreen : UIScreen
             monsterPointer.gameObject.SetActive(true);
             float halfWidth = Screen.width / 2;
             float halfHeight = Screen.height / 2;
-            Vector3 pos = Camera.main.WorldToScreenPoint(GameManager.Instance.Monster.GetCOMPos());
+            Vector3 pos = _camera.WorldToScreenPoint(GameManager.Instance.Monster.GetCOMPos());
             monsterPointer.position = pos;
             float pointerHalfSize = monsterPointer.rect.width / 2f;
             Vector2 anchoredPos = monsterPointer.anchoredPosition;
             if (Mathf.Abs(anchoredPos.x) < Screen.width && Mathf.Abs(anchoredPos.y) < Screen.height && pos.z>0)
-                
             {
                 monsterPointer.gameObject.SetActive(false);
                 return;

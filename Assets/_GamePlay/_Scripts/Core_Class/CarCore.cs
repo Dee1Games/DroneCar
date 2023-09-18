@@ -30,26 +30,28 @@ public class CarCore : MonoBehaviour
     private Tween fastMotion;
 
     #endregion
+
+    #region Buff System
     public float ApplySpeedBuff(float currentSpeed)
     {
-        if (HasBuff(slowMotion))
+        if (slowMotion.SafeCheck())
         {
             var pos = slowMotion.position / slowMotion.Duration();
             return currentSpeed * slowMotionCurve.Evaluate(pos);
         }
         return currentSpeed;
     }
-
-    public static bool HasBuff(Tween tween) => tween != null && tween.IsPlaying();
     public static void BuffPlay(ref Tween buff, float time = 6f)
     {
-        if (HasBuff(buff))
+        if (buff.SafeCheck())
         {
             buff.Restart();
             return;
         }
         buff = DOVirtual.DelayedCall(time, () => { Debug.Log($"{nameof(buff)} has been finished!"); });
     }
+    #endregion
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))

@@ -1,7 +1,4 @@
 ﻿
-
-using System.Collections.Generic;
-
 namespace RaycastPro.RaySensors
 {
 #if UNITY_EDITOR
@@ -62,13 +59,12 @@ namespace RaycastPro.RaySensors
         }
 
         private float dt, step;
-        private void UpdatePath()
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             dt = GetModeDeltaTime(timeMode);
             cycle += dt*waveSpeed % Mathf.PI*2;
             step = direction.z / segments;
-            DetectIndex = -1;
             for (var i = 0; i <= segments; i++) PathPoints.Add(Function3D(i, step));
         }
 #if UNITY_EDITOR
@@ -79,15 +75,7 @@ namespace RaycastPro.RaySensors
         {
             if (IsSceneView && !IsPlaying) cycle = Time.realtimeSinceStartup*waveSpeed % Mathf.PI*2;
             EditorUpdate();
-            if (IsManuelMode)
-            {
-                UpdatePath();
-                DrawPath(PathPoints, hit, detectIndex: DetectIndex, radius: radius);
-            }
-            else
-            {
-                DrawPath(PathPoints, hit, detectIndex: DetectIndex, radius: radius);
-            }
+            FullPathDraw(radius,  true);
             if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
         }
 

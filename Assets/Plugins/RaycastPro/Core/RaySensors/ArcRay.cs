@@ -32,7 +32,7 @@
         /// Using in Gizmo and OnCast Separately
         /// </summary>
         /// <returns></returns>
-        private void UpdatePath()
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             _tPos = transform.position;
@@ -58,10 +58,8 @@
         {
             EditorUpdate();
             
-            if (!IsManuelMode) UpdatePath();
+            FullPathDraw(radius, true);
             
-            DrawPath(PathPoints, hit, coneCap: true, detectIndex: DetectIndex, radius: radius, drawSphere: false);
-
             if (hit.transform) DrawNormal(hit.point, hit.normal, hit.transform.name);
         }
 

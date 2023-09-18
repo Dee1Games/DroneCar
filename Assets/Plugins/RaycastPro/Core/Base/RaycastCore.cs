@@ -1,4 +1,8 @@
-﻿namespace RaycastPro
+﻿
+using RaycastPro.RaySensors;
+using RaycastPro.RaySensors2D;
+
+namespace RaycastPro
 {
     using System;
     using System.Collections;
@@ -6,7 +10,8 @@
     using System.Linq;
     using UnityEngine;
     using UnityEngine.Rendering;
-    
+
+
 #if UNITY_EDITOR
     using Editor;
     using UnityEditor;
@@ -25,7 +30,7 @@
     }
     public interface ISceneGUI
     {
-        public void OnSceneGUI();
+        void OnSceneGUI();
     }
     
     /// <summary>
@@ -201,6 +206,13 @@
         }
 
         #region Public Methods
+        
+        public void DebugMessage(string message)
+        {
+#if UNITY_EDITOR
+            Debug.Log(RCProEditor.RPro + message);
+#endif
+        }
 
         public void SetInfluence(float value) => Influence = value;
 
@@ -222,6 +234,14 @@
         {
             Instantiate(prefab, transform.position, transform.rotation);
         }
+        /// <summary>
+        /// Instatiate in point with default rotation
+        /// </summary>
+        /// <param name="prefab"></param>
+        public void InstantiateOnPointIdentity(GameObject prefab)
+        {
+            Instantiate(prefab, transform.position, Quaternion.identity);
+        }
         #endregion
 
         protected bool InLayer(GameObject obj) => detectLayer == (detectLayer | (1 << obj.layer));
@@ -230,7 +250,6 @@
         protected abstract void OnCast();
 
         public void DestroySelf(float delay) => Destroy(gameObject, delay);
-
         protected static IEnumerator DelayRun(float delay, Action action)
         {
             yield return new WaitForSeconds(delay);
@@ -411,15 +430,16 @@
         /// <summary>
         /// In Editor (No Playing) mode & Auto Update On. /n Use "Else"  when you want to force update ray in scene while update mode is off.
         /// </summary>
-        protected internal bool IsManuelMode => !enabled && IsPlaying;
+        protected internal bool IsManuelMode => !enabled && !IsPlaying;
         
-        [NonSerialized] protected bool EventFoldout = false;
+        [SerializeField] protected bool EventFoldout = false;
 
         #region Const
 
         #region Strings
 
         protected const string HAccurate = " <color=#2BC6D2>#Accurate</color>";
+        protected const string HUtility = " <color=#CB83FF>#Utility</color>";
         protected const string HDirectional = " <color=#D571FF>#Directional</color>";
         protected const string HPathRay = " <color=#88FF75>#PathRay</color>";
         protected const string HCDetector = " <color=#FFD238>#CDetector</color>";
@@ -530,7 +550,7 @@
         protected const string TPoolManager = "Automatically instantiate into this object.";
         
         protected const string CArrayCasting = "Array Casting";
-        protected const string TArrayCasting = "This is a standard option that causes the bullets produced in a certain volume of the Array to be reproduced and prevents the spread of Garbage.";
+        protected const string TArrayCasting = "This option keeps the number of bullets produced in a limited volume of the array to prevent the continuous production of Garbage. You will also have access to the array of bullets fired. To change the bullets of a different type, just use a different and desired Bullet ID so that they are automatically changed.";
 
         protected const string CLengthControl = "Length Controll";
         protected const string TLengthControl = "It will clone ray same as received ray if this param null.";
@@ -697,7 +717,7 @@
         internal static bool IsLabel => RCProPanel.ShowLabels;
         internal static bool IsGuide => RCProPanel.DrawGuide;
         internal static bool IsDetectLine => RCProPanel.DrawDetectLine;
-        internal static bool IsBlockLine => RCProPanel.DrawDetectLine;
+        internal static bool IsBlockLine => RCProPanel.DrawBlockLine;
         internal abstract void OnGizmos();
         protected static void DrawDetectLine(Vector3 p1, Vector3 p2, RaycastHit hit, bool isDetect)
         {
@@ -718,9 +738,9 @@
                 DrawLine(p1, p2);
             }
         }
-        protected static Color GizmoColor
+        protected Color GizmoColor
         {
-            set => Gizmos.color = Handles.color = value;
+            set => Gizmos.color = Handles.color = value.ToAlpha(alphaCharge);
         }
         /// <summary>
         /// Set Gizmo And Handles Color Together;
@@ -751,7 +771,7 @@
         {
             Handles.color = HelperColor;
             
-            Handles.DrawWireDisc(point, normal, radius > 0 ? radius : DotSize);
+            Handles.DrawWireDisc(point, normal, radius > 0 ? radius : DiscSize);
             Handles.DrawLine(point, point + normal * offset);
             if (RCProPanel.ShowLabels && label != "")
             {
@@ -776,7 +796,7 @@
 
             DrawCap(endPoint, endPoint-startPoint);
 
-            Handles.color = HelperColor;
+            Handles.color = HelperColor.ToAlpha(alphaCharge);
             var right = transform.right * DotSize;
             DrawWidthLine(startPoint, endPoint, right);
         }
@@ -787,7 +807,7 @@
             Handles.ConeHandleCap(0, endPoint, Quaternion.LookRotation(endPoint - startPoint, Vector3.up), DotSize,
                 EventType.Repaint);
 
-            Handles.color = HelperColor;
+            Handles.color = HelperColor.ToAlpha(alphaCharge);;
             var forward = transform.forward * DotSize;
             DrawWidthLine(startPoint, endPoint, forward);
         }
@@ -1281,7 +1301,7 @@
             Handles.DrawLine(p1 + right, p1 - right);
             Handles.DrawLine(p2 + right, p2 - right);
         }
-        protected internal static void DrawPath(List<Vector3> path, RaycastHit breakHit = default, float radius = 0f,
+        protected internal void DrawPath(List<Vector3> path, RaycastHit breakHit = default, float radius = 0f,
             bool coneCap = false, bool dotted = false, bool drawSphere = false, int detectIndex = -1, Color _color = default)
         {
             if (path.Count == 0) return;
@@ -1292,47 +1312,46 @@
                 {
                     if (detectIndex > -1) // with line detection
                     {
-                        Handles.color = breakHit.transform && i < detectIndex ? DetectColor : BlockColor;
+                        Handles.color = (breakHit.transform && i < detectIndex ? DetectColor : BlockColor).ToAlpha(alphaCharge);
                     }
                     else // without any detection
                     {
-                        Handles.color = _color == default ? DefaultColor : _color;
+                        Handles.color = (_color == default ? DefaultColor : _color).ToAlpha(alphaCharge);
                     }
                     DrawCapsuleLine(path[i], path[i + 1], radius, dotted: dotted);
                 }
                 else
                 {
-                    Handles.color = DetectColor;
+                    Handles.color = DetectColor.ToAlpha(alphaCharge);
                     var breakOn = radius > 0
                         ? GetNearestPointOnLine(path[i], path[i + 1], breakHit.point)
                         : breakHit.point;
                     DrawCapsuleLine(path[i], breakOn, radius, forwardS: false);
 
-                    Handles.color = BlockColor;
+                    Handles.color = BlockColor.ToAlpha(alphaCharge);
                     DrawCapsuleLine(breakOn, path[i + 1], radius, backS: false);
                 }
             }
             if (!coneCap || !RCProPanel.DrawGuide) return;
-            Handles.color = HelperColor;
+            Handles.color = HelperColor.ToAlpha(alphaCharge);
             DrawCap(path.Last(), radius > 0 ? radius : DotSize * 2, path.LastDirection(Vector3.forward));
         }
-        protected static void DrawPath2D(List<Vector3> path, Vector3 breakPoint, bool isDetect = false,
+        protected void DrawPath2D(List<Vector3> path, Vector3 breakPoint, bool isDetect = false,
             float radius = 0f, bool pointLabel = false, bool drawDisc = false, bool coneCap = false,
             bool dotted = false, int detectIndex = -1, float z = 0, Color _color = default)
         {
             if (path.Count == 0) return;
-
             for (var i = 0; i < path.Count - 1; i++)
             {
                 if (detectIndex != i)
                 {
                     if (detectIndex > -1) // with line detection
                     {
-                        GizmoColor = isDetect && i < detectIndex ? DetectColor : BlockColor;
+                        GizmoColor = (isDetect && i < detectIndex ? DetectColor : BlockColor).ToAlpha(alphaCharge);
                     }
                     else // without any detection
                     {
-                        GizmoColor = _color == default ? DefaultColor : _color;
+                        GizmoColor = (_color == default ? DefaultColor : _color).ToAlpha(alphaCharge);
                     }
                     DrawCircleLine(path[i], path[i + 1], radius, dotted);
                 }
@@ -1340,13 +1359,13 @@
                 {
                     if (drawDisc)
                     {
-                        GizmoColor = DetectColor;
+                        GizmoColor = DetectColor.ToAlpha(alphaCharge);
                         var breakOn = radius > 0 ? GetNearestPointOnLine(path[i], path[i + 1], breakPoint) : breakPoint;
                         breakOn = breakOn.ToDepth(z);
                         
                         DrawCircleLine(path[i], breakOn, radius, forawrdHemi: false);
                         
-                        GizmoColor = BlockColor;
+                        GizmoColor = BlockColor.ToAlpha(alphaCharge);
                         DrawCircleLine(breakOn, path[i + 1], radius, backHemi: false);
                     }
                 }
@@ -1357,7 +1376,7 @@
 
             if (!coneCap) return;
 
-            Handles.color = HelperColor;
+            Handles.color = HelperColor.ToAlpha(alphaCharge);
             DrawCap(path.Last(), radius > 0 ? radius : DotSize * 2, path.LastDirection(Vector3.right));
         }
         private static void DrawCap(Vector3 position, float radius, Vector3 direction)
@@ -1576,7 +1595,7 @@
                     EditorGUILayout.LabelField("Auto Update is OFF.".ToContent("You can manually trigger core via \"Cast()\" method"), RCProEditor.LabelStyle);
                     if (IsPlaying && GUILayout.Button("Cast"))
                     {
-                        OnCast();
+                        TestCast();
                     }
                     EndHorizontal();
                 }
@@ -1596,6 +1615,26 @@
             }
         }
 
+        internal void TestCast()
+        {
+            // This is special Test Cast that I added this line of code here too.
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
+            
+            if (this is RaySensor rS)
+            {
+                rS.RuntimeUpdate();
+            }
+            else if (this is RaySensor2D rS2D)
+            {
+                rS2D.RuntimeUpdate();
+            }
+            else if (this is BaseDetector bD)
+            {
+                bD.OnCast();
+            }
+        }
         internal static BodyType BodyTypeField(BodyType bodyType, ref float radius)
         {
             var _bodyType = RCProEditor.EnumLabelField(bodyType, CBodyType.ToContent(TBodyType));
@@ -1616,11 +1655,11 @@
             EndHorizontal();
         }
 
-        protected void WeightField(SerializedProperty weightType, SerializedProperty _weight, SerializedProperty distance, SerializedProperty offset)
+        protected static void WeightField(SerializedProperty weightType, SerializedProperty _weight, SerializedProperty distance, SerializedProperty offset)
         {
             BeginVerticalBox();
             
-            PropertyEnumField(weightType, 3, "Weight Type".ToContent("Weight Type"), new [] {"Clamp".ToContent("Clamped"), CDistance.ToContent(CDistance), COffset.ToContent(COffset)});
+            PropertyEnumField(weightType, 3, "Weight Type".ToContent(), new [] {"Clamp".ToContent(), CDistance.ToContent(CDistance), COffset.ToContent(COffset)});
 
             switch (weightType.enumValueIndex)
             {
@@ -1696,19 +1735,43 @@
             GUI.enabled = true;
             EndHorizontal();
         }
+        internal float AlphaLifeTime => RCProPanel.gizmosOffTime;
+        protected float alphaCharge = 0;
+        private bool LifePass {
+            get
+            {
+                if (!IsPlaying || enabled)
+                {
+                    alphaCharge = 1f;
+                    return true;
+                }
+
+                alphaCharge -= Time.unscaledDeltaTime;
+                return alphaCharge > 0;
+            }
+        }
         internal void OnDrawGizmos()
         {
-            if (gizmosUpdate == GizmosMode.Fix) OnGizmos();
-
+            if (gizmosUpdate == GizmosMode.Fix)
+            {
+                alphaCharge = 1;
+                OnGizmos();
+            }
             else if (gizmosUpdate == GizmosMode.Auto)
             {
                 if (IsPlaying)
                 {
-                    if (Performed || Selection.activeTransform == transform) OnGizmos();
+                    if (Performed || Selection.activeTransform == transform)
+                    {
+                        if (LifePass) OnGizmos();
+                    }
                 }
                 else
                 {
-                    if (Selection.activeTransform == transform || Selection.activeTransform == transform.parent) OnGizmos();
+                    if (Selection.activeTransform == transform || Selection.activeTransform == transform.parent)
+                    {
+                        if (LifePass) OnGizmos();
+                    }
                 }
             }
         }
@@ -1718,6 +1781,7 @@
             
             if (gizmosUpdate == GizmosMode.Select)
             {
+                alphaCharge = 1;
                 OnGizmos();
             }
         }

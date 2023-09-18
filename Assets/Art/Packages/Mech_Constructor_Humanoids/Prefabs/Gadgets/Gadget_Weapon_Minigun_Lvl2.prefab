@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 400000}
   - component: {fileID: 3300002}
   - component: {fileID: 2300002}
+  - component: {fileID: 6016454708523915122}
   m_Layer: 0
   m_Name: Gadget_Minigun_Barrel_Geom
   m_TagString: Untagged
@@ -166,6 +167,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6016454708523915122
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: a5b4b778d5f1248458a40efeff55f0d0, type: 3}
 --- !u!1 &100004
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +208,8 @@ Transform:
   m_LocalPosition: {x: -0.15227859, y: -0.0862944, z: 0.1627861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4723304764506108708}
   m_Father: {fileID: 400010}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -224,7 +240,8 @@ Transform:
   m_LocalPosition: {x: 0.14745651, y: -0.086757965, z: 0.1627861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6077535899132817194}
   m_Father: {fileID: 400010}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -255,7 +272,8 @@ Transform:
   m_LocalPosition: {x: -0.00200943, y: 0.17305191, z: 0.1627861}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3778987933881870039}
   m_Father: {fileID: 400010}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -337,6 +355,8 @@ GameObject:
   m_Component:
   - component: {fileID: 400014}
   - component: {fileID: 9500000}
+  - component: {fileID: 2966922001645151554}
+  - component: {fileID: 8549112768865580011}
   m_Layer: 0
   m_Name: Gadget_Weapon_Minigun_Lvl2
   m_TagString: Untagged
@@ -381,3 +401,335 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2966922001645151554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100014}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0aea4f039d54275960047154c0caedb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  influence: 1
+  triggerInteraction: 0
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  autoUpdate: 0
+  EventFoldout: 0
+  gizmosUpdate: 0
+  poolManager: {fileID: 0}
+  bullets:
+  - {fileID: 6216544658122314629, guid: 34538988dad064d4a920f1954a15f2fd, type: 3}
+  cloneBullets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ignoreColliders: []
+  ammo:
+    infiniteAmmo: 1
+    amount: 12
+    magazineCapacity: 60
+    magazineAmount: 60
+    reloadTime: 4
+    inBetweenTime: 0.15
+    inRate: 0
+    inReload: 0
+  trackTarget: {fileID: 0}
+  index: 0
+  cloneIndex: 0
+  usingAmmo: 1
+  arrayCasting: 1
+  arrayCapacity: 6
+  raySensors:
+  - {fileID: 6765878126707736187}
+  - {fileID: 3934777773847565657}
+  - {fileID: 1709410850108547398}
+  currentIndex: 0
+  pingPongPhase: 0
+  castType: 1
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8549112768865580011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758e04374f2a4b04c9cc92cec9950414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _advanceCaster: {fileID: 0}
+  maxSpeed: 1.5
+  tweenDuration: 1
+--- !u!1 &3866139814193353775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6077535899132817194}
+  - component: {fileID: 3934777773847565657}
+  m_Layer: 0
+  m_Name: Basic Ray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6077535899132817194
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3866139814193353775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 400004}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3934777773847565657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3866139814193353775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a47bd12f7f4a769b997acbbcf1e8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  influence: 1
+  triggerInteraction: 0
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  autoUpdate: 0
+  EventFoldout: 0
+  gizmosUpdate: 2
+  liner: {fileID: 0}
+  useLinerClampedPosition: 0
+  cutOnHit: 0
+  linerEndPosition: 1
+  linerBasePosition: 0
+  stamp: {fileID: 0}
+  local: 1
+  scalable: 0
+  stampOnHit: 0
+  stampAutoHide: 0
+  stampOffset: 0
+  syncStamp:
+    axis: 0
+    syncAxis: 0
+    flipAxis: 0
+  planarSensitive: 0
+  _planar: {fileID: 0}
+  planers: []
+  anyPlanar: 1
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onBeginDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  direction: {x: 0, y: 0, z: 20}
+--- !u!1 &6073028896232035768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4723304764506108708}
+  - component: {fileID: 1709410850108547398}
+  m_Layer: 0
+  m_Name: Basic Ray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4723304764506108708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073028896232035768}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 400002}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1709410850108547398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073028896232035768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a47bd12f7f4a769b997acbbcf1e8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  influence: 1
+  triggerInteraction: 0
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  autoUpdate: 0
+  EventFoldout: 0
+  gizmosUpdate: 2
+  liner: {fileID: 0}
+  useLinerClampedPosition: 0
+  cutOnHit: 0
+  linerEndPosition: 1
+  linerBasePosition: 0
+  stamp: {fileID: 0}
+  local: 1
+  scalable: 0
+  stampOnHit: 0
+  stampAutoHide: 0
+  stampOffset: 0
+  syncStamp:
+    axis: 0
+    syncAxis: 0
+    flipAxis: 0
+  planarSensitive: 0
+  _planar: {fileID: 0}
+  planers: []
+  anyPlanar: 1
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onBeginDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  direction: {x: 0, y: 0, z: 20}
+--- !u!1 &6300933391892115231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3778987933881870039}
+  - component: {fileID: 6765878126707736187}
+  m_Layer: 0
+  m_Name: Basic Ray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3778987933881870039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6300933391892115231}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: -0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 400006}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6765878126707736187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6300933391892115231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a47bd12f7f4a769b997acbbcf1e8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  influence: 1
+  triggerInteraction: 0
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  autoUpdate: 0
+  EventFoldout: 0
+  gizmosUpdate: 2
+  liner: {fileID: 0}
+  useLinerClampedPosition: 0
+  cutOnHit: 0
+  linerEndPosition: 1
+  linerBasePosition: 0
+  stamp: {fileID: 0}
+  local: 1
+  scalable: 0
+  stampOnHit: 0
+  stampAutoHide: 0
+  stampOffset: 0
+  syncStamp:
+    axis: 0
+    syncAxis: 0
+    flipAxis: 0
+  planarSensitive: 0
+  _planar: {fileID: 0}
+  planers: []
+  anyPlanar: 1
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onBeginDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  direction: {x: 0, y: 0, z: 20}

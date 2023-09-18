@@ -16,26 +16,6 @@
 
         public int count = 5;
 
-        // Temp Disable and no Supporting Feature..
-        // public int Count
-        // {
-        //     get => count;
-        //     set
-        //     {
-        //         if (value <= 0) return;
-        //         if (value == count) return;
-        //         count = value;
-        //         foreach (var c in CloneProfile.Keys)
-        //         {
-        //             c.enabled = true;
-        //             c.liner.enabled = true;
-        //             foreach (var r in CloneProfile[c]) RaySensor2D.CloneDestroy(r);
-        //             CloneProfile.Remove(c);
-        //             AddDividedClonesToBaseClone(c);
-        //         }
-        //     }
-        // }
-
         public readonly Dictionary<RaySensor2D, List<RaySensor2D>> CloneProfile =
             new Dictionary<RaySensor2D, List<RaySensor2D>>();
 

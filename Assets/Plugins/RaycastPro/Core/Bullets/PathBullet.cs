@@ -11,10 +11,11 @@ namespace RaycastPro.Bullets
 #endif
     
     [AddComponentMenu("RaycastPro/Bullets/" + nameof(PathBullet))] 
-    public sealed class PathBullet : Bullet, IPath<Vector3>
+    public sealed class PathBullet : Bullet
     {
-        public List<Vector3> Path { get; internal set; } = new List<Vector3>();
+        public List<Vector3> Path = new List<Vector3>();
         
+        public float turnSharpness = 15;
         public float duration = 1;
         public AnimationCurve curve = AnimationCurve.Linear(0, 0, 1, 1);
         
@@ -26,46 +27,32 @@ namespace RaycastPro.Bullets
 
         private float pathLength;
 
-        [SerializeField] private bool local = true;
-
+        [Tooltip("Track the source Path in real-time.")]
+        [SerializeField] private bool live = true;
+        [Tooltip("Considering the path according to the hit point.")]
+        [SerializeField] private bool onHit = true;
         // Cached Variables
-        private Vector3 _pos, _dir;
+        private Vector3 _pos, _dir, newPos;
         private float _dt;
         protected override void OnCast() => PathSetup(raySource);
+
+        private List<Vector3> _tPath;
 
         public void PathSetup(RaySensor raySensor)
         {
             Path = new List<Vector3>();
             do
             {
-                if (raySensor is PathRay _pathRay)
-                {
-                    if (_pathRay.DetectIndex > -1)
-                    {
-                        for (var i = 0; i <= _pathRay.DetectIndex; i++)
-                        {
-                            Path.Add(_pathRay.PathPoints[i]);
-                        }
-                        Path.Add(raySensor.HitPoint);
-                    }
-                    else
-                    {
-                        Path.AddRange(local ? new List<Vector3>(_pathRay.PathPoints) : _pathRay.PathPoints);
-                    }
-                }
-                else
-                {
-                    Path.Add(raySensor.BasePoint);
-                    Path.Add(raySensor.TipTarget);
-                }
-                
+                raySensor.GetPath(ref _tPath, collisionRay && onHit);
+                Path.AddRange(_tPath);
                 raySensor = raySensor.cloneRaySensor;
                 
             } while (raySensor);
 
             pathLength = Path.GetPathLength();
         }
-        public override void RuntimeUpdate()
+
+        internal override void RuntimeUpdate()
         {
             position = Mathf.Clamp01(position);
             float posM;
@@ -78,6 +65,7 @@ namespace RaycastPro.Bullets
             {
                 posM = position * pathLength;
             }
+            
             _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
                 
@@ -96,28 +84,31 @@ namespace RaycastPro.Bullets
             
             if (position >= 1)
             {
-                OnEnd(caster);
+                OnEndCast(caster);
             }
-            
+
+            if (live) PathSetup(raySource);
+
             for (var i = 1; i < Path.Count; i++)
             {
-                var lineDistance = Path.GetPathLength(i);
-
-                if (posM < lineDistance)
+                lineDistance = Path.GetEdgeLength(i);
+                if (posM <= lineDistance)
                 {
                     _pos = Vector3.Lerp(Path[i - 1], Path[i], posM / lineDistance);
                     _dir = Path[i] - Path[i - 1];
 
                     break;
                 }
-
                 posM -= lineDistance;
             }
+            
             if (rigidBody) rigidBody.MovePosition(_pos);
             else transform.position = _pos;
             if (collisionRay) CollisionRun(_dt);
-            if (axisRun.syncAxis) axisRun.DampedSyncAxis(transform, _dir, 4);
+            if (axisRun.syncAxis) axisRun.DampedSyncAxis(transform, _dir, turnSharpness);
         }
+
+        private float lineDistance;
         protected override void CollisionBehaviour() { }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -129,21 +120,26 @@ namespace RaycastPro.Bullets
         {
             if (hasMain)
             {
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(local)));
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(rigidBody)));
                 CastTypeField(
                     _so.FindProperty(nameof(moveType)),
                     _so.FindProperty(nameof(speed)), 
                     _so.FindProperty(nameof(duration)),
                     _so.FindProperty(nameof(curve)));
+                
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(turnSharpness)));;
+                
+                BeginVerticalBox();
                 axisRun.EditorPanel(_so.FindProperty(nameof(axisRun)));
+                EndVertical();
+                
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(live)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(onHit)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(rigidBody)));
             }
 
             if (hasGeneral) GeneralField(_so);
 
             if (hasEvents) EventField(_so);
-
-            if (hasInfo) InformationField();
         }
 #endif
 

@@ -46,7 +46,7 @@
         public Vector2 Position2D => transform.position;
 
         public Vector2 direction = new Vector2(1, 0);
-        public virtual Vector2 HitDirection => hit ? hit.point.ToDepth(z) - BasePoint : LocalDirection3D;
+        public virtual Vector2 HitDirection => hit ? hit.point.ToDepth(z) - Base : LocalDirection3D;
         public float Length => direction.magnitude;
         public Vector2 Direction => local ? LocalDirection : direction;
         public Vector2 ScaledDirection => Vector2.Scale(Direction, transform.lossyScale);
@@ -64,7 +64,12 @@
 
         public float scaleX => transform.lossyScale.x;
         public virtual float ContinuesDistance => Length - HitDistance;
-        public float HitDistance => hit ? (hit.point.ToDepth(z) - BasePoint).magnitude : Length;
+        public float HitDistance => hit ? (hit.point.ToDepth(z) - Base).magnitude : Length;
+        
+        /// <summary>
+        /// The length traveled from Ray to reach the target point
+        /// </summary>
+        public virtual float HitLength => HitDistance;
 
         public Vector3 up2D => Vector3.ProjectOnPlane(transform.up, Vector3.forward).normalized;
         public Vector3 right2D => Vector3.ProjectOnPlane(transform.right, Vector3.forward).normalized;
@@ -89,6 +94,16 @@
                     return sensor;
                 }
             }
+        }
+        
+        public virtual void GetPath2D(ref List<Vector2> path)
+        {
+            path = new List<Vector2>() {Base, Tip};
+        }
+        
+        public virtual void GetPath(ref List<Vector3> path)
+        {
+            path = new List<Vector3>() {Base, Tip};
         }
         
         #region Public Methods
@@ -240,8 +255,8 @@
                 void SetDefaultPosition()
                 {
                     liner.positionCount = 2;
-                    liner.SetPosition(0, Vector3.Lerp(BasePoint, Tip, linerBasePosition));
-                    liner.SetPosition(1, Vector3.Lerp(BasePoint, Tip, linerEndPosition));
+                    liner.SetPosition(0, Vector3.Lerp(Base, Tip, linerBasePosition));
+                    liner.SetPosition(1, Vector3.Lerp(Base, Tip, linerEndPosition));
                 }
 
                 if (useLinerClampedPosition)
@@ -254,12 +269,12 @@
                         {
                             liner.positionCount = 2;
 
-                            liner.SetPosition(0, Vector3.Lerp(BasePoint, Tip, linerBasePosition));
+                            liner.SetPosition(0, Vector3.Lerp(Base, Tip, linerBasePosition));
 
                             liner.SetPosition(1,
                                 position < linerEndPosition
                                     ? TipTarget
-                                    : Vector3.Lerp(BasePoint, Tip, linerEndPosition));
+                                    : Vector3.Lerp(Base, Tip, linerEndPosition));
                         }
                         else liner.positionCount = 0;
                     }
@@ -268,7 +283,7 @@
                 else
                 {
                     liner.positionCount = 2;
-                    liner.SetPosition(0, BasePoint);
+                    liner.SetPosition(0, Base);
                     liner.SetPosition(1, cutOnHit ? TipTarget : Tip);
                 }
             }
@@ -335,8 +350,8 @@
                 }
             }
         }
-        
-        protected override void RuntimeUpdate()
+
+        internal override void RuntimeUpdate()
         {
             SolvedQueriesCast();
             onCast?.Invoke();
@@ -437,7 +452,8 @@
 #if UNITY_EDITOR
         protected void DrawDepthLine(Vector3 p1, Vector3 p2, Color color = default)
         {
-            GizmoColor = MaxDepth > MinDepth ? HelperColor : color == default ? DefaultColor : color;
+            GizmoColor = (MaxDepth > MinDepth ? HelperColor : color == default ? DefaultColor : color).ToAlpha(alphaCharge);
+            
             Gizmos.DrawLine(new Vector3(p1.x, p1.y, MaxDepth), new Vector3(p2.x, p2.y, MaxDepth));
             Handles.DrawDottedLine(new Vector3(p1.x, p1.y, MaxDepth), new Vector3(p1.x, p1.y, MinDepth), StepSizeLine);
             Gizmos.DrawLine(new Vector3(p1.x, p1.y, MinDepth), new Vector3(p2.x, p2.y, MinDepth));
@@ -446,14 +462,10 @@
         internal static void DrawDepthLine(Vector3 p1, Vector3 p2, float MinDepth, float MaxDepth,
             Color color = default)
         {
-            GizmoColor =MaxDepth > MinDepth ? HelperColor : color == default ? DefaultColor : color;
-
+            Gizmos.color = Handles.color = MaxDepth > MinDepth ? HelperColor : color == default ? DefaultColor : color;
             Gizmos.DrawLine(new Vector3(p1.x, p1.y, MaxDepth), new Vector3(p2.x, p2.y, MaxDepth));
-
             Handles.DrawDottedLine(new Vector3(p1.x, p1.y, MaxDepth), new Vector3(p1.x, p1.y, MinDepth), StepSizeLine);
-
             Gizmos.DrawLine(new Vector3(p1.x, p1.y, MinDepth), new Vector3(p2.x, p2.y, MinDepth));
-
             Handles.DrawDottedLine(new Vector3(p2.x, p2.y, MaxDepth), new Vector3(p2.x, p2.y, MinDepth), StepSizeLine);
         }
         
@@ -607,10 +619,19 @@
             InformationField(() =>
             {
                 if (!hit) return;
+                BeginVertical();
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(Hit.transform.name);
-                GUILayout.Label(Hit.distance.ToString(CultureInfo.InvariantCulture));
+                GUILayout.Label(hit.transform.name);
+                GUILayout.Label(hit.distance.ToString());
                 GUILayout.EndHorizontal();
+                if (this is PathRay2D pathRay2D)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Detect Index");
+                    GUILayout.Label(pathRay2D.DetectIndex.ToString());
+                    GUILayout.EndHorizontal();
+                }
+                EndVertical();
             });
         }
 #endif

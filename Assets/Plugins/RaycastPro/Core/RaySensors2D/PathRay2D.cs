@@ -12,8 +12,35 @@
         public bool pathCast = true;
         public override Vector3 Tip => PathPoints.LastOrBase(transform.position).ToDepth(z);
         public override float RayLength => PathPoints.GetPathLength();
-        public override Vector3 BasePoint => PathPoints.Count > 0 ? PathPoints[0].ToDepth(z) : transform.position;
+        public override Vector3 Base => PathPoints.Count > 0 ? PathPoints[0].ToDepth(z) : transform.position;
         public override Vector2 HitDirection => PathPoints.LastDirection(LocalDirection);
+        
+        /// <summary>
+        /// The length traveled from Ray to reach the target point
+        /// </summary>
+        public override float HitLength
+        {
+            get
+            {
+                var len = 0f;
+                if (DetectIndex > -1)
+                {
+                    len = Vector3.Distance(hit.point,PathPoints[DetectIndex]);
+                    for (var i = 1; i <= DetectIndex; i++)
+                    {
+                        len += PathPoints.GetEdgeLength(i);
+                    }
+                }
+                else
+                {
+                    len = PathPoints.GetPathLength();
+                }
+                return len;
+            }
+        }
+        public override void GetPath2D(ref List<Vector2> path) => path = PathPoints;
+        public override void GetPath(ref List<Vector3> path) => path = PathPoints.ToDepth(z);
+        
         public List<Vector2> PathPoints = new List<Vector2>();
         public override float ContinuesDistance
         {
@@ -37,20 +64,18 @@
             }
         }
 
-        public int DetectIndex = -1;
+        public int DetectIndex { get; internal set; } = -1;
         private Vector2 _dir;
         protected int PathCast(out RaycastHit2D hit, float radius = 0)
         {
             hit = new RaycastHit2D();
-            var minD = MinDepth;
-            var maxD = MaxDepth;
             if (radius == 0)
             {
                 for (var i = 0; i < PathPoints.Count - 1; i++)
                 {
-                    hit = Physics2D.Linecast(PathPoints[i], PathPoints[i + 1], detectLayer.value, minD, maxD);
-                    if (!hit.transform) continue;
-                    return i;
+                    hit = Physics2D.Linecast(PathPoints[i], PathPoints[i + 1], detectLayer.value, MinDepth, MaxDepth);
+                    if (hit) return i;
+                    
                 }
             }
             else
@@ -58,9 +83,8 @@
                 for (var i = 0; i < PathPoints.Count - 1; i++)
                 {
                     _dir = PathPoints[i + 1] - PathPoints[i];
-                    hit = Physics2D.CircleCast(PathPoints[i], radius, _dir, _dir.magnitude, detectLayer.value, minD, maxD);
-                    if (!hit.transform) continue;
-                    return i;
+                    hit = Physics2D.CircleCast(PathPoints[i], radius, _dir, _dir.magnitude, detectLayer.value, MinDepth, MaxDepth);
+                    if (hit) return i;
                 }
             }
             return -1;
@@ -68,20 +92,12 @@
         protected abstract void UpdatePath();
         
 #if UNITY_EDITOR
-
         protected void FullPathDraw(float radius = 0f, bool cap = false)
         {
-            if (IsManuelMode)
-            {
-                UpdatePath();
-                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint: hit.point, radius: radius, detectIndex: DetectIndex,z: z, drawDisc: true,
-                    coneCap: true);
-            }
-            else
-            {
-                DrawPath2D(PathPoints.ToDepth(z), isDetect: hit, breakPoint:hit.point, radius: radius, detectIndex: DetectIndex, z: z, drawDisc: true,
-                    coneCap: true);
-            }
+            if (IsManuelMode) UpdatePath();
+            DrawPath2D(PathPoints.ToDepth(z), isDetect: isDetect, breakPoint: HitPointZ, radius: radius,
+                detectIndex: DetectIndex, z: z, drawDisc: true,
+                coneCap: cap);
         }
         protected void PathRayGeneralField(SerializedObject _so)
         {

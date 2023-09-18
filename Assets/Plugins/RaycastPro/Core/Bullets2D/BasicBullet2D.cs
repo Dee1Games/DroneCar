@@ -16,7 +16,7 @@
         {
             if (raySource && raySource is RaySensor2D _r)
             {
-                transform.position = _r.BasePoint;
+                transform.position = _r.Base;
                 transform.right = _r.Direction;
             }
             else
@@ -25,7 +25,8 @@
                 transform.right = caster.transform.right;
             }
         }
-        public override void RuntimeUpdate()
+
+        internal override void RuntimeUpdate()
         {
             var delta = GetModeDeltaTime(timeMode);
             var _forward = transform.right; // IN 2D forward is right

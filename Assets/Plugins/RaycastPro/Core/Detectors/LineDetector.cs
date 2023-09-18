@@ -50,7 +50,7 @@ namespace RaycastPro.Detectors
             }
         }
 
-        [SerializeField] public float radius = .4f;
+        [SerializeField] public float radius = .2f;
         public float Radius
         {
             get => radius;
@@ -64,7 +64,7 @@ namespace RaycastPro.Detectors
             set => height = Mathf.Max(0, value);
         }
         
-        public Vector3 extents = new Vector3(.4f, .4f, .4f);
+        public Vector3 extents = new Vector3(.4f, .4f, 0f);
 
 #if UNITY_EDITOR
         protected override void AfterValidate()
@@ -174,7 +174,6 @@ namespace RaycastPro.Detectors
             
             DetectedColliders = DetectedHits.Select(hit => hit.collider).Distinct().ToList();
             ColliderDetectorEvents();
-
             #endregion
 
         }
@@ -183,29 +182,25 @@ namespace RaycastPro.Detectors
         private static string Info =
 #pragma warning restore CS0414
             "Sending a fixed line in the form of Ray, Pipe or Box and collecting all Hits data." + HDirectional+ HIRadius + HIPulse + HRDetector + HINonAllocator;
-
         internal override void OnGizmos()
         {
             EditorUpdate();
 
             // === Gizmo Gate Are Written Here because of avoiding #IF UNITY EDITOR check in main class
-            var position = transform.position;
-
+            
             GizmoColor = Performed ? DetectColor : DefaultColor;
             
             switch (rayType)
             {
                 case RayType.Ray:
-                    Gizmos.DrawRay(position, Direction);
+                    Gizmos.DrawRay( transform.position, Direction);
                     break;
                 case RayType.Pipe:
                     var sphereTip = transform.position + Direction;
-                    
                     DrawCapsuleLine(transform.position, sphereTip, radius, height, _t: transform);
                     break;
                 case RayType.Box:
                     var boxTip = transform.position + Direction;
-
                     DrawBoxLine(transform.position, boxTip, extents, true);
                     break;
             }

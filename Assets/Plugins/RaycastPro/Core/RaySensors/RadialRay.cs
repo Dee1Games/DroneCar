@@ -56,7 +56,7 @@ namespace RaycastPro.RaySensors
         public Stack<RaycastHit> raycastHits = new Stack<RaycastHit>();
         public override Vector3 Tip => transform.position + Direction;
         public override float RayLength => TipLength;
-        public override Vector3 BasePoint => transform.position;
+        public override Vector3 Base => transform.position;
 
         public int Count => Pow + 1;
         private int Pow => (int) Mathf.Pow(2, subdivide);

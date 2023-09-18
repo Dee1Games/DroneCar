@@ -107,6 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400002}
+  - component: {fileID: 8692820141297086097}
   m_Layer: 0
   m_Name: Barrel_Start
   m_TagString: Untagged
@@ -130,6 +131,22 @@ Transform:
   m_Father: {fileID: 400004}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8692820141297086097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45281828b4c9247558c7c695124d6877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axis: {x: 0, y: 0, z: 1}
+  defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  limit: 40
+  twistLimit: 180
 --- !u!1 &100004
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +265,7 @@ MonoBehaviour:
     polePosition: {x: 102.48691, y: 55.126686, z: 29.400347}
     poleWeight: 0
     poleTarget: {fileID: 0}
-    clampWeight: 0.6
+    clampWeight: 0
     clampSmoothing: 1
 --- !u!1 &4528821794122783906
 GameObject:
@@ -300,6 +317,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
   useLinerClampedPosition: 0
