@@ -211,6 +211,15 @@ public class MergePlatform : MonoBehaviour
         return closestCell;
     }
 
+    public void ClearPlatform()
+    {
+        for (int i=0; i<cells.Length ; i++)
+        {
+            UserManager.Instance.SetMergePlatformCell(i, UpgradeType.Tire, -1);
+        }
+        Init();
+    }
+
     public void Show()
     {
         content.gameObject.SetActive(true);

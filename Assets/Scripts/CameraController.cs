@@ -96,6 +96,7 @@ public class CameraController : MonoBehaviour
         {
             UserManager.Instance.NextLevel();
             LevelManager.Instance.InitCurrentLevel();
+            MergePlatform.Instance.ClearPlatform();
         }
         GameManager.Instance.GoToUpgradeMode();
     }
