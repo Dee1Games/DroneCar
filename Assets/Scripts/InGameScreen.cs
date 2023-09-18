@@ -115,12 +115,8 @@ public class InGameScreen : UIScreen
         {
             SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
         } catch {}
-        GameManager.Instance.GoToPlayMode();
-        Debug.Log($"Run {UserManager.Instance.Data.Run} Started");
-        try
-        {
-            SupersonicWisdom.Api.NotifyLevelStarted(UserManager.Instance.Data.Run, null);
-        } catch {}
+        UserManager.Instance.NextRun();
+        GameManager.Instance.GoToUpgradeMode();
     }
 
     private void UpdateMonsterHealthBar(float currentHealth, float maxHealth)
