@@ -1,15 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MergeCell : MonoBehaviour
 {
-    [SerializeField] private GameObject sellUI;
-    [SerializeField] private TMP_Text sellUIText;
-    
-    
     public int Index;
     
     public MergeItem Item
@@ -24,8 +18,7 @@ public class MergeCell : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if(child.GetComponent<MergeItem>())
-                Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
         RemoveItem();
     }
@@ -50,33 +43,11 @@ public class MergeCell : MonoBehaviour
     public void RemoveItem()
     {
         Item = null;
-        MergePlatform.Instance.ShowSellUIIfNeeded();
-    }
-
-    public void ShowSellUI()
-    {
-        sellUI.SetActive(true);
-    }
-    
-    public void HideSellUI()
-    {
-        sellUI.SetActive(false);
     }
     
     private void OnMouseDown()
     {
         MergePlatform.Instance.ItemSelected(Item);
-        RemoveItem();
-        UserManager.Instance.SetMergePlatformCell(Index, UpgradeType.Tire, -1);
-    }
-    
-    public void OnClick_Sell()
-    {
-        foreach (Transform child in transform)
-        {
-            if(child.GetComponent<MergeItem>())
-                Destroy(child.gameObject);
-        }
         RemoveItem();
         UserManager.Instance.SetMergePlatformCell(Index, UpgradeType.Tire, -1);
     }
