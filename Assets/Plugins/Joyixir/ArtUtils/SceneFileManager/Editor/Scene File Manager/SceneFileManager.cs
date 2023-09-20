@@ -15,7 +15,7 @@ public class SceneFileManager : EditorWindow
     [UnityEditor.Callbacks.DidReloadScripts]
     private static void OnScriptsReloaded()
     {
-        ShowWindow();
+        // ShowWindow();
     }
 
     [MenuItem("Window/Scene File Manager")]

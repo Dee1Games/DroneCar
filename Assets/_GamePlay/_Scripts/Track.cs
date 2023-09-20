@@ -26,6 +26,7 @@ public class Track : MonoBehaviour
     private Tweener alertTween;
     public void DoAlert(float duration = 1f, Color color = default)
     {
+        alertTween.SafeKill();
         alertTween = alertImage.DOFillAmount(1, duration).OnComplete(() =>
         {
             alertImage.DOColor(color == default ? Color.white : color, .4f);
@@ -34,10 +35,7 @@ public class Track : MonoBehaviour
     }
     public void ResetAlert()
     {
-        if (alertTween != null && alertTween.IsPlaying())
-        {
-            alertTween.Kill();
-        }
+        alertTween.SafeKill();
         alertTween = alertImage.DOFillAmount(0, .5f).OnComplete(() =>
         {
             alertImage.DOColor(Color.white, .4f);

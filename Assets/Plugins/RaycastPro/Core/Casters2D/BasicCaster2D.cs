@@ -17,12 +17,12 @@
         [Tooltip("Automatically, this ray will shoot along the LocalDirection and source BasePoint location.")]
         public RaySensor2D raySource;
         protected override void OnCast() => Cast(index);
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
 #endif
-            BulletCast(_index, raySource, b => onCast?.Invoke(b)); // basic caster inject start, end positions to bullets
+            BulletCast(_bulletIndex, raySource, b => onCast?.Invoke(b)); // basic caster inject start, end positions to bullets
         }
 
 #if UNITY_EDITOR

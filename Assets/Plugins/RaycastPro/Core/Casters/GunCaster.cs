@@ -77,7 +77,8 @@ namespace RaycastPro
         }
 
         private B tempBullet;
-        
+
+
         private void OnArrayCast(B bulletObject)
         {
             if (cloneBullets[cloneIndex])

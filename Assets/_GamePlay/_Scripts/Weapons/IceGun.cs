@@ -7,19 +7,6 @@ using UnityEngine;
 
 public class IceGun : GunCore
 {
-    public float alertTime = 1f;
-    public float trackTime = 6f;
-
+    public float delayTime = 1f;
     public void SetTarget(Transform target) => caster.trackTarget = target;
-    public override void Activate()
-    {
-        caster.enabled = true;
-        UI_Core._.track.DoAlert(alertTime, alertColor);
-    }
-
-    public override void Deactivate()
-    {
-        caster.enabled = false;
-        UI_Core._.track.ResetAlert();
-    }
 }

@@ -20,7 +20,7 @@ namespace RaycastPro.Casters
         [SerializeField]
         public RaySensor[] raySensors = Array.Empty<RaySensor>();
         
-        public int currentIndex;
+        public int rayIndex;
         
         public bool pingPongPhase;
 
@@ -28,9 +28,15 @@ namespace RaycastPro.Casters
 
         public BulletEvent onCast;
         protected override void OnCast() => Cast(index);
+        
+        public void Cast(int _rayIndex, int _bulletIndex)
+        {
+            rayIndex = _rayIndex;
+            Cast(_bulletIndex);
+        }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
@@ -39,25 +45,25 @@ namespace RaycastPro.Casters
             switch (castType)
             {
                 case CastType.Together:
-                    BulletCast(_index, raySensors, bullet => onCast?.Invoke(bullet));
+                    BulletCast(_bulletIndex, raySensors, bullet => onCast?.Invoke(bullet));
                     break;
                 case CastType.Sequence:
-                    if (BulletCast(_index, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
+                    if (BulletCast(_bulletIndex, raySensors[rayIndex], bullet => onCast?.Invoke(bullet)))
                     {
-                        currentIndex = ++currentIndex % raySensors.Length;
+                        rayIndex = ++rayIndex % raySensors.Length;
                     }
                     break;
                 case CastType.Random:
-                    if (BulletCast(_index, raySensors[new Random().Next(0, raySensors.Length)], bullet => onCast?.Invoke(bullet)))
+                    if (BulletCast(_bulletIndex, raySensors[new Random().Next(0, raySensors.Length)], bullet => onCast?.Invoke(bullet)))
                     {
-                        currentIndex = ++currentIndex % raySensors.Length;
+                        rayIndex = ++rayIndex % raySensors.Length;
                     }
                     break;
                 case CastType.PingPong:
-                    if (BulletCast(_index, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
+                    if (BulletCast(_bulletIndex, raySensors[rayIndex], bullet => onCast?.Invoke(bullet)))
                     {
-                        currentIndex = pingPongPhase ? --currentIndex : ++currentIndex;
-                        if (currentIndex == raySensors.Length - 1 || currentIndex == 0) pingPongPhase = !pingPongPhase;
+                        rayIndex = pingPongPhase ? --rayIndex : ++rayIndex;
+                        if (rayIndex == raySensors.Length - 1 || rayIndex == 0) pingPongPhase = !pingPongPhase;
                     }
                     break;
             }

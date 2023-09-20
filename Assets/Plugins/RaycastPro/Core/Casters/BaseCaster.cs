@@ -17,8 +17,8 @@ namespace RaycastPro
         /// <summary>
         /// Allow to manuel Casting.
         /// </summary>
-        /// <param name="_index">Bullet Array Index</param>
-        public abstract void Cast(int _index);
+        /// <param name="_bulletIndex">Bullet Array Index</param>
+        public abstract void Cast(int _bulletIndex);
 
         public UnityEvent onReload;
         
@@ -115,13 +115,13 @@ namespace RaycastPro
                 magazineAmount -= _amount;
                 if (magazineAmount < _amount)
                 {
-                    inReload = true;
+
                     _caster.StartCoroutine(IReload());
                     _caster.onReload?.Invoke();
                     
                     return false;
                 }
-                inRate = true;
+ 
                 _inRateC = _caster.StartCoroutine(IRate());
                 return true;
             }
@@ -132,7 +132,7 @@ namespace RaycastPro
             /// </summary>
             internal IEnumerator IRate()
             {
-
+                inRate = true;
                 yield return new WaitForSeconds(inBetweenTime);
                 inRate = false;
             }
@@ -140,6 +140,7 @@ namespace RaycastPro
             public float currentReloadTime { get; private set; } = 0f;
             internal IEnumerator IReload()
             {
+                inReload = true;
                 while (currentReloadTime <= reloadTime)
                 {
                     currentReloadTime += Time.deltaTime;

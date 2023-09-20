@@ -18,7 +18,7 @@ public class UI_Core : MonoBehaviour
     {
         _ = this;
     }
-
+    
     public void Shake(float duration = 1f, float amp = 1f)
     {
         shaker.ShakeCamera(1f, amp, 10, 2f, 2f, 2f, true);

@@ -28,6 +28,8 @@ public class AI_Core : MonoBehaviour
     [Title("IKs")] public AimIK[] aimIks;
     [Range(0, 1)]
     [SerializeField] private float handsUp;
+
+    public bool forceLateUpdate;
     public float HandsUp
     {
         get => handsUp;
@@ -42,7 +44,26 @@ public class AI_Core : MonoBehaviour
     public NavMeshAgent Agent => agent;
     
     protected CarCore carCore;
-    
+
+
+    protected void OnEnable()
+    {
+        if (forceLateUpdate)
+        {
+            foreach (var aimIk in aimIks)
+            {
+                aimIk.enabled = false;
+            }
+
+            DOVirtual.DelayedCall(Time.deltaTime, () =>
+            {
+                foreach (var aimIk in aimIks)
+                {
+                    aimIk.enabled = true;
+                }
+            });
+        }
+    }
 
     protected void Awake()
     {
@@ -151,10 +172,14 @@ public class AI_Core : MonoBehaviour
     }
 
     private Tween IkTween;
+
     protected virtual void OnPlayerFound(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> founded.");
-        UI_Core._?.track.Begin();
+
+        if (UI_Core._) UI_Core._.track.Begin();
+
+        
         SetIKsTarget(_core.transform);
         IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 1, IKDelay, f =>
@@ -170,7 +195,9 @@ public class AI_Core : MonoBehaviour
     protected virtual void OnPlayerLost(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> Lost.");
-        UI_Core._?.track.End();
+
+        if (UI_Core._) UI_Core._.track.End();
+
         IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 0, IKDelay, f =>
         {

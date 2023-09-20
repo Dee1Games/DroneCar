@@ -25,7 +25,7 @@
         
         protected override void OnCast() => Cast(index);
 
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
@@ -34,22 +34,22 @@
             switch (castType)
             {
                 case CastType.Together:
-                    BulletCast(_index, raySensors, bullet => onCast?.Invoke(bullet));
+                    BulletCast(_bulletIndex, raySensors, bullet => onCast?.Invoke(bullet));
                     break;
                 case CastType.Sequence:
-                    if (BulletCast(_index, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
+                    if (BulletCast(_bulletIndex, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.Random:
-                    if (BulletCast(_index, raySensors[new System.Random().Next(0, raySensors.Length)], bullet => onCast?.Invoke(bullet)))
+                    if (BulletCast(_bulletIndex, raySensors[new System.Random().Next(0, raySensors.Length)], bullet => onCast?.Invoke(bullet)))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.PingPong:
-                    if (BulletCast(_index, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
+                    if (BulletCast(_bulletIndex, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
                     {
                         currentIndex = pingPongPhase ? --currentIndex : ++currentIndex;
 

@@ -19,9 +19,9 @@
         public RaySensor raySource;
         
         // ReSharper disable Unity.PerformanceAnalysis
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
-            BulletCast(_index, raySource, b => onCast?.Invoke(b));
+            BulletCast(_bulletIndex, raySource, b => onCast?.Invoke(b));
         }
         protected override void OnCast() => Cast(index);
 
