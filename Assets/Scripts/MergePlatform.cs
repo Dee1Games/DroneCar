@@ -47,6 +47,25 @@ public class MergePlatform : MonoBehaviour
         currentSelectedItem = null;
         GameManager.Instance.Player.transform.position = vehiclePos.position;
         GameManager.Instance.Player.transform.rotation = vehiclePos.rotation;
+
+        ShowSellUIIfNeeded();
+    }
+
+    public void ShowSellUIIfNeeded()
+    {
+        bool show = (NumberOfFullCells() >= 6);
+        foreach (MergeCell cell in cells)
+        {
+            if (show)
+            {
+                cell.ShowSellUI();
+            }
+            else
+            {
+                cell.HideSellUI();
+            }
+        }
+
     }
 
     private void Update()
@@ -99,17 +118,25 @@ public class MergePlatform : MonoBehaviour
     }
 
     public void ItemSelected(MergeItem item)
+    
     {
         currentSelectedItem = item;
     }
 
     public void SpawnUpgrade()
     {
+        if (NumberOfFullCells() >= 6)
+        {
+            return;
+        }
+        
         SpawnItemInCell(GetRandomEmptyCell());
         
         UserManager.Instance.Data.Coins -= GetCurrentUpgradePrice();
         UserManager.Instance.NextUpgrade();
         UIManager.Instance.Refresh();
+
+        ShowSellUIIfNeeded();
     }
 
     private void SpawnItemInCell(MergeCell cell)
@@ -228,6 +255,12 @@ public class MergePlatform : MonoBehaviour
     public void Hide()
     {
         content.gameObject.SetActive(false);
+    }
+    
+    public float GetCurrentSellPrice()
+    {
+        float res = 0.8f * GetCurrentUpgradePrice() * Mathf.Pow(2, LevelManager.Instance.CurrentLevelIndex - 1);
+        return Mathf.Clamp(res, 1f, 999999f);
     }
 
     public int GetCurrentUpgradePrice()
