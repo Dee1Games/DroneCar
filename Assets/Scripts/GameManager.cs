@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Map Map;
     [HideInInspector] public Monster Monster;
     [HideInInspector] public PlayerVehicle Player;
+    [HideInInspector] public float CurrentRunDamage;
 
     [SerializeField] private Vehicles VehiclesConfig;
     [SerializeField] private float respawnDelay;
@@ -55,10 +56,13 @@ public class GameManager : MonoBehaviour
         spawnPlayer();
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
         MergePlatform.Instance.Hide();
+        CurrentRunDamage = 0f;
+        Monster.OnRunStarted();
     }
 
     public void GoToUpgradeMode()
     {
+        LevelManager.Instance.InitCurrentLevel();
         isPlaying = false;
         spawnPlayer();
         MergePlatform.Instance.Init();

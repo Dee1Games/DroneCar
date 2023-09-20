@@ -47,11 +47,5 @@ public class SaveManager : MonoBehaviour
     {
         File.Delete(Path.Combine(Application.persistentDataPath, saveFileName));
     }
-    
-    [MenuItem("EditorTools/Select Monster")]
-    public static void SelectMonster()
-    {
-        Selection.activeTransform = FindObjectOfType<Monster>().transform;
-    }
     #endif
 }

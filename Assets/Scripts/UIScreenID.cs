@@ -2,5 +2,7 @@ public enum UIScreenID
 {
     MainMenu,
     InGame,
-    Merge
+    Merge,
+    EndRun,
+    EndLevel
 }

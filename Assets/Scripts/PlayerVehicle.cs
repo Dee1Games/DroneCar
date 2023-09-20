@@ -5,7 +5,6 @@ using System.Linq;
 using MoreMountains.Feedbacks;
 using SupersonicWisdomSDK;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerVehicle : MonoBehaviour
@@ -28,8 +27,6 @@ public class PlayerVehicle : MonoBehaviour
     private float maxSpeed;
     private float handeling;
     private float bomb;
-    public float Bomb => bomb;
-    
     private float gun;
     private float jumpForce;
     private Dictionary<UpgradeType, Dictionary<int, List<UpgradeItem>>> upgradeItems;
@@ -40,7 +37,6 @@ public class PlayerVehicle : MonoBehaviour
     
     public static System.Action OnExploded;
 
-    private CarCore core;
     public bool IsActive
     {
         get;
@@ -56,19 +52,9 @@ public class PlayerVehicle : MonoBehaviour
     private Rigidbody rigidbody;
     private Vector3 direction;
 
-    #region Cached_Animatios
-
-    private static readonly int Reset = Animator.StringToHash("reset");
-    private static readonly int Showcase = Animator.StringToHash("showcase");
-    private static readonly int Hover = Animator.StringToHash("hover");
-
-    #endregion
-
-
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
-        core = GetComponent<CarCore>();
 
         levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
         List<LevelIndicatorUI> allLevelUIs = GetComponentsInChildren<LevelIndicatorUI>(true).ToList();
@@ -80,9 +66,8 @@ public class PlayerVehicle : MonoBehaviour
 
     public void InitPlayMode()
     {
-        upgrades = UserManager.Instance.GetUpgradeLevels(ID);
-        anim.SetTrigger(Reset);
-        core.Restore();
+        upgrades = UserManager.Instance.GetUpgradeLevels();
+        anim.SetTrigger("reset");
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = true;
@@ -106,7 +91,7 @@ public class PlayerVehicle : MonoBehaviour
     
     public void InitShowCaseMode()   
     {
-        upgrades = UserManager.Instance.GetUpgradeLevels(ID);
+        upgrades = UserManager.Instance.GetUpgradeLevels();
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = false;
@@ -116,7 +101,7 @@ public class PlayerVehicle : MonoBehaviour
         rigidbody.useGravity = false;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
-        anim.SetTrigger(Showcase);
+        anim.SetTrigger("showcase");
         
         
         foreach (LevelIndicatorUI levelUI in levelsUI.Values)
@@ -209,7 +194,11 @@ public class PlayerVehicle : MonoBehaviour
             {
                 currentSpeed = 0f;
             }
-            // باف سرعت رو داخل کور اصلی حساب میکنه
+
+            if (transform.position.magnitude > LevelManager.Instance.GetSpaceLimit())
+            {
+                currentSpeed = 0f;
+            }
 
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
             direction = new Vector3(input.Right, 0f, inputForward);
@@ -237,7 +226,12 @@ public class PlayerVehicle : MonoBehaviour
             {
                 currentSpeed = 0f;
             }
-
+            
+            if (transform.position.magnitude > LevelManager.Instance.GetSpaceLimit())
+            {
+                currentSpeed = 0f;
+            }
+            
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
             transform.Rotate(Vector3.up, input.JoystickX*handeling);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
@@ -248,6 +242,33 @@ public class PlayerVehicle : MonoBehaviour
             Shoot();
             lastTimeShooting = Time.timeSinceLevelLoad;
         }
+
+        if (!UserManager.Instance.Data.SeenMoveTutorial)
+        {
+            if (currentSpeed == 0f)
+            {
+                TutorialManager.Instance.ShowMoveHint();
+            }
+            else
+            {
+                UserManager.Instance.SeenMoveTutorial();
+                TutorialManager.Instance.Hide();
+            }
+        }
+        
+        if (!UserManager.Instance.Data.SeenFlyTutorial && UserManager.Instance.Data.SeenMoveTutorial && currentSpeed>0f && transform.position.y<10f)
+        {
+            if (!isHovering)
+            {
+                TutorialManager.Instance.ShowFlyHint();
+            }
+            else
+            {
+                UserManager.Instance.SeenFlyTutorial();
+                TutorialManager.Instance.Hide();
+            }
+        }
+        
     }
 
     private bool CanShoot()
@@ -292,9 +313,7 @@ public class PlayerVehicle : MonoBehaviour
         
         if (isHovering)
         {
-
-            
-            rigidbody.velocity = transform.forward * core.ApplySpeedBuff(currentSpeed);
+            rigidbody.velocity = transform.forward * currentSpeed;
             rigidbody.angularVelocity = Vector3.zero;
         }
         else
@@ -311,8 +330,6 @@ public class PlayerVehicle : MonoBehaviour
         if (!IsActive)
             return;
         
-        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
-
         explodeFeedback.PlayFeedbacks();
         Deactivate();
         Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
@@ -329,15 +346,13 @@ public class PlayerVehicle : MonoBehaviour
     public void Deactivate()
     {
         IsActive = false;
-        CarCore._.End(false);
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
-        anim.SetBool(Hover, false);
+        anim.SetBool("hover", false);
         rigidbody.useGravity = false;
         rigidbody.isKinematic = true;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
-        explodeFeedback.PlayFeedbacks();
         OnExploded?.Invoke();
     }
 
@@ -348,8 +363,18 @@ public class PlayerVehicle : MonoBehaviour
             visual.SetActive(value);
         }
     }
-
-    // I Move collision code to CarCore for control damage System.
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!IsActive)
+            return;
+        Monster monster = collision.gameObject.GetComponentInParent<Monster>();
+        if (monster != null)
+        {
+            monster.TakeDamage(bomb, transform.position, false);
+        }
+        
+    }
 
     private void ConvertToCar()
     {
@@ -360,7 +385,7 @@ public class PlayerVehicle : MonoBehaviour
     {
         isChanging = true;
         isHovering = false;
-        anim.SetBool(Hover, false);
+        anim.SetBool("hover", false);
         rigidbody.useGravity = true;
         while (getDistanceToGround()>1f)
         {
@@ -378,7 +403,7 @@ public class PlayerVehicle : MonoBehaviour
     {
         isChanging = true;
         isHovering = true;
-        anim.SetBool(Hover, true);
+        anim.SetBool("hover", true);
         if(jump) 
             rigidbody.AddForce(Vector3.up*jumpForce, ForceMode.VelocityChange);
 
@@ -410,13 +435,12 @@ public class PlayerVehicle : MonoBehaviour
     {
         return getDistanceToGround() < 0.1f;
     }
-    
-    public LayerMask groundLayer;
 
     private float getDistanceToGround()
     {
+        RaycastHit hit;
         Ray ray = new Ray(pivot.position+(Vector3.up*10f), Vector3.down);
-        if(Physics.Raycast(ray, out var hit, 9999f, groundLayer.value))
+        if(Physics.Raycast(ray, out hit, 9999f, LayerMask.GetMask("Ground")))
         {
             return hit.distance-10f;
         }

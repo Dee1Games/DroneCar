@@ -28,6 +28,18 @@ namespace RootMotion.FinalIK {
 			// Warning box
 			string message = string.Empty;
 			if (!script.solver.IsValid(ref message)) AddWarningBox(message);
+
+			if (GUILayout.Button("Add Bones"))
+			{
+				var fabrik = target as FABRIK;
+
+				var current = (target as MonoBehaviour).transform;
+				while (current.GetChild(0))
+				{
+					fabrik.solver.AddBone(current.GetChild(0));
+					current = current.GetChild(0);
+				}
+			}
 		}
 		
 		void OnSceneGUI() {

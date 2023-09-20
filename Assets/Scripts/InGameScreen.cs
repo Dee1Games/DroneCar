@@ -13,15 +13,11 @@ public class InGameScreen : UIScreen
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject retryButton;
-    [SerializeField] private RectTransform monsterPointer;
-    [SerializeField] private RectTransform monsterPointerArrow;
 
     private void OnEnable()
     {
         Monster.OnHealthChange += UpdateMonsterHealthBar;
         PlayerVehicle.OnExploded += HideRetryButton;
-        
-        _camera = Camera.main;
     }
 
     private void OnDisable()
@@ -42,11 +38,6 @@ public class InGameScreen : UIScreen
         coinsText.text = UserManager.Instance.Data.Coins.ToString();
         levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
     }
-
-    private void Update()
-    {
-        RefreshMonsterPointer();
-    }
     
     public override void Hide()
     {
@@ -57,58 +48,6 @@ public class InGameScreen : UIScreen
     {
         GameManager.Instance.GoToUpgradeMode();
     }
-
-    private Camera _camera;
-
-    private void RefreshMonsterPointer()
-    {
-        if (GameManager.Instance.Monster != null)
-        {
-            monsterPointer.gameObject.SetActive(true);
-            float halfWidth = Screen.width / 2;
-            float halfHeight = Screen.height / 2;
-            Vector3 pos = _camera.WorldToScreenPoint(GameManager.Instance.Monster.GetCOMPos());
-            monsterPointer.position = pos;
-            float pointerHalfSize = monsterPointer.rect.width / 2f;
-            Vector2 anchoredPos = monsterPointer.anchoredPosition;
-            if (Mathf.Abs(anchoredPos.x) < Screen.width && Mathf.Abs(anchoredPos.y) < Screen.height && pos.z>0)
-            {
-                monsterPointer.gameObject.SetActive(false);
-                return;
-            }
-            
-            if (pos.z < 0)
-                anchoredPos.y = -halfHeight + pointerHalfSize;
-            if (anchoredPos.x < -halfWidth)
-                anchoredPos.x = -halfWidth + pointerHalfSize;
-            if (anchoredPos.x > halfWidth)
-                anchoredPos.x = halfWidth - pointerHalfSize;
-            if (anchoredPos.y < -halfHeight)
-                anchoredPos.y = -halfHeight + pointerHalfSize;
-            if (anchoredPos.y > halfHeight)
-                anchoredPos.y = halfHeight - pointerHalfSize;
-            if (Math.Abs(anchoredPos.x) < halfWidth - pointerHalfSize &&
-                Math.Abs(anchoredPos.y) < halfHeight - pointerHalfSize)
-            {
-                monsterPointer.gameObject.SetActive(false);
-            }
-            else
-            {
-                monsterPointer.anchoredPosition = anchoredPos;
-
-                Vector3 monsterPointerArrowAngles = monsterPointerArrow.eulerAngles;
-                monsterPointerArrowAngles.z = Mathf.Atan(anchoredPos.y / anchoredPos.x) * (180 / Mathf.PI);
-                if (anchoredPos.x < 0)
-                    monsterPointerArrowAngles.z += 180;
-                monsterPointerArrow.eulerAngles = monsterPointerArrowAngles;
-            }
-            
-        }
-        else
-        {
-            monsterPointer.gameObject.SetActive(false);
-        }
-    }
     
     public void OnClick_Retry()
     {
@@ -118,8 +57,12 @@ public class InGameScreen : UIScreen
         {
             SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
         } catch {}
-        UserManager.Instance.NextRun();
-        GameManager.Instance.GoToUpgradeMode();
+        GameManager.Instance.GoToPlayMode();
+        Debug.Log($"Run {UserManager.Instance.Data.Run} Started");
+        try
+        {
+            SupersonicWisdom.Api.NotifyLevelStarted(UserManager.Instance.Data.Run, null);
+        } catch {}
     }
 
     private void UpdateMonsterHealthBar(float currentHealth, float maxHealth)

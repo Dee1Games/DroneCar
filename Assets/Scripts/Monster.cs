@@ -1,58 +1,88 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using DG.Tweening;
 using MoreMountains.Tools;
-using Sirenix.OdinInspector;
+using SupersonicWisdomSDK;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-    //[SerializeField] private Animator animator;
+    [SerializeField] private Animator animator;
     [SerializeField] private List<WeakPoint> weakPoints;
     
-    [SerializeField] private float health = 100f;
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private Transform com;
-
-    /// <summary>
-    /// Auto property health for better managing
-    /// </summary>
-    public float Health
-    {
-        get => health;
-        set
-        {
-            health = value;
-            OnHealthChange?.Invoke(health, data.Health);
-        }
-    }
+    private float health;
+    private float maxHealth;
 
     public static System.Action<float, float> OnHealthChange;
 
-    private MonsterData data;
 
     public bool IsDead => (health <= 0f);
 
-    [Button("WeakPoints Setup")]
-    public void FindWeakPoints()
+    public void Init()
     {
-        weakPoints = GetComponentsInChildren<WeakPoint>().ToList();
-        foreach (var weakPoint in weakPoints)
+        this.maxHealth = LevelManager.Instance.GetCurrentMonsterHealth();
+        health = UserManager.Instance.Data.MonsterHealth*maxHealth;
+        OnHealthChange?.Invoke(health, maxHealth);
+    }
+
+    public void OnRunStarted()
+    {
+        OnHealthChange?.Invoke(health, maxHealth);
+    }
+
+    public void TakeDamage(float damage, Vector3 pos, bool bullet)
+    {
+        if (!GameManager.Instance.Player.IsActive)
+            return;
+        
+        bool weakPoint = false;
+
+        Collider[] colls = Physics.OverlapSphere(pos, 5f);
+        foreach (Collider coll in colls)
         {
-            weakPoint.FindCore();
+            WeakPoint point  = coll.gameObject.GetComponent<WeakPoint>();
+            if (point != null)
+            {
+                point.Hit();
+                weakPoint = true;
+                damage *= 2f;
+                coll.gameObject.SetActive(false);
+                Debug.Log("Hit Weak Point");
+            }
         }
-    }
+        
+        health -= damage;
+        GameManager.Instance.CurrentRunDamage += damage;
+        UserManager.Instance.SetMonsterHealth(health/maxHealth);
+        OnHealthChange?.Invoke(health, maxHealth);
 
-    public void Init(MonsterData data)
-    {
-        this.data = data;
-        Health = data.Health;
-    }
-
-    public Vector3 GetCOMPos()
-    {
-        return com.position;
+        if (GameManager.Instance.Monster.IsDead)
+        {
+            CameraController.Instance.TakeLongShot(pos, GameManager.Instance.Player.transform.forward);
+            if (bullet)
+            {
+                GameManager.Instance.Player.Deactivate();
+            }
+            else
+            {
+                GameManager.Instance.Player.Explode();
+            }
+            
+            UserManager.Instance.NextLevel();
+            animator.SetTrigger("die");
+            Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
+            try
+            {
+                SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
+            }
+            catch
+            {
+            }
+            UserManager.Instance.NextRun();
+        } else if (!bullet)
+        {
+            CameraController.Instance.TakeLongShot(pos, GameManager.Instance.Player.transform.forward);
+            GameManager.Instance.Player.Explode();
+        }
     }
 }

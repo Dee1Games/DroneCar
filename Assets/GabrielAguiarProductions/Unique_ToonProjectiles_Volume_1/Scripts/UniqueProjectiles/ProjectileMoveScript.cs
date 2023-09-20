@@ -146,10 +146,10 @@ public class ProjectileMoveScript : MonoBehaviour {
                         Destroy(hitVFX, ps.main.duration);
                 }
                 
-                
-                if (co.gameObject.TryGetComponent(out IHitable hit))
+                Monster monster = co.gameObject.GetComponentInParent<Monster>();
+                if (monster != null && active)
                 {
-	                hit.OnHit(CarCore._, damage);
+	                monster.TakeDamage(damage, transform.position, true);
                 }
 
                 StartCoroutine(DestroyParticle(0f));

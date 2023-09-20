@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class UIManager : MonoBehaviour
     public UIScreen[] Screens;
 
     private UIScreen currentScreen;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -28,6 +27,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowScreen(UIScreenID screenID)
     {
+        TutorialManager.Instance.Hide();
+        TutorialManager.Instance.HideHand();
         if (currentScreen != null)
         {
             currentScreen.Hide();

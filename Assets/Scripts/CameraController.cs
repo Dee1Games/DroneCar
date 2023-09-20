@@ -15,7 +15,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector3 offset;
     [SerializeField] private float lookOffset;
     [SerializeField] private float longShotDuration;
-    [SerializeField] private float longShotOffset;
+    [SerializeField] private float longShotOffsetX;
+    [SerializeField] private float longShotOffsetY;
     private MeshRenderer[] propRenderers;
 
     
@@ -73,6 +74,9 @@ public class CameraController : MonoBehaviour
 
     public void TakeLongShot(Vector3 hitPoint, Vector3 axis)
     {
+        if (!following)
+            return;
+        
         StartCoroutine(takeLongShot(hitPoint, axis));
     }
 
@@ -83,22 +87,25 @@ public class CameraController : MonoBehaviour
         following = false;
         float timer = 0f;
         Vector3 startPos = transform.position;
-        Vector3 endPos = hitPoint - (axis*longShotOffset);
+        Vector3 endPos = hitPoint - (axis*longShotOffsetX);
+        endPos.y = (Vector3.up * longShotOffsetY).y;
         while (timer<longShotDuration)
         {
-            Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(endPos), timer / longShotDuration);
+            transform.LookAt(hitPoint);
+            //Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(GameManager.Instance.Monster.transform.position-GameManager.Instance.Player.transform.position), timer / longShotDuration);
             transform.position = Vector3.Lerp(transform.position, endPos, timer / longShotDuration);
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        
         if (GameManager.Instance.Monster.IsDead)
         {
-            UserManager.Instance.NextLevel();
-            LevelManager.Instance.InitCurrentLevel();
-            MergePlatform.Instance.ClearPlatform();
+            UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
         }
-        GameManager.Instance.GoToUpgradeMode();
+        else
+        {
+            UIManager.Instance.ShowScreen(UIScreenID.EndRun);
+        }
+        
     }
 
     private void HideCameraOverlaps()
