@@ -6,10 +6,16 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
+    public int debugLevel = 0;
 
     [SerializeField] private LevelsConfig Config;
 
+#if UNITY_EDITOR
+    public int CurrentLevelIndex => debugLevel > 0 ? debugLevel : UserManager.Instance.Data.Level;
+#else
     public int CurrentLevelIndex => UserManager.Instance.Data.Level;
+#endif
+
     public LevelData CurrentLevelData => Config.Levels[(CurrentLevelIndex - 1)%Config.Levels.Count];
 
     private void Awake()

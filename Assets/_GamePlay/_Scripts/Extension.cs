@@ -7,7 +7,7 @@ public static class Extension
 {
     public static void SafeKill(this Tween tween)
     {
-        if (SafeCheck(tween))
+        if (tween != null && tween.IsPlaying())
         {
             tween.Kill();
         }

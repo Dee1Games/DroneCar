@@ -8,6 +8,10 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    
+    #region Statics
+    public const string CPlayer = "Player";
+    #endregion
 
     [HideInInspector] public Map Map;
     [HideInInspector] public Monster Monster;

@@ -7,9 +7,12 @@ public class Packable : MonoBehaviour
 {
     protected Animator _animator;
     private static readonly int CPack = Animator.StringToHash("pack");
+
+    public bool IsPacked { protected set; get; }
     void Start()
     {
         _animator = GetComponent<Animator>();
+        IsPacked = _animator.GetBool(CPack);
     }
     
     [HorizontalGroup()]
@@ -22,6 +25,7 @@ public class Packable : MonoBehaviour
     
     public void SetPack(bool value)
     {
+        IsPacked = value;
         _animator.SetBool(CPack, value);
     }
 }

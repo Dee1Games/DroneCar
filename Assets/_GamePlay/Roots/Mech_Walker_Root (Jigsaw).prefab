@@ -88,6 +88,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1767502022219497967}
     m_Modifications:
+    - target: {fileID: 1858949413776283049, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: monster
+      value: 
+      objectReference: {fileID: 1767502022219497961}
     - target: {fileID: 2567463057261649872, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -108,6 +112,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4729861749040318750, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: sightDetector
+      value: 
+      objectReference: {fileID: 8205957276092777002}
     - target: {fileID: 7070973031016219277, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -459,3 +467,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7070973032572378215, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
   m_PrefabInstance: {fileID: 6196081168918692131}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8205957276092777002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2602390455641965321, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+  m_PrefabInstance: {fileID: 6196081168918692131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dba823e931ce154bae2d8fdcde05dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

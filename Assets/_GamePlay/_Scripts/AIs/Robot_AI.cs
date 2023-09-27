@@ -1,23 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Robot_AI : AI_Core
 {
-    [Title("Weapons")]
-    public IceGun iceGun;
-
+    public Gun gun;
     protected override void OnPlayerFound(CarCore _core)
     {
         base.OnPlayerFound(_core);
-        DOVirtual.Float(animator.GetLayerWeight(1), 1, 1, f => HandsUp = f);
-
+        gun.Activate();
     }
     protected override void OnPlayerLost(CarCore _core)
     {
-        DOVirtual.Float(animator.GetLayerWeight(1), 0, 1, f => HandsUp = f);
         base.OnPlayerLost(_core);
+        gun.Deactivate();
     }
 }

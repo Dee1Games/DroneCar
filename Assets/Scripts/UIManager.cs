@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
-    
+
     public UIScreen[] Screens;
 
     private UIScreen currentScreen;

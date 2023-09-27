@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 400004}
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
+  - component: {fileID: 977526026004099866}
   m_Layer: 0
   m_Name: Cockpit_Round_Body_Geom
   m_TagString: Untagged
@@ -207,6 +208,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &977526026004099866
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: 401446788b831134b98b6178ef62ddbd, type: 3}
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,6 +264,7 @@ GameObject:
   - component: {fileID: 400002}
   - component: {fileID: 3300002}
   - component: {fileID: 2300002}
+  - component: {fileID: 4024310617488529466}
   m_Layer: 0
   m_Name: Cockpit_Round_Lid_Geom
   m_TagString: Untagged
@@ -321,6 +337,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4024310617488529466
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100012}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 401446788b831134b98b6178ef62ddbd, type: 3}
 --- !u!1 &100014
 GameObject:
   m_ObjectHideFlags: 0

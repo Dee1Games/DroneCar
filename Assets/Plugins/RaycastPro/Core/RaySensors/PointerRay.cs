@@ -69,65 +69,18 @@
             input = Input.mousePosition;
 #endif
             mouseRay = mainCamera.ScreenPointToRay(input, eyeType);
-            
-            if (!rayFromCamera) // Ray From Object
-            {
-                // detect point of impact for calculating direction
-                Physics.Raycast(mouseRay.origin, mouseRay.direction, out mouseHit, Mathf.Infinity, detectLayer.value, triggerInteraction);
 
-                if (!mouseHit.transform)
-                {
-                    hit = default;
-                    return;
-                }
-
-                var mainRay = mouseHit.point - transform.position;
-                
-                if (radius > 0)
-                {
-                    Physics.SphereCast(transform.position, radius, mainRay, out hit, direction.z, detectLayer.value, triggerInteraction);
-                }
-                else
-                {
-                    Physics.Raycast(transform.position, mainRay, out hit, direction.z, detectLayer.value, triggerInteraction);
-                }
-                
-                // divide gizmo
-#if UNITY_EDITOR
-                GizmoGate += () =>
-                {
-                    if (mouseHit.transform)
-                    {
-                        GUI.color = HelperColor;
-
-                        var _mt = transform;
-                        var p1 = _mt.transform.position;
-                        var p2 = Tip;
-                        DrawLine(p1+_mt.right*radius, p2+_mt.right*radius);
-                        DrawLine(p1+_mt.up*radius, p2+_mt.up*radius);
-                        DrawLine(p1-_mt.right*radius, p2-_mt.right*radius);
-                        DrawLine(p1-_mt.up*radius, p2-_mt.up*radius);
-                    
-                        Handles.DrawWireDisc((p1 + p2) / 2, p2 - p1, radius);
-                    
-                        Handles.DrawWireDisc(p2, p2 - p1, radius);
-
-                        if (Application.isPlaying) DrawDetectLine(transform.position, p2, hit, Performed);
-                        
-                        if (hit.transform) DrawNormal(hit);
-                    }
-                };
-#endif
-            }
-            else // Ray From Camera
+            if (rayFromCamera)
             {
                 if (radius > 0)
                 {
-                    Physics.SphereCast(mouseRay.origin, radius, mouseRay.direction, out hit, direction.z, detectLayer.value, triggerInteraction);
+                    Physics.SphereCast(mouseRay.origin, radius, mouseRay.direction, out hit, direction.z,
+                        detectLayer.value, triggerInteraction);
                 }
                 else
                 {
-                    Physics.Raycast(mouseRay.origin, mouseRay.direction, out hit, direction.z, detectLayer.value, triggerInteraction);
+                    Physics.Raycast(mouseRay.origin, mouseRay.direction, out hit, direction.z, detectLayer.value,
+                        triggerInteraction);
                 }
 
 
@@ -146,14 +99,14 @@
                     }
                     else
                     {
-                        p2 = mouseRay.origin + mouseRay.direction*direction.z;
+                        p2 = mouseRay.origin + mouseRay.direction * direction.z;
                     }
-                    
-                    DrawLine(p1+_mt.right*radius, p2+_mt.right*radius);
-                    DrawLine(p1+_mt.up*radius, p2+_mt.up*radius);
-                    DrawLine(p1-_mt.right*radius, p2-_mt.right*radius);
-                    DrawLine(p1-_mt.up*radius, p2-_mt.up*radius);
-                    
+
+                    DrawLine(p1 + _mt.right * radius, p2 + _mt.right * radius);
+                    DrawLine(p1 + _mt.up * radius, p2 + _mt.up * radius);
+                    DrawLine(p1 - _mt.right * radius, p2 - _mt.right * radius);
+                    DrawLine(p1 - _mt.up * radius, p2 - _mt.up * radius);
+
                     Handles.DrawWireDisc((p1 + p2) / 2, p2 - p1, radius);
                     Handles.DrawWireDisc(p2, p2 - p1, radius);
 
@@ -166,7 +119,58 @@
                 };
 #endif
             }
+            else
+            {
+                // detect point of impact for calculating direction
+                Physics.Raycast(mouseRay.origin, mouseRay.direction, out mouseHit, Mathf.Infinity, detectLayer.value,
+                    triggerInteraction);
 
+                if (!mouseHit.transform)
+                {
+                    hit = default;
+                    return;
+                }
+
+                var mainRay = mouseHit.point - transform.position;
+
+                if (radius > 0)
+                {
+                    Physics.SphereCast(transform.position, radius, mainRay, out hit, direction.z, detectLayer.value,
+                        triggerInteraction);
+                }
+                else
+                {
+                    Physics.Raycast(transform.position, mainRay, out hit, direction.z, detectLayer.value,
+                        triggerInteraction);
+                }
+
+                // divide gizmo
+#if UNITY_EDITOR
+                GizmoGate += () =>
+                {
+                    if (mouseHit.transform)
+                    {
+                        GUI.color = HelperColor;
+
+                        var _mt = transform;
+                        var p1 = _mt.transform.position;
+                        var p2 = Tip;
+                        DrawLine(p1 + _mt.right * radius, p2 + _mt.right * radius);
+                        DrawLine(p1 + _mt.up * radius, p2 + _mt.up * radius);
+                        DrawLine(p1 - _mt.right * radius, p2 - _mt.right * radius);
+                        DrawLine(p1 - _mt.up * radius, p2 - _mt.up * radius);
+
+                        Handles.DrawWireDisc((p1 + p2) / 2, p2 - p1, radius);
+
+                        Handles.DrawWireDisc(p2, p2 - p1, radius);
+
+                        if (Application.isPlaying) DrawDetectLine(transform.position, p2, hit, Performed);
+
+                        if (hit.transform) DrawNormal(hit);
+                    }
+                };
+#endif
+            }
         }
         
 #if UNITY_EDITOR

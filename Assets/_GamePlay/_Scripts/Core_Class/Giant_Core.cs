@@ -6,31 +6,37 @@ using UnityEngine;
 
 public class Giant_Core : MonoBehaviour, IHitable
 {
-    public Monster monster;
-    public Animator animator;
-    
-    public FullBodyBipedIK fullBodyBipedIK;
+    protected Monster monster;
+    protected AI_Core aiCore;
+    protected Animator animator;
+    [HideInInspector] public FullBodyBipedIK fullBodyBipedIK;
 
-    
     [Title("Options", titleAlignment: TitleAlignments.Centered)]
     [Range(0, 1)]
     public float armor;
-    
-    [Title("AI")]
-    public AI_Core aiCore;
+
 
     [Title("UI")]
     public Sprite giantIcon;
-
-
-
-    [Title("Ragdoll Setup")] public bool hasRagdoll;
-    public List<Rigidbody> ragdollParts;
-    public Limb[] limbs;
-    public float mass = 15;
-    public float drag = 3;
-    public float angularDrag = 3;
     
+    [FoldoutGroup("Ragdoll Setup")]
+    public bool hasRagdoll;
+    [FoldoutGroup("Ragdoll Setup")]
+    public List<Rigidbody> ragdollParts;
+    [FoldoutGroup("Ragdoll Setup")]
+    public Limb[] limbs;
+    [FoldoutGroup("Ragdoll Setup")]
+    public float mass = 15;
+    [FoldoutGroup("Ragdoll Setup")]
+    public float drag = 3;
+    [FoldoutGroup("Ragdoll Setup")]
+    public float angularDrag = 3;
+
+    private void Awake()
+    {
+        aiCore = GetComponent<AI_Core>();
+    }
+
     public Transform GetRandomMember()
     {
         var random = Random.Range(0, 5);
@@ -48,9 +54,10 @@ public class Giant_Core : MonoBehaviour, IHitable
     private void Start()
     {
         monster = GetComponentInParent<Monster>();
-        aiCore = GetComponent<AI_Core>();
         animator = GetComponentInChildren<Animator>();
         fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
+        
+        aiCore = GetComponent<AI_Core>();
         // Get All Ragdolls via ignore self;
         ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
 
@@ -66,6 +73,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
     }
     
+    [FoldoutGroup("Ragdoll Setup")]
     [Button("Set Ragdoll")]
     private void SetRagdoll()
     {
@@ -79,6 +87,7 @@ public class Giant_Core : MonoBehaviour, IHitable
     }
 
     [Button("Remove Mesh Colliders")]
+    [FoldoutGroup("Ragdoll Setup")]
     public void RemoveMeshColliders()
     {
         var children = GetComponentsInChildren<MeshCollider>();
@@ -89,14 +98,17 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
     }
     [Button("Find Limbs")]
+    [FoldoutGroup("Ragdoll Setup")]
     private void FindLimbs()
     {
         limbs = GetComponentsInChildren<Limb>();
     }
-
+    
+    [FoldoutGroup("Ragdoll Setup")]
     public ParticleSystem particleSystem;
     
     [Button("Set Particles")]
+    [FoldoutGroup("Ragdoll Setup")]
     public void SetParticles()
     {
         foreach (var limb in limbs)
@@ -104,6 +116,7 @@ public class Giant_Core : MonoBehaviour, IHitable
             limb.particle = particleSystem;
         }
     }
+
 
     private static readonly int Die = Animator.StringToHash("die");
     

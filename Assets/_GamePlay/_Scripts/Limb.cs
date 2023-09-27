@@ -85,6 +85,7 @@ public class Limb : MonoBehaviour, IHitable
         Destroy(this);
     }
     
+    [Button("Dismember")]
     public void Dismember()
     {
         if (unbreakable) return;

@@ -15,21 +15,35 @@ public class AI_Core : MonoBehaviour
     [Range(0, 1)]
     public float hardiness = 0f;
     
-    public SightDetector sightDetector;
-    public LookAtIK lookAtIK;
+    protected SightDetector sightDetector;
+    protected LookAtIK lookAtIK;
 
     protected Animator animator;
     protected NavMeshAgent agent;
 
     [Title("Animation")]
-    public bool allowTurning;
+    public bool allowTurning = true;
     public bool allowSitting;
 
     [Title("IKs")] public AimIK[] aimIks;
+    
+    [Title("Updates")]
+    public IK[] IKs;
+    protected virtual void Update()
+    {
+        foreach (var ik in IKs)
+        {
+            if (!ik.enabled)
+            {
+                ik.GetIKSolver().Update();
+            }
+        }
+    }
+
     [Range(0, 1)]
     [SerializeField] private float handsUp;
 
-    public bool forceLateUpdate;
+    public bool refreshAimIks;
     public float HandsUp
     {
         get => handsUp;
@@ -44,56 +58,23 @@ public class AI_Core : MonoBehaviour
     public NavMeshAgent Agent => agent;
     
     protected CarCore carCore;
-
-
-    protected void OnEnable()
-    {
-        if (forceLateUpdate)
-        {
-            foreach (var aimIk in aimIks)
-            {
-                aimIk.enabled = false;
-            }
-
-            DOVirtual.DelayedCall(Time.deltaTime, () =>
-            {
-                foreach (var aimIk in aimIks)
-                {
-                    aimIk.enabled = true;
-                }
-            });
-        }
-    }
-
+    
     protected void Awake()
     {
         myCore = GetComponent<Giant_Core>();
-        if (!animator)
-        {
-            animator = GetComponentInChildren<Animator>();
-        }
-        if (!agent)
-        {
-            agent = GetComponentInChildren<NavMeshAgent>();
-        }
+        lookAtIK = GetComponentInChildren<LookAtIK>();
+        sightDetector = GetComponentInChildren<SightDetector>();
+        animator = GetComponentInChildren<Animator>();
+        agent = GetComponentInChildren<NavMeshAgent>();
 
-        if (!lookAtIK)
-        {
-            lookAtIK = GetComponentInChildren<LookAtIK>();
-        }
-        if (!sightDetector)
-        {
-            sightDetector = GetComponentInChildren<SightDetector>();
-        }
-
-        sightDetector.onNewCollider.AddListener(col =>
+        sightDetector?.onNewCollider.AddListener(col =>
         {
             if (col.TryGetComponent(out carCore))
             {
                 OnPlayerFound(carCore);
             }
         });
-        sightDetector.onLostCollider.AddListener(col =>
+        sightDetector?.onLostCollider.AddListener(col =>
         {
             OnPlayerLost(carCore);
             carCore = null;
@@ -109,7 +90,7 @@ public class AI_Core : MonoBehaviour
     private const string Sync = "Sync";
     
     private float signedAngle, absAngle;
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         if (allowTurning)
         {
@@ -155,7 +136,7 @@ public class AI_Core : MonoBehaviour
     public virtual void Active(bool phase)
     {
         sightDetector.enabled = phase;
-        lookAtIK.enabled = phase;
+        if (lookAtIK) lookAtIK.enabled = phase;
     }
 
     private float IKDelay = 1f;
@@ -164,7 +145,10 @@ public class AI_Core : MonoBehaviour
     protected void SetIKsTarget(Transform _target)
     {
         Debug.Log($"Set Target to: {_target}");
-        lookAtIK.solver.target = _target;
+        if (lookAtIK)
+        {
+            lookAtIK.solver.target = _target;
+        }
         foreach (var aimIk in aimIks)
         {
             aimIk.solver.target = _target;
@@ -178,14 +162,16 @@ public class AI_Core : MonoBehaviour
         Debug.Log($"<color=#83FF5F>{_core}</color> founded.");
 
         if (UI_Core._) UI_Core._.track.Begin();
-
         
         SetIKsTarget(_core.transform);
         IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 1, IKDelay, f =>
         {
             weight = f;
-            lookAtIK.solver.IKPositionWeight = weight;
+            if (lookAtIK)
+            {
+             lookAtIK.solver.IKPositionWeight = weight;
+            }
             foreach (var aimIk in aimIks)
             {
                 aimIk.solver.IKPositionWeight = weight;
@@ -202,7 +188,10 @@ public class AI_Core : MonoBehaviour
         IkTween = DOVirtual.Float(weight, 0, IKDelay, f =>
         {
             weight = f;
-            lookAtIK.solver.IKPositionWeight = weight;
+            if (lookAtIK)
+            {
+                lookAtIK.solver.IKPositionWeight = weight;
+            }
             foreach (var aimIk in aimIks)
             {
                 aimIk.solver.IKPositionWeight = weight;
