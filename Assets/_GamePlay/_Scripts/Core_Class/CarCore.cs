@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using RaycastPro;
 using RaycastPro.RaySensors;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -96,7 +97,7 @@ public class CarCore : MonoBehaviour
         }
         FRay?.onBeginDetect.AddListener(OnRayHit);
     }
-
+    
     public void OnRayHit(RaycastHit hit)
     {
         Debug.Log("F Ray Hit on: "+hit.transform.name);
@@ -104,6 +105,7 @@ public class CarCore : MonoBehaviour
         if (hitable != null)
         {
             hitable.OnHit(this, vehicle.Bomb);
+
             End();
         }
     }

@@ -96,7 +96,7 @@
                     if (Vector3.Angle(Vector3.ProjectOnPlane(_point - _p, _t.up), _t.forward) > angleX / 2) continue;
                     if (Vector3.Angle(Vector3.ProjectOnPlane(_point - _p, _t.right), _t.forward) > angleY / 2) continue;
                 }
-                
+
                 if (IsIgnoreSolver)
                 {
 #if UNITY_EDITOR

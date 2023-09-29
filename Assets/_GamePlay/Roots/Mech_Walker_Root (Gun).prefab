@@ -381,8 +381,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2017745460161530566, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: refreshAimIks
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2017745460161530566, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
       propertyPath: IKs.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2017745460161530566, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
       propertyPath: IKs.Array.data[0]
@@ -391,7 +395,7 @@ PrefabInstance:
     - target: {fileID: 2017745460161530566, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
       propertyPath: IKs.Array.data[1]
       value: 
-      objectReference: {fileID: 3209229622500894135}
+      objectReference: {fileID: 0}
     - target: {fileID: 2017745460161530566, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
       propertyPath: aimIks.Array.size
       value: 1
@@ -436,6 +440,34 @@ PrefabInstance:
       propertyPath: detectVector.z
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 5225757550560326434, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: colliders.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662790035268240660, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: solver.IKPosition.x
+      value: -123.40682
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662790035268240660, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: solver.IKPosition.y
+      value: 73.22642
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662790035268240660, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: solver.IKPosition.z
+      value: 124.10734
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662790035268240660, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: solver.polePosition.x
+      value: -121.126945
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662790035268240660, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: solver.polePosition.y
+      value: 69.7061
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662790035268240660, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
+      propertyPath: solver.polePosition.z
+      value: 123.46739
+      objectReference: {fileID: 0}
     - target: {fileID: 5794177924628958678, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -466,17 +498,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5013856973b27429d937d256dc082f2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3209229622500894135 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5105361582870576136, guid: 916b1afd3e6fab047997d85f26697e43, type: 3}
-  m_PrefabInstance: {fileID: 7660792401799059903}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 776adaaacdc5c4e8ab0395120a6e972b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &7049651007511731937 stripped

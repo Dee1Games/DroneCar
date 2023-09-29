@@ -16,6 +16,8 @@ public class Monster : MonoBehaviour
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private Transform com;
 
+    public Transform randomPoints;
+
     /// <summary>
     /// Auto property health for better managing
     /// </summary>
