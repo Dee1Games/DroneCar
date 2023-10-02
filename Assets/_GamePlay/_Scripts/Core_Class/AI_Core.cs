@@ -10,6 +10,10 @@ using UnityEngine.AI;
 /// </summary>
 public class AI_Core : MonoBehaviour
 {
+    
+    // Start is Free Here!!
+    
+    
     protected Giant_Core myCore;
 
     [Range(0, 1)]

@@ -68,7 +68,6 @@
             if (pathCast) DetectIndex = PathCast(radius);
             else if (sequenceCast)
             {
-                Debug.Log("phase 1");
                 hit = new RaycastHit();
                 foreach (var raySensor in raySensors)
                 {
@@ -84,7 +83,6 @@
                     else if (raySensor.Performed)
                     {
                         hit = raySensor.hit;
-                        Debug.Log(raySensor.name + " is performed");
                         break;
                     }
                 }

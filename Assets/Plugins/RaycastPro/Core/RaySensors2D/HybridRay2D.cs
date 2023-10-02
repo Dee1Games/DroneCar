@@ -14,6 +14,7 @@
     {
         [SerializeField] private RaySensor2D[] raySensors = Array.Empty<RaySensor2D>();
         public bool sequenceOnTip = false;
+        public bool sequenceCast;
         [SerializeField] private float radius = .4f;
         public float Radius
         {
@@ -38,6 +39,25 @@
 #if UNITY_EDITOR
             GizmoGate = null;
 #endif
+            UpdatePath();
+            if (pathCast) DetectIndex = PathCast(out hit, radius);
+            else  if (sequenceCast)
+            {
+                hit = default;
+                foreach (var raySensor in raySensors)
+                {
+                    if (!raySensor || !raySensor.Performed) continue;
+                    hit = raySensor.Hit;
+                    break;
+                }
+            }
+            
+            isDetect = FilterCheck(hit);
+
+        }
+
+        protected override void UpdatePath()
+        {
             _t = transform;
             PathPoints.Clear();
             PathPoints.Add(transform.position);
@@ -56,34 +76,18 @@
                     PathPoints.Add(_r.Tip);
                 }
             }
-
-            if (pathCast) DetectIndex = PathCast(out hit, radius);
-
-            else
-            {
-                hit = default;
-                foreach (var raySensor in raySensors)
-                {
-                    if (!raySensor || !raySensor.Performed) continue;
-                    hit = raySensor.Hit;
-                    break;
-                }
-            }
-            
-            isDetect = FilterCheck(hit);
         }
-
-        protected override void UpdatePath() { }
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Emit single line 2DRay in the specified direction and return the Hit information."+HAccurate+HDirectional;
+        private static string Info = "It has the ability to stack and convert rays into a path." + HDependent + HPathRay;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
             EditorUpdate();
             if (pathCast)
             {
+                FullPathDraw();
                 DrawPath2D(PathPoints.ToDepth(z), hit.point, radius: radius, coneCap: true, dotted: true, _color: HelperColor);
             }
             else
@@ -118,6 +122,7 @@
                 
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(sequenceOnTip)),
                     "Sequence On Tip".ToContent());
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(sequenceCast)));
                 GUI.enabled = pathCast;
                 RadiusField(_so);
                 GUI.enabled = true;

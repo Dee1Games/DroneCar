@@ -14,9 +14,11 @@ public class CarCore : MonoBehaviour
 {
     public static CarCore _;
 
+    public static int CurrentIndex = 1;
+
     [Tooltip("Forward Ray for detecting objects")]
     public RaySensor FRay;
-
+    
     [SerializeField] private float hp = 100f;
     [SerializeField] private float maxHp = 100f;
 

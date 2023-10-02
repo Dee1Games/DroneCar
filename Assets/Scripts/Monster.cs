@@ -6,17 +6,16 @@ using DG.Tweening;
 using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Monster : MonoBehaviour
 {
-    //[SerializeField] private Animator animator;
-    [SerializeField] private List<WeakPoint> weakPoints;
+    public static Monster _;
+    public List<WeakPoint> weakPoints;
     
     [SerializeField] private float health = 100f;
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private Transform com;
-
-    public Transform randomPoints;
 
     /// <summary>
     /// Auto property health for better managing
@@ -35,7 +34,10 @@ public class Monster : MonoBehaviour
 
     private MonsterData data;
 
-    public bool IsDead => (health <= 0f);
+
+
+    public int weakPointCount = 3;
+
 
     [Button("WeakPoints Setup")]
     public void FindWeakPoints()
@@ -51,8 +53,33 @@ public class Monster : MonoBehaviour
     {
         this.data = data;
         Health = data.Health;
+        _ = this;
+        
+        weakPoints.ForEach(w => w.gameObject.SetActive(false));
+        
+        RandomActive();
     }
 
+    private int count;
+    private WeakPoint _wP;
+    private void RandomActive()
+    {
+        if (count == weakPointCount) return;
+
+        _wP = weakPoints[Random.Range(0, weakPoints.Count)];
+        
+        if (_wP.gameObject.activeInHierarchy)
+        {
+            RandomActive();
+            return;
+        }
+        
+        count++;
+        _wP.Init(count);
+        RandomActive();
+    }
+    
+    public bool IsDead => (health <= 0f);
     public Vector3 GetCOMPos()
     {
         return com.position;
