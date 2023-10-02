@@ -87,9 +87,9 @@ public class AI_Core : MonoBehaviour
 
     private Vector3 _direction;
     
-    private static readonly int TurnAngle = Animator.StringToHash("turnAngle");
-    private static readonly int Mirror = Animator.StringToHash("mirror");
-    private static readonly int CarHeight = Animator.StringToHash("carHeight");
+    protected static readonly int TurnAngle = Animator.StringToHash("turnAngle");
+    protected static readonly int Mirror = Animator.StringToHash("mirror");
+    protected static readonly int CarHeight = Animator.StringToHash("carHeight");
 
     private const string Sync = "Sync";
     

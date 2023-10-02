@@ -13,7 +13,7 @@ public class Shield : MonoBehaviour, IHitable
 
     private Tween tween;
 
-    public Vector3 activeScale;
+    public Vector3 activeScale = Vector3.one;
     public float fadeInDuration = 1f;
     public float fadeOutDuration = 1f;
 
@@ -31,31 +31,23 @@ public class Shield : MonoBehaviour, IHitable
         }
     }
 
-    public void Activate(Transform _track, Giant_Core core)
+    public void SetTarget(Transform target)
     {
-        trackTransform = _track;
-        tween = DOVirtual.DelayedCall(activePeriod, () =>
-        {
-            _collider.enabled = !_collider.enabled;
-            if (_collider.enabled && !core.IsDead)
-            {
-                transform.DOScale(activeScale, fadeInDuration).SetEase(ease);
-                UI_Core._.shieldIcon.DOFillAmount(1, fadeInDuration).SetEase(ease);
-            }
-            else
-            {
-                transform.DOScale(Vector3.zero, fadeOutDuration).SetEase(ease);
-                UI_Core._.shieldIcon.DOFillAmount(0, fadeOutDuration).SetEase(ease);
-            }
-        }).SetLoops(-1);
+        trackTransform = target;
+    }
+    public void Activate()
+    {
+        _collider.enabled = true;
+        transform.position = trackTransform.position;
+        transform.DOScale(activeScale, fadeInDuration).SetEase(ease);
+        UI_Core._.shieldIcon.DOFillAmount(1, fadeInDuration).SetEase(ease);
     }
 
     public void Deactivate()
     {
-        if (tween != null)
-        {
-            tween.Kill();
-        }
+        _collider.enabled = false;
+        transform.DOScale(Vector3.zero, fadeOutDuration).SetEase(ease);
+        UI_Core._.shieldIcon.DOFillAmount(0, fadeOutDuration).SetEase(ease);
     }
 
     public void OnHit(CarCore core, float damage)

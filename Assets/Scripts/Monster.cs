@@ -58,6 +58,7 @@ public class Monster : MonoBehaviour
         weakPoints.ForEach(w => w.gameObject.SetActive(false));
         
         RandomActive();
+        weakPoints = weakPoints.Where(w => w.gameObject.activeInHierarchy).OrderBy(w => w.index).ToList();
     }
 
     private int count;

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Giant_Core : MonoBehaviour, IHitable
 {
-    protected Monster monster;
+    public Monster monster;
     protected AI_Core aiCore;
     protected Animator animator;
     [HideInInspector] public FullBodyBipedIK fullBodyBipedIK;

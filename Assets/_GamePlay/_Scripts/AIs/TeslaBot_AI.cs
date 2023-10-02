@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using RaycastPro.Casters;
@@ -20,12 +21,21 @@ public class TeslaBot_AI : AI_Core
 
     public void Start()
     {
-        if (shield)
-        {
-            shield.Activate(myCore.fullBodyBipedIK.references.head, myCore);
-        }
+        shield?.SetTarget(myCore.fullBodyBipedIK.references.head);
+        StartCoroutine(ShieldRun());
     }
 
+    private IEnumerator ShieldRun()
+    {
+        while (!myCore.IsDead)
+        {
+            yield return new WaitForSeconds(4f);
+            shield.Activate();
+            yield return new WaitForSeconds(4f);
+            shield.Deactivate();
+        }
+        shield.Deactivate();
+    }
     private bool isAlerting;
     public void TurnTesla(bool active)
     {

@@ -11,6 +11,8 @@ public class WeakPoint : MonoBehaviour, IHitable
 {
     public Giant_Core myCore;
 
+    public static WeakPoint CurrentActive;
+    
     public int index;
     public int Number
     {
@@ -40,6 +42,10 @@ public class WeakPoint : MonoBehaviour, IHitable
     {
         gameObject.SetActive(true);
         index = _index;
+        if (index == 1)
+        {
+            CurrentActive = this;
+        }
         Number = _index;
     }
     
@@ -65,7 +71,8 @@ public class WeakPoint : MonoBehaviour, IHitable
         
         // -1 index cuz its Array index
         CarCore.CurrentIndex = index + 1;
-        Monster._.weakPoints.First(w => w.index == CarCore.CurrentIndex).transform.DOScale(.4f, 1f);
+        CurrentActive = Monster._.weakPoints.First(w => w.index == CarCore.CurrentIndex);
+        CurrentActive.transform.DOScale(.4f, 1f);
 
         myCore.TakeDamage(damage * damageMultiplier + damagePlus);
         if (explodable)
