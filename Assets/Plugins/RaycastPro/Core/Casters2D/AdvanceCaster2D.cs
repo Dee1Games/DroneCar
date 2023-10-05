@@ -1,9 +1,11 @@
-﻿namespace RaycastPro.Casters2D
+﻿
+namespace RaycastPro.Casters2D
 {
     using Bullets2D;
     using RaySensors2D;
     using UnityEngine;
     using System;
+    using UnityEngine.Events;
 
 #if UNITY_EDITOR
     using Editor;
@@ -12,8 +14,6 @@
     [AddComponentMenu("RaycastPro/Casters/" + nameof(AdvanceCaster2D))]
     public sealed class AdvanceCaster2D : GunCaster<Bullet2D, Collider2D, RaySensor2D>
     {
-        public BulletEvent2D onCast;
-        
         public RaySensor2D[] raySensors = Array.Empty<RaySensor2D>();
         
         public int currentIndex;
@@ -23,9 +23,14 @@
 
         public CastType castType = CastType.Together;
         
-        protected override void OnCast() => Cast(index);
+        public UnityEvent onCast;
+        protected override void OnCast()
+        {
+            Cast(index);
+            onCast?.Invoke();
+        }
 
-        public override void Cast(int _bulletIndex)
+        public override void Cast(int _index)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
@@ -34,25 +39,31 @@
             switch (castType)
             {
                 case CastType.Together:
-                    BulletCast(_bulletIndex, raySensors, bullet => onCast?.Invoke(bullet));
+                    if (AmmoCheck(raySensors.Length))
+                    {
+                        foreach (var ray in raySensors)
+                        {
+                            BulletCast(_index, ray);
+                        }
+                    }
                     break;
                 case CastType.Sequence:
-                    if (BulletCast(_bulletIndex, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
+                    
+                    if (AmmoCheck() && BulletCast(_index, raySensors[currentIndex]))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.Random:
-                    if (BulletCast(_bulletIndex, raySensors[new System.Random().Next(0, raySensors.Length)], bullet => onCast?.Invoke(bullet)))
+                    if (AmmoCheck() && BulletCast(_index, raySensors[new System.Random().Next(0, raySensors.Length)]))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.PingPong:
-                    if (BulletCast(_bulletIndex, raySensors[currentIndex], bullet => onCast?.Invoke(bullet)))
+                    if (AmmoCheck() && BulletCast(_index, raySensors[currentIndex]))
                     {
                         currentIndex = pingPongPhase ? --currentIndex : ++currentIndex;
-
                         if (currentIndex == raySensors.Length - 1 || currentIndex == 0) pingPongPhase = !pingPongPhase;
                     }
                     break;
@@ -105,7 +116,7 @@
             }
             if (hasInfo) InformationField();
         }
-        private static readonly string[] events = new[] {nameof(onCast)};
+        private readonly string[] events = new[] {nameof(onCast), nameof(onReload), nameof(onRate)};
 #endif
     }
 }

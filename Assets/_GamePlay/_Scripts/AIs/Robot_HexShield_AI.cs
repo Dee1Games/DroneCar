@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -12,13 +13,20 @@ public class Robot_HexShield_AI : AI_Core
 
     protected Vector3 CarDirection => Vector3.ProjectOnPlane(carCore.transform.position - transform.position, transform.up);
     protected float Dot => Vector3.Dot(transform.forward, CarDirection.normalized);
-    
+
     protected void Start()
     {
         DOVirtual.DelayedCall(1f, PulseUpdate).SetLoops(400);
-        
-        dish.Activate();
-        DOVirtual.DelayedCall(7f, () => dish.Activate()).SetLoops(-1);
+        StartCoroutine(TurnRateStop());
+        StartCoroutine(DishPeriod());
+    }
+
+    private IEnumerator DishPeriod()
+    {
+        yield return new WaitForSeconds(4f);
+        dish.Unpack();
+        yield return new WaitForSeconds(4f);
+        dish.Pack();
     }
 
     protected void PulseUpdate()

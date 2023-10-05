@@ -18,8 +18,9 @@
 
         [Tooltip("The number of ray reflection that will be cut off when reaching it. Negative numbers use free direction length.")]
         public int maxReflect = -1;
+        
+        [Tooltip("Reflect layer")]
         public LayerMask reflectLayer;
-
 
         [SerializeField] private float radius;
 
@@ -34,7 +35,15 @@
         private float distance;
         private RaycastHit2D h;
         private int DI;
-        private void ReflectCast()
+        
+        protected override void OnCast()
+        {
+            isDetect = false;
+            UpdatePath();
+            UpdateLiner();
+        }
+
+        protected override void UpdatePath()
         {
             PathPoints.Clear();
             RaycastHits.Clear();
@@ -43,6 +52,7 @@
             _direction = Direction;
             PathPoints.Add(_tPosition);
             distance = direction.magnitude;
+            DetectIndex = -1;
             DI = -1;
             hit = default;
             var queriesSetting = Physics2D.queriesStartInColliders;
@@ -65,15 +75,14 @@
                 if (h)
                 {
                     RaycastHits.Add(h);
-                    PathPoints.Add(h.centroid);
-                    var onHit = detectLayer.InLayer(h.transform.gameObject);
-                    if (onHit)
+                    PathPoints.Add(h.point);
+                    if (detectLayer.InLayer(h.transform.gameObject))
                     {
                         DetectIndex = DI;
                         isDetect = FilterCheck(h);
                         break;
                     }
-                    distance -= (h.centroid - point).magnitude;
+                    distance -= (h.point - point).magnitude;
                     point = h.point;
                     _direction = Vector3.Reflect(_direction, h.normal);
                     continue;
@@ -83,14 +92,6 @@
             }
             Physics2D.queriesStartInColliders = queriesSetting;
         }
-
-        protected override void OnCast()
-        {
-            isDetect = false;
-            ReflectCast();
-        }
-
-        protected override void UpdatePath() { }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Send a reflective 2D ray to the <i>Reflect layer</i> and detect the point of impact in the <i>Detect layer</i>." +

@@ -3,7 +3,8 @@
     using UnityEngine;
     using RaySensors2D;
     using Bullets2D;
-
+    using UnityEngine.Events;
+    
 #if UNITY_EDITOR
     using UnityEditor;
     using Editor;
@@ -12,17 +13,24 @@
     [AddComponentMenu("RaycastPro/Casters/" + nameof(BasicCaster2D))]
     public sealed class BasicCaster2D : GunCaster<Bullet2D, Collider2D, RaySensor2D>
     {
-        public BulletEvent2D onCast;
-        
         [Tooltip("Automatically, this ray will shoot along the LocalDirection and source BasePoint location.")]
         public RaySensor2D raySource;
-        protected override void OnCast() => Cast(index);
-        public override void Cast(int _bulletIndex)
+        
+        public UnityEvent onCast;
+        protected override void OnCast()
+        {
+            Cast(index);
+            onCast?.Invoke();
+        }
+        public override void Cast(int _index)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
 #endif
-            BulletCast(_bulletIndex, raySource, b => onCast?.Invoke(b)); // basic caster inject start, end positions to bullets
+            if (AmmoCheck())
+            {
+                BulletCast(_index, raySource);
+            }
         }
 
 #if UNITY_EDITOR
@@ -58,7 +66,7 @@
             }
             if (hasInfo) InformationField();
         }
-        private static readonly string[] events = new[] {nameof(onCast)};
+        private readonly string[] events = new[] {nameof(onCast), nameof(onReload), nameof(onRate)};
 #endif
     }
 }

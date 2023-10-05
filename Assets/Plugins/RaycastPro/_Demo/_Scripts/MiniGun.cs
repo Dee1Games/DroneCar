@@ -8,9 +8,13 @@ namespace Plugins.RaycastPro.Demo.Scripts
         public AdvanceCaster advanceCaster;
         void Update()
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
-                advanceCaster.Cast(0);
+                advanceCaster.enabled = true;
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                advanceCaster.enabled = false;
             }
         }
     }

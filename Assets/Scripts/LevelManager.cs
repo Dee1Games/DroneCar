@@ -6,12 +6,12 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
-    public int debugLevel = 0;
-
+    
     [SerializeField] private LevelsConfig Config;
 
 #if UNITY_EDITOR
-    public int CurrentLevelIndex => debugLevel > 0 ? debugLevel : UserManager.Instance.Data.Level;
+    public bool debugLevel = true;
+    public int CurrentLevelIndex => debugLevel ? Config.level : UserManager.Instance.Data.Level;
 #else
     public int CurrentLevelIndex => UserManager.Instance.Data.Level;
 #endif

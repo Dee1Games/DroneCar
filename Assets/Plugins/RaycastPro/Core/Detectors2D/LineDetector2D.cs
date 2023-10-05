@@ -146,7 +146,7 @@ namespace RaycastPro.Detectors2D
         }
         
 #if UNITY_EDITOR
-        protected override void AfterValidate()
+        private void OnValidate()
         {
             nonAllocatedHits = new RaycastHit2D[limitCount];
         }  

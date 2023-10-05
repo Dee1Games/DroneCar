@@ -10,8 +10,7 @@ namespace RaycastPro.Editor
     using UnityEditorInternal;
     using UnityEngine;
     using Object = UnityEngine.Object;
-    
-    
+
     [CustomEditor(typeof(RaycastCore), true), CanEditMultipleObjects]
     public sealed class RCProEditor : Editor
     {
@@ -19,6 +18,10 @@ namespace RaycastPro.Editor
         internal static readonly Color Violet = new Color(0.8784314f, 0.254902f, 0.5058824f, 1f);
 
         internal static string RPro => $"<color=#2BC6D2>RaycastPro: </color>";
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        public static void Log(string log) => Debug.Log(RPro+log);
+        
         internal static string AQUA_Text(string text) => $"<color=#2BC6D2>{text}</color>";
         internal static string VIOLET_Text(string text) => $"<color=#E04181>{text}</color>";
         
@@ -37,6 +40,12 @@ namespace RaycastPro.Editor
         public override void OnInspectorGUI()
         {
             if (!target || !(target is RaycastCore pro)) return;
+
+            if (!RCProPanel.rcProInspector || target.GetType().GetCustomAttribute<RCProPanel.RawEditor>(true) != null)
+            {
+                base.OnInspectorGUI();
+                return;
+            }
             
             GUI.color = Color.white;
             _cores = Selection.gameObjects.Select(o => o.GetComponent<RaycastCore>()).ToArray();

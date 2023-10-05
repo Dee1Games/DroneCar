@@ -76,11 +76,13 @@
                 {
                     currentPulse = 0f;
                     OnCast();
+                    onCast?.Invoke();
                 }
             }
             else
             {
                 OnCast();
+                onCast?.Invoke();
             }
         }
 
@@ -227,11 +229,11 @@
         protected static void DetectorInfoField(Transform t, Vector3 targetPivot, bool blockResult)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Box(t.name);
+            GUILayout.Box(t.name, RCProEditor.LabelStyle);
             GUILayout.Box(targetPivot.ToString());
 
             GUI.contentColor = blockResult ? BlockColor : DetectColor;
-            GUILayout.Box(blockResult ? "Blocked" : "Detect");
+            GUILayout.Box(blockResult ? "Blocked" : "Detect",  RCProEditor.BoxStyle);
             GUI.contentColor = RCProEditor.Aqua;
             GUILayout.EndHorizontal();
         }

@@ -21,7 +21,7 @@
 
         internal override void RuntimeUpdate()
         {
-            _dt = GetModeDeltaTime(timeMode);
+            _dt = GetDelta(timeMode);
             UpdateLifeProcess(_dt);
             if (collisionRay) CollisionRun(_dt);
         }

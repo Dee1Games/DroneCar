@@ -145,6 +145,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7398747037815146370, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: monster
+      value: 
+      objectReference: {fileID: 206502350192013607}
     - target: {fileID: 8303329452224747902, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: attachedLimb
       value: 
@@ -153,11 +157,16 @@ PrefabInstance:
       propertyPath: myCore
       value: 
       objectReference: {fileID: 4681042621236531277}
+    - target: {fileID: 8761177693482489517, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8983983403997087947, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: m_text
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4691341697655185645, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
 --- !u!114 &2820593835288594816 stripped
 MonoBehaviour:

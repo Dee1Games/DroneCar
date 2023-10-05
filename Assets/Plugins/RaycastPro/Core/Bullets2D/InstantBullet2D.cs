@@ -10,7 +10,7 @@
     [AddComponentMenu("RaycastPro/Bullets/" + nameof(InstantBullet2D))]
     public class InstantBullet2D : Bullet2D
     {
-        internal override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
+        internal override void RuntimeUpdate() => UpdateLifeProcess(GetDelta(timeMode));
 
         protected override void OnCast()
         {

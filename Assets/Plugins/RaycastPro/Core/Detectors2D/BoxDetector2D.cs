@@ -113,9 +113,12 @@
                     
                     _blockHit = Physics2D.Linecast(SolverPoint, TDP, blockLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
-                    BlockLineGizmo(c, TDP, _blockHit);
+                    PassGate(c, TDP, _blockHit);
 #endif
-                    if (!_blockHit || _blockHit.transform == c.transform) DetectedColliders.Add(c);
+                    if (!_blockHit || _blockHit.transform == c.transform)
+                    {
+                        DetectedColliders.Add(c);
+                    }
                 }
             }
             

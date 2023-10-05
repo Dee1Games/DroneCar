@@ -252,35 +252,30 @@
 
             else // when normal ray
             {
-                void SetDefaultPosition()
-                {
-                    liner.positionCount = 2;
-                    liner.SetPosition(0, Vector3.Lerp(Base, Tip, linerBasePosition));
-                    liner.SetPosition(1, Vector3.Lerp(Base, Tip, linerEndPosition));
-                }
-
                 if (useLinerClampedPosition)
                 {
-                    if (cutOnHit && hit.transform)
+                    liner.positionCount = 2;
+                    if (cutOnHit)
                     {
-                        var position = HitDistance / RayLength;
-
-                        if (position >= linerBasePosition)
+                        var _pos =(HitDistance / RayLength);
+                        var _b = Base;
+                        if (_pos >= linerBasePosition)
                         {
-                            liner.positionCount = 2;
-
-                            liner.SetPosition(0, Vector3.Lerp(Base, Tip, linerBasePosition));
-
-                            liner.SetPosition(1,
-                                position < linerEndPosition
-                                    ? TipTarget
-                                    : Vector3.Lerp(Base, Tip, linerEndPosition));
+                            liner.SetPosition(0, Vector3.Lerp(_b, Tip, linerBasePosition));
+                            liner.SetPosition(1, _pos < linerEndPosition ? TipTarget : Vector3.Lerp(_b, Tip, linerEndPosition));
                         }
                         else liner.positionCount = 0;
                     }
-                    else SetDefaultPosition();
+                    else
+                    {
+                        var _t = Tip;
+                        var _b = Base;
+                        liner.SetPosition(0, Vector3.Lerp(_b, _t, linerBasePosition));
+                        liner.SetPosition(1, Vector3.Lerp(_b, _t, linerEndPosition));
+                    }
+
                 }
-                else
+                else // USE Full Clamp
                 {
                     liner.positionCount = 2;
                     liner.SetPosition(0, Base);
@@ -370,47 +365,51 @@
 
         internal override void OnBeginDetect()
         {
-            onBeginDetect?.Invoke(hit);
             if (stampAutoHide) stamp?.gameObject.SetActive(true);
-            if (!planarSensitive) return;
-            if (anyPlanar)
+            if (planarSensitive)
             {
-                _planar = hit.transform.GetComponent<Planar2D>();
-                if (!_planar) return;
-                _planar.OnBeginReceiveRay(this);
-                _planar.onBeginReceiveRay?.Invoke(this);
-            }
-            else
-            {
-                foreach (var p in planers)
+                if (anyPlanar)
                 {
-                    if (!p || p.transform != hit.transform) continue;
-                    p.OnBeginReceiveRay(this);
-                    p.onBeginReceiveRay?.Invoke(this);
+                    _planar = hit.transform.GetComponent<Planar2D>();
+                    if (!_planar) return;
+                    _planar.OnBeginReceiveRay(this);
+                    _planar.onBeginReceiveRay?.Invoke(this);
+                }
+                else
+                {
+                    foreach (var p in planers)
+                    {
+                        if (!p || p.transform != hit.transform) continue;
+                        p.OnBeginReceiveRay(this);
+                        p.onBeginReceiveRay?.Invoke(this);
+                    }
                 }
             }
+            onBeginDetect?.Invoke(hit);
         }
         internal override void OnEndDetect()
         {
-            onEndDetect?.Invoke(PreviousHit);
             if (stampAutoHide) stamp?.gameObject.SetActive(false);
-            if (!planarSensitive) return;
-            if (anyPlanar)
+            if (planarSensitive)
             {
-                if (!_planar) return;
-                _planar.OnEndReceiveRay(this);
-                _planar.onEndReceiveRay?.Invoke(this);
-                _planar = null;
-            }
-            else
-            {
-                foreach (var p in planers)
+                if (anyPlanar)
                 {
-                    if (!p || p.transform != PreviousHit.transform) continue;
-                    p.OnEndReceiveRay(this);
-                    p.onEndReceiveRay?.Invoke(this);
+                    if (!_planar) return;
+                    _planar.OnEndReceiveRay(this);
+                    _planar.onEndReceiveRay?.Invoke(this);
+                    _planar = null;
+                }
+                else
+                {
+                    foreach (var p in planers)
+                    {
+                        if (!p || p.transform != PreviousHit.transform) continue;
+                        p.OnEndReceiveRay(this);
+                        p.onEndReceiveRay?.Invoke(this);
+                    }
                 }
             }
+            onEndDetect?.Invoke(PreviousHit);
         }
         
         internal override void OnDetect()
