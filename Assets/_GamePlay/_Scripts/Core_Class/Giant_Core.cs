@@ -130,6 +130,9 @@ public class Giant_Core : MonoBehaviour, IHitable
     /// <param name="phase"></param>
     public void OnDie()
     {
+        if (isDead)
+            return;
+        
         isDead = true;
         aiCore.Active(false);
 
@@ -159,6 +162,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         if (monster.Health <= 0)
         {
             OnDie();
+            GameManager.Instance.Player.Core.End(false);
         }
     }
     public void SetHealth(float amount)

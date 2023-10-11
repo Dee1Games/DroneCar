@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MoreMountains.Feedbacks;
-using SupersonicWisdomSDK;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -40,7 +39,7 @@ public class PlayerVehicle : MonoBehaviour
     
     public static System.Action OnExploded;
 
-    private CarCore core;
+    public CarCore Core;
     public bool IsActive
     {
         get;
@@ -68,7 +67,7 @@ public class PlayerVehicle : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
-        core = GetComponent<CarCore>();
+        Core = GetComponent<CarCore>();
 
         levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
         List<LevelIndicatorUI> allLevelUIs = GetComponentsInChildren<LevelIndicatorUI>(true).ToList();
@@ -82,7 +81,7 @@ public class PlayerVehicle : MonoBehaviour
     {
         upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         anim.SetTrigger(Reset);
-        core.Restore();
+        Core.Restore();
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = true;
@@ -294,7 +293,7 @@ public class PlayerVehicle : MonoBehaviour
         {
 
             
-            rigidbody.velocity = transform.forward * core.ApplySpeedBuff(currentSpeed);
+            rigidbody.velocity = transform.forward * Core.ApplySpeedBuff(currentSpeed);
             rigidbody.angularVelocity = Vector3.zero;
         }
         else
@@ -308,22 +307,7 @@ public class PlayerVehicle : MonoBehaviour
 
     public void Explode()
     {
-        if (!IsActive)
-            return;
-        
-        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
-
         explodeFeedback.PlayFeedbacks();
-        Deactivate();
-        Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
-        try
-        {
-            SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
-        }
-        catch
-        {
-        }
-        UserManager.Instance.NextRun();
     }
 
     public void Deactivate()

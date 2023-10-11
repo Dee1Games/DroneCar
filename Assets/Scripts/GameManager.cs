@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SupersonicWisdomSDK;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public Map Map;
     [HideInInspector] public Monster Monster;
+    [HideInInspector] public Giant_Core GiantCore;
     [HideInInspector] public PlayerVehicle Player;
 
     [SerializeField] private Vehicles VehiclesConfig;
@@ -69,13 +69,6 @@ public class GameManager : MonoBehaviour
         MergePlatform.Instance.Show();
         UIManager.Instance.ShowScreen(UIScreenID.Merge);
         Debug.Log($"Run {UserManager.Instance.Data.Run} Started");
-        try
-        {
-            SupersonicWisdom.Api.NotifyLevelStarted(UserManager.Instance.Data.Run, null);
-        }
-        catch
-        {
-        }
     }
 
     public void SpawnPlayer()

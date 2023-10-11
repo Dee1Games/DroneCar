@@ -128,15 +128,26 @@ public class CarCore : MonoBehaviour
     }
     public void End(bool explode = true)
     {
+        if (!vehicle.IsActive)
+            return;
+        
         FRay.enabled = false;
         foreach (var aiCore in FindObjectsOfType<AI_Core>())
         {
             aiCore.OnEnd(this);
         }
+        
+        if (explode)
+        {
+            vehicle.Explode();
+        }
+        vehicle.Deactivate();
+        Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
 
-        if (explode) vehicle.Explode();
+        UserManager.Instance.NextRun();
 
         CollidersActivate(false);
+        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
     }
 
     private IHitable hitable;

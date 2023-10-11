@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SupersonicWisdomSDK;
 using TMPro;
 using UnityEngine;
 
@@ -114,10 +113,6 @@ public class InGameScreen : UIScreen
     {
         GameManager.Instance.Player.Deactivate();
         Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
-        try
-        {
-            SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
-        } catch {}
         UserManager.Instance.NextRun();
         GameManager.Instance.GoToUpgradeMode();
     }

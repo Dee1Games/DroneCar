@@ -243,7 +243,8 @@ namespace RaycastPro.Sensor
                     });
                 }
             }
-#endif
+
         }
+#endif
     }
 }

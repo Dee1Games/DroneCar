@@ -151,6 +151,14 @@ public class ProjectileMoveScript : MonoBehaviour {
                 {
 	                hit.OnHit(CarCore._, damage);
                 }
+                else
+                {
+	                Giant_Core giant = co.gameObject.GetComponentInParent<Giant_Core>();
+	                if (giant != null)
+	                {
+		                giant.OnHit(CarCore._, damage);
+	                }
+                }
 
                 StartCoroutine(DestroyParticle(0f));
             }
