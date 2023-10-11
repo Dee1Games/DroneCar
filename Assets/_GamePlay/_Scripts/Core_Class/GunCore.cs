@@ -5,10 +5,10 @@ using RaycastPro.Casters;
 using RaycastPro.RaySensors;
 using UnityEngine;
 
-public abstract class GunCore : MonoBehaviour
+public class GunCore : MonoBehaviour
 {
     public AdvanceCaster caster;
-    public Color alertColor = Color.red;
+    [SerializeField] protected Color alertColor = Color.red;
     public float activeDelay;
 
     public ParticleSystem onCastParticle;
@@ -24,7 +24,7 @@ public abstract class GunCore : MonoBehaviour
         mainSensor = caster.raySensors[0];
         if (onCastParticle)
         {
-            caster.onCast.AddListener(b =>
+            caster.onCast.AddListener(() =>
             {
                 Instantiate(onCastParticle, mainSensor.transform.position, mainSensor.transform.rotation);
             });
@@ -43,5 +43,15 @@ public abstract class GunCore : MonoBehaviour
     {
         UI_Core._?.track.ResetAlert();
         caster.enabled = false;
+    }
+    
+    public void ShakeCamera()
+    {
+        var amp = Vector3.Distance(transform.position, CarCore._.transform.position);
+        amp = Mathf.Clamp01((50 - amp) / 50f);
+        if (amp > 0)
+        {
+            CameraController.Instance.ShakeCamera(.2f, amp);
+        }
     }
 }

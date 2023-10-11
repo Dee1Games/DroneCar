@@ -24,7 +24,7 @@ namespace RaycastPro.RaySensors2D
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Emit a box 2DRay in the specified direction and return the Hit information."+HDirectional;
+        private static string Info = "Emit a 2D Box Ray in the specified direction and return the Hit information."+HDirectional;
 #pragma warning restore CS0414
 
         private Vector3 p1, p2;

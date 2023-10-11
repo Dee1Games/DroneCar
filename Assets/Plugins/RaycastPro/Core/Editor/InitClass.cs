@@ -26,7 +26,7 @@ namespace RaycastPro
             var firstTime = EditorPrefs.GetBool(FIRST_TIME, true);
             if (firstTime)
             {
-                Debug.Log(RCProEditor.RPro+"<color=#38FFD3>Welcome to Project.</color>");
+                RCProEditor.Log("<color=#38FFD3>Welcome to Project.</color>");
                 EditorPrefs.SetBool(FIRST_TIME, false);
                 if (EditorPrefs.GetBool(RCProPanel.KEY + RCProPanel.CShowOnStart, true))
                 {

@@ -1,4 +1,6 @@
-﻿namespace RaycastPro.Detectors
+﻿using System.Collections.Generic;
+
+namespace RaycastPro.Detectors
 {
     using UnityEngine;
 #if UNITY_EDITOR
@@ -22,7 +24,11 @@
         public float angleY = 90f;
 
         [SerializeField] public float radius = 2f;
-
+        public float Radius
+        {
+            get => radius;
+            set => radius = Mathf.Max(0, value);
+        }
         [SerializeField] private bool limited;
         [SerializeField] private int limitCount = 3;
 
@@ -49,21 +55,17 @@
             }
         }
 
-        public float Radius
-        {
-            get => radius;
-            set => radius = Mathf.Max(0, value);
-        }
+
 
         public float minRadius = 1f;
         public float fullAwareness = 2f;
 
         private float tempDis;
-        private Vector3 _p, _point;
+        private Vector3 _p, _tVec;
         private Transform _t;
         protected override void OnCast()
         {
-            PreviousColliders = DetectedColliders.ToArray();
+            CachePrevious();
 
 #if UNITY_EDITOR
             CleanGate();
@@ -85,18 +87,18 @@
 
             foreach (var c in colliders)
             {
-                if (!CheckGeneralPass(c)) continue;
+                if (!TagPass(c)) continue;
                 
-                _point = DetectFunction(c);
-                tempDis = (_point- _p).sqrMagnitude;
-
+                TDP = DetectFunction(c);
+                _tVec = TDP - _p;
+                tempDis = _tVec.sqrMagnitude;
                 if (tempDis > fullAwareness*fullAwareness) // Full Awareness Shortcut
                 {
                     if (tempDis > radius*radius || tempDis < minRadius*minRadius) continue;
-                    if (Vector3.Angle(Vector3.ProjectOnPlane(_point - _p, _t.up), _t.forward) > angleX / 2) continue;
-                    if (Vector3.Angle(Vector3.ProjectOnPlane(_point - _p, _t.right), _t.forward) > angleY / 2) continue;
+                    if (Vector3.Angle(Vector3.ProjectOnPlane(_tVec, _t.up), _t.forward) > angleX / 2) continue;
+                    if (Vector3.Angle(_tVec, Vector3.ProjectOnPlane(_tVec, _t.up)) > angleY / 2) continue;
                 }
-
+                
                 if (IsIgnoreSolver)
                 {
 #if UNITY_EDITOR
@@ -104,7 +106,7 @@
 #endif
                     DetectedColliders.Add(c);
                 }
-                else if (CheckSolverPass(_point, c)) DetectedColliders.Add(c);
+                else if (LOSPass(TDP, c)) DetectedColliders.Add(c);
             }
 
             ColliderDetectorEvents();
@@ -114,8 +116,11 @@
 #pragma warning disable CS0414
         private static string Info = "Receiving colliders within the specified FOV angles with a detect point solver." + HCDetector + HLOS_Solver + HIPulse + HIRadius + HINonAllocator;
 #pragma warning restore CS0414
-        
-        protected override void AfterValidate() => DetectFunction = SetupDetectFunction();
+
+        private void OnValidate()
+        {
+            DetectFunction = SetupDetectFunction();
+        }
 
 
         private float lerp, sinX, sinY;
@@ -142,7 +147,7 @@
                 arcXStartPoint = ArcXStartPoint;
                 arcYStartPoint = ArcYStartPoint;
                 arcYEndPoint = ArcYEndPoint;
-
+                
                 if (fullAwareness > 0)
                 {
                     if (fullAwareness > minRadius)
@@ -167,15 +172,7 @@
                 sinY = Mathf.Sin(angleY / 2 * Mathf.Deg2Rad);
                 upSinYMin = up * (sinY * minRadius);
                 rightSinXMin = right * (sinX * minRadius);
-
-                // === MIN RADIUS ===
-                if (minRadius > 0)
-                {
-                    Handles.DrawBezier(s2, s3, s2 + upSinYMin, s3 - rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
-                    Handles.DrawBezier(s1, s3, s1 + upSinYMin, s3 + rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
-                    Handles.DrawBezier(s2, s4, s2 - upSinYMin, s4 - rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
-                    Handles.DrawBezier(s1, s4, s1 - upSinYMin, s4 + rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
-                }
+                
                 upSinY = up * (sinY * radius);
                 rightSinX = right * (sinX * radius);
                 Handles.DrawWireArc(_p, up, arcXStartPoint, angleX, radius);
@@ -190,8 +187,20 @@
                     _p + arcYEndPoint - rightSinX, Handles.color, Texture2D.whiteTexture, BezierWidth);
                 Handles.DrawBezier(_p + arcXEndPoint, _p + arcYEndPoint, _p + arcXEndPoint - upSinY,
                     _p + arcYEndPoint + rightSinX, Handles.color, Texture2D.whiteTexture, BezierWidth);
+                
+                // === MIN RADIUS ===
+                if (minRadius > 0)
+                {
+                    Handles.DrawBezier(s2, s3, s2 + upSinYMin, s3 - rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
+                    Handles.DrawBezier(s1, s3, s1 + upSinYMin, s3 + rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
+                    Handles.DrawBezier(s2, s4, s2 - upSinYMin, s4 - rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
+                    Handles.DrawBezier(s1, s4, s1 - upSinYMin, s4 + rightSinXMin, Handles.color, Texture2D.whiteTexture, BezierWidth);
+                    
+                    Handles.DrawWireArc(_p, up, arcXStartPoint, angleX, minRadius);
+                    Handles.DrawWireArc(_p, right, arcYStartPoint, angleY, minRadius);
+                }
             }
-            DrawZTest(Draw, Gizmos.color.ToAlpha(RCProPanel.alphaAmount), Gizmos.color);
+            DrawZTest(Draw, Gizmos.color.ToAlpha(AlphaAmount), Gizmos.color);
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

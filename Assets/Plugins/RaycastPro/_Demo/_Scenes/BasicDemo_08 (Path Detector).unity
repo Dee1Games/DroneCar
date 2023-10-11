@@ -622,8 +622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_text
-      value: Path Detector is another model of detectors that you can see in this
-        example and the next example, how it can turn a path ray into a detector.
+      value: Path Detector performance.
       objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_fontColorGradient.bottomLeft.b
@@ -871,7 +870,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
-  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 1453868499}
   useLinerClampedPosition: 0
@@ -1311,7 +1309,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
-  EventFoldout: 0
   gizmosUpdate: 2
   blockLayer:
     serializedVersion: 2
@@ -1331,6 +1328,17 @@ MonoBehaviour:
   pulseTime: 0.1
   blockSolverOffset: {x: 0, y: 0, z: 0}
   detectVector: {x: 0, y: 0, z: 0}
+  onDetectCollider:
+    m_PersistentCalls:
+      m_Calls: []
+  onNewCollider:
+    m_PersistentCalls:
+      m_Calls: []
+  onLostCollider:
+    m_PersistentCalls:
+      m_Calls: []
+  ignoreList: []
+  colliders: []
   pathRay: {fileID: 1453868497}
   onHit:
     m_PersistentCalls:
@@ -1339,15 +1347,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onLostHit:
-    m_PersistentCalls:
-      m_Calls: []
-  onDetectCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  onNewCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  onLostCollider:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1732768057

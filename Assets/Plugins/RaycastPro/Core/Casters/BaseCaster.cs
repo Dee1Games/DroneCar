@@ -1,14 +1,13 @@
-﻿using UnityEngine.Events;
+﻿using static UnityEngine.Random;
 
 namespace RaycastPro
 {
     using System;
     using System.Collections;
     using UnityEngine;
-
+    using UnityEngine.Events;
 
 #if UNITY_EDITOR
-    using Editor;
     using UnityEditor;
 #endif
 
@@ -17,14 +16,16 @@ namespace RaycastPro
         /// <summary>
         /// Allow to manuel Casting.
         /// </summary>
-        /// <param name="_bulletIndex">Bullet Array Index</param>
-        public abstract void Cast(int _bulletIndex);
-
-        public UnityEvent onReload;
+        /// <param name="_index">Bullet Array Index</param>
+        public abstract void Cast(int _index);
         
-
         [Tooltip("Automatically instantiate into this object.")]
         public Transform poolManager;
+
+        [SerializeField]
+        public UnityEvent onRate;
+        [SerializeField]
+        public UnityEvent onReload;
         public abstract void Reload();
         #region Update
         protected void Update()
@@ -44,6 +45,9 @@ namespace RaycastPro
         }
 
         #endregion
+
+
+
         protected static void CopyBullet<T>(T to, T from)
         {
             var fields = to.GetType().GetFields();
@@ -60,7 +64,7 @@ namespace RaycastPro
                 prop.SetValue(to, prop.GetValue(from, null), null);
             }
         }
-        
+
         [Serializable]
         public class Ammo
         {
@@ -81,7 +85,12 @@ namespace RaycastPro
             
             [Tooltip("The firing pause time between each shot")]
             [SerializeField] public float inBetweenTime = .1f;
-
+            
+            [Tooltip("Randomness")]
+            [SerializeField] public float randomness = 0f;
+            
+            [Tooltip("MissRate")]
+            [SerializeField] public float missRate = 0f;
             /// <summary>
             /// The number of all available bullets, which is calculated from the "amount + magazineAmount".
             /// </summary>
@@ -107,40 +116,45 @@ namespace RaycastPro
                 get => amount;
                 set => amount = Mathf.Max(0, value);
             }
+            
             public bool Use(BaseCaster _caster, int _amount = 1)
             {
                 if (inRate) return false;
                 if (inReload) return false;
-
-                magazineAmount -= _amount;
+                
                 if (magazineAmount < _amount)
                 {
-
-                    _caster.StartCoroutine(IReload());
+                    inReload = true;
                     _caster.onReload?.Invoke();
-                    
+                    _caster.StartCoroutine(IReload());
+
                     return false;
                 }
- 
-                _inRateC = _caster.StartCoroutine(IRate());
+                if (value > missRate)
+                {       
+                    magazineAmount -= _amount;
+                    inRate = true;
+                    _inRateC = _caster.StartCoroutine(IRate());
+                    _caster.onRate?.Invoke();
+                }
                 return true;
             }
 
             private Coroutine _inRateC;
+            
             /// <summary>
             ///  Change to Ienumerator
             /// </summary>
             internal IEnumerator IRate()
             {
-                inRate = true;
-                yield return new WaitForSeconds(inBetweenTime);
+                yield return new WaitForSeconds(Range(inBetweenTime - randomness,
+                    randomness + randomness));
                 inRate = false;
             }
 
             public float currentReloadTime { get; private set; } = 0f;
             internal IEnumerator IReload()
             {
-                inReload = true;
                 while (currentReloadTime <= reloadTime)
                 {
                     currentReloadTime += Time.deltaTime;
@@ -163,6 +177,7 @@ namespace RaycastPro
             }
 
 #if UNITY_EDITOR
+            
             internal void EditorPanel(SerializedProperty serializedProperty)
             {
                 BeginHorizontal();
@@ -172,8 +187,10 @@ namespace RaycastPro
                 var mCapProp = serializedProperty.FindPropertyRelative(nameof(magazineCapacity));
                 PropertyMaxIntField(mCapProp, "Magazine Capacity".ToContent());
                 PropertySliderField(serializedProperty.FindPropertyRelative(nameof(magazineAmount)), 0, mCapProp.intValue, "Magazine Amount".ToContent(), i => {});
-                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(reloadTime)), "Reload Time".ToContent());
-                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(inBetweenTime)), "In Between Time".ToContent());
+                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(reloadTime)));
+                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(inBetweenTime)));
+                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(randomness)));
+                PropertySliderField(serializedProperty.FindPropertyRelative(nameof(missRate)), 0, 1, "Miss Rate".ToContent());
             }
 #endif
         }

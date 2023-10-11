@@ -21,6 +21,9 @@
         public Vector2 blockSolverOffset;
         public Vector2 detectVector;
 
+        /// <summary>
+        /// POV based on offset
+        /// </summary>
         public override Vector3 SolverPoint => checkLineOfSight ? transform.TransformPoint(blockSolverOffset).ToDepth(z) : transform.position;
         public override Vector3 DetectVectorPoint => transform.TransformPoint(detectVector);
         public Vector2 Position2D => transform.position;
@@ -62,7 +65,7 @@
                 case SolverType.Dodge:
                     return c =>
                     {
-                        TDP = c.transform.position;
+                        TDP = c.bounds.center;
                         TSP = SolverPoint;
                         var maxUp = transform.up * int.MaxValue;
                         var maxRight = transform.right * int.MaxValue;
@@ -85,7 +88,7 @@
                         TDP = c.ClosestPoint(TDP - maxRight);
                         hit2D = Physics2D.Linecast(TSP, TDP, blockLayer.value, MinDepth, MaxDepth);
                         if (!hit2D || hit2D.transform == _ct) return TDP;
-                        return TDP;
+                        return c.bounds.center;
                     };
             }
             return c => c.transform.position;
@@ -93,7 +96,7 @@
 
 #if UNITY_EDITOR
         
-        protected void BlockLineGizmo(Collider2D c, Vector3 point, RaycastHit2D blockHit = default)
+        protected void PassGate(Collider2D c, Vector3 point, RaycastHit2D blockHit = default)
         {
             GizmoGate += () =>
             {
@@ -110,7 +113,7 @@
                     Handles.DrawLine(SolverPoint.ToDepth(z), point.ToDepth(z));
                 }
             };
-            PanelGate += () => DetectorInfoField(c.transform, point, blockHit);
+            PanelGate += () => DetectorInfoField(c.transform, point, blockHit && blockHit.collider != c);
         }
         protected void DrawDetectVector()
         {

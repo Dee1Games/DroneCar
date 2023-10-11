@@ -26,7 +26,7 @@
             body2D.AddForce(transform.right * power, forceMode);
         }
 
-        internal override void RuntimeUpdate() => UpdateLifeProcess(GetModeDeltaTime(timeMode));
+        internal override void RuntimeUpdate() => UpdateLifeProcess(GetDelta(timeMode));
         public float power = 1f;
 
         public ForceMode2D forceMode = ForceMode2D.Force;

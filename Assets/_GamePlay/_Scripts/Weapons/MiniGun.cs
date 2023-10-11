@@ -1,24 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
-using RaycastPro.Casters;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class MiniGun : MonoBehaviour
+public class MiniGun : GunCore
 {
     private Animator _animator;
-    [SerializeField] private AdvanceCaster _advanceCaster;
 
     public float maxSpeed = 1.5f;
-    public float tweenDuration = 1f;
+    public float beginDuration = 1f;
+    public float alertDuration = 2f;
     
     private static readonly int Speed = Animator.StringToHash("speed");
 
     void Start()
     {
         _animator = GetComponent<Animator>();
-        _advanceCaster = GetComponent<AdvanceCaster>();
     }
 
     private Tween _tween;
@@ -29,11 +25,13 @@ public class MiniGun : MonoBehaviour
     public void Activate()
     {
         _tween.SafeKill();
-        _tween = DOVirtual.Float(_animator.GetFloat(Speed), maxSpeed, tweenDuration, f =>
+        _tween = DOVirtual.Float(_animator.GetFloat(Speed), maxSpeed, beginDuration, f =>
         {
             _animator.SetFloat(Speed, f);
+        }).OnComplete(() =>
+        {
+            UI_Core._.track.DoAlert(alertDuration, alertColor, onComplete: () => caster.enabled = true);
         });
-        _advanceCaster.enabled = true;
     }
     
     [HorizontalGroup]
@@ -42,10 +40,10 @@ public class MiniGun : MonoBehaviour
     public void Deactivate()
     {
         _tween.SafeKill();
-        _tween = DOVirtual.Float(_animator.GetFloat(Speed), 0, tweenDuration, f =>
+        _tween = DOVirtual.Float(_animator.GetFloat(Speed), 0, beginDuration, f =>
         {
             _animator.SetFloat(Speed, f);
         });
-        _advanceCaster.enabled = false;
+        caster.enabled = false;
     }
 }

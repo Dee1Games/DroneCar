@@ -168,13 +168,13 @@
         /// </summary>
         /// <param name="target"></param>
         protected void InvokeDamageEvent(Transform target)
-        { 
-            if (callMethod == "") return;
+        { if (callMethod == "") return;
+
             if (messageUpward)
             {
-                if (this is Bullet)    
+                if (this is Bullet _blt)    
                 {
-                    target.SendMessageUpwards(callMethod, this as Bullet, SendMessageOptions.DontRequireReceiver);
+                    target.SendMessageUpwards(callMethod, _blt, SendMessageOptions.DontRequireReceiver);
                 }
                 else
                 {
@@ -184,9 +184,9 @@
             
             else
             {
-                if (this is Bullet)
+                if (this is Bullet _blt)
                 {
-                    target.SendMessage(callMethod, this as Bullet, SendMessageOptions.DontRequireReceiver);
+                    target.SendMessage(callMethod, _blt, SendMessageOptions.DontRequireReceiver);
                 }
                 else
                 {

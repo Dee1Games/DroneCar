@@ -31,11 +31,56 @@
         {
             get => DetectedColliders.Count > 0; protected set {} }
         
+        #region Methods
+        public Collider2D FirstMember => DetectedColliders.FirstOrDefault();
+
+        public Collider2D LastMember => DetectedColliders.LastOrDefault();
+        
+        /// <summary>
+        /// It will calculate nearest collider based on current detected colliders on detector.
+        /// </summary>
+        /// <param name="nearest">Define a collider2D in your script and ref to it for get the nearest.</param>
+        public void GetNearestCollider(ref Collider2D nearest)
+        {
+            var _cDistance = Mathf.Infinity;
+            nearest = null;
+            foreach (var _col in DetectedColliders)
+            {
+                _tDis = (_col.transform.position - transform.position).sqrMagnitude;
+                if (_tDis < _cDistance)
+                {
+                    _cDistance = _tDis;
+                    nearest = _col;
+                }
+            }
+        }
+        /// <summary>
+        /// It will calculate the furthest collider based on current detected colliders on detector.
+        /// </summary>
+        /// <param name="furthest">Define a collider2D in your script and ref to it for get the furthest.</param>
+        public void GetFurthestCollider(ref Collider2D furthest)
+        {
+            var _cDistance = 0f;
+            furthest = null;
+            foreach (var _col in DetectedColliders)
+            {
+                _tDis = (_col.transform.position - transform.position).sqrMagnitude;
+                if (_tDis > _cDistance)
+                {
+                    _cDistance = _tDis;
+                    furthest = _col;
+                }
+            }
+        }
+        #endregion
+        
         protected void Start() // Refreshing
         {
             PreviousColliders = Array.Empty<Collider2D>();
             DetectedColliders = new List<Collider2D>();
         }
+        
+        protected float _tDis;
 
         protected void EventsCallback()
         {
@@ -54,7 +99,7 @@
                 foreach (var c in PreviousColliders.Except(DetectedColliders)) onLostCollider.Invoke(c);
             }
         }
-        
+
         /// <summary>
         /// Check Tag Filter and Ignore List
         /// </summary>
@@ -116,7 +161,12 @@
         private void OnEnable() => DetectFunction = SetupDetectFunction();
 #if UNITY_EDITOR
         protected readonly string[] CEventNames = {"onDetectCollider", "onNewCollider", "onLostCollider"};
-        protected override void AfterValidate() => DetectFunction = SetupDetectFunction();
+
+        private void OnValidate()
+        {
+            DetectFunction = SetupDetectFunction();
+        }
+
         protected Color GetPolygonColor(bool blockCondition = false) =>
             (blockCondition ? BlockColor : DetectedColliders.Any() ? DetectColor : DefaultColor).ToAlpha(RCProPanel.alphaAmount);
 

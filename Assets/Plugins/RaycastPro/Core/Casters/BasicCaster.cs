@@ -1,8 +1,10 @@
-﻿namespace RaycastPro.Casters
+﻿
+namespace RaycastPro.Casters
 {
     using RaySensors;
     using UnityEngine;
     using Bullets;
+    using UnityEngine.Events;
 
 #if UNITY_EDITOR
     using Editor;
@@ -13,17 +15,26 @@
     public sealed class BasicCaster : GunCaster<Bullet, Collider, RaySensor>
     {
         [SerializeField]
-        public BulletEvent onCast;
-        
         [Tooltip("Automatically, this ray will shoot along the LocalDirection and source BasePoint location.")]
         public RaySensor raySource;
         
         // ReSharper disable Unity.PerformanceAnalysis
-        public override void Cast(int _bulletIndex)
+        public override void Cast(int _index)
         {
-            BulletCast(_bulletIndex, raySource, b => onCast?.Invoke(b));
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
+            if (AmmoCheck())
+            {
+                BulletCast(_index, raySource);
+            }
         }
-        protected override void OnCast() => Cast(index);
+        public UnityEvent onCast;
+        protected override void OnCast()
+        {
+            Cast(index);
+            onCast?.Invoke();
+        }
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -61,7 +72,7 @@
             }
             if (hasInfo) InformationField();
         }
-        private static readonly string[] events = new[] {nameof(onCast)};
+        private readonly string[] events = new[] {nameof(onCast), nameof(onReload), nameof(onRate)};
 #endif
     }
 }

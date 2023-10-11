@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using RaycastPro.Detectors;
 using RootMotion.FinalIK;
@@ -201,5 +202,19 @@ public class AI_Core : MonoBehaviour
                 aimIk.solver.IKPositionWeight = weight;
             }
         }).OnComplete(() =>  SetIKsTarget(null));
+    }
+
+    [SerializeField] protected float turnStopDelay = 4f;
+    [SerializeField] protected float turnStopTime = 8f;
+    protected IEnumerator TurnRateStop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(turnStopDelay);
+            animator.SetFloat(TurnAngle, 0);
+            allowTurning = false;
+            yield return new WaitForSeconds(turnStopTime);
+            allowTurning = true;
+        }
     }
 }
