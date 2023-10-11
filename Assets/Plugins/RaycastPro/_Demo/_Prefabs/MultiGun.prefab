@@ -58,7 +58,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -144,7 +143,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -280,13 +278,6 @@ MonoBehaviour:
     m_Bits: 1
   autoUpdate: 0
   gizmosUpdate: 0
-  poolManager: {fileID: 0}
-  onRate:
-    m_PersistentCalls:
-      m_Calls: []
-  onReload:
-    m_PersistentCalls:
-      m_Calls: []
   bullets:
   - {fileID: 5278055878392837530, guid: 5ebef3c445078b84faa9443b897f9195, type: 3}
   cloneBullets:
@@ -366,13 +357,12 @@ MonoBehaviour:
     amount: 12
     magazineCapacity: 6
     magazineAmount: 6
-    reloadTime: 1
+    reloadTime: 0.4
     inBetweenTime: 0.1
-    randomness: 0
-    missRate: 0
     inRate: 0
     inReload: 0
   trackTarget: {fileID: 0}
+  poolManager: {fileID: 0}
   index: 0
   cloneIndex: 0
   usingAmmo: 1
@@ -449,7 +439,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -624,7 +613,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -710,7 +698,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -879,7 +866,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0

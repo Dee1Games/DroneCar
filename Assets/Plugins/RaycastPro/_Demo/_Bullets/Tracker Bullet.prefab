@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1615919824218677695}
-  - component: {fileID: 5723216969461954462}
+  - component: {fileID: 775233844738249690}
   m_Layer: 0
-  m_Name: Pipe  Ray
+  m_Name: Box Ray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3877434784622101314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7378283170070012583}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5723216969461954462
+--- !u!114 &775233844738249690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3877434784622101314}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0f5e5ef95f4013bd73cc752faef470, type: 3}
+  m_Script: {fileID: 11500000, guid: ceccf93237b784244bc7cb9366b999b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   influence: 1
@@ -58,7 +58,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -66,7 +65,7 @@ MonoBehaviour:
     axis: 0
     syncAxis: 0
     flipAxis: 0
-  planarSensitive: 0
+  planarSensitive: 1
   _planar: {fileID: 0}
   planers: []
   anyPlanar: 1
@@ -85,9 +84,8 @@ MonoBehaviour:
   onEndDetect:
     m_PersistentCalls:
       m_Calls: []
-  direction: {x: 0, y: 0, z: 0.3}
-  radius: 0.2
-  height: 0
+  direction: {x: 0, y: 0, z: 0.2}
+  extents: {x: 0.1, y: 0.1, z: 0}
 --- !u!1 &3892361128834090598
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 3892361128834090598}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8435953535360736292}
@@ -132,7 +130,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3892361128834090598}
-  m_Mesh: {fileID: 2741427139856235011, guid: 40bddb44ac2274243b40a42b32857593, type: 3}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!65 &2588542797016471093
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -166,8 +164,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f3a4d4e6b506b3d438aafae866f9730f, type: 2}
-  - {fileID: 2100000, guid: 4e528e04ba6508b4ca4b8df6a184cab7, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -211,6 +208,7 @@ MonoBehaviour:
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
+  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls:
@@ -238,37 +236,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5568740879199692106}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   onEndCast:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5568740879199692106}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onEnd:
-    m_PersistentCalls:
       m_Calls: []
-  onPlanar:
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
   moveType: 0
@@ -277,12 +248,13 @@ MonoBehaviour:
   damage: 10
   speed: 6
   lifeTime: 10
-  endDelay: 3
+  endDelay: 0
   endFunction: 1
+  trailRenderer: {fileID: 6542892179124783757}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
-  collisionRay: {fileID: 5723216969461954462}
+  collisionRay: {fileID: 775233844738249690}
   target: {fileID: 0}
   body: {fileID: 0}
   targetPoint: {x: 0, y: 0, z: 0}
@@ -304,10 +276,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Black_Trail
       objectReference: {fileID: 0}
-    - target: {fileID: 1856920096908105344, guid: 8a2e75f9e4f5487428c1122226f13e6a, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 9d4cdba88694b344a950aa0ab0ab21b1, type: 2}
     - target: {fileID: 1856920096908105344, guid: 8a2e75f9e4f5487428c1122226f13e6a, type: 3}
       propertyPath: m_Parameters.widthMultiplier
       value: 0.2
@@ -359,6 +327,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a2e75f9e4f5487428c1122226f13e6a, type: 3}
+--- !u!96 &6542892179124783757 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 1856920096908105344, guid: 8a2e75f9e4f5487428c1122226f13e6a, type: 3}
+  m_PrefabInstance: {fileID: 4830144925936376845}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8435953535360736292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3898595774215700521, guid: 8a2e75f9e4f5487428c1122226f13e6a, type: 3}

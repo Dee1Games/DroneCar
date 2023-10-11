@@ -23,10 +23,10 @@
         private Vector3 TSP;
         
         #region BlockSystem
-        
+
         public Vector3 blockSolverOffset;
         public Vector3 detectVector;
-        
+
         /// <summary>
         /// Solver Point in world Space
         /// </summary>
@@ -35,56 +35,55 @@
         public override Vector3 DetectVectorPoint => transform.TransformPoint(detectVector);
 
         #endregion
-
-        protected Vector3 BoundsCenter(Collider _c) => boundsCenter ? _c.bounds.center : _c.transform.position;
         protected Func<Collider, Vector3> SetupDetectFunction()
         {
-            TSP = SolverPoint;
             switch (solverType)
             {
                 case SolverType.Ignore: return c => c.transform.position;
-                case SolverType.Pivot: return BoundsCenter;
+                case SolverType.Pivot:
+                    if (boundsCenter) return c => c.bounds.center;
+                    return c => c.transform.position;
                 case SolverType.Nearest:
-                    if (boundsSolver) return c => c.ClosestPointOnBounds(TSP);
-                    return c => c.ClosestPoint(TSP);
+                    if (boundsSolver) return c => c.ClosestPointOnBounds(transform.position);
+                    return c => c.ClosestPoint(transform.position);
                 case SolverType.Furthest:
-                    if (boundsSolver) return c => c.ClosestPointOnBounds(TSP + (BoundsCenter(c) - TSP) * int.MaxValue);
-                    return c => c.ClosestPoint(TSP + (c.transform.position - TSP) * int.MaxValue);
+                    if (boundsSolver) return c => c.ClosestPointOnBounds(SolverPoint + (c.transform.position - SolverPoint) * int.MaxValue);
+                    return c => c.ClosestPoint(SolverPoint + (c.transform.position - SolverPoint) * int.MaxValue);
                 case SolverType.Focused:
                     if (boundsSolver) return c => c.ClosestPointOnBounds(transform.TransformPoint(detectVector));
                     return c => c.ClosestPoint(transform.TransformPoint(detectVector));
                 case SolverType.Dodge:
                     return c =>
                     {
+                        TSP = checkLineOfSight ? SolverPoint : transform.position;
                         var closetPoint = boundsSolver || c is MeshCollider
                             ? (Func<Vector3, Vector3>) c.ClosestPointOnBounds : c.ClosestPoint;
                         var _ct = c.transform;
-                        var cPos = BoundsCenter(c);
-                        var crossUp = Vector3.Cross(cPos - TSP, transform.right);
-                        var cross = Vector3.Cross(cPos - TSP, transform.up);
-                        var value = blockLayer.value;
+                        var cPos = c.transform.position;
+                        var crossUp = Vector3.Cross(cPos - transform.position, transform.right);
+                        var cross = Vector3.Cross(cPos - transform.position, transform.up);
                         TDP = cPos;
-                        if (!Physics.Linecast(TSP, TDP, out var hit, value, triggerInteraction) ||
+                        if (!Physics.Linecast(TSP, TDP, out var hit, blockLayer.value, triggerInteraction) ||
                             hit.transform == _ct) return TDP;
-                        TDP = c.bounds.center;
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
+                        TDP = closetPoint(c.bounds.center);
+                        if (!Physics.Linecast(TSP, TDP, out hit, blockLayer.value, triggerInteraction) ||
                             hit.transform == _ct) return TDP;
                         TDP = closetPoint(cPos + cross * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
+                        if (!Physics.Linecast(TSP, TDP, out hit, blockLayer.value, triggerInteraction) ||
                             hit.transform == _ct) return TDP;
                         TDP = closetPoint(cPos - cross * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit,value, triggerInteraction) ||
+                        if (!Physics.Linecast(TSP, TDP, out hit, blockLayer.value, triggerInteraction) ||
                             hit.transform == _ct) return TDP;
                         TDP = closetPoint(cPos + crossUp * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
+                        if (!Physics.Linecast(TSP, TDP, out hit, blockLayer.value, triggerInteraction) ||
                             hit.transform == _ct) return TDP;
                         TDP = closetPoint(cPos - crossUp * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
+                        if (!Physics.Linecast(TSP, TDP, out hit, blockLayer.value, triggerInteraction) ||
                             hit.transform == _ct) return TDP;
-                        return cPos;
+                        return TDP;
                     };
             }
-            return BoundsCenter;
+            return c => c.transform.position;
         }
 
         /// <summary>
@@ -93,7 +92,7 @@
         /// <param name="point"></param>
         /// <param name="c"></param>
         /// <returns></returns>
-        protected bool LOSPass(Vector3 point, Collider c)
+        protected bool CheckSolverPass(Vector3 point, Collider c)
         {
             if (!checkLineOfSight)
             {
@@ -119,25 +118,6 @@
 #if UNITY_EDITOR
         protected void SetupGates(Collider c, Vector3 point, bool blocked, RaycastHit blockHit)
         {
-            void DrawDetectBox(Collider _col)
-            {
-                if (boundsSolver)
-                {
-                    Gizmos.DrawWireCube(_col.bounds.center, _col.bounds.size);
-                }
-                else
-                {
-                    if (_col is MeshCollider _meshD)
-                    {
-                        Gizmos.DrawWireMesh(_meshD.sharedMesh, _col.transform.position, _col.transform.rotation);
-                    }
-                    else
-                    {
-                        Gizmos.DrawWireCube(_col.bounds.center, _col.bounds.size);
-                    }
-                }
-            }
-
             PanelGate += () => DetectorInfoField(c.transform, point, blocked);
             GizmoGate += () =>
             {
@@ -146,20 +126,14 @@
                     DrawBlockLine(SolverPoint, point, c.transform, blockHit);
                     if (IsGuide)
                     {
-                        GizmoColor = BlockColor;
-                        DrawDetectBox(c);
+                        Gizmos.color = BlockColor;
+                        if (boundsSolver) Gizmos.DrawWireCube(c.bounds.center, c.bounds.size);
                     }
                 }
                 else
                 {
-                    GizmoColor = DetectColor;
-                    if (IsLabel) Handles.Label(c.transform.position, c.name);
-                    if (IsDetectLine) DrawLine(checkLineOfSight ? SolverPoint : transform.position, point);
-                    if (IsGuide)
-                    {
-                        DrawDetectBox(c);
-                        DrawDetectorGuide(point);
-                    }
+                    DrawDetectedCollider(c, point);
+                    DrawDetectorGuide(point);
                 }
             };
         }
@@ -186,6 +160,17 @@
             }
         }
         protected abstract void DrawDetectorGuide(Vector3 point);
+        protected void DrawDetectedCollider(Collider c, Vector3 detectPoint)
+        {
+            GizmoColor = DetectColor;
+            if (IsLabel) Handles.Label(c.transform.position, c.name);
+            if (IsDetectLine) DrawLine(checkLineOfSight ? SolverPoint : transform.position, detectPoint);
+            if (IsGuide)
+            {
+                Gizmos.color = boundsSolver ? DetectColor : HelperColor;
+                Gizmos.DrawWireCube(c.bounds.center, c.bounds.size);
+            }
+        }
         protected void SolverField(SerializedObject _so)
         {
             BaseSolverField(_so, () =>

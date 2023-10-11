@@ -28,7 +28,7 @@
 
         internal override void RuntimeUpdate()
         {
-            var delta = GetDelta(timeMode);
+            var delta = GetModeDeltaTime(timeMode);
             var _forward = transform.right; // IN 2D forward is right
             transform.position += _forward * (speed * delta);
             UpdateLifeProcess(delta);

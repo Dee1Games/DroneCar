@@ -58,6 +58,7 @@ namespace Plugins.RaycastPro.Demo.Scripts
                 foreach (var neonMaterial in neon) neonMaterial.SetNeonColor(raySensor.CloneHit.transform);
             }
             
+        
             lastClonePerformed = raySensor.CloneHit.transform;
         }
     }

@@ -69,17 +69,6 @@ MonoBehaviour:
   pulseTime: 0
   blockSolverOffset: {x: 0, y: 0, z: 0}
   detectVector: {x: 0, y: 0, z: 0}
-  onDetectCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  onNewCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  onLostCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  ignoreList: []
-  colliders: []
   rayType: 1
   local: 1
   direction: {x: 0, y: 0, z: 20}
@@ -152,7 +141,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4df88af2320088d41974e6db7f18f7b5, type: 2}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -175,16 +164,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0.93, y: 0.805, z: -6.820467}
-  - {x: 1.2658892, y: 1.1852596, z: -4.820467}
-  - {x: 1.9212724, y: 1.9481707, z: -2.820467}
-  - {x: -0.5077229, y: 2.526932, z: -0.820467}
-  - {x: -0.081934154, y: 1.3254342, z: 1.179533}
-  - {x: 0.24212968, y: 1.8893802, z: 3.179533}
-  - {x: -0.29342216, y: -0.9539693, z: 5.179533}
-  - {x: -0.11584133, y: -0.56835395, z: 7.179533}
-  - {x: 0.46895027, y: 0.15754479, z: 9.179533}
-  - {x: 0.94901294, y: 0.7672005, z: 11.179533}
-  - {x: 0.93, y: 0.805, z: 13.179533}
+  - {x: 0.93, y: 0.805, z: -6.820467}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -193,7 +173,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.3
+        value: 0.1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -202,7 +182,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.17
+        value: 0.1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -242,7 +222,7 @@ LineRenderer:
       m_NumColorKeys: 3
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 3
+    numCapVertices: 6
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 1}
@@ -310,7 +290,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -324,19 +303,7 @@ MonoBehaviour:
   anyPlanar: 1
   onCast:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7723957579887162654}
-        m_TargetAssemblyTypeName: RaycastPro.RaycastCore, RaycastPro
-        m_MethodName: AddDeltaInfluence
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: -0.01
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onDetect:
     m_PersistentCalls:
       m_Calls: []
@@ -353,23 +320,84 @@ MonoBehaviour:
   pathCast: 0
   PathPoints:
   - {x: 0.93, y: 0.805, z: -6.820467}
-  - {x: 0.5941108, y: 1.1852596, z: -4.820467}
-  - {x: -0.061272383, y: 1.9481707, z: -2.820467}
-  - {x: -0.5077229, y: 2.526932, z: -0.820467}
-  - {x: -0.081934154, y: 1.3254342, z: 1.179533}
-  - {x: 0.24212968, y: -0.27938014, z: 3.179533}
-  - {x: -0.29342216, y: -0.9539693, z: 5.179533}
-  - {x: -0.11584133, y: -0.56835395, z: 7.179533}
-  - {x: 0.46895027, y: 0.15754479, z: 9.179533}
-  - {x: 0.9109871, y: 0.7672005, z: 11.179533}
+  - {x: 0.91493803, y: 0.80546045, z: -6.534753}
+  - {x: 0.86493933, y: 0.7926908, z: -6.249038}
+  - {x: 0.8078405, y: 0.7346749, z: -5.963324}
+  - {x: 0.7977373, y: 0.5866281, z: -5.67761}
+  - {x: 0.86139065, y: 0.3697483, z: -5.3918953}
+  - {x: 0.931794, y: 0.2538752, z: -5.106181}
+  - {x: 1.0888929, y: 0.23169774, z: -4.820467}
+  - {x: 1.4353753, y: 0.4739279, z: -4.534753}
+  - {x: 1.8515147, y: 0.6942989, z: -4.249038}
+  - {x: 2.1459992, y: 0.91956466, z: -3.963324}
+  - {x: 2.1443448, y: 1.4192073, z: -3.6776097}
+  - {x: 1.7996938, y: 2.1225076, z: -3.3918953}
+  - {x: 1.2645032, y: 2.8219354, z: -3.1061811}
+  - {x: 0.9230539, y: 2.827313, z: -2.820467}
+  - {x: 0.41902465, y: 2.509675, z: -2.5347524}
+  - {x: -0.46216398, y: 1.5388193, z: -2.2490382}
+  - {x: -1.292841, y: 0.7485851, z: -1.9633241}
+  - {x: -1.6797597, y: 0.43664035, z: -1.6776094}
+  - {x: -1.4159725, y: -0.6828434, z: -1.3918953}
+  - {x: -0.5950646, y: -2.0099459, z: -1.1061811}
+  - {x: 0.39451933, y: -2.7567468, z: -0.8204665}
+  - {x: 0.94016474, y: -2.7545877, z: -0.53475237}
+  - {x: 1.6066142, y: -1.6719403, z: -0.24903822}
+  - {x: 2.5820043, y: -0.18500215, z: 0.036676407}
+  - {x: 3.2751431, y: 0.68226707, z: 0.32239056}
+  - {x: 3.362384, y: 0.95105124, z: 0.6081047}
+  - {x: 2.8528044, y: 1.2718542, z: 0.89381886}
+  - {x: 2.0270314, y: 1.5794162, z: 1.179533}
+  - {x: 1.2687819, y: 1.7767763, z: 1.4652481}
+  - {x: 0.92428243, y: 1.8022413, z: 1.7509623}
+  - {x: 0.58117044, y: 1.5848813, z: 2.0366764}
+  - {x: 0.115817904, y: 1.186567, z: 2.3223906}
+  - {x: -0.23806733, y: 0.77514386, z: 2.6081047}
+  - {x: -0.3784768, y: 0.5552135, z: 2.8938189}
+  - {x: -0.25456065, y: -0.16135871, z: 3.179533}
+  - {x: 0.12315029, y: -1.1692255, z: 3.465248}
+  - {x: 0.62544715, y: -1.963675, z: 3.7509623}
+  - {x: 0.9363204, y: -2.0820453, z: 4.0366764}
+  - {x: 1.398746, y: -1.5621333, z: 4.3223906}
+  - {x: 2.2204247, y: -0.5455366, z: 4.6081047}
+  - {x: 3.0071988, y: 0.4703395, z: 4.893819}
+  - {x: 3.3750007, y: 0.9644574, z: 5.179534}
+  - {x: 3.115029, y: 2.2370527, z: 5.465248}
+  - {x: 2.3261688, y: 3.2870233, z: 5.7509623}
+  - {x: 1.4046144, y: 4.030198, z: 6.0366764}
+  - {x: 0.92137533, y: 3.7595086, z: 6.3223906}
+  - {x: 0.37323064, y: 2.767253, z: 6.6081047}
+  - {x: -0.4043371, y: 1.7654597, z: 6.89382}
+  - {x: -0.9462965, y: 0.8957086, z: 7.179534}
+  - {x: -1.0102043, y: 0.4787793, z: 7.465248}
+  - {x: -0.6044772, y: -0.32322127, z: 7.7509623}
+  - {x: 0.054391563, y: -1.0159695, z: 8.036676}
+  - {x: 0.6611489, y: -1.2023084, z: 8.322391}
+  - {x: 0.9344474, y: -0.83232135, z: 8.608105}
+  - {x: 1.1889386, y: -0.3384952, z: 8.89382}
+  - {x: 1.4817753, y: 0.33087012, z: 9.179533}
+  - {x: 1.6061082, y: 0.74667704, z: 9.465248}
+  - {x: 1.5214679, y: 0.87179655, z: 9.750963}
+  - {x: 1.3079789, y: 1.0752115, z: 10.036676}
+  - {x: 1.091108, y: 1.1822916, z: 10.3223915}
+  - {x: 0.96145993, y: 1.1315835, z: 10.608105}
+  - {x: 0.9298023, y: 0.9898421, z: 10.89382}
+  - {x: 0.9389941, y: 0.85369754, z: 11.179533}
+  - {x: 0.99707985, y: 0.7971406, z: 11.465248}
+  - {x: 1.0766681, y: 0.80487525, z: 11.750963}
+  - {x: 1.1197964, y: 0.8258766, z: 12.036676}
+  - {x: 1.0928272, y: 0.8802332, z: 12.3223915}
+  - {x: 1.0160254, y: 0.93152255, z: 12.608105}
+  - {x: 0.9479587, y: 0.9017589, z: 12.89382}
   - {x: 0.93, y: 0.805, z: 13.179533}
+  DetectIndex: -1
   timeMode: 0
-  segments: 10
+  segments: 70
   radius: 0
-  waveSpeed: 8
-  power: 0
-  noise: {x: 0, y: 0}
-  scale: {x: 2, y: 2}
+  waveSpeed: 2
+  power: 1.62
+  noise: {x: 0, y: -0.07}
+  scale: {x: 4, y: 4}
   clumpY:
     serializedVersion: 2
     m_Curve:
@@ -472,7 +500,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  offsetX: 3.14
+  offsetX: 3.43
   digitStep: 0
 --- !u!1 &8364757341603324645
 GameObject:
@@ -577,7 +605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7669316236705494931
 Transform:
   m_ObjectHideFlags: 0
@@ -661,7 +689,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveRay: {fileID: 7723957579887162654}
   lineDetector: {fileID: 6624548947269045397}
-  detectedEnemies: []
   linerSetupTime: 0.5
   DPS: 56
 --- !u!114 &1486398870
@@ -676,8 +703,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018c4f1f1f26c7140b3928497916a169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   raySensor: {fileID: 0}
   raySensor2D: {fileID: 0}
-  autoUpdate: 1
-  syncCondition: 0

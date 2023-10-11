@@ -50,9 +50,8 @@ namespace RaycastPro.Detectors
             CleanGate();
 #endif
 
-            CachePrevious();
-            
-            delta = GetDelta(timeMode);
+            PreviousColliders = DetectedColliders.ToArray();
+            delta = GetModeDeltaTime(timeMode);
 
 #if UNITY_EDITOR
             if (IsSceneView && !IsPlaying) currentAngle = Time.realtimeSinceStartup * speed;
@@ -85,14 +84,14 @@ namespace RaycastPro.Detectors
                          _t.rotation, radius, detectLayer.value, triggerInteraction))
             {
                 tCollider = _h.collider;
-                if (!TagPass(tCollider)) continue;
+                if (!CheckGeneralPass(tCollider)) continue;
                 if (IsIgnoreSolver)
                 {
                     _colliders.Add(tCollider);
                     continue;
                 }
                 point = DetectFunction(tCollider); // 1: Get Detect Point
-                if (LOSPass(point, tCollider)) _colliders.Add(tCollider);
+                if (CheckSolverPass(point, tCollider)) _colliders.Add(tCollider);
             }
 
             #region Add or Refresh Colliders
@@ -108,7 +107,7 @@ namespace RaycastPro.Detectors
             #endregion
 
             #region Refresh Time and out Colliders
-            DetectedColliders = DetectProfile.Keys.ToHashSet();
+            DetectedColliders = DetectProfile.Keys.ToList();
             foreach (var col in DetectedColliders)
             {
                 DetectProfile[col] -= delta;

@@ -104,7 +104,7 @@
             _pos = transform.position;
             
             hitCounts = 0;
-            delta = GetDelta(timeMode);
+            delta = GetModeDeltaTime(timeMode);
             
             _dir = (destination.position - _pos);
             _DirN = _dir.normalized;

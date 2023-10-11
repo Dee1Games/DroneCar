@@ -33,7 +33,7 @@
         /// <summary>
         /// Ray direction in World space.
         /// </summary>
-        public Vector3 direction = Vector3.forward;
+        [SerializeField] public Vector3 direction = Vector3.forward;
         
         #region Lambdas
 
@@ -197,25 +197,107 @@
 
         public void PlaySoundAtHitPoint(AudioClip clip) => AudioSource.PlayClipAtPoint(clip, hit.point, 1f);
 
-        public T GetHitComponent<T>() => hit.transform.GetComponent<T>();
-
         /// <summary>
         /// Get Hit point Material Color 
         /// </summary>
-        public Color HitColor => hit.GetColor();
+        public Color HitColor
+        {
+            get
+            {
+                var material = HitMaterial;
+                if (!material) return Color.black;
+                var tex = material.mainTexture as Texture2D;
+                if (tex)
+                {
+                    if (tex.isReadable)
+                    {
+                        var scale = material.mainTextureScale;
+                        var offset = material.mainTextureOffset;
+                        var pixelUV = hit.textureCoord;
+                        pixelUV.x *= tex.width*scale.x;
+                        pixelUV.y *= tex.height*scale.y;
+                        offset.x *= tex.width;
+                        offset.y *= tex.height;
+                        
+                        return tex.GetPixel((int) (offset.x + pixelUV.x), (int) (offset.y + pixelUV.y)) * material.color;
+                    }
+#if UNITY_EDITOR
+                    Debug.LogWarning(RCProEditor.RPro+$"{hit.transform.name} material texture isn't readable!");
+#endif
+                    return material.color;
+                }
+                return material.color;
+            }
+        }
         /// <summary>
         /// Directly get current hit material detection. #Detection
         /// </summary>
-        public Material HitMaterial => hit.GetMaterial();
+        public Material HitMaterial
+        {
+            get
+            {
+                if (!hit.transform) return null;
+                var materials = hit.transform.GetComponent<MeshRenderer>().materials;
+                var index = hit.triangleIndex;
+                var mesh = hit.transform.GetComponent<MeshFilter>().mesh;
+                var subMeshIndex = GetSubMeshIndex(mesh, index);
+                return materials[subMeshIndex];
+            }
+        }
         /// <summary>
         /// Get Hit (Terrain) currently most alpha map value Index. (return's -1 in default)
         /// </summary>
-        public int HitTerrainIndex => hit.GetTerrainIndex();
+        public int HitTerrainIndex
+        {
+            get
+            {
+                if (!hit.transform) return -1;
+
+                if (hit.transform.TryGetComponent(out Terrain terrain))
+                {
+                    var terrainPos = hit.point - terrain.GetPosition();
+                    var splatPos = new Vector3(terrainPos.x / terrain.terrainData.size.x, 0,
+                        terrainPos.z / terrain.terrainData.size.z);
+
+                    var x = Mathf.FloorToInt(splatPos.x * terrain.terrainData.alphamapWidth);
+                    var z = Mathf.FloorToInt(splatPos.z * terrain.terrainData.alphamapHeight);
+
+                    var alphaMaps = terrain.terrainData.GetAlphamaps(x, z, 1, 1);
+
+                    var _cIndex = 0;
+                    for (var i = 0; i < alphaMaps.Length; i++)
+                    {
+                        if (alphaMaps[0,0,i] > alphaMaps[0, 0, _cIndex])
+                        {
+                            _cIndex = i;
+                        }
+                    }
+
+                    return _cIndex;
+                }
+                return -1;
+            }
+        }
         /// <summary>
         /// Get Array of alpha map value on hit Point.
         /// </summary>
         /// <param name="alphasValues"></param>
-        public void GetHitTerrainAlpha(ref float[] alphasValues) => hit.GetTerrainAlpha(ref alphasValues);
+        public void GetHitTerrainAlpha(ref float[] alphasValues)
+        {
+            if (hit.transform.TryGetComponent(out Terrain terrain))
+            {
+                var terrainPos = hit.point - terrain.GetPosition();
+                var splatPos = new Vector3(terrainPos.x / terrain.terrainData.size.x, 0,
+                    terrainPos.z / terrain.terrainData.size.z);
+
+                var x = Mathf.FloorToInt(splatPos.x * terrain.terrainData.alphamapWidth);
+                var z = Mathf.FloorToInt(splatPos.z * terrain.terrainData.alphamapHeight);
+
+                var alphaMaps = terrain.terrainData.GetAlphamaps(x, z, 1, 1);
+                
+                for (var i = 0; i < alphaMaps.Length; i++) alphasValues[i] = alphaMaps[0, 0, i];
+            }
+        }
         internal static int GetSubMeshIndex(Mesh mesh, int triangleIndex)
         {
             if (!mesh.isReadable) return 0;
@@ -228,6 +310,7 @@
             }
             return 0;
         }
+
         #endregion
         public override bool ClonePerformed => CloneHit.transform;
         public RaycastHit CloneHit => cloneRaySensor ? cloneRaySensor.CloneHit : hit;
@@ -250,45 +333,25 @@
             var _st = stamp.transform;
             if (stampOnHit && hit.transform)
             {
-                _st.position = TipTarget;
-                if (syncStamp.syncAxis)
+                _st.position = TipTarget + hit.normal * stampOffset;
+                if (!syncStamp.syncAxis) return;
+                switch (syncStamp.axis)
                 {
-                    switch (syncStamp.axis)
-                    {
-                        case Axis.X: _st.right = hit.normal * (syncStamp.flipAxis ? -1 : 1); break;
-                        case Axis.Z: _st.forward = hit.normal * (syncStamp.flipAxis ? -1 : 1); break;
-                        case Axis.Y: _st.up = hit.normal * (syncStamp.flipAxis ? -1 : 1); break;
-                    }
+                    case Axis.X: _st.right = hit.normal * (syncStamp.flipAxis ? -1 : 1); break;
+                    case Axis.Z: _st.forward = hit.normal * (syncStamp.flipAxis ? -1 : 1); break;
+                    case Axis.Y: _st.up = hit.normal * (syncStamp.flipAxis ? -1 : 1); break;
                 }
-
             }
             else
             {
-                _st.position = Tip;
-                if (syncStamp.syncAxis)
+                _st.position = Tip + TipDirection * stampOffset;
+                if (!syncStamp.syncAxis) return;
+                switch (syncStamp.axis)
                 {
-                    switch (syncStamp.axis)
-                    {
-                        case Axis.X:
-                            _st.right = TipDirection * (syncStamp.flipAxis ? 1 : -1);
-                            break;
-                        case Axis.Z:
-                            _st.forward = TipDirection * (syncStamp.flipAxis ? 1 : -1);
-                            break;
-                        case Axis.Y:
-                            _st.up = TipDirection * (syncStamp.flipAxis ? 1 : -1);
-                            break;
-                    }
+                    case Axis.X: _st.right = TipDirection * (syncStamp.flipAxis ? 1 : -1); break;
+                    case Axis.Z: _st.forward = TipDirection * (syncStamp.flipAxis ? 1 : -1); break;
+                    case Axis.Y: _st.up = TipDirection * (syncStamp.flipAxis ? 1 : -1); break;
                 }
-            }
-
-            if (syncStamp.syncAxis)
-            {
-                _st.position += hit.normal * stampOffset;
-            }
-            else
-            {
-                _st.position -= HitDirection.normalized * stampOffset;
             }
         }
         /// <summary>
@@ -352,25 +415,15 @@
             {
                 if (useLinerClampedPosition)
                 {
-                    liner.positionCount = 2;
-                    if (cutOnHit)
+                    var _pos =(HitDistance / RayLength);
+                    
+                    if (_pos >= linerBasePosition)
                     {
-                        var _pos =(HitDistance / RayLength);
-                        var _b = Base;
-                        if (_pos >= linerBasePosition)
-                        {
-                            liner.SetPosition(0, Vector3.Lerp(_b, Tip, linerBasePosition));
-                            liner.SetPosition(1, _pos < linerEndPosition ? TipTarget : Vector3.Lerp(_b, Tip, linerEndPosition));
-                        }
-                        else liner.positionCount = 0;
+                        liner.positionCount = 2;
+                        liner.SetPosition(0, Vector3.Lerp(Base, Tip, linerBasePosition));
+                        liner.SetPosition(1, _pos < linerEndPosition ? TipTarget : Vector3.Lerp(Base, Tip, linerEndPosition));
                     }
-                    else
-                    {
-                        var _t = Tip;
-                        var _b = Base;
-                        liner.SetPosition(0, Vector3.Lerp(_b, _t, linerBasePosition));
-                        liner.SetPosition(1, Vector3.Lerp(_b, _t, linerEndPosition));
-                    }
+                    else liner.positionCount = 0;
                 }
                 else // USE Full Clamp
                 {
@@ -405,75 +458,70 @@
         }
         internal override void OnDetect()
         {
-            if (planarSensitive)
+            onDetect?.Invoke(hit);
+
+            if (!planarSensitive) return;
+            if (anyPlanar)
             {
-                if (anyPlanar)
-                {
-                    if (!_planar) return;
+                if (!_planar) return;
 
-                    _planar.OnReceiveRay(this);
-                    _planar.onReceiveRay?.Invoke(this);
-                }
-                else
+                _planar.OnReceiveRay(this);
+                _planar.onReceiveRay?.Invoke(this);
+            }
+            else
+            {
+                foreach (var p in planers)
                 {
-                    foreach (var p in planers)
-                    {
-                        if (!p || p.transform != hit.transform) continue;
+                    if (!p || p.transform != hit.transform) continue;
 
-                        p.OnReceiveRay(this);
-                        p.onReceiveRay?.Invoke(this);
-                    }
+                    p.OnReceiveRay(this);
+                    p.onReceiveRay?.Invoke(this);
                 }
             }
-            onDetect?.Invoke(hit);
         }
         internal override void OnEndDetect()
         {
+            onEndDetect?.Invoke(PreviousHit);
             if (stampAutoHide) stamp?.gameObject.SetActive(false);
-            if (planarSensitive)
+            if (!planarSensitive) return;
+            if (anyPlanar)
             {
-                if (anyPlanar)
+                if (!_planar) return;
+                _planar.OnEndReceiveRay(this);
+                _planar.onEndReceiveRay?.Invoke(this);
+                _planar = null;
+            }
+            else
+            {
+                foreach (var p in planers)
                 {
-                    if (!_planar) return;
-                    _planar.OnEndReceiveRay(this);
-                    _planar.onEndReceiveRay?.Invoke(this);
-                    _planar = null;
-                }
-                else
-                {
-                    foreach (var p in planers)
-                    {
-                        if (!p || p.transform != PreviousHit.transform) continue;
-                        p.OnEndReceiveRay(this);
-                        p.onEndReceiveRay?.Invoke(this);
-                    }
+                    if (!p || p.transform != PreviousHit.transform) continue;
+                    p.OnEndReceiveRay(this);
+                    p.onEndReceiveRay?.Invoke(this);
                 }
             }
-            onEndDetect?.Invoke(PreviousHit);
         }
         internal override void OnBeginDetect()
         {
+            onBeginDetect?.Invoke(hit);
             if (stampAutoHide) stamp?.gameObject.SetActive(true);
-            if (planarSensitive)
+            if (!planarSensitive) return;
+            if (anyPlanar)
             {
-                if (anyPlanar)
+                _planar = hit.transform.GetComponent<Planar>();
+                if (!_planar) return;
+                _planar.OnBeginReceiveRay(this);
+                _planar.onBeginReceiveRay?.Invoke(this);
+            }
+            else
+            {
+                foreach (var p in planers)
                 {
-                    _planar = hit.transform.GetComponent<Planar>();
-                    if (!_planar) return;
-                    _planar.OnBeginReceiveRay(this);
-                    _planar.onBeginReceiveRay?.Invoke(this);
-                }
-                else
-                {
-                    foreach (var p in planers)
-                    {
-                        if (!p || p.transform != hit.transform) continue;
-                        p.OnBeginReceiveRay(this);
-                        p.onBeginReceiveRay?.Invoke(this);
-                    }
+                    if (!p || p.transform != hit.transform) continue;
+                    p.OnBeginReceiveRay(this);
+                    p.onBeginReceiveRay?.Invoke(this);
                 }
             }
-            onBeginDetect?.Invoke(hit);
         }
         public static void CloneDestroy(RaySensor sensor)
         {
@@ -530,7 +578,7 @@
             if (doubleDisc) Handles.DrawWireDisc(hit.point + hit.normal * DotSize, hit.normal, DiscSize);
             
             Handles.DrawLine(hit.point, hit.point + hit.normal * LineSize);
-            if (RCProPanel.ShowLabels && label) Handles.Label(hit.point + hit.normal * DotSize, hit.transform.name, RCProEditor.HeaderStyle);
+            if (label) Handles.Label(hit.point + hit.normal * DotSize, hit.transform.name, RCProEditor.HeaderStyle);
         }
         
         protected void GeneralField(SerializedObject _so)

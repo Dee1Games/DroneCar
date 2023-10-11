@@ -8,7 +8,6 @@
     using UnityEditor;
 #endif
 
-    [HelpURL("https://www.youtube.com/watch?v=Oaj0dqbfgFM")]
     [AddComponentMenu("RaycastPro/Rey Sensors/" + nameof(ReflectRay))]
     public sealed class ReflectRay : PathRay, IRadius
     {
@@ -92,6 +91,8 @@
                     continue;
                 }
                 PathPoints.Add(point + _direction.normalized * distance);
+                
+                
                 break;
             }
             Physics.queriesHitBackfaces = physicsSetting;

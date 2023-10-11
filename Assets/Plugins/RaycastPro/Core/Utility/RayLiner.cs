@@ -1,8 +1,9 @@
-﻿namespace RaycastPro.Sensor
+﻿using RaycastPro.RaySensors2D;
+
+namespace RaycastPro.Sensor
 {
     using System.Collections.Generic;
     using RaySensors;
-    using RaySensors2D;
     using UnityEngine;
 #if UNITY_EDITOR
     using Editor;
@@ -127,25 +128,15 @@
             {
                 if (clamped)
                 {
-                    liner.positionCount = 2;
-                    if (cutOnHit)
+                    _pos = (raySensor.HitDistance / raySensor.RayLength);
+                    if (_pos >= basePosition)
                     {
-                        var _pos =(raySensor.HitDistance / raySensor.RayLength);
-                        var _b = raySensor.Base;
-                        if (_pos >= raySensor.linerBasePosition)
-                        {
-                            liner.SetPosition(0, Vector3.Lerp(_b, raySensor.Tip, raySensor.linerBasePosition));
-                            liner.SetPosition(1, _pos < raySensor.linerEndPosition ? raySensor.TipTarget : Vector3.Lerp(_b, raySensor.Tip, raySensor.linerEndPosition));
-                        }
-                        else liner.positionCount = 0;
+                        liner.positionCount = 2;
+                        liner.SetPosition(0, Vector3.Lerp(_baseP, _tipP, basePosition));
+                        liner.SetPosition(1,
+                            _pos < endPosition ? _tipTarget : Vector3.Lerp(_baseP, _tipP, endPosition));
                     }
-                    else
-                    {
-                        var _t = raySensor.Tip;
-                        var _b = raySensor.Base;
-                        liner.SetPosition(0, Vector3.Lerp(_b, _t, raySensor.linerBasePosition));
-                        liner.SetPosition(1, Vector3.Lerp(_b, _t, raySensor.linerEndPosition));
-                    }
+                    else liner.positionCount = 0;
                 }
                 else // USE Full Clamp
                 {
@@ -161,7 +152,6 @@
             UpdateLiner();
         }
 #if UNITY_EDITOR
-        
 #pragma warning disable CS0414
         private static string Info = "Assigns a Line Renderer to the desired RaySource." + HDependent + HUtility;
 #pragma warning restore CS0414
@@ -242,10 +232,18 @@
 
                 if (hasInfo)
                 {
+                    InformationField(() =>
+                    {
+                        BeginHorizontal();
+                        GUILayout.Label("Performed");
+                        GUI.contentColor = Performed ? DetectColor : DefaultColor;
+                        GUILayout.Label(Performed.ToString());
+                        GUI.contentColor = RCProEditor.Aqua;
+                        EndHorizontal();
+                    });
                 }
             }
-
-        }
 #endif
+        }
     }
 }

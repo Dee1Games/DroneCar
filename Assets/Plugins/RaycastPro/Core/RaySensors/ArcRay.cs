@@ -1,11 +1,12 @@
 ﻿namespace RaycastPro.RaySensors
 {
+    using System.Collections.Generic;
     using UnityEngine;
 #if UNITY_EDITOR
+    using Editor;
     using UnityEditor;
 #endif
 
-    [HelpURL("https://www.youtube.com/watch?v=OdonhX2GQII")]
     [AddComponentMenu("RaycastPro/Rey Sensors/" + nameof(ArcRay))]
     public sealed class ArcRay : PathRay, IRadius
     {
@@ -14,7 +15,7 @@
         public float elapsedTime = 5f;
 
         public bool velocityLocal;
-
+        
         [SerializeField] private float radius;
         public float Radius
         {
@@ -25,12 +26,8 @@
         protected override void OnCast()
         {
             UpdatePath();
-            if (pathCast)
-            {
-                DetectIndex = PathCast(radius);
-            }
+            if (pathCast) DetectIndex = PathCast(radius);
         }
-        
         /// <summary>
         /// Using in Gizmo and OnCast Separately
         /// </summary>
@@ -49,6 +46,7 @@
                 PathPoints.Add(_pos);
             }
         }
+
         private float t;
         private Vector3 g, _dir, _tPos, _pos;
         
@@ -72,13 +70,16 @@
             if (hasMain)
             {
                 DirectionField(_so);
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(segments)),
+                    CSegments.ToContent(TSegments));
+                segments = Mathf.Max(1, segments);
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(elapsedTime)),
+                    "Elapsed Time".ToContent("Elapsed Time"));
                 BeginHorizontal();
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(velocity)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(velocity)),
+                    CVelocity.ToContent(CVelocity));
                 LocalField(_so.FindProperty(nameof(velocityLocal)));
                 EndHorizontal();
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(segments)));
-                segments = Mathf.Max(1, segments);
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(elapsedTime)));
                 RadiusField(_so);
             }
 

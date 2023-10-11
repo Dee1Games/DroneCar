@@ -33,10 +33,16 @@ namespace RaycastPro.Bullets
                 transform.position = caster.transform.position;
                 transform.forward = caster.transform.forward;
             }
-
-
+            else
+            {
+                transform.position = raySource.Base;
+                transform.forward = raySource.Direction;
+            }
+            
+            Debug.Log(caster.name);
             OnCast(); // Auto Setup 3D Bullet
-            onCast?.Invoke(caster);
+            if (onCast != null) onCast.Invoke(_caster);
+
             if (collisionRay)
             {
                 collisionRay.enabled = false;

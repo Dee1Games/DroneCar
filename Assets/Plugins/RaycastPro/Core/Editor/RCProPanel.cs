@@ -31,7 +31,6 @@ namespace RaycastPro.Editor
 
         internal static bool showOnStart;
         [SavePreference] internal static bool realtimeEditor = true;
-        [SavePreference] internal static bool rcProInspector = true;
         
         [SavePreference] internal static Color DefaultColor = RCProEditor.Aqua;
         [SavePreference] internal static Color DetectColor = new Color(.3f, 1, .3f, 1f);
@@ -91,8 +90,6 @@ namespace RaycastPro.Editor
             showOnStart = EditorPrefs.GetBool(KEY + CShowOnStart, true);
             headerTexture = IconManager.GetHeader();
             RefreshIcons();
-
-            modes = new[] {"Utility", "2D", "3D"};
         }
         private void OnDisable()
         {
@@ -103,8 +100,6 @@ namespace RaycastPro.Editor
         private List<Type> cores = new List<Type>();
 
         private Color randomColor;
-
-        private static string[] modes;
         private void OnGUI()
         {
             randomColor = Color.HSVToRGB(Time.time % 1f, 1, 1f);
@@ -121,12 +116,12 @@ namespace RaycastPro.Editor
                 alignment = TextAnchor.UpperCenter,
                 richText = true
             };
-            GUILayout.Label($"<b>RAYCAST_PRO 1.0.9x</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
+            GUILayout.Label($"<b>RAYCAST_PRO 1.0.7X</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
             RCProEditor.GUILine(randomColor);
             #region Content Buttons
             GUI.contentColor = RCProEditor.Aqua;
             GUI.backgroundColor = RCProEditor.Violet;
-            var enumInt = GUILayout.SelectionGrid((int) mode, modes, 3);
+            var enumInt = GUILayout.SelectionGrid((int) mode, new[] {"Utility","2D", "3D"}, 3);
             mode = (Mode) Enum.ToObject(typeof(Mode), enumInt);
 
             cores.Clear();
@@ -151,13 +146,13 @@ namespace RaycastPro.Editor
                         {
                             typeof(BasicRay), typeof(PipeRay), typeof(BoxRay), typeof(RadialRay), typeof(ChainRay),
                             typeof(ReflectRay),
-                            typeof(TargetRay), typeof(PointerRay), typeof(WaveRay), typeof(NoiseRay), typeof(CurveRay), typeof(ArcRay), typeof(HybridRay)
+                            typeof(TargetRay), typeof(PointerRay), typeof(WaveRay), typeof(ArcRay), typeof(HybridRay)
                         };
                         break;
                     case CoreMode.Detectors:
                         cores = new List<Type>
                         {
-                            typeof(LineDetector), typeof(RangeDetector), typeof(BoxDetector), typeof(PolyDetector), typeof(MeshDetector), typeof(TargetDetector),
+                            typeof(LineDetector), typeof(RangeDetector), typeof(BoxDetector), typeof(PolyDetector), typeof(TargetDetector),
                             typeof(RadarDetector), typeof(SightDetector), typeof(SteeringDetector),
                             typeof(SoundDetector), typeof(LightDetector), typeof(PathDetector)
                         };
@@ -244,13 +239,7 @@ namespace RaycastPro.Editor
                 {
                     IconDrawer.SetEvent(drawHierarchyIcons);
                     SceneView.RepaintAll();
-                    RCProEditor.Log($"Realtime Editor <color=#B794FF>{(realtimeEditor ? "Enabled" : "Disabled")}</color>.");
-                }
-                
-                rcProInspector = EditorGUILayout.Toggle("RCPro Inspector", rcProInspector);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    RCProEditor.Log($"RCPro Inspector <color=#B794FF>{(rcProInspector ? "Enabled" : "Disabled")}</color>.");
+                    Debug.Log(RCProEditor.RPro + $"Realtime Editor <color=#B794FF>{(realtimeEditor ? "Enabled" : "Disabled")}</color>.");
                 }
                 
                 EditorGUI.BeginChangeCheck();
@@ -272,9 +261,8 @@ namespace RaycastPro.Editor
                 {
                     IconDrawer.SetEvent(drawHierarchyIcons);
                     EditorApplication.RepaintHierarchyWindow();
-                    RCProEditor.Log($"Hierarchy Icons <color=#B794FF>{(drawHierarchyIcons ? "Enabled" : "Disabled")}</color>.");
+                    Debug.Log(RCProEditor.RPro + $"Hierarchy Icons <color=#B794FF>{(drawHierarchyIcons ? "Enabled" : "Disabled")}</color>.");
                 }
-                
                 
                 if (drawHierarchyIcons)
                     hierarchyIconsOffset = EditorGUILayout.IntField("Icons Offset", hierarchyIconsOffset);
@@ -338,8 +326,6 @@ namespace RaycastPro.Editor
             RCProEditor.GUILine(randomColor);
             
             if (GUILayout.Button("Reset Settings")) ResetSettings();
-            
-            if (GUILayout.Button("Thank for Submit a Review!")) Application.OpenURL("https://assetstore.unity.com/packages/tools/physics/raycastpro-214714#reviews");
             GUILayout.EndScrollView();
             GUILayout.Space(2);
             RCProEditor.GUILine(Color.white);
@@ -394,7 +380,7 @@ namespace RaycastPro.Editor
         }
         public static void SavePreferences()
         {
-            RCProEditor.Log("<color=#00FF00>Preferences Saves.</color>");
+            Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Saves.</color>");
             var type = typeof(RCProPanel);
             FieldInfo[] fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
             
@@ -416,7 +402,7 @@ namespace RaycastPro.Editor
         }
         public static void LoadPreferences(bool message = true)
         {
-            if (message) RCProEditor.Log("<color=#00FF00>Preferences Loaded.</color>");
+            if (message) Debug.Log(RCProEditor.RPro+"<color=#00FF00>Preferences Loaded.</color>");
 
             var type = typeof(RCProPanel);
             FieldInfo[] fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static);
@@ -668,9 +654,6 @@ namespace RaycastPro.Editor
 
         [AttributeUsage(AttributeTargets.Field)]
         internal class SavePreference : Attribute { }
-        
-        [AttributeUsage(AttributeTargets.Class)]
-        internal class RawEditor : Attribute { }
 
         internal enum CoreMode
         {

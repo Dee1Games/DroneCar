@@ -29,70 +29,34 @@
         /// <summary>
         /// Main List of Detected colliders. Use this for Get Colliders.
         /// </summary>
-        public HashSet<Collider> DetectedColliders { get; protected set; } = new HashSet<Collider>();
-
+        public List<Collider> DetectedColliders { get; protected set; } = new List<Collider>();
+        
         /// <summary>
         /// Array of Last Frame Detected colliders.
         /// </summary>
-        public HashSet<Collider> PreviousColliders { get; protected set; } = new HashSet<Collider>();
+        public Collider[] PreviousColliders { get; protected set; } = new Collider[]{};
         
         #region Methods
         public Collider FirstMember => DetectedColliders.FirstOrDefault();
 
         public Collider LastMember => DetectedColliders.LastOrDefault();
-        
+        #endregion
+
+        #region Lambdas
+
         public Vector3 GetAveragePosition
         {
             get
             {
                 var average = Vector3.zero;
+                
                 foreach (var c in DetectedColliders) average += c.transform.position;
+                
                 return average / DetectedColliders.Count;
-            }
-        }
-        
-        /// <summary>
-        /// It will calculate nearest collider based on current detected colliders on detector.
-        /// </summary>
-        /// <param name="nearest">Define a collider2D in your script and ref to it for get the nearest.</param>
-        public void GetNearestCollider(out Collider nearest)
-        {
-            var _cDistance = Mathf.Infinity;
-            nearest = null;
-            foreach (var _col in DetectedColliders)
-            {
-                _tDis = (_col.transform.position - transform.position).sqrMagnitude;
-                if (_tDis < _cDistance)
-                {
-                    _cDistance = _tDis;
-                    nearest = _col;
-                }
-            }
-        }
-        /// <summary>
-        /// It will calculate the furthest collider based on current detected colliders on detector.
-        /// </summary>
-        /// <param name="furthest">Define a collider2D in your script and ref to it for get the furthest.</param>
-        public void GetFurthestCollider(out Collider furthest)
-        {
-            var _cDistance = 0f;
-            furthest = null;
-            foreach (var _col in DetectedColliders)
-            {
-                _tDis = (_col.transform.position - transform.position).sqrMagnitude;
-                if (_tDis > _cDistance)
-                {
-                    _cDistance = _tDis;
-                    furthest = _col;
-                }
             }
         }
 
         #endregion
-
-        
-        protected float _tDis;
-
         #region Public Methods
 
         public void ActiveObject(Collider collider) => collider.gameObject.SetActive(true);
@@ -151,27 +115,20 @@
         }
         #endregion
 
-
-        protected virtual void Start() // Refreshing
+        protected void Start() // Refreshing
         {
-            PreviousColliders = new HashSet<Collider>();
-            DetectedColliders = new HashSet<Collider>();
+            PreviousColliders = Array.Empty<Collider>();
+            DetectedColliders = new List<Collider>();
         }
 
-        protected void CachePrevious()
-        {
-            if (onLostCollider != null || onNewCollider != null)
-            {
-                PreviousColliders = new HashSet<Collider>(DetectedColliders);
-            }
-        }
         /// <summary>
         /// Call: onDetectCollider, OnDetectNew, OnLostDetect in Optimized foreach loop
         /// </summary>
         protected void ColliderDetectorEvents()
         {
+            
             if (onDetectCollider != null) foreach (var c in DetectedColliders) onDetectCollider.Invoke(c);
-            if (PreviousColliders.Count == DetectedColliders.Count) return;
+            if (PreviousColliders.Length == DetectedColliders.Count) return;
             if (onNewCollider != null)
             {
                 foreach (var c in DetectedColliders.Except(PreviousColliders)) onNewCollider.Invoke(c);
@@ -236,18 +193,14 @@
 
         protected Func<Collider, Vector3> DetectFunction;
         private void OnEnable() => DetectFunction = SetupDetectFunction();
-        protected bool TagPass(Collider c) => c && !ignoreList.Contains(c) && (!usingTagFilter || c.CompareTag(tagFilter));
-        protected bool TagPass(GameObject g) => g && (!usingTagFilter || g.CompareTag(tagFilter));
+        protected bool CheckGeneralPass(Collider c) => c && !ignoreList.Contains(c) && (!usingTagFilter || c.CompareTag(tagFilter));
+        protected bool CheckGeneralPass(GameObject g) => g && (!usingTagFilter || g.CompareTag(tagFilter));
 #if UNITY_EDITOR
         
         protected readonly string[] CEventNames = {"onDetectCollider", "onNewCollider", "onLostCollider"};
         protected bool GuideCondition =>
             RCProPanel.DrawGuide && DetectedColliders.Count <= RCProPanel.DrawGuideLimitCount && gizmosUpdate == GizmosMode.Select;
-
-        protected void OnValidate()
-        {
-            DetectFunction = SetupDetectFunction();
-        }
+        protected override void AfterValidate() => DetectFunction = SetupDetectFunction();
         protected void ColliderDetectorGeneralField(SerializedObject _so)
         {
             GeneralField(_so);

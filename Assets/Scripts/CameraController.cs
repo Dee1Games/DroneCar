@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
-using MoreMountains.Feedbacks;
 using Unity.VisualScripting;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -23,8 +22,6 @@ public class CameraController : MonoBehaviour
     private Transform target;
     private RaycastHit[] hits;
     private bool following;
-
-    public MMCameraShaker cameraShaker;
 
     private void Awake()
     {
@@ -56,11 +53,6 @@ public class CameraController : MonoBehaviour
             return;
         
         HideCameraOverlaps();
-    }
-
-    public void ShakeCamera(float duration, float amp)
-    {
-        cameraShaker.ShakeCamera(duration, amp, 12, amp, amp, amp, false);
     }
 
     public void SetTarget(Transform target)

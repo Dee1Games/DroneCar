@@ -251,31 +251,6 @@
         }
         internal abstract void SafeRemove();
 
-        private void OnEnable()
-        {
-            if (stamp && stampAutoHide)
-            {
-                stamp.gameObject.SetActive(true);
-            }
-
-            if (liner)
-            {
-                liner.enabled = true;
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (stamp && stampAutoHide)
-            {
-                stamp.gameObject.SetActive(false);
-            }
-            if (liner)
-            {
-                liner.enabled = false;
-            }
-        }
-
 #if UNITY_EDITOR
         protected abstract void EditorUpdate();
         protected void DirectionField(SerializedObject _so, bool _local = true)
@@ -355,9 +330,9 @@
             #region Liner Setting
 
             if (!liner) return;
-            
+
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(useLinerClampedPosition)), "Clamped Position".ToContent("Clamped Position"));
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(cutOnHit)), "Cut on Hit".ToContent("Cut line renderer when hit on something."));
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(useLinerClampedPosition)), "Clamped".ToContent("Clamped"));
 
             GUI.enabled = useLinerClampedPosition;
             PropertyMinMaxField(_so.FindProperty(nameof(linerBasePosition)), _so.FindProperty(nameof(linerEndPosition)), ref linerBasePosition, ref linerEndPosition, 0, 1);
@@ -382,16 +357,15 @@
 /// Main Event names
 /// </summary>
         protected readonly string[] CEventNames = {"onDetect", "onBeginDetect", "onEndDetect", "onChange","onCast"};
-        protected void EventField(SerializedObject _so, in string[] ev)
+        protected void EventField(SerializedObject _so)
         {
             EventFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(EventFoldout, CEvents.ToContent(TEvents),
                 RCProEditor.HeaderFoldout);
-            if (EventFoldout)  RCProEditor.EventField(_so, ev);
+            if (EventFoldout)  RCProEditor.EventField(_so, CEventNames);
 
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
-        protected void EventField(SerializedObject _so) => EventField(_so, CEventNames);
-        
+
         protected static void ArcTypeField(ref ArcType arcType, Action value, ref Transform target, ref float velocityPower)
         {
             BeginVerticalBox();

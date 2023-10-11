@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Robot_AI : AI_Core
 {
-    public GunCore gun;
+    public Gun gun;
     protected override void OnPlayerFound(CarCore _core)
     {
         base.OnPlayerFound(_core);

@@ -1,4 +1,4 @@
-﻿using RaycastPro.RaySensors;
+using RaycastPro.RaySensors;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,7 +10,6 @@ namespace Plugins.RaycastPro.Demo.Scripts
         public NavMeshAgent agent;
         void Update()
         {
-            // Left Click mouse
             if (Input.GetMouseButtonDown(0))
             {
                 agent.destination = raySensor.HitPoint;

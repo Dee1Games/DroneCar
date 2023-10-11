@@ -67,7 +67,7 @@ namespace RaycastPro.Detectors
         public Vector3 extents = new Vector3(.4f, .4f, 0f);
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        protected override void AfterValidate()
         {
             nonAllocatedHits = new RaycastHit[limitCount];
         }  
@@ -84,9 +84,9 @@ namespace RaycastPro.Detectors
         private Vector3 up;
         protected override void OnCast()
         {
-            CachePrevious();
-            
+            PreviousColliders = DetectedColliders.ToArray();
             DetectedColliders.Clear();
+            
             PreviousHits = DetectedHits.ToArray();
             if (limited)
             {
@@ -172,10 +172,7 @@ namespace RaycastPro.Detectors
                 foreach (var _member in PreviousHits.Except(DetectedHits)) onLostHit.Invoke(_member);
             }
             
-            foreach (var detectedHit in DetectedHits)
-            {
-                DetectedColliders.Add(detectedHit.collider);
-            }
+            DetectedColliders = DetectedHits.Select(hit => hit.collider).Distinct().ToList();
             ColliderDetectorEvents();
             #endregion
 

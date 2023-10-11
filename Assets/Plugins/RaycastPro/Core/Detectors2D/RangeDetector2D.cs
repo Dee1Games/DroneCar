@@ -47,15 +47,6 @@
 
         [SerializeField] private Collider2D[] colliders = Array.Empty<Collider2D>();
         
-        private Collider2D nearestMember;
-        private Collider2D furthestMember;
-
-        /// <summary>
-        /// Get The calculated nearest member (Optimized for get in update)
-        /// </summary>
-        public Collider2D NearestMember => nearestMember;
-        public Collider2D FurthestMember => FurthestMember;
-
         protected override void OnCast()
         {
 #if UNITY_EDITOR
@@ -74,7 +65,6 @@
             }
             DetectedColliders.Clear();
             tempAngle = local ? transform.right : Vector3.right;
-            _tDis = Mathf.Infinity;
             foreach (var c in colliders)
             {
                 if (!CheckGeneralPass(c)) continue;
@@ -90,22 +80,14 @@
                 TDP = DetectFunction(c);
                 angle = Vector2.Angle(tempAngle, TDP-transform.position);
                 if (angle > arcAngle/2) continue;
-                _distance = (transform.position - TDP).sqrMagnitude;
-                if (_distance > radius*radius) continue;
-                if (_distance < minRadius*minRadius) continue;
+                _distance = Vector2.Distance(transform.position, TDP);
+                if (_distance > radius) continue;
+                if (_distance < minRadius) continue;
                 _blockHit = Physics2D.Linecast(SolverPoint, TDP, blockLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
-                PassGate(c, TDP, _blockHit);
+                BlockLineGizmo(c, TDP, _blockHit);
 #endif
-                if (!_blockHit || _blockHit.transform == c.transform)
-                {
-                    if (_distance <= _tDis)
-                    {
-                        _tDis = _distance;
-                        nearestMember = c;
-                    }
-                    DetectedColliders.Add(c);
-                }
+                if (!_blockHit || _blockHit.transform == c.transform) DetectedColliders.Add(c);
             }
             EventsCallback();
         }

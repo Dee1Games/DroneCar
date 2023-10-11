@@ -1,4 +1,6 @@
-﻿namespace RaycastPro
+﻿using Palmmedia.ReportGenerator.Core.Reporting.Builders;
+
+namespace RaycastPro
 {
     using UnityEngine;
     using System;
@@ -27,7 +29,7 @@
         public B[] cloneBullets = Array.Empty<B>();
         public C[] ignoreColliders = Array.Empty<C>();
         public Ammo ammo;
-
+        
         [Tooltip("This option is exclusive to Tracker Bullet, you need to set the target before shooting and it will be automatically inserted into the bullet.")]
         public Transform trackTarget;
 
@@ -75,7 +77,8 @@
         }
 
         private B tempBullet;
-        
+
+
         private void OnArrayCast(B bulletObject)
         {
             if (cloneBullets[cloneIndex])
@@ -84,7 +87,7 @@
                 if (bulletObject.bulletID != cloneBullets[cloneIndex].bulletID)
                 {
                     Destroy(cloneBullets[cloneIndex].gameObject);
-                    tempBullet = Instantiate(bulletObject, _base, transform.rotation, poolManager);
+                    tempBullet = Instantiate(bulletObject, basePoint, transform.rotation, poolManager);
                     // Set Clone Index to this bullet
                     cloneBullets[cloneIndex] = tempBullet;
                     BulletSetup(tempBullet);
@@ -97,14 +100,14 @@
             }
             else
             {
-                tempBullet = Instantiate(bulletObject, _base, transform.rotation, poolManager);
+                tempBullet = Instantiate(bulletObject, basePoint, transform.rotation, poolManager);
                 // Set Clone Index to this bullet
                 cloneBullets[cloneIndex] = tempBullet;
                 BulletSetup(tempBullet);
             }
             
-            tempBullet.transform.position = _base;
-            tempBullet.transform.forward = _direction;
+            tempBullet.transform.position = basePoint;
+            tempBullet.transform.forward = _forward;
             
             // Revive Again
             tempBullet.ended = false;
@@ -116,10 +119,10 @@
 
         private void OnNormalCast(B bulletObject)
         {
-            tempBullet = Instantiate(bulletObject, _base, transform.rotation, poolManager);
+            tempBullet = Instantiate(bulletObject, basePoint, transform.rotation, poolManager);
             tempBullet.endFunction = BaseBullet.EndType.Destroy;
-            tempBullet.transform.position = _base;
-            tempBullet.transform.forward = _direction;
+            tempBullet.transform.position = basePoint;
+            tempBullet.transform.forward = _forward;
             BulletSetup(tempBullet);
         }
         
@@ -133,33 +136,18 @@
             BulletSetup(_bullet);
         }
 
-        private Vector3 _base, _direction;
+        private Vector3 basePoint, _forward;
         private B _bulletObject;
-
+        
         public override void Reload()
         {
-            StartCoroutine(ammo.IReload());
-            onReload?.Invoke();
+            ammo.inRate = false;
+            ammo.inReload = false;
         }
-
-        protected bool AmmoCheck(int count = 1) => !usingAmmo || ammo.Use(this, count);
-        
-        private void OnEnable()
+        protected bool BulletCast(int _index, R _raySensor, Action<B> onCast = null)
         {
-            if (ammo == null) return;
+            if (usingAmmo && !ammo.Use(this)) return false;
 
-            if (ammo.inRate)
-            {
-                ammo.inRate = false;
-            }
-            if (ammo.inReload)
-            {
-                Reload();
-            }
-        }
-        
-        protected bool BulletCast(int _index = 0, R _raySensor = default)
-        {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
 #endif
@@ -167,21 +155,63 @@
 
             if (_raySensor is RaySensor r)
             {
-                _direction = r.LocalDirection;
-                _base = r.Base;
+                _forward = r.LocalDirection;
+                basePoint = r.Base;
             }
             else if (_raySensor is RaySensor2D r2D)
             {
-                _direction = r2D.LocalDirection;
-                _base = r2D.Base;
+                _forward = r2D.LocalDirection;
+                basePoint = r2D.Base;
             }
 
             if (arrayCasting) OnArrayCast(_bulletObject);
             else OnNormalCast(_bulletObject);
             tempBullet.Cast(this, _raySensor);
+            onCast?.Invoke(tempBullet);
             return true;
         }
-
+        
+        protected bool BulletCast(int _index, R[] _raySensor, Action<B> onCast = null)
+        {
+            if (usingAmmo && !ammo.Use(this, _raySensor.Length)) return false;
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
+            var bulletObject = bullets[_index];
+            if (arrayCasting) // IN ARRAY CASTING
+            {
+                foreach (var rayS in _raySensor)
+                {
+                    if (rayS is RaySensor r)
+                    {
+                        _forward = r.LocalDirection;
+                        basePoint = r.Base;
+                    }
+                    else if (rayS is RaySensor2D r2D)
+                    {
+                        _forward = r2D.LocalDirection;
+                        basePoint = r2D.Base;
+                    }
+                    
+                    OnArrayCast(bulletObject);
+                    tempBullet.Cast(this, rayS);
+                    onCast?.Invoke(tempBullet);
+                }
+            }
+            else // IN NORMAL CASTING
+            {
+                foreach (var rayS in _raySensor)
+                {
+                    if (rayS is RaySensor r) basePoint = r.Base;
+                    else if (rayS is RaySensor2D r2D) basePoint = r2D.Base;
+                    OnNormalCast(bulletObject);
+                    tempBullet.Cast(this, rayS);
+                    onCast?.Invoke(tempBullet);
+                }
+            }
+            return true;
+        }
+        
         // ReSharper disable Unity.PerformanceAnalysis
         private void BulletSetup(B _bullet)
         {
@@ -241,7 +271,8 @@
         public void BulletActive(Bullet2D bullet) => bullet.gameObject.SetActive(true);
 #if UNITY_EDITOR
 
-
+        protected static readonly string[] events = new[] {"onCast", nameof(onReload)};   
+        
         protected const string CTogether = "Together";
         protected const string CSequence = "Sequence"; 
         protected const string CRandom = "Random"; 
@@ -299,7 +330,7 @@
             
             var bulletsProp = _so.FindProperty(nameof(bullets));
             RCProEditor.PropertyArrayField(bulletsProp,
-                "Bullets".ToContent(), i => $"Bullet {i+1}".ToContent($"Index {i}"));
+                "Bullets".ToContent("Bullets"), i => $"Bullet {i+1}".ToContent($"Index {i}"));
             PropertySliderField(_so.FindProperty(nameof(index)), 0,  bullets != null ? Mathf.Max(bulletsProp.arraySize-1,0) : 0 , "Index".ToContent(),
                 I => { });
             EndVertical();

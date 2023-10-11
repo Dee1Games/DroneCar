@@ -89,6 +89,7 @@
                 for (var i = 0; i < PathPoints.Count - 1; i++)
                 {
                     if (!Physics.Linecast(PathPoints[i], PathPoints[i + 1], out hit, detectLayer.value, triggerInteraction)) continue;
+                    //if (!Physics.Linecast(path[i], path[i + 1], out hit, detectLayer.value, triggerInteraction)) continue;
                     return i;
                 }
             }

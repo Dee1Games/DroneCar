@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using RaycastPro;
 using RaycastPro.Detectors;
 using UnityEngine;
 
@@ -35,10 +34,7 @@ namespace Plugins.RaycastPro.Demo.Scripts
             {
                 if (library.ContainsKey(col))
                 {
-                    var cacheTime = f / radarDetector.cacheTime;
-                    
-                    tColor = Color.Lerp(Red, Green, cacheTime);
-                    col.GetComponentInChildren<SpriteRenderer>().color = Color.white.ToAlpha(cacheTime);
+                    tColor = Color.Lerp(Red, Green, f / radarDetector.cacheTime);
                     library[col].material.SetColor(TColor, tColor);
                     library[col].material.SetColor(EmissiveColor, tColor);
                 }

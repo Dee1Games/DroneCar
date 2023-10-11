@@ -13,13 +13,16 @@
     using UnityEngine;
     
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(PathDetector))]
-    public class PathDetector : ColliderDetector, IPulse
+    public class PathDetector : Detector, IPulse
     {
         public PathRay pathRay;
         
         public RaycastEvent onHit;
         public RaycastEvent onNewHit;
         public RaycastEvent onLostHit;
+        public ColliderEvent onDetectCollider;
+        public ColliderEvent onNewCollider;
+        public ColliderEvent onLostCollider;
         public override bool Performed
         {
             get => DetectedHits.Count > 0;
@@ -34,9 +37,9 @@
         protected override void OnCast()
         {
             if (!pathRay.enabled) pathRay.Cast();
-            
-            CachePrevious();
+
             PreviousHits = DetectedHits.ToArray();
+            PreviousColliders = new HashSet<Collider> (DetectedColliders);
 
 #if UNITY_EDITOR
             CleanGate();
@@ -81,7 +84,9 @@
             if (onHit != null) foreach (var _member in DetectedHits) onHit.Invoke(_member);
             if (onNewHit != null) foreach (var _member in DetectedHits.Except(PreviousHits)) onNewHit.Invoke(_member);
             if (onLostHit != null) foreach (var _member in PreviousHits.Except(DetectedHits)) onLostHit.Invoke(_member);
-            ColliderDetectorEvents();
+            if (onDetectCollider != null) foreach (var _member in DetectedColliders) onDetectCollider.Invoke(_member);
+            if (onNewCollider != null) foreach (var _member in DetectedColliders.Except(PreviousColliders)) onNewCollider.Invoke(_member);
+            if (onLostCollider != null) foreach (var _member in PreviousColliders.Except(DetectedColliders)) onLostCollider.Invoke(_member);
         }
 
 #if UNITY_EDITOR

@@ -115,7 +115,7 @@ namespace RaycastPro
         [SerializeField]
         public LayerMask detectLayer = 1;
         [SerializeField]
-        public UpdateMode autoUpdate = UpdateMode.Fixed;
+        public UpdateMode autoUpdate = UpdateMode.Normal;
         /// <summary>
         /// This auxiliary variable is defined for coefficient on other variables affected by ray. For e.g: gunDamage = influence * power
         /// </summary>
@@ -193,7 +193,7 @@ namespace RaycastPro
         }
         
         
-        protected static float GetDelta(TimeMode mode)
+        protected static float GetModeDeltaTime(TimeMode mode)
         {
             switch (mode)
             {
@@ -207,27 +207,17 @@ namespace RaycastPro
 
         #region Public Methods
         
-        public void RCProLog(string message)
+        public void DebugMessage(string message)
         {
 #if UNITY_EDITOR
-            RCProEditor.Log(message);
+            Debug.Log(RCProEditor.RPro + message);
 #endif
         }
 
         public void SetInfluence(float value) => Influence = value;
 
         public void AddInfluence(float value) => Influence += value;
-        
-        /// <summary>
-        /// Add influence based on fixed deltaTime
-        /// </summary>
-        /// <param name="value"></param>
-        public void AddFixedInfluence(float value) => Influence += value*Time.fixedDeltaTime;
-        /// <summary>
-        /// Add influence based on deltaTime
-        /// </summary>
-        /// <param name="value"></param>
-        public void AddDeltaInfluence(float value) => Influence += value*Time.deltaTime;
+
         /// <summary>
         /// With self Parenting
         /// </summary>
@@ -432,15 +422,17 @@ namespace RaycastPro
 
             return dst;
         }
-        
-#if UNITY_EDITOR
 
+
+#if UNITY_EDITOR
+        protected void OnValidate() => AfterValidate();
+        protected virtual void AfterValidate() {}
         /// <summary>
         /// In Editor (No Playing) mode & Auto Update On. /n Use "Else"  when you want to force update ray in scene while update mode is off.
         /// </summary>
         protected internal bool IsManuelMode => !enabled && !IsPlaying;
         
-        protected bool EventFoldout = false;
+        [SerializeField] protected bool EventFoldout = false;
 
         #region Const
 
@@ -456,7 +448,6 @@ namespace RaycastPro
         protected const string HLOS_Solver = " <color=#2BC6D2>#LOS_Solver</color>";
         protected const string HRecursive = " <color=#FFFC26>#Recursive</color>";
         protected const string HVirtual = " <color=#FFFC26>#Virtual</color>";
-        protected const string HPreview = " <color=#FFFC26>#Preview</color>";
         protected const string HDependent = " <color=#C1D133>#Dependent</color>";
         protected const string HIRadius = " <color=#6861D1>#IRadius</color>";
         protected const string HIPulse = " <color=#2EEBFF>#IPulse</color>";
@@ -596,8 +587,7 @@ namespace RaycastPro
         protected const string CClump = "Clump";
         protected const string CClumpX = "ClumpX";
         protected const string CClumpY = "ClumpY";
-        protected const string CClumpZ = "ClumpZ";
-        
+
         protected const string CDigitStep = "DigitStep";
 
         protected const string CMinRadius = "Min Radius";
@@ -722,8 +712,6 @@ namespace RaycastPro
         [SerializeField] internal GizmosMode gizmosUpdate = GizmosMode.Auto;
 
         protected Action GizmoGate;
-
-        internal static Camera SceneCamera => SceneView.currentDrawingSceneView.camera;
         internal static bool IsSceneView => SceneView.currentDrawingSceneView;
         internal static bool IsPlaying => Application.isPlaying;
         internal static bool IsLabel => RCProPanel.ShowLabels;
@@ -1749,7 +1737,6 @@ namespace RaycastPro
         }
         internal float AlphaLifeTime => RCProPanel.gizmosOffTime;
         protected float alphaCharge = 0;
-        protected float ClampedAlphaCharge => Mathf.Clamp01(alphaCharge);
         private bool LifePass {
             get
             {
