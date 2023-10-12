@@ -12,8 +12,6 @@ public class InGameScreen : UIScreen
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject retryButton;
-    [SerializeField] private RectTransform monsterPointer;
-    [SerializeField] private RectTransform monsterPointerArrow;
 
     private void OnEnable()
     {
@@ -42,11 +40,6 @@ public class InGameScreen : UIScreen
         levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
     }
 
-    private void Update()
-    {
-        RefreshMonsterPointer();
-    }
-    
     public override void Hide()
     {
         base.Hide();
@@ -58,56 +51,6 @@ public class InGameScreen : UIScreen
     }
 
     private Camera _camera;
-
-    private void RefreshMonsterPointer()
-    {
-        if (GameManager.Instance.Monster != null)
-        {
-            monsterPointer.gameObject.SetActive(true);
-            float halfWidth = Screen.width / 2;
-            float halfHeight = Screen.height / 2;
-            Vector3 pos = _camera.WorldToScreenPoint(GameManager.Instance.Monster.GetCOMPos());
-            monsterPointer.position = pos;
-            float pointerHalfSize = monsterPointer.rect.width / 2f;
-            Vector2 anchoredPos = monsterPointer.anchoredPosition;
-            if (Mathf.Abs(anchoredPos.x) < Screen.width && Mathf.Abs(anchoredPos.y) < Screen.height && pos.z>0)
-            {
-                monsterPointer.gameObject.SetActive(false);
-                return;
-            }
-            
-            if (pos.z < 0)
-                anchoredPos.y = -halfHeight + pointerHalfSize;
-            if (anchoredPos.x < -halfWidth)
-                anchoredPos.x = -halfWidth + pointerHalfSize;
-            if (anchoredPos.x > halfWidth)
-                anchoredPos.x = halfWidth - pointerHalfSize;
-            if (anchoredPos.y < -halfHeight)
-                anchoredPos.y = -halfHeight + pointerHalfSize;
-            if (anchoredPos.y > halfHeight)
-                anchoredPos.y = halfHeight - pointerHalfSize;
-            if (Math.Abs(anchoredPos.x) < halfWidth - pointerHalfSize &&
-                Math.Abs(anchoredPos.y) < halfHeight - pointerHalfSize)
-            {
-                monsterPointer.gameObject.SetActive(false);
-            }
-            else
-            {
-                monsterPointer.anchoredPosition = anchoredPos;
-
-                Vector3 monsterPointerArrowAngles = monsterPointerArrow.eulerAngles;
-                monsterPointerArrowAngles.z = Mathf.Atan(anchoredPos.y / anchoredPos.x) * (180 / Mathf.PI);
-                if (anchoredPos.x < 0)
-                    monsterPointerArrowAngles.z += 180;
-                monsterPointerArrow.eulerAngles = monsterPointerArrowAngles;
-            }
-            
-        }
-        else
-        {
-            monsterPointer.gameObject.SetActive(false);
-        }
-    }
     
     public void OnClick_Retry()
     {

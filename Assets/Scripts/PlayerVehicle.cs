@@ -55,6 +55,10 @@ public class PlayerVehicle : MonoBehaviour
     private Rigidbody rigidbody;
     private Vector3 direction;
 
+
+    private float fireRateMultiplyer;
+    private float lastInputTouchTime;
+
     #region Cached_Animatios
 
     private static readonly int Reset = Animator.StringToHash("reset");
@@ -79,6 +83,8 @@ public class PlayerVehicle : MonoBehaviour
 
     public void InitPlayMode()
     {
+        fireRateMultiplyer = 1f;
+        lastInputTouchTime = -1f;
         upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         anim.SetTrigger(Reset);
         Core.Restore();
@@ -167,6 +173,16 @@ public class PlayerVehicle : MonoBehaviour
         if (!IsActive || isChanging)
             return;
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            lastInputTouchTime = Time.timeSinceLevelLoad;
+            fireRateMultiplyer = 3f;
+        }
+        else if (Time.timeSinceLevelLoad - lastInputTouchTime > 0.2f)
+        {
+            fireRateMultiplyer = 1f;
+        }
+
         float height = getDistanceToGround();
 
         if (!isHovering && height > convertHeight)
@@ -251,7 +267,7 @@ public class PlayerVehicle : MonoBehaviour
 
     private bool CanShoot()
     {
-        if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / Config.FireRate) && gunExitPoints.Length!=0)
+        if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / (Config.FireRate*fireRateMultiplyer)) && gunExitPoints.Length!=0)
         {
             if (Config.AlwaysShoot)
             {

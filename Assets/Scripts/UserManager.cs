@@ -34,8 +34,23 @@ public class UserManager : MonoBehaviour
         SaveManager.Instance.SaveUserData(Data);
     }
 
+    public void ResetVehicleUpgrades()
+    {
+        foreach (VehicleUpgradeData v in Data.VehicleUpgrades)
+        {
+            v.UpgradeLevels = new List<UpgradeLevel>()
+            {
+                new UpgradeLevel() {Type = UpgradeType.Tire, Level = 0},
+                new UpgradeLevel() {Type = UpgradeType.Turbo, Level = 0},
+                new UpgradeLevel() {Type = UpgradeType.Gun, Level = 0},
+                new UpgradeLevel() {Type = UpgradeType.Bomb, Level = 0}
+            };
+        }
+    }
+
     public void NextLevel()
     {
+        ResetVehicleUpgrades();
         Data.Level++;
         SaveManager.Instance.SaveUserData(Data);
     }

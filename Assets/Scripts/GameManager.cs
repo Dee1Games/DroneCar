@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
     {
         if(Player != null)
             DestroyImmediate(Player.gameObject);
-        Player = Instantiate(VehiclesConfig.GetVehicle(UserManager.Instance.Data.CurrentVehicleID).Prefab).GetComponent<PlayerVehicle>();
+        Player = Instantiate(VehiclesConfig.GetVehicle(LevelManager.Instance.CurrentLevelData.Vehicle).Prefab).GetComponent<PlayerVehicle>();
         Transform spawnPoint = Map.GetRandomSpawnPoint();
         Player.transform.position = spawnPoint.position;
         Player.transform.forward = spawnPoint.forward;

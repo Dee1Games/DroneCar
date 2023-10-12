@@ -105,9 +105,18 @@ public class MergePlatform : MonoBehaviour
 
     public void SpawnUpgrade()
     {
+        if (NumberOfFullCells() == 6)
+            return;
+
+
+        int price = GetCurrentUpgradePrice();
+        if(price>UserManager.Instance.Data.Coins)
+            return;
+        
+        UserManager.Instance.Data.Coins -= firstUpgradePrice;
+        
         SpawnItemInCell(GetRandomEmptyCell());
         
-        UserManager.Instance.Data.Coins -= GetCurrentUpgradePrice();
         UserManager.Instance.NextUpgrade();
         UIManager.Instance.Refresh();
     }
@@ -150,7 +159,7 @@ public class MergePlatform : MonoBehaviour
         {
             int p = GameManager.Instance.Player.Config.GetProbability(upgradeType);
             if (GameManager.Instance.Player.Config.GetItem(upgradeType,
-                UserManager.Instance.GetUpgradeLevel(UserManager.Instance.Data.CurrentVehicleID, upgradeType)+1) == null)
+                UserManager.Instance.GetUpgradeLevel(LevelManager.Instance.CurrentLevelData.Vehicle, upgradeType)+1) == null)
             {
                 p = 0;
             } 
