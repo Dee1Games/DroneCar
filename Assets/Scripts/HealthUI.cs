@@ -11,4 +11,9 @@ public class HealthUI : MonoBehaviour
     {
         healthFill.DOFillAmount(currentHealth / maxHealth, tweenDuration);
     }
+    
+    public void SetHealth(float fill)
+    {
+        healthFill.fillAmount = fill;
+    }
 }

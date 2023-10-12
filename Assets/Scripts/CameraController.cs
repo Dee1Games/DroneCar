@@ -94,11 +94,20 @@ public class CameraController : MonoBehaviour
         
         if (GameManager.Instance.Monster.IsDead)
         {
-            UserManager.Instance.NextLevel();
-            LevelManager.Instance.InitCurrentLevel();
-            MergePlatform.Instance.ClearPlatform();
+            UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
         }
-        GameManager.Instance.GoToUpgradeMode();
+        else
+        {
+            UIManager.Instance.ShowScreen(UIScreenID.EndRun);
+        }
+        
+        // if (GameManager.Instance.Monster.IsDead)
+        // {
+        //     UserManager.Instance.NextLevel();
+        //     LevelManager.Instance.InitCurrentLevel();
+        //     MergePlatform.Instance.ClearPlatform();
+        // }
+        // GameManager.Instance.GoToUpgradeMode();
     }
 
     private void HideCameraOverlaps()

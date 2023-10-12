@@ -50,14 +50,23 @@ public class UserManager : MonoBehaviour
 
     public void NextLevel()
     {
+        Debug.LogError("ff");
         ResetVehicleUpgrades();
         Data.Level++;
+        Data.MonsterHealth = 1f;
         SaveManager.Instance.SaveUserData(Data);
     }
 
     public void NextRun()
     {
+        AddCoins(LevelManager.Instance.GetRunReward());
         Data.Run++;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+    
+    public void AddCoins(int coins)
+    {
+        Data.Coins += LevelManager.Instance.GetRunReward();
         SaveManager.Instance.SaveUserData(Data);
     }
     
@@ -114,6 +123,12 @@ public class UserManager : MonoBehaviour
     {
         return Data.MergePlatform[index];
     }
+    
+    public void SetMonsterHealth(float health)
+    {
+        Data.MonsterHealth = health;
+        SaveManager.Instance.SaveUserData(Data);
+    }
 
     public void ResetMergePlatform()
     {
@@ -126,6 +141,24 @@ public class UserManager : MonoBehaviour
             new UpgradeLevel {Type = UpgradeType.Tire, Level = -1},
             new UpgradeLevel {Type = UpgradeType.Tire, Level = -1}
         };
+        SaveManager.Instance.SaveUserData(Data);
+    }
+    
+    public void SeenMergeTutorial()
+    {
+        Data.SeenMergeTutorial = true;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+
+    public void SeenMoveTutorial()
+    {
+        Data.SeenMoveTutorial = true;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+
+    public void SeenFlyTutorial()
+    {
+        Data.SeenFlyTutorial = true;
         SaveManager.Instance.SaveUserData(Data);
     }
 }

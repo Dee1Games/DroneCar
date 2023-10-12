@@ -263,6 +263,32 @@ public class PlayerVehicle : MonoBehaviour
             Shoot();
             lastTimeShooting = Time.timeSinceLevelLoad;
         }
+        
+        if (!UserManager.Instance.Data.SeenMoveTutorial)
+        {
+            if (currentSpeed == 0f)
+            {
+                TutorialManager.Instance.ShowMoveHint();
+            }
+            else
+            {
+                UserManager.Instance.SeenMoveTutorial();
+                TutorialManager.Instance.Hide();
+            }
+        }
+        
+        if (!UserManager.Instance.Data.SeenFlyTutorial && UserManager.Instance.Data.SeenMoveTutorial && currentSpeed>0f && transform.position.y<10f)
+        {
+            if (!isHovering)
+            {
+                TutorialManager.Instance.ShowFlyHint();
+            }
+            else
+            {
+                UserManager.Instance.SeenFlyTutorial();
+                TutorialManager.Instance.Hide();
+            }
+        }
     }
 
     private bool CanShoot()
@@ -329,7 +355,6 @@ public class PlayerVehicle : MonoBehaviour
     public void Deactivate()
     {
         IsActive = false;
-        CarCore._.End(false);
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
         anim.SetBool(Hover, false);

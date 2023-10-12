@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Monster Monster;
     [HideInInspector] public Giant_Core GiantCore;
     [HideInInspector] public PlayerVehicle Player;
+    [HideInInspector] public float CurrentRunDamage;
 
     [SerializeField] private Vehicles VehiclesConfig;
     [SerializeField] private float respawnDelay;
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToPlayMode()
     {
+        CurrentRunDamage = 0f;
         isPlaying = true;
         spawnPlayer();
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
@@ -68,7 +70,15 @@ public class GameManager : MonoBehaviour
         MergePlatform.Instance.Init();
         MergePlatform.Instance.Show();
         UIManager.Instance.ShowScreen(UIScreenID.Merge);
+        
         Debug.Log($"Run {UserManager.Instance.Data.Run} Started");
+        try
+        {
+            //SupersonicWisdom.Api.NotifyLevelStarted(UserManager.Instance.Data.Run, null);
+        }
+        catch
+        {
+        }
     }
 
     public void SpawnPlayer()

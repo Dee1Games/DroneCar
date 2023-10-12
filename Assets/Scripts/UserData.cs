@@ -10,6 +10,10 @@ public class UserData
     public int Coins;
     public int UpgradeCount;
     public List<UpgradeLevel> MergePlatform;
+    public float MonsterHealth;
+    public bool SeenMergeTutorial;
+    public bool SeenMoveTutorial;
+    public bool SeenFlyTutorial;
 
     public UserData()
     {
@@ -40,5 +44,9 @@ public class UserData
             new UpgradeLevel {Type = UpgradeType.Tire, Level = -1},
             new UpgradeLevel {Type = UpgradeType.Tire, Level = -1}
         };
+        MonsterHealth = 1f;
+        SeenMergeTutorial = false;
+        SeenMoveTutorial = false;
+        SeenFlyTutorial = false;
     }
 }

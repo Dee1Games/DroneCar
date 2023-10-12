@@ -15,6 +15,7 @@ public class MergeScreen : UIScreen
     [SerializeField] private Image upgradeButton;
     [SerializeField] private Sprite activeButtonSprite;
     [SerializeField] private Sprite passiveButtonSprite;
+    [SerializeField] private Button playButton;
     
     public override void Init()
     {
@@ -27,6 +28,20 @@ public class MergeScreen : UIScreen
         RefreshUpgradePrice();
         coinsText.text = "$" + UserManager.Instance.Data.Coins.ToString();
         levelText.text = "Level " + UserManager.Instance.Data.Level.ToString();
+        
+        if (!UserManager.Instance.Data.SeenMergeTutorial)
+        {
+            if (UserManager.Instance.Data.UpgradeCount==1)
+            {
+                TutorialManager.Instance.ShowBuyHint();
+            }
+
+            playButton.interactable = false;
+        }
+        else
+        {
+            playButton.interactable = true;
+        }
     }
     
     public override void Hide()
@@ -56,6 +71,13 @@ public class MergeScreen : UIScreen
 
     public void OnClick_Upgrade()
     {
-        MergePlatform.Instance.SpawnUpgrade();
+        if (UserManager.Instance.Data.Coins >= MergePlatform.Instance.GetCurrentUpgradePrice())
+        {
+            MergePlatform.Instance.SpawnUpgrade();
+            if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==2)
+            {
+                TutorialManager.Instance.ShowBuyHint2();
+            }
+        }
     }
 }

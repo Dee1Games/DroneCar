@@ -50,4 +50,19 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.Monster.Init(CurrentLevelData.MonsterData);
 
     }
+    
+    public float GetCurrentMonsterHealth()
+    {
+        return Config.InitMonsterHealth + (CurrentLevelIndex * Config.AddUpMonsterHealth);
+    }
+
+    public int GetRunReward()
+    {
+        return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
+    }
+
+    public float GetSpaceLimit()
+    {
+        return Config.SpaceLimit;
+    }
 }

@@ -72,6 +72,11 @@ public class CarCore : MonoBehaviour
             UI_Core._.carHealth.UpdateHealthUI(hp, maxHp);
             if (hp <= 0)
             {
+                Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
+                try
+                {
+                    //SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
+                } catch {}
                 End();
             }
         }
@@ -107,7 +112,11 @@ public class CarCore : MonoBehaviour
         if (hitable != null)
         {
             hitable.OnHit(this, vehicle.Bomb);
-
+            Debug.Log($"Run {UserManager.Instance.Data.Run} Completed");
+            try
+            {
+                //SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
+            } catch {}
             End();
         }
     }
@@ -142,12 +151,11 @@ public class CarCore : MonoBehaviour
             vehicle.Explode();
         }
         vehicle.Deactivate();
-        Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
-
-        UserManager.Instance.NextRun();
-
+        
         CollidersActivate(false);
         CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
+        
+        UserManager.Instance.NextRun();
     }
 
     private IHitable hitable;

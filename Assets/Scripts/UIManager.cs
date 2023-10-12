@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowScreen(UIScreenID screenID)
     {
+        TutorialManager.Instance.Hide();
+        TutorialManager.Instance.HideHand();
         if (currentScreen != null)
         {
             currentScreen.Hide();

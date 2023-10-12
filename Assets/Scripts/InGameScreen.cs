@@ -54,9 +54,14 @@ public class InGameScreen : UIScreen
     
     public void OnClick_Retry()
     {
-        GameManager.Instance.Player.Deactivate();
         Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
-        UserManager.Instance.NextRun();
+        try
+        {
+            //SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
+        } catch {}
+        
+        GameManager.Instance.Player.Core.End();
+        
         GameManager.Instance.GoToUpgradeMode();
     }
 
