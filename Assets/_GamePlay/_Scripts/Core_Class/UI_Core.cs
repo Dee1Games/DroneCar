@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class UI_Core : MonoBehaviour
     public HealthUI carHealth;
     public Image giantIcon;
     public Image shieldIcon;
+    public TextMeshProUGUI weakPointIndex;
     public Track track;
 
     public MMCameraShaker shaker;

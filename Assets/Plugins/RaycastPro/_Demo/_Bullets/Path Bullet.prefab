@@ -5052,7 +5052,6 @@ MonoBehaviour:
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -5062,7 +5061,10 @@ MonoBehaviour:
   onEnd:
     m_PersistentCalls:
       m_Calls: []
-  moveType: 0
+  onPlanar:
+    m_PersistentCalls:
+      m_Calls: []
+  moveType: 1
   callMethod: OnBullet
   messageUpward: 0
   damage: 10
@@ -5070,12 +5072,13 @@ MonoBehaviour:
   lifeTime: 20
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
   collisionRay: {fileID: 5154096257278649631}
-  duration: 5
+  Path: []
+  turnSharpness: 15
+  duration: 2
   curve:
     serializedVersion: 2
     m_Curve:
@@ -5105,4 +5108,5 @@ MonoBehaviour:
     axis: 2
     syncAxis: 1
     flipAxis: 0
-  local: 0
+  live: 0
+  onHit: 1

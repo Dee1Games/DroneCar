@@ -62,7 +62,9 @@ namespace RaycastPro.Detectors
                 colliders = Physics.OverlapBox(TDP, extents / 2, local ? transform.rotation : Quaternion.identity, detectLayer.value,
                     triggerInteraction);
             }
-            DetectedColliders.Clear();
+            
+            Clear();
+            
             if (IsIgnoreSolver)
             {
                 foreach (var c in colliders)
@@ -87,7 +89,7 @@ namespace RaycastPro.Detectors
                 }
             }
             
-            ColliderDetectorEvents();
+            EventPass();
         }
 
         private Vector3 boundPoint;

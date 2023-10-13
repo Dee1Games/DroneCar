@@ -487,11 +487,6 @@ namespace RaycastPro
         protected const string CCheckLineOfSight = "Check Line Of Sight";
         protected const string TCheckLineOfSight = "With this option active, the line of sight and blocking objects will be checked. Turning it off will help increase performance.";
         
-        protected const string CBoundsSolver = "Bounds Solver";
-        protected const string TBoundsSolver = "This option is considered for optimization and limits the detection point in the bounds of a cube.";
-
-        protected const string CBoundsCenter = "Bounds Center";
-        protected const string TBoundsCenter = "Bounds Center";
         
         protected const string CBlockSolverOffset = "Block Solver Offset";
         protected const string TBlockSolverOffset =
@@ -645,30 +640,18 @@ namespace RaycastPro
         protected const string CCount = "Count";
         protected const string CAngle = "Angle";
         protected const string CCuts = "Cuts";
-        protected const string CAngleX = "AngleX";
-        protected const string CAngleY = "AngleY";
+        protected const string CArcHorizontal = "Horizontal Arc";
+        protected const string CArcVertical = "Vertical Arc";
         protected const string CArcAngle = "Arc Angle";
-        protected const string CUpside = "Upside";
-        protected const string CDownside = "Downside";
-
         protected const string CSubdivide = "Subdivide";
         protected const string TSubdivide = "Subdivide";
-
-        protected const string CCollectHits = "Collect Hits";
-        protected const string TCollectHits = "With enable this variable, the ray automatically save all hits data to \"raycastHits\" array.";
 
         protected const string CTarget = "Target";
         protected const string TTarget = "This option asks for the Core destination and makes decisions based on it.";
         protected const string CWeight = "Weight";
         protected const string CDistance = "Distance";
         protected const string CVelocity = "Velocity";
-        protected const string CColor = "Color";
         protected const string CLight = "Light";
-        protected const string CMaxIntensity = "Max Intensity";
-        protected const string CMinIntensity = "Min Intensity";
-
-        protected const string CColorTolerance = "Color Tolerance";
-        protected const string TColorTolerance = "Color Tolerance";
 
         protected const string CRelative = "Relative";
         protected const string TRelative = "When this feature is activated, the new point will be offset from its back position.";
@@ -685,12 +668,7 @@ namespace RaycastPro
         protected const string TBodyType = "This option is related to the Ray body, where you may choose between Pipe and Line. If your Radius is zero, it is recommended to use Line directly.";
 
         protected const string CCollectAll = "Collect All";
-        protected const string CVolume = "CVolume";
-        protected const string CPitch = "Pitch";
-        protected const string CIsLoop = "Is Loop";
         protected const string CAudio = "Audio";
-        protected const string CHasClip = "Has Clip";
-        protected const string CClip = "CClip";
 
         protected const string CPlanarSensitive = "Planar Sensitive";
         protected const string TPlanarSensitive = "Determine that the ray react to planers or not.";
@@ -771,13 +749,11 @@ namespace RaycastPro
         }
         protected void DrawCross(Vector3 point, Vector3 normal)
         {
-            var cross = Vector3.Cross(point - transform.position, normal).normalized;
+            var cross = Vector3.Cross(point - transform.position+new Vector3(0.01f,0.01f,0.01f), normal).normalized;
             
-            Handles.DrawLine(point - cross * DotSize,
-                point + cross * DotSize);
+            Handles.DrawLine(point - cross * DotSize, point + cross * DotSize);
             var angleAxis = Quaternion.AngleAxis(90f ,normal) * cross;
-            Handles.DrawLine(point - angleAxis * DotSize,
-                point + angleAxis * DotSize);
+            Handles.DrawLine(point - angleAxis * DotSize, point + angleAxis * DotSize);
         }
         protected static void DrawNormal(Vector3 point, Vector3 normal, string label = "",  float offset = 0, float radius = 0f)
         {
@@ -1408,12 +1384,12 @@ namespace RaycastPro
         }
         
         private bool InfoFoldout;
+        private const string Information = "Information";
         protected void InformationField(Action action = null) // Information
         {
             if (action == null) return;
 
-            InfoFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(InfoFoldout, "Information".ToContent(),
-                RCProEditor.HeaderFoldout);
+            InfoFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(InfoFoldout, Information.ToContent(), RCProEditor.HeaderFoldout);
             if (InfoFoldout)
             {
                 BeginVerticalBox();
@@ -1422,12 +1398,16 @@ namespace RaycastPro
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
+        protected static void PercentProgressField(float value, string label, int height = 20)
+        {
+            var rect = EditorGUILayout.GetControlRect(false, height);
+            var percent = value;
+            EditorGUI.ProgressBar(rect, percent, label + ": " + percent.ToString("P"));
+        }
         protected static void ProgressField(float value, string label, int height = 20)
         {
             var rect = EditorGUILayout.GetControlRect(false, height);
-
-            var percent = value;
-            EditorGUI.ProgressBar(rect, percent, label + ": " + percent.ToString("P"));
+            EditorGUI.ProgressBar(rect, value, label);
         }
         internal static void PropertyTimeModeField(SerializedProperty _timeMode)
         {
@@ -1650,9 +1630,7 @@ namespace RaycastPro
         internal static BodyType BodyTypeField(BodyType bodyType, ref float radius)
         {
             var _bodyType = RCProEditor.EnumLabelField(bodyType, CBodyType.ToContent(TBodyType));
-
             if (bodyType == BodyType.Pipe) radius = EditorGUILayout.FloatField(CRadius, radius);
-
             return _bodyType;
         }
         protected void DirectionField(SerializedObject _so, string directionReference)
@@ -1708,9 +1686,7 @@ namespace RaycastPro
 
         protected const string CArrayLength = "Array Length";
         protected const string CNonAllocator = "Non Allocator";
-        
         protected const string TArrayLength = "Non Allocator array size. Make sure that the entered size includes all Colliders even the filtered ones. (In some detectors such as Sight, the Sphere core is used, so set the size sufficiently.)";
-
         protected const string TNonAllocator =
             "By activating this option, the number of colliders identified in an array will be limited. While the performance is reduced to some extent, the garbage production is greatly reduced.";
         protected void DetectLayerField(SerializedObject _so) => EditorGUILayout.PropertyField(_so.FindProperty("detectLayer"), CDetectLayer.ToContent(TDetectLayer));
@@ -1747,6 +1723,9 @@ namespace RaycastPro
             GUI.enabled = true;
             EndHorizontal();
         }
+
+        #region Gizmos
+
         internal float AlphaLifeTime => RCProPanel.gizmosOffTime;
         protected float alphaCharge = 0;
         protected float ClampedAlphaCharge => Mathf.Clamp01(alphaCharge);
@@ -1779,14 +1758,22 @@ namespace RaycastPro
                         if (LifePass) OnGizmos();
                     }
                 }
-                else
+                else if (CheckParent(transform))
                 {
-                    if (Selection.activeTransform == transform || Selection.activeTransform == transform.parent)
                     {
                         if (LifePass) OnGizmos();
                     }
                 }
             }
+        }
+
+        private bool CheckParent(Transform current)
+        {
+            if (Selection.activeTransform == current) return true;
+            
+            if (current.parent) return CheckParent(current.parent);
+            
+            return false;
         }
         internal void OnDrawGizmosSelected()
         {
@@ -1798,9 +1785,10 @@ namespace RaycastPro
                 OnGizmos();
             }
         }
-        internal abstract void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
-            bool hasEvents = true,
-            bool hasInfo = true);
+
+        #endregion
+        
+        internal abstract void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true, bool hasEvents = true, bool hasInfo = true);
 #endif
     }
 }

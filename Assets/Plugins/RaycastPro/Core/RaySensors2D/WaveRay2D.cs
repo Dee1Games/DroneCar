@@ -76,6 +76,7 @@ namespace RaycastPro.RaySensors2D
             FullPathDraw(radius, true);
             DrawDepthLine(Base, Tip);
             if (hit) DrawNormal(hit.point.ToDepth(z), hit.normal, hit.transform.name);
+            DrawNormalFilter();
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
@@ -84,9 +85,7 @@ namespace RaycastPro.RaySensors2D
             if (hasMain)
             {
                 DirectionField(_so);
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(segments)),
-                    CSegments.ToContent(TSegments));
-                segments = Mathf.Max(1, segments);
+                PropertyMaxIntField(_so.FindProperty(nameof(segments)), CSegments.ToContent(TSegments), 1);
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(waveSpeed)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(scale)));
                 EditorGUILayout.CurveField(_so.FindProperty(nameof(clump)), RCProEditor.Aqua, new Rect(0, 0, 1, 1), CClump.ToContent(CClump));

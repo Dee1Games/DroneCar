@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using RaycastPro;
 using RaycastPro.Casters;
 using RaycastPro.RaySensors;
 using TMPro;

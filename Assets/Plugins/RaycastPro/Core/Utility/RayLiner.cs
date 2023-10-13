@@ -130,7 +130,7 @@
                     liner.positionCount = 2;
                     if (cutOnHit)
                     {
-                        var _pos =(raySensor.HitDistance / raySensor.RayLength);
+                        var _pos = raySensor.Performed ? raySensor.hit.distance / raySensor.RayLength : 1f;
                         var _b = raySensor.Base;
                         if (_pos >= raySensor.linerBasePosition)
                         {

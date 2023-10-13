@@ -35,7 +35,17 @@
         /// Array of Last Frame Detected colliders.
         /// </summary>
         public HashSet<Collider> PreviousColliders { get; protected set; } = new HashSet<Collider>();
+
+        [Tooltip("This option is considered for optimization and limits the detection point in the bounds of a cube.")]
+        public bool boundsSolver;
+        [Tooltip("If selected, the detection point will be mounted on Collider Bounds Center. otherwise on transform.position.")]
+        public bool boundsCenter;
+        [Tooltip("Detector collect RaycastHits on \"DetectedLOSHits\" Dictionary. Key: Collider, Value: RaycastHit")]
+        public bool collectLOS;
         
+        protected readonly Dictionary<Collider, RaycastHit> detectedLOSHits = new Dictionary<Collider, RaycastHit>();
+        public Dictionary<Collider, RaycastHit> DetectedLOSHits => detectedLOSHits;
+
         #region Methods
         public Collider FirstMember => DetectedColliders.FirstOrDefault();
 
@@ -154,8 +164,9 @@
 
         protected virtual void Start() // Refreshing
         {
-            PreviousColliders = new HashSet<Collider>();
-            DetectedColliders = new HashSet<Collider>();
+            PreviousColliders.Clear();
+            DetectedColliders.Clear();
+            detectedLOSHits.Clear();
         }
 
         protected void CachePrevious()
@@ -165,13 +176,18 @@
                 PreviousColliders = new HashSet<Collider>(DetectedColliders);
             }
         }
+
+        protected void Clear()
+        {
+            DetectedColliders.Clear();
+            if (collectLOS) detectedLOSHits.Clear();
+        }
         /// <summary>
         /// Call: onDetectCollider, OnDetectNew, OnLostDetect in Optimized foreach loop
         /// </summary>
-        protected void ColliderDetectorEvents()
+        protected void EventPass()
         {
             if (onDetectCollider != null) foreach (var c in DetectedColliders) onDetectCollider.Invoke(c);
-            if (PreviousColliders.Count == DetectedColliders.Count) return;
             if (onNewCollider != null)
             {
                 foreach (var c in DetectedColliders.Except(PreviousColliders)) onNewCollider.Invoke(c);
@@ -182,6 +198,56 @@
             }
         }
 
+             protected Vector3 BoundsCenter(Collider _c) => boundsCenter ? _c.bounds.center : _c.transform.position;
+        
+        protected Func<Collider, Vector3> SetupDetectFunction()
+        {
+            switch (solverType)
+            {
+                case SolverType.Ignore: return c => c.transform.position;
+                case SolverType.Pivot: return BoundsCenter;
+                case SolverType.Nearest:
+                    if (boundsSolver) return c => c.ClosestPointOnBounds(transform.position);
+                    return c => c.ClosestPoint(transform.position);
+                case SolverType.Furthest:
+                    if (boundsSolver) return c => c.ClosestPointOnBounds(transform.position + (BoundsCenter(c) - transform.position) * int.MaxValue);
+                    return c => c.ClosestPoint(transform.position + (c.transform.position - transform.position) * int.MaxValue);
+                case SolverType.Focused:
+                    if (boundsSolver) return c => c.ClosestPointOnBounds(transform.TransformPoint(detectVector));
+                    return c => c.ClosestPoint(transform.TransformPoint(detectVector));
+                case SolverType.Dodge:
+                    return c =>
+                    {
+                        var closetPoint = boundsSolver || c is MeshCollider
+                            ? (Func<Vector3, Vector3>) c.ClosestPointOnBounds : c.ClosestPoint;
+                        var _ct = c.transform;
+                        var cPos = BoundsCenter(c);
+                        var crossUp = Vector3.Cross(cPos - transform.position, transform.right);
+                        var cross = Vector3.Cross(cPos - transform.position, transform.up);
+                        var value = blockLayer.value;
+                        TDP = cPos;
+                        if (!Physics.Linecast(transform.position, TDP, out var hit, value, triggerInteraction) ||
+                            hit.transform == _ct) return TDP;
+                        TDP = c.bounds.center;
+                        if (!Physics.Linecast(transform.position, TDP, out hit, value, triggerInteraction) ||
+                            hit.transform == _ct) return TDP;
+                        TDP = closetPoint(cPos + cross * int.MaxValue);
+                        if (!Physics.Linecast(transform.position, TDP, out hit, value, triggerInteraction) ||
+                            hit.transform == _ct) return TDP;
+                        TDP = closetPoint(cPos - cross * int.MaxValue);
+                        if (!Physics.Linecast(transform.position, TDP, out hit,value, triggerInteraction) ||
+                            hit.transform == _ct) return TDP;
+                        TDP = closetPoint(cPos + crossUp * int.MaxValue);
+                        if (!Physics.Linecast(transform.position, TDP, out hit, value, triggerInteraction) ||
+                            hit.transform == _ct) return TDP;
+                        TDP = closetPoint(cPos - crossUp * int.MaxValue);
+                        if (!Physics.Linecast(transform.position, TDP, out hit, value, triggerInteraction) ||
+                            hit.transform == _ct) return TDP;
+                        return cPos;
+                    };
+            }
+            return BoundsCenter;
+        }
         /// <summary>
         /// Sync Component Type List with detected colliders.
         /// </summary>
@@ -189,6 +255,12 @@
         /// <typeparam name="T"></typeparam>
         public void SyncDetection<T>(List<T> detections, Action<T> onNew = null, Action<T> onLost = null)
         {
+            // Starter Fix
+            foreach (var detectedCollider in DetectedColliders)
+            {
+                detections.Add(detectedCollider.GetComponent<T>());
+            }
+            
             // Save States in list when new collider Detected
             onNewCollider.AddListener(C =>
             {
@@ -234,6 +306,37 @@
             });
         }
 
+        /// <summary>
+        /// Check Line of Sight
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        protected bool LOSPass(Vector3 point, Collider c)
+        {
+            if (!checkLineOfSight)
+            {
+#if UNITY_EDITOR
+                SetupGates(c, point, false, default);
+#endif
+                return true;
+            }
+
+            if (Physics.Linecast(transform.position, point, out var blockHit, blockLayer.value, triggerInteraction) &&
+                blockHit.transform != c.transform)
+            {
+                if (collectLOS) detectedLOSHits.Add(c, blockHit);
+#if UNITY_EDITOR
+                SetupGates(c, point, true, blockHit);
+#endif
+                return false;
+            }
+#if UNITY_EDITOR
+            SetupGates(c, point, false, default);
+#endif
+            return true;
+        }
+        
         protected Func<Collider, Vector3> DetectFunction;
         private void OnEnable() => DetectFunction = SetupDetectFunction();
         protected bool TagPass(Collider c) => c && !ignoreList.Contains(c) && (!usingTagFilter || c.CompareTag(tagFilter));
@@ -241,13 +344,60 @@
 #if UNITY_EDITOR
         
         protected readonly string[] CEventNames = {"onDetectCollider", "onNewCollider", "onLostCollider"};
-        protected bool GuideCondition =>
-            RCProPanel.DrawGuide && DetectedColliders.Count <= RCProPanel.DrawGuideLimitCount && gizmosUpdate == GizmosMode.Select;
+        protected bool GuideCondition => RCProPanel.DrawGuide && gizmosUpdate == GizmosMode.Select;
 
         protected void OnValidate()
         {
             DetectFunction = SetupDetectFunction();
         }
+        
+        protected void SetupGates(Collider c, Vector3 point, bool blocked, RaycastHit blockHit)
+        {
+            void DrawDetectBox(Collider _col)
+            {
+                if (boundsSolver)
+                {
+                    Gizmos.DrawWireCube(_col.bounds.center, _col.bounds.size);
+                }
+                else
+                {
+                    if (_col is MeshCollider _meshD)
+                    {
+                        Gizmos.DrawWireMesh(_meshD.sharedMesh, _col.transform.position, _col.transform.rotation);
+                    }
+                    else
+                    {
+                        Gizmos.DrawWireCube(_col.bounds.center, _col.bounds.size);
+                    }
+                }
+            }
+
+            PanelGate += () => DetectorInfoField(c.transform, point, blocked);
+            GizmoGate += () =>
+            {
+                if (blocked)
+                {
+                    DrawBlockLine(transform.position, point, c.transform, blockHit);
+                    if (IsGuide)
+                    {
+                        GizmoColor = BlockColor;
+                        DrawDetectBox(c);
+                    }
+                }
+                else
+                {
+                    GizmoColor = DetectColor;
+                    if (IsLabel) Handles.Label(c.transform.position, c.name);
+                    if (IsDetectLine) DrawLine(transform.position, point);
+                    if (IsGuide)
+                    {
+                        DrawDetectBox(c);
+                        DrawDetectorGuide(point);
+                    }
+                }
+            };
+        }
+        
         protected void ColliderDetectorGeneralField(SerializedObject _so)
         {
             GeneralField(_so);
@@ -256,6 +406,27 @@
             SolverField(_so);
             IgnoreListField(_so);
         }
+        
+        protected void SolverField(SerializedObject _so)
+        {
+            BaseSolverField(_so, () =>
+            {
+                if (IsIgnoreSolver) return;
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(blockLayer)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(boundsSolver)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(collectLOS)));
+                if (IsPivotSolver)
+                {
+                    EditorGUILayout.PropertyField(_so.FindProperty(nameof(boundsCenter)));
+                }
+                if (IsFocusedSolver)
+                {
+                    EditorGUILayout.PropertyField(_so.FindProperty(nameof(detectVector)), CFocusPoint.ToContent(TFocusPoint));
+                }
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(checkLineOfSight)), CCheckLineOfSight.ToContent(TCheckLineOfSight));
+            });
+        }
+        
         protected void IgnoreListField(SerializedObject _so)
         {
             BeginVerticalBox();

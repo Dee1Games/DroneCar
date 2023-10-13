@@ -88,12 +88,14 @@
             bounds = new Bounds(pos, size.ToDepth(delta));
             boundsMin = new Bounds(pos, difference.ToDepth(delta));
             #endregion
-            DetectedColliders.Clear();
+            
+            Clear();
+            
             if (IsIgnoreSolver)
             {
                 foreach (var c in colliders)
                 {
-                    if (CheckGeneralPass(c))
+                    if (TagPass(c))
                     {
 #if UNITY_EDITOR
                         PassColliderGate(c);
@@ -106,18 +108,19 @@
             {
                 foreach (var c in colliders)
                 {
-                    if (!CheckGeneralPass(c)) continue;
+                    if (!TagPass(c)) continue;
                     TDP = DetectFunction(c);
                     _tPoint = transform.InverseTransformDirection(TDP.To2D() - Position2D).ToDepth();
                     if (!bounds.Contains(_tPoint) || boundsMin.Contains(_tPoint)) continue;
                     
-                    _blockHit = Physics2D.Linecast(SolverPoint, TDP, blockLayer.value, MinDepth, MaxDepth);
+                    _blockHit = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
                     PassGate(c, TDP, _blockHit);
 #endif
                     if (!_blockHit || _blockHit.transform == c.transform)
                     {
                         DetectedColliders.Add(c);
+                        if (collectLOS) DetectedLOSHits.Add(c, _blockHit);
                     }
                 }
             }
@@ -129,7 +132,7 @@
                 DrawBox2D(transform, size, MinDepth, MaxDepth, local);
             };
 #endif
-            EventsCallback();
+            EventPass();
         }
 
 #if UNITY_EDITOR

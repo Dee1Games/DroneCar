@@ -1,4 +1,7 @@
-﻿namespace RaycastPro
+﻿using System;
+using System.Collections.Generic;
+
+namespace RaycastPro
 {
     using System.Linq;
     using UnityEngine;
@@ -7,13 +10,13 @@
     using UnityEditor;
 #endif
 
+    [ExecuteInEditMode]
     [AddComponentMenu("RaycastPro/Utility/" + nameof(RayManager))]
     public class RayManager : RaycastCore
     {
-        public Transform referenceObject;
         [SerializeField] private RaycastCore[] cores;
 
-        [SerializeField] private bool[] _bools;
+        [SerializeField] private bool[] Foldouts = Array.Empty<bool>();
 
         public override bool Performed
         {
@@ -21,80 +24,86 @@
             protected set { }
         }
 
+        [ExecuteAlways]
+        protected void OnTransformChildrenChanged()
+        {
+            Refresh();
+        }
+        
+
+        protected void Refresh()
+        {
+            cores = GetComponentsInChildren<RaycastCore>(true).Where(c => !(c is RayManager)).ToArray();
+            Array.Resize(ref Foldouts, cores.Length);
+        }
         protected void Reset()
         {
-            if (!referenceObject) referenceObject = transform;
-            cores = referenceObject.GetComponentsInChildren<RaycastCore>(true).Where(c => !(c is RayManager)).ToArray();
-            _bools = new bool[cores.Length];
+            Refresh();
+            
+            styleH = new GUIStyle
+            {
+                margin = new RectOffset(0, 0, 4, 4),
+                padding = new RectOffset(0, 0, 2, 4),
+                stretchWidth = false,
+                wordWrap = true,
+            };
+
+            styleM = new GUIStyle
+            {
+                margin = new RectOffset(1, 1, 4, 4),
+                padding = new RectOffset(5, 5, 4, 4),
+                alignment = TextAnchor.MiddleCenter, wordWrap = true
+            };
         }
 
-        protected override void OnCast() { }
+        private GUIStyle styleH, styleM;
+        protected override void OnCast()
+        {
+            
+        }
 
 #if UNITY_EDITOR
 
 #pragma warning disable CS0414
         private static string Info = "The ray control and management tool automatically detects children rays."+HUtility+HDependent;
 #pragma warning restore CS0414
-        internal override void OnGizmos() { }
-
-        private GUIStyle foldoutHeadStyle;
-
+        internal override void OnGizmos()
+        { }
+        
         [SerializeField]
         private bool showMain = true;
         [SerializeField]
         private bool showGeneral = false;
 
+        private int index;
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
             bool hasInfo = true)
         {
-            EditorGUILayout.PropertyField(_so.FindProperty(nameof(referenceObject)));
-            if (GUILayout.Button("Refresh"))
-            {
-                Reset();
-            }
             BeginVerticalBox();
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(showMain)));
             EditorGUILayout.PropertyField(_so.FindProperty(nameof(showGeneral)));
             EndVertical();
-            if (!referenceObject) return;
-
-            for (var index = 0; index < cores.Length; index++)
+            
+            for (index = 0; index < cores.Length; index++)
             {
                 var core = cores[index];
-                EditorGUILayout.BeginVertical(new GUIStyle
-                {
-                    margin = new RectOffset(0, 0, 2, 2),
-                    padding = new RectOffset(0, 0, 0, 2),
-                    stretchWidth = true,
-                    wordWrap = true,
-                });
                 
-                foldoutHeadStyle = new GUIStyle(RCProEditor.HeaderFoldout)
-                {
-                    margin = new RectOffset(18, 4,0, 0),
-                    padding = new RectOffset(0, 0, 0, 0),
-                    clipping = TextClipping.Clip,
-                    stretchWidth = false,
-                    fixedWidth = EditorGUIUtility.currentViewWidth/3,
-                };
-
                 BeginVerticalBox();
-                
-                EditorGUILayout.BeginHorizontal(new GUIStyle
+                EditorGUILayout.BeginHorizontal();
+                var guiStyle = new GUIStyle(EditorStyles.foldout)
                 {
-                    margin = new RectOffset(1, 1, 4, 4),
-                    padding = new RectOffset(5, 5, 4, 4),
-                    alignment = TextAnchor.MiddleCenter, wordWrap = true
-                }, GUILayout.ExpandWidth(false));
-
-                _bools[index] = EditorGUILayout.BeginFoldoutHeaderGroup(_bools[index], core.name,
-                    foldoutHeadStyle, rect => { });
-
+                     margin = new RectOffset(10, 10, 0, 5)
+                };
                 
-                cores[index].gameObject.SetActive(EditorGUILayout.Toggle(cores[index].gameObject.activeInHierarchy, GUILayout.Width(20)));
-                cores[index].enabled = EditorGUILayout.Toggle(cores[index].enabled, GUILayout.Width(20));
+                Foldouts[index] = EditorGUILayout.Foldout(Foldouts[index], core.name.ToContent(RCProEditor.GetInfo(core)), guiStyle);
 
+                var _t = EditorGUIUtility.labelWidth;
+                InLabelWidth(() =>
+                {
+                    cores[index].gameObject.SetActive(EditorGUILayout.ToggleLeft("A".ToContent(), cores[index].gameObject.activeInHierarchy, GUILayout.Width(30)));
+                    cores[index].enabled = EditorGUILayout.ToggleLeft("E".ToContent(), cores[index].enabled, GUILayout.Width(30));
+                }, 15);
                 if (cores[index].gameObject.activeInHierarchy)
                 {
                     var _cSO = new SerializedObject(cores[index]);
@@ -126,7 +135,7 @@
                     GUILayout.Box("Off", RCProEditor.BoxStyle, GUILayout.Width(60), GUILayout.Height(20));
                 }
 
-                GUI.backgroundColor = (core.Performed ? DetectColor : BlockColor).ToAlpha(1);
+                GUI.backgroundColor = (core.Performed ? DetectColor : BlockColor).ToAlpha(.4f);
                 if (GUILayout.Button("Cast", GUILayout.Width(60f)))
                 {
                     core.TestCast();
@@ -137,7 +146,7 @@
                 EndHorizontal();
                 GUI.backgroundColor = RCProEditor.Violet;
                 
-            if (_bools[index])
+            if (Foldouts[index])
             {
                 var _cSO = new SerializedObject(core);
                 _cSO.Update();
@@ -146,8 +155,6 @@
                 if (EditorGUI.EndChangeCheck()) _cSO.ApplyModifiedProperties();
             }
             
-            EditorGUILayout.EndFoldoutHeaderGroup();
-            EndVertical();
             EndVertical();
             }
         }

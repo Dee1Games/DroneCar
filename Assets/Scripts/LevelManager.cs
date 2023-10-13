@@ -36,7 +36,7 @@ public class LevelManager : MonoBehaviour
         {
             DestroyImmediate(GameManager.Instance.Monster.gameObject);
         }
-
+        
         GameManager.Instance.Map = Instantiate(CurrentLevelData.MapPrefab.gameObject).GetComponent<Map>();
         GameManager.Instance.Map.transform.position = Vector3.zero;
         GameManager.Instance.Map.transform.rotation = Quaternion.identity;
@@ -45,6 +45,8 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.Monster.transform.localPosition = Vector3.zero;
         GameManager.Instance.Monster.transform.localRotation = Quaternion.identity;
         GameManager.Instance.Monster.Init(CurrentLevelData.MonsterData);
+        
+        WeakPoint.CurrentIndex = 1;
 
     }
 }

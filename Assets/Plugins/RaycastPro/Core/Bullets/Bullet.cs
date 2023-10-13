@@ -34,15 +34,27 @@ namespace RaycastPro.Bullets
                 transform.forward = caster.transform.forward;
             }
 
-
             OnCast(); // Auto Setup 3D Bullet
             onCast?.Invoke(caster);
-            if (collisionRay)
-            {
-                collisionRay.enabled = false;
-            }
+            
+            if (collisionRay) collisionRay.enabled = false;
         }
 
+        /// <summary>
+        /// Don't Forget to setup basics like caster and raySource beforeUsing.
+        /// </summary>
+        internal virtual void DirectCast()
+        {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
+            
+            OnCast(); // Auto Setup 3D Bullet
+            onCast?.Invoke(caster);
+            
+            if (collisionRay) collisionRay.enabled = false;
+        }
+        
         public override void SetCollision(bool turn) => collisionRay.enabled = turn;
 
         protected override void CollisionRun(float deltaTime)

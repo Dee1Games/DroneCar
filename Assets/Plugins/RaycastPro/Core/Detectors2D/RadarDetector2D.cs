@@ -72,7 +72,7 @@
             foreach (var _h in _hits2D)
             {
                 tCollider = _h.collider;
-                if (!CheckGeneralPass(tCollider)) continue;
+                if (!TagPass(tCollider)) continue;
                 
                 if (IsIgnoreSolver)
                 {
@@ -85,8 +85,8 @@
                 
                 _distance = Vector2.Distance(transform.position, TDP);
                 if (_distance > radius) continue;
-                _blockHit = Physics2D.Linecast(SolverPoint, TDP, blockLayer.value, MinDepth, MaxDepth);
-                _blockHit = Physics2D.Linecast(SolverPoint, TDP, blockLayer.value, MinDepth, MaxDepth);
+                _blockHit = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
+                _blockHit = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
                 PassGate(tCollider, TDP, _blockHit);
 #endif
@@ -201,7 +201,7 @@
                         BeginHorizontal();
                         EditorGUILayout.LabelField($"{key.gameObject.name}: ",
                             GUILayout.Width(160));
-                        ProgressField(DetectProfile[key] / cacheTime, "Life");
+                        PercentProgressField(DetectProfile[key] / cacheTime, "Life");
                         EndHorizontal();
                     }
                     EndVertical();

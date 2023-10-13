@@ -37,6 +37,7 @@ namespace RaycastPro.Editor
         
         // [RCProPanel.SavePreference]
         // public bool sceneGUI;
+        
         public override void OnInspectorGUI()
         {
             if (!target || !(target is RaycastCore pro)) return;
@@ -44,6 +45,7 @@ namespace RaycastPro.Editor
             if (!RCProPanel.rcProInspector || target.GetType().GetCustomAttribute<RCProPanel.RawEditor>(true) != null)
             {
                 base.OnInspectorGUI();
+                
                 return;
             }
             
@@ -89,8 +91,8 @@ namespace RaycastPro.Editor
                 richText = true,
                 contentOffset = Vector2.zero,
                 alignment = TextAnchor.MiddleCenter,
-                margin = new RectOffset(4,4,4,4),
-                padding = new RectOffset(4,4,4,4),
+                margin = new RectOffset(4,4,2,4),
+                padding = new RectOffset(4,4,2,4),
             };
         internal static GUIStyle LabelStyle =>
             new GUIStyle(GUI.skin.label)
@@ -156,39 +158,41 @@ namespace RaycastPro.Editor
             
             return InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(tempMask);
         }
+        
+        private static GUIStyle cleanStyle => new GUIStyle
+        {
+            alignment = TextAnchor.MiddleCenter,
+            margin = new RectOffset(5,5,5,5),
+            padding = new RectOffset(5,5,5,5),
+            fixedWidth = 64,
+            fixedHeight = 64,
+        };
+        private static GUIStyle labelStyle => new GUIStyle(GUI.skin.label)
+        {
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleLeft,
+            padding = new RectOffset(5,5,5,5),
+            wordWrap = true,
+            richText = true
+        };
+
+        private const string CNoInfoDefinition = "No Info Definition.";
+
+        internal static string GetInfo(RaycastCore pro)
+        {
+            var field = pro.GetType().GetField(INFO, BindingFlags.NonPublic | BindingFlags.Static);
+            return field != null ? field.GetValue(null).ToString() : CNoInfoDefinition;
+        }
         internal static void InfoField(RaycastCore pro)
         {
-            var clean = new GUIStyle
-            {
-                alignment = TextAnchor.MiddleCenter,
-                margin = new RectOffset(5,5,5,5),
-                padding = new RectOffset(5,5,5,5),
-                fixedWidth = 64,
-                fixedHeight = 64,
-            };
             GUILayout.BeginHorizontal(BoxStyle);
             
-            GUILayout.Box(EditorGUIUtility.ObjectContent(pro, pro.GetType()).image, clean);
-            
-            var labelStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleLeft,
-                padding = new RectOffset(5,5,5,5),
-                wordWrap = true,
-                richText = true
-            };
-            
-            var field = pro.GetType().GetField(INFO, BindingFlags.NonPublic | BindingFlags.Static);
-
-            GUILayout.Label(field != null ? field.GetValue(null).ToString() : "No Info Definition.", labelStyle);
-
+            GUILayout.Box(EditorGUIUtility.ObjectContent(pro, pro.GetType()).image, cleanStyle);
+            GUILayout.Label(GetInfo(pro), labelStyle);
             GUILayout.EndHorizontal();
             
             GUILine(Color.white);
-            
             EditorGUILayout.Space(1);
-            
             GUILine(Color.white);
             
             EditorGUILayout.Space(2);

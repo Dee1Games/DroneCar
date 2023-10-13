@@ -1,4 +1,6 @@
-﻿namespace RaycastPro.RaySensors2D
+﻿using System.Collections.Generic;
+
+namespace RaycastPro.RaySensors2D
 {
     using System;
     using UnityEngine;
@@ -19,35 +21,18 @@
 
         [SerializeField]
         private int cuts = 5;
-
-        [SerializeField] private bool collectHits;
         
-        private void ResetArrays(int cutCount)
-        {
-            cutCount = Mathf.FloorToInt(cutCount / 2) * 2 + 1;
-            
-            if (collectHits)
-            {
-                if (raycastHits == null)
-                {
-                    raycastHits = new RaycastHit2D[cutCount];
-                }
-                else
-                {
-                    Array.Resize(ref raycastHits, cutCount);
-                }
-            }
-            else
-            {
-                raycastHits = null;
-            }
-        }
-        
-        public RaycastHit2D[] raycastHits;
+        public List<RaycastHit2D> raycastHits = new List<RaycastHit2D>();
         private Vector3 _pos, tip;
         private float step, length;
         private Vector3 _l;
         private int trueHit;
+        
+        /// <summary>
+        /// Get number of rays on hit.
+        /// </summary>
+        public int TrueHit => trueHit;
+
         private RaycastHit2D _hit;
         protected override void OnCast() 
         {
@@ -78,43 +63,48 @@
 
             length = Length;
             trueHit = 0;
+            raycastHits.Clear();
+            
             for (var i = 1; i <= cuts/2f; i += 1)
             {
                 RaycastHit2D _THit;
                 if (hit == default)
                 {
                     _THit = LineCast(0);
-                    if (_THit) trueHit++;
-                   if (collectHits && raycastHits != null) raycastHits[0] = _THit;
-                   if (_THit)
+                    if (_THit)
+                    {
+                        trueHit++;
+                    }
+                    raycastHits?.Add(_THit);
+                    
+                    if (_THit)
                     {
                         hit = _THit;
                         length = hit.distance;
                     }
                 }
                 _THit = LineCast(i);
-                if (_THit) trueHit++;
-                if (collectHits && raycastHits != null)
+                if (_THit)
                 {
-                    raycastHits[i] = _THit;
+                    trueHit++;
                 }
+                raycastHits?.Add(_THit);
+                
                 if (_THit && _THit.distance < length)
                 {
                     hit = _THit;
                     length = hit.distance;
                 }
                 _THit = LineCast(-i);
-                if (_THit) trueHit++;
-
-               if (collectHits && raycastHits != null)
-               {
-                   raycastHits[i + cuts] = _THit;
-               }
+                if (_THit)
+                {
+                    trueHit++;
+                }
+                raycastHits?.Add(_THit);
 
                 if (_THit && _THit.distance < length)
                 {
                     hit = _THit;
-                    
                     length = hit.distance;
                 }
             }
@@ -134,11 +124,22 @@
             var dir = Direction.ToDepth();
             DrawDepthLine(transform.position, Tip);
             DrawNormal2D(hit, z);
-            var col = hit ? (isDetect ? DetectColor : BlockColor) : DefaultColor;
-            Handles.color = col.ToAlpha(RCProPanel.alphaAmount);
+            Handles.color = (hit ? (isDetect ? DetectColor : BlockColor) : DefaultColor).ToAlpha(ClampedAlphaCharge*RCProPanel.alphaAmount);
             Handles.DrawSolidArc(transform.position, Vector3.forward, dir, arcAngle / 2, dir.magnitude);
             Handles.DrawSolidArc(transform.position, Vector3.forward, dir, -arcAngle / 2, dir.magnitude);
             DrawNormalFilter();
+            
+            if (RCProPanel.ShowLabels && raycastHits != null)
+            {
+                for (var index = 0; index < raycastHits.Count; index++)
+                {
+                    if (raycastHits[index])
+                    {
+                        var raycastHit = raycastHits[index];
+                        Handles.Label(raycastHit.point.ToDepth(z), index.ToString());
+                    }
+                }
+            }
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
@@ -151,10 +152,6 @@
                 PropertySliderField(_so.FindProperty(nameof(arcAngle)), 0f, 360f, CArcAngle.ToContent());
                 var propCuts = _so.FindProperty(nameof(cuts));
                 PropertySliderField(propCuts, 0, 90, CCuts.ToContent(), i => {});
-                EditorGUI.BeginChangeCheck();
-                var propCollect = _so.FindProperty(nameof(collectHits));
-                EditorGUILayout.PropertyField(propCollect);
-                if (EditorGUI.EndChangeCheck()) ResetArrays(propCuts.intValue);
             }
 
             if (hasGeneral) GeneralField(_so);
@@ -170,14 +167,14 @@
                     GUILayout.Label(hit.transform.name);
                     GUILayout.Label(hit.distance.ToString());
                     GUILayout.EndHorizontal();
-                    ProgressField(value, "Value");
+                    PercentProgressField(value, "Value");
                 });
             }
         }
 
 #endif
 
-        public override Vector3 Tip => transform.position + Direction3D;
+        public override Vector3 Tip => transform.position + Direction.ToDepth();
 
         public override float RayLength => direction.magnitude;
 

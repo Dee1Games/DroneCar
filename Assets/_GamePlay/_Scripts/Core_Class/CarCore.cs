@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using RaycastPro;
 using RaycastPro.RaySensors;
@@ -13,9 +14,7 @@ public interface IHitable
 public class CarCore : MonoBehaviour
 {
     public static CarCore _;
-
-    public static int CurrentIndex = 1;
-
+    
     [Tooltip("Forward Ray for detecting objects")]
     public RaySensor FRay;
     

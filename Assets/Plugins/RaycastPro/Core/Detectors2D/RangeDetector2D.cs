@@ -56,28 +56,33 @@
         public Collider2D NearestMember => nearestMember;
         public Collider2D FurthestMember => FurthestMember;
 
+        private Vector3 _tPos;
         protected override void OnCast()
         {
+            PreviousColliders = DetectedColliders.ToArray();
+            
 #if UNITY_EDITOR
             CleanGate();
 #endif
-            PreviousColliders = DetectedColliders.ToArray();
-            TDP = transform.position;
+
+            _tPos = transform.position;
             if (limited)
             {
                 for (var i = 0; i < colliders.Length; i++) colliders[i] = null;
-                Physics2D.OverlapCircleNonAlloc(TDP, radius, colliders, detectLayer.value, MinDepth, MaxDepth);    
+                Physics2D.OverlapCircleNonAlloc(_tPos, radius, colliders, detectLayer.value, MinDepth, MaxDepth);    
             }
             else
             {
-                colliders = Physics2D.OverlapCircleAll(TDP, radius, detectLayer.value, MinDepth, MaxDepth);
+                colliders = Physics2D.OverlapCircleAll(_tPos, radius, detectLayer.value, MinDepth, MaxDepth);
             }
-            DetectedColliders.Clear();
+
+            Clear();
+
             tempAngle = local ? transform.right : Vector3.right;
             _tDis = Mathf.Infinity;
             foreach (var c in colliders)
             {
-                if (!CheckGeneralPass(c)) continue;
+                if (!TagPass(c)) continue;
                 if (IsIgnoreSolver)
                 {
 #if UNITY_EDITOR
@@ -88,12 +93,12 @@
                     continue;
                 }
                 TDP = DetectFunction(c);
-                angle = Vector2.Angle(tempAngle, TDP-transform.position);
+                angle = Vector2.Angle(tempAngle, TDP-_tPos);
                 if (angle > arcAngle/2) continue;
-                _distance = (transform.position - TDP).sqrMagnitude;
+                _distance = (_tPos - TDP).sqrMagnitude;
                 if (_distance > radius*radius) continue;
                 if (_distance < minRadius*minRadius) continue;
-                _blockHit = Physics2D.Linecast(SolverPoint, TDP, blockLayer.value, MinDepth, MaxDepth);
+                _blockHit = Physics2D.Linecast(_tPos, TDP, blockLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
                 PassGate(c, TDP, _blockHit);
 #endif
@@ -104,10 +109,12 @@
                         _tDis = _distance;
                         nearestMember = c;
                     }
+
+                    if (collectLOS) DetectedLOSHits.Add(c, _blockHit);
                     DetectedColliders.Add(c);
                 }
             }
-            EventsCallback();
+            EventPass();
         }
 
         private float _distance, angle;

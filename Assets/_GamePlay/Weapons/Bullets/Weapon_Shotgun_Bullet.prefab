@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: -0.000000076293944, z: -2.842171e-16}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3617153816692156594}
@@ -182,8 +182,9 @@ MonoBehaviour:
   moveType: 0
   callMethod: OnBullet
   messageUpward: 0
+  ownerReference: {fileID: 0}
   damage: 10
-  speed: 100
+  speed: 150
   lifeTime: 10
   endDelay: 0
   endFunction: 1
@@ -276,8 +277,8 @@ MonoBehaviour:
   onEndDetect:
     m_PersistentCalls:
       m_Calls: []
-  direction: {x: 0, y: 0, z: 1.5}
-  radius: 0.9
+  direction: {x: 0, y: 0, z: 0.7}
+  radius: 0.6
   height: 0
 --- !u!1001 &7156976939277020591
 PrefabInstance:

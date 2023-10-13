@@ -13,6 +13,8 @@ public class WeakPoint : MonoBehaviour, IHitable
 
     public static WeakPoint CurrentActive;
     
+    public Target target;
+    
     public int index;
     public int Number
     {
@@ -25,6 +27,21 @@ public class WeakPoint : MonoBehaviour, IHitable
             }
         }
     }
+    
+    private static int currentIndex;
+    public static int CurrentIndex
+    {
+        get => currentIndex;
+        set
+        {
+            currentIndex = value;
+            CurrentActive = Monster._.weakPoints.First(w => w.index == value);
+            CurrentActive.transform.DOScale(.4f, 1f);
+            CurrentActive.target.enabled = true;
+            UI_Core._.weakPointIndex.text = value.ToString();
+        }
+    }
+    
     [Title("General")] public TextMeshPro textNumber;
     
     public float damagePlus;
@@ -67,12 +84,9 @@ public class WeakPoint : MonoBehaviour, IHitable
 
     public void OnHit(CarCore core, float damage = 10f)
     {
-        if (CarCore.CurrentIndex != index) return;
+        if (currentIndex != index) return;
         
-        // -1 index cuz its Array index
-        CarCore.CurrentIndex = index + 1;
-        CurrentActive = Monster._.weakPoints.First(w => w.index == CarCore.CurrentIndex);
-        CurrentActive.transform.DOScale(.4f, 1f);
+       CurrentIndex = index + 1;
 
         myCore.TakeDamage(damage * damageMultiplier + damagePlus);
         if (explodable)

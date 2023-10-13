@@ -14,6 +14,9 @@ namespace RaycastPro.Detectors
 
     [Serializable]
     public class AudioEvent : UnityEvent<AudioSource> { }
+    
+    [Serializable]
+    public class SignalEvent : UnityEvent<AudioSource, float> { }
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(SoundDetector))]
     public sealed class SoundDetector : Detector, IPulse
@@ -25,11 +28,11 @@ namespace RaycastPro.Detectors
         public readonly Dictionary<AudioSource, float> SoundLoudness = new Dictionary<AudioSource, float>();
 
         [Tooltip("The higher the hearing power, the lower the effect of wall thickness and distance.")]
-        public float listeningPower = 1;
+        public float hearingPower = 50;
         [Tooltip("")]
         public int sampleWindow = 64;
 
-        [Tooltip("Minimum loudness to pass detection.")]
+        [Tooltip("Minimum loudness to pass detection. (100x scaled for easier setup)")]
         public float loudnessThreshold;
 
         [Tooltip("When it is enabled, the sound loudness calculation will be process, otherwise always return 1 when into range.")]
@@ -38,14 +41,32 @@ namespace RaycastPro.Detectors
         [Tooltip("The effect of the thickness of the wall is on the level of hearing, and as it increases, the power of hearing from behind the wall will decrease.")]
         public float wallThicknessInfluence = 2f;
 
-        public AudioEvent onDetectSource;
+        /// <summary>
+        /// Callback detected source with loudness. (without multiply to listening power)
+        /// </summary>
+        public SignalEvent onDetectSource;
+        
+        /// <summary>
+        ///  Callback new detected source
+        /// </summary>
         public AudioEvent onNewSource;
+        /// <summary>
+        ///  Callback the lost source
+        /// </summary>
         public AudioEvent onLostSource;
+        
         public override bool Performed
         {
             get => DetectedSources.Count > 0;
             protected set { }
         }
+
+        private float mainSignal;
+        
+        /// <summary>
+        /// The most loudness sound
+        /// </summary>
+        public float MainSignal => mainSignal;
 
         #region Public Methods
 
@@ -57,9 +78,7 @@ namespace RaycastPro.Detectors
         public AudioSource FurthestMember =>
             DetectedSources.OrderBy(s => (s.transform.position - transform.position).sqrMagnitude).Last();
 
-
-
-
+        
         public bool CheckHearing(Vector3 vector, float angle = 45f)
         {
             foreach (var detectedSource in DetectedSources)
@@ -96,8 +115,8 @@ namespace RaycastPro.Detectors
             DetectedSources = new List<AudioSource>();
             PreviousSources = Array.Empty<AudioSource>();
             Sync();
+            soundFinder.enabled = false;
         }
-
         /// <summary>
         /// Sound Finder will be sync on source
         /// </summary>
@@ -105,7 +124,6 @@ namespace RaycastPro.Detectors
         {
             soundFinder?.SyncDetection(sources);
         }
-
         public void UnSync()
         {
             soundFinder?.UnSyncDetection(sources);
@@ -138,6 +156,11 @@ namespace RaycastPro.Detectors
             
             DetectedSources.Clear();
             SoundLoudness.Clear();
+
+            if (soundFinder && !soundFinder.enabled) soundFinder.Cast();
+
+            mainSignal = 0;
+            
             foreach (var s in sources)
             {
                 if (!s) continue;
@@ -148,7 +171,7 @@ namespace RaycastPro.Detectors
                 Physics.Linecast(transform.position, s.transform.position, out var h1, detectLayer.value, triggerInteraction);
                 Physics.Linecast(s.transform.position, transform.position, out var h2, detectLayer.value, triggerInteraction);
                 
-                loudness = (affectSoundLoudness ? GetSourceLoudness(s, dist) : 1f) * listeningPower;
+                loudness = (affectSoundLoudness ? GetSourceLoudness(s, dist) : 1f) * hearingPower;
                 
                 if (h1.transform && h2.transform)
                 {
@@ -167,10 +190,15 @@ namespace RaycastPro.Detectors
                 }
                 
                 else if (h1.transform ^ h2.transform) continue;
-                if (loudness < loudnessThreshold) continue;
-                
+                if (loudness*100f < loudnessThreshold) continue;
+
+                if (loudness > mainSignal)
+                {
+                    mainSignal = loudness;
+                }
                 DetectedSources.Add(s);
-                SoundLoudness.Add(s, loudness * listeningPower);
+                SoundLoudness.Add(s, loudness);
+                onDetectSource?.Invoke(s, loudness);
 #if UNITY_EDITOR
                 PanelGate += () =>
                 {
@@ -204,7 +232,16 @@ namespace RaycastPro.Detectors
 #endif
             }
             #region Events Callback
-            CallEvents(DetectedSources, PreviousSources, onDetectSource, onNewSource, onLostSource);
+            
+            if (onNewSource != null)
+            {
+                foreach (var _member in DetectedSources.Except(PreviousSources)) onNewSource.Invoke(_member);
+            }
+            if (onLostSource != null)
+            {
+                foreach (var _member in PreviousSources.Except(DetectedSources)) onLostSource.Invoke(_member);
+            }
+            
             #endregion
         }
 #if UNITY_EDITOR
@@ -231,7 +268,7 @@ namespace RaycastPro.Detectors
                     EndVertical();
                 }
 
-                PropertyMaxField(_so.FindProperty(nameof(listeningPower)));
+                PropertyMaxField(_so.FindProperty(nameof(hearingPower)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(affectSoundLoudness)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(loudnessThreshold)));
                 PropertyMaxField(_so.FindProperty(nameof(wallThicknessInfluence)), 0.01f);

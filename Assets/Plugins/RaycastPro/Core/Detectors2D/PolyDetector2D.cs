@@ -99,6 +99,8 @@ namespace RaycastPro.Detectors2D
         private RaycastHit2D blockHit;
         protected override void OnCast()
         {
+            PreviousColliders = DetectedColliders.ToArray();
+            
 #if UNITY_EDITOR
             CleanGate();
 #endif
@@ -116,24 +118,25 @@ namespace RaycastPro.Detectors2D
                 colliders = Physics2D.OverlapCircleAll(pos2D, maxRadius, detectLayer.value, MinDepth, MaxDepth);
             }
             
-            DetectedColliders.Clear();
+            Clear();
             
             CalculatePoints();
             
             foreach (var c in colliders)
             {
-                if (!CheckGeneralPass(c)) continue;
+                if (!TagPass(c)) continue;
                 if (IsIgnoreSolver && PassCondition(c.transform.position))
                 {
 #if UNITY_EDITOR
                     PassColliderGate(c);
 #endif
                     DetectedColliders.Add(c);
+                    if (collectLOS) DetectedLOSHits.Add(c, _blockHit);
                     continue;
                 }
                 TDP = DetectFunction(c);
                 if (!PassCondition(TDP)) continue;
-                blockHit = Physics2D.Linecast(SolverPoint, TDP, blockLayer.value, MinDepth, MaxDepth);
+                blockHit = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
                 PassGate(c, TDP, _blockHit);
 #endif

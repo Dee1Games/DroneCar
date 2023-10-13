@@ -283,7 +283,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2
   autoUpdate: 0
-  EventFoldout: 0
   gizmosUpdate: 2
   liner: {fileID: 241451248}
   useLinerClampedPosition: 0
@@ -588,6 +587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 316048934}
   index: 01000000
+  intensity: 2
 --- !u!1001 &545957741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1138,9 +1138,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_text
-      value: Now you see one of Advanced Rays in the plugin, ReflectRay easily shows
-        the best way to use other rays along with switching to pipe shape after increase
-        the Radius.
+      value: ReflectRay easily shows the best way to use other rays along with switching
+        to pipe shape after increase the Radius.
       objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_fontSizeBase

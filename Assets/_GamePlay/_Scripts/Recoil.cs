@@ -18,7 +18,7 @@ public class Recoil : MonoBehaviour
         _advanceCaster = GetComponent<AdvanceCaster>();
         _advanceCaster.onCast.AddListener( () =>
         {
-            if (_advanceCaster.currentIndex == 0)
+            if (_advanceCaster.rayIndex == 0)
             {
                 animator.SetTrigger(RecoilL);
             }

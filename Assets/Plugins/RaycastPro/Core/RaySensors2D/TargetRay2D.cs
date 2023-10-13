@@ -78,6 +78,7 @@ namespace RaycastPro.RaySensors2D
             DrawDepthLine(p1, p2);
             
             if (Hit) DrawNormal2D(Hit, z);
+            DrawNormalFilter();
         }
 
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

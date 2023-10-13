@@ -16,20 +16,14 @@
         [Tooltip("Automatically, this ray will shoot along the LocalDirection and source BasePoint location.")]
         public RaySensor2D raySource;
         
-        public UnityEvent onCast;
-        protected override void OnCast()
-        {
-            Cast(index);
-            onCast?.Invoke();
-        }
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
 #endif
             if (AmmoCheck())
             {
-                BulletCast(_index, raySource);
+                BulletCast(_bulletIndex, raySource);
             }
         }
 

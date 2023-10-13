@@ -51,8 +51,8 @@ MonoBehaviour:
   - {fileID: 7100620353257159300}
   - {fileID: 6780256002003076501}
   - {fileID: 6152089068564074161}
-  health: 100
-  maxHealth: 100
+  health: 150
+  maxHealth: 150
   com: {fileID: 1137580482876503972}
   weakPointCount: 3
 --- !u!1 &4968008021767602474
@@ -93,10 +93,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 206502350192013601}
     m_Modifications:
+    - target: {fileID: 2968022400013379529, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: colliders.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4958954509339159883, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: attachedLimb
       value: 
       objectReference: {fileID: 5823933078357944361}
+    - target: {fileID: 6056266654561034444, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: ease
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6642172655797098076, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: m_Name
       value: Mech_Walker_Double_Gun
@@ -157,10 +169,6 @@ PrefabInstance:
       propertyPath: myCore
       value: 
       objectReference: {fileID: 4681042621236531277}
-    - target: {fileID: 8761177693482489517, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
-      propertyPath: gun
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8983983403997087947, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: m_text
       value: 1

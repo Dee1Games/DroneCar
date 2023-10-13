@@ -53,7 +53,8 @@ namespace RaycastPro.RaySensors
             get => subdivide;
             set => subdivide = (byte) Mathf.Max(1,value);
         }
-        public Stack<RaycastHit> raycastHits = new Stack<RaycastHit>();
+        public List<RaycastHit> raycastHits = new List<RaycastHit>();
+        
         public override Vector3 Tip => transform.position + Direction;
         public override float RayLength => TipLength;
         public override Vector3 Base => transform.position;
@@ -84,7 +85,8 @@ namespace RaycastPro.RaySensors
 
                 if (!hit.transform) hit = _raycastHit;
 
-                raycastHits.Push(_raycastHit);
+                raycastHits.Add(_raycastHit);
+                
 #if UNITY_EDITOR
                 var _p = _raycastHit.point-transform.position;
                 var _n = _raycastHit.normal;
@@ -111,7 +113,6 @@ namespace RaycastPro.RaySensors
 
         internal override void OnGizmos()
         {
-
             EditorUpdate();
             var color = (Performed ? DetectColor : DefaultColor);
             DrawZTest(() => Handles.DrawSolidArc(transform.position, transform.up, ArcStartPoint, arcAngle, DirectionLength),
@@ -152,7 +153,7 @@ namespace RaycastPro.RaySensors
                     GUILayout.Label(hit.transform.name);
                     GUILayout.Label(hit.distance.ToString());
                     GUILayout.EndHorizontal();
-                    ProgressField(value, "Value");
+                    PercentProgressField(value, "Value");
                 });
             }
         }

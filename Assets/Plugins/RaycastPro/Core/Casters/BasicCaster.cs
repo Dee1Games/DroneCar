@@ -1,10 +1,8 @@
-﻿
-namespace RaycastPro.Casters
+﻿namespace RaycastPro.Casters
 {
     using RaySensors;
     using UnityEngine;
     using Bullets;
-    using UnityEngine.Events;
 
 #if UNITY_EDITOR
     using Editor;
@@ -19,21 +17,15 @@ namespace RaycastPro.Casters
         public RaySensor raySource;
         
         // ReSharper disable Unity.PerformanceAnalysis
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
 #endif
             if (AmmoCheck())
             {
-                BulletCast(_index, raySource);
+                BulletCast(_bulletIndex, raySource);
             }
-        }
-        public UnityEvent onCast;
-        protected override void OnCast()
-        {
-            Cast(index);
-            onCast?.Invoke();
         }
 
 #if UNITY_EDITOR
@@ -47,7 +39,7 @@ namespace RaycastPro.Casters
             if (raySource)
             {
                 _p1 = raySource.Base;
-                _p2 = _p1 + raySource.LocalDirection;
+                _p2 = _p1 + raySource.TipDirection;
                 DrawCapLine(_p1, _p2);
             }
         }

@@ -130,6 +130,22 @@ PrefabInstance:
       propertyPath: aimIks.Array.data[0]
       value: 
       objectReference: {fileID: 7822673106795710169}
+    - target: {fileID: 2513403635536951319, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: m_Positions.Array.data[0].x
+      value: 146.14937
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513403635536951319, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: m_Positions.Array.data[0].z
+      value: 76.4893
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513403635536951319, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: m_Positions.Array.data[1].x
+      value: 146.14937
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513403635536951319, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: m_Positions.Array.data[1].z
+      value: 76.4893
+      objectReference: {fileID: 0}
     - target: {fileID: 2643014271016392447, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: myCore
       value: 
@@ -758,6 +774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetRay: {fileID: 0}
   target: {fileID: 0}
+  sightDetector: {fileID: 0}
   effect: {fileID: 0}
 --- !u!4 &7221549915253555798 stripped
 Transform:

@@ -93,6 +93,11 @@
         }
         [SerializeField] private string callMethod = "OnBullet";
         [SerializeField] private bool messageUpward;
+
+        /// <summary>
+        /// Use this variable to carry owner object reference
+        /// </summary>
+        public GameObject ownerReference;
         
         [SerializeField] public float damage = 10;
         public float speed = 6;
@@ -139,7 +144,7 @@
         }
         #endregion
         internal abstract void Cast<R>(BaseCaster _caster, R raySensor);
-
+        
         internal bool ended;
         protected void OnEndCast<B>(B _caster) where B : BaseCaster// Review
         {
@@ -274,7 +279,7 @@
         {
             InformationField(() =>
             {
-                ProgressField(life/lifeTime, "Life");
+                PercentProgressField(life/lifeTime, "Life");
             });
         }
         protected void GeneralField(SerializedObject _so)

@@ -11,7 +11,6 @@ namespace RaycastPro.Editor
         public static int OffsetFromName = 100;
         static IconDrawer ()
         {
-            RCProPanel.drawHierarchyIcons = true;
             SetEvent(true);
         }
         internal static void SetEvent(bool turn)

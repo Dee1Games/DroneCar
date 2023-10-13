@@ -50,7 +50,7 @@
         /// <summary>
         /// The distance of the ray to the hit point. returns Length If there is not Hit.
         /// </summary>
-        public float HitDistance => hit.transform ? (hit.point - Base).magnitude : direction.magnitude;
+        public float HitDistance => hit.transform ? (hit.point - Base).magnitude : TipLength;
         
         /// <summary>
         /// The length traveled from Ray to reach the target point
@@ -355,7 +355,7 @@
                     liner.positionCount = 2;
                     if (cutOnHit)
                     {
-                        var _pos =(HitDistance / RayLength);
+                        var _pos = hit.transform ? hit.distance / RayLength : 1f;
                         var _b = Base;
                         if (_pos >= linerBasePosition)
                         {
@@ -492,11 +492,12 @@
         // This function will destroy every clone before destroy the main
         internal override void SafeRemove()
         {
-            if (cloneRaySensor)
+            if (cloneRaySensor?.gameObject)
             {
                 cloneRaySensor.SafeRemove();
             }
-            if (gameObject) Destroy(gameObject);
+
+            if (this && gameObject) Destroy(gameObject);
         }
 
 #if UNITY_EDITOR

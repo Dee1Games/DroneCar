@@ -132,6 +132,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Legacy Shaders/Particles/Alpha Blended Premultiply
   m_Shader: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -140,6 +142,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -267,6 +270,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &91761929
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -370,10 +374,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &91761930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,7 +467,7 @@ Transform:
   m_Children:
   - {fileID: 1026332765}
   m_Father: {fileID: 446368176}
-  m_RootOrder: 2
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &95541954
 GameObject:
@@ -482,6 +489,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &95541955
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -588,10 +596,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &95541956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,7 +694,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 388446180}
-  m_RootOrder: 8
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &120565709
 GameObject:
@@ -738,6 +749,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &160149465
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -844,10 +856,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &160149466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -940,7 +955,7 @@ Transform:
   m_Children:
   - {fileID: 824135038}
   m_Father: {fileID: 388446180}
-  m_RootOrder: 4
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &237475884
 GameObject:
@@ -1093,8 +1108,10 @@ PolygonCollider2D:
       - {x: -0.029022992, y: -0.01528506}
       - {x: 0.022667587, y: -0.021640763}
       - {x: 0.035787366, y: 0.5407127}
+  m_UseDelaunayMesh: 0
 --- !u!120 &249245788
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1197,10 +1214,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &249245789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1285,7 +1305,7 @@ Transform:
   m_Children:
   - {fileID: 1242520805}
   m_Father: {fileID: 446368176}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!21 &330875777
 Material:
@@ -1296,6 +1316,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Legacy Shaders/Particles/Alpha Blended Premultiply
   m_Shader: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -1304,6 +1326,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -1325,6 +1348,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Legacy Shaders/Particles/Alpha Blended Premultiply
   m_Shader: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -1333,6 +1358,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -1453,10 +1479,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1607558358}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &453808232
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1559,10 +1586,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &453808233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1720,6 +1750,7 @@ MonoBehaviour:
   velocity: {x: 0, y: -0.4}
 --- !u!120 &517326898
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1830,10 +1861,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!4 &517326899
 Transform:
   m_ObjectHideFlags: 0
@@ -1847,7 +1881,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 388446180}
-  m_RootOrder: 3
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &529646527
 GameObject:
@@ -1880,10 +1914,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1037773058}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &529646529
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1986,10 +2021,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &529646530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2080,7 +2118,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1206288201}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &593718717
 PolygonCollider2D:
@@ -2116,6 +2154,7 @@ PolygonCollider2D:
       - {x: 0.46828586, y: 0.45038345}
       - {x: 0.59390223, y: 0.54449576}
       - {x: -0.15719882, y: 0.5343621}
+  m_UseDelaunayMesh: 0
 --- !u!1 &644860412
 GameObject:
   m_ObjectHideFlags: 0
@@ -2226,10 +2265,11 @@ Transform:
   m_Children:
   - {fileID: 1863692309}
   m_Father: {fileID: 388446180}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &644860415
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2336,10 +2376,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!1 &692800097
 GameObject:
   m_ObjectHideFlags: 0
@@ -2361,6 +2404,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &692800098
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2464,10 +2508,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &692800099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2554,7 +2601,7 @@ Transform:
   m_Children:
   - {fileID: 1682261869}
   m_Father: {fileID: 388446180}
-  m_RootOrder: 2
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &692800101
 Animator:
@@ -2576,7 +2623,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &824135037
 GameObject:
   m_ObjectHideFlags: 0
@@ -2608,10 +2654,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 160149467}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &824135039
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2714,10 +2761,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &824135040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2799,6 +2849,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &843568133
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2901,10 +2952,13 @@ LineRenderer:
     numCapVertices: 6
     alignment: 1
     textureMode: 1
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &843568134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3000,9 +3054,6 @@ MonoBehaviour:
   autoUpdate: 0
   gizmosUpdate: 0
   poolManager: {fileID: 870932187}
-  onRate:
-    m_PersistentCalls:
-      m_Calls: []
   onReload:
     m_PersistentCalls:
       m_Calls: []
@@ -3057,8 +3108,6 @@ MonoBehaviour:
     magazineAmount: 6
     reloadTime: 0
     inBetweenTime: 0.4
-    randomness: 0
-    missRate: 0
     inRate: 0
     inReload: 0
   trackTarget: {fileID: 0}
@@ -3067,10 +3116,10 @@ MonoBehaviour:
   usingAmmo: 1
   arrayCasting: 1
   arrayCapacity: 40
-  raySource: {fileID: 843568134}
   onCast:
     m_PersistentCalls:
       m_Calls: []
+  raySource: {fileID: 843568134}
 --- !u!1 &870932186
 GameObject:
   m_ObjectHideFlags: 0
@@ -3123,6 +3172,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &962206974
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3227,10 +3277,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &962206975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3320,7 +3373,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 388446180}
-  m_RootOrder: 9
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &962206977
 MonoBehaviour:
@@ -3359,6 +3412,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &979251646
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3461,10 +3515,13 @@ LineRenderer:
     numCapVertices: 6
     alignment: 1
     textureMode: 1
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &979251647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3560,9 +3617,6 @@ MonoBehaviour:
   autoUpdate: 0
   gizmosUpdate: 0
   poolManager: {fileID: 1398621925}
-  onRate:
-    m_PersistentCalls:
-      m_Calls: []
   onReload:
     m_PersistentCalls:
       m_Calls: []
@@ -3617,8 +3671,6 @@ MonoBehaviour:
     magazineAmount: 6
     reloadTime: 0
     inBetweenTime: 0.4
-    randomness: 0
-    missRate: 0
     inRate: 0
     inReload: 0
   trackTarget: {fileID: 0}
@@ -3627,10 +3679,10 @@ MonoBehaviour:
   usingAmmo: 1
   arrayCasting: 1
   arrayCapacity: 40
-  raySource: {fileID: 979251647}
   onCast:
     m_PersistentCalls:
       m_Calls: []
+  raySource: {fileID: 979251647}
 --- !u!1 &1021445469
 GameObject:
   m_ObjectHideFlags: 0
@@ -3662,10 +3714,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 120565710}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 150}
 --- !u!120 &1021445471
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3768,10 +3821,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1021445472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3863,10 +3919,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 91761931}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &1026332766
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3969,10 +4026,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1026332767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4053,6 +4113,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &1037773056
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4159,10 +4220,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1037773057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4255,7 +4319,7 @@ Transform:
   m_Children:
   - {fileID: 529646528}
   m_Father: {fileID: 388446180}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1099508906
 GameObject:
@@ -4338,25 +4402,25 @@ MonoBehaviour:
   direction: {x: 2.4, y: 0}
   pathCast: 1
   PathPoints:
-  - {x: 1.4965878, y: -0.86795783}
-  - {x: 1.4870017, y: -0.7526585}
-  - {x: 1.4372116, y: -0.6375245}
-  - {x: 1.3379928, y: -0.52259356}
-  - {x: 1.1072717, y: -0.40820357}
-  - {x: 0.7383473, y: -0.29438186}
-  - {x: 0.6310575, y: -0.17948419}
-  - {x: 0.57579577, y: -0.06437272}
-  - {x: 0.56129, y: 0.05090642}
-  - {x: 0.58534557, y: 0.16634417}
-  - {x: 0.64960515, y: 0.28194726}
-  - {x: 0.7632934, y: 0.39775336}
-  - {x: 1.0084839, y: 0.5141007}
-  - {x: 1.3918779, y: 0.631016}
-  - {x: 1.5136371, y: 0.74685526}
-  - {x: 1.5833682, y: 0.8624809}
-  - {x: 1.6123433, y: 0.977939}
-  - {x: 1.6027572, y: 1.0932386}
-  - {x: 1.5529671, y: 1.2083724}
+  - {x: 0.68331563, y: -0.8713021}
+  - {x: 0.5842693, y: -0.75637066}
+  - {x: 0.5345999, y: -0.64123607}
+  - {x: 0.5251235, y: -0.52593625}
+  - {x: 0.5542088, y: -0.41047785}
+  - {x: 0.62406385, y: -0.29485178}
+  - {x: 0.74601185, y: -0.17901146}
+  - {x: 1.1307063, y: -0.062090874}
+  - {x: 1.3745623, y: 0.054250717}
+  - {x: 1.488078, y: 0.17005646}
+  - {x: 1.5522168, y: 0.28565896}
+  - {x: 1.5761627, y: 0.4010961}
+  - {x: 1.5615468, y: 0.5163748}
+  - {x: 1.5061613, y: 0.63148594}
+  - {x: 1.3986826, y: 0.7463827}
+  - {x: 1.0284573, y: 0.860199}
+  - {x: 0.7990711, y: 0.9745946}
+  - {x: 0.70002484, y: 1.0895263}
+  - {x: 0.65035546, y: 1.2046609}
   timeMode: 0
   segments: 18
   waveSpeed: 0.4
@@ -4391,6 +4455,7 @@ MonoBehaviour:
   digitStep: 0
 --- !u!120 &1099508908
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4431,25 +4496,25 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 1.4965878, y: -0.86795783, z: 0}
-  - {x: 1.4870017, y: -0.7526585, z: 0}
-  - {x: 1.4372116, y: -0.6375245, z: 0}
-  - {x: 1.3379928, y: -0.52259356, z: 0}
-  - {x: 1.1072717, y: -0.40820357, z: 0}
-  - {x: 0.7383473, y: -0.29438186, z: 0}
-  - {x: 0.6310575, y: -0.17948419, z: 0}
-  - {x: 0.57579577, y: -0.06437272, z: 0}
-  - {x: 0.56129, y: 0.05090642, z: 0}
-  - {x: 0.58534557, y: 0.16634417, z: 0}
-  - {x: 0.64960515, y: 0.28194726, z: 0}
-  - {x: 0.7632934, y: 0.39775336, z: 0}
-  - {x: 1.0084839, y: 0.5141007, z: 0}
-  - {x: 1.3918779, y: 0.631016, z: 0}
-  - {x: 1.5136371, y: 0.74685526, z: 0}
-  - {x: 1.5833682, y: 0.8624809, z: 0}
-  - {x: 1.6123433, y: 0.977939, z: 0}
-  - {x: 1.6027572, y: 1.0932386, z: 0}
-  - {x: 1.5529671, y: 1.2083724, z: 0}
+  - {x: 0.68331563, y: -0.8713021, z: 0}
+  - {x: 0.5842693, y: -0.75637066, z: 0}
+  - {x: 0.5345999, y: -0.64123607, z: 0}
+  - {x: 0.5251235, y: -0.52593625, z: 0}
+  - {x: 0.5542088, y: -0.41047785, z: 0}
+  - {x: 0.62406385, y: -0.29485178, z: 0}
+  - {x: 0.74601185, y: -0.17901146, z: 0}
+  - {x: 1.1307063, y: -0.062090874, z: 0}
+  - {x: 1.3745623, y: 0.054250717, z: 0}
+  - {x: 1.488078, y: 0.17005646, z: 0}
+  - {x: 1.5522168, y: 0.28565896, z: 0}
+  - {x: 1.5761627, y: 0.4010961, z: 0}
+  - {x: 1.5615468, y: 0.5163748, z: 0}
+  - {x: 1.5061613, y: 0.63148594, z: 0}
+  - {x: 1.3986826, y: 0.7463827, z: 0}
+  - {x: 1.0284573, y: 0.860199, z: 0}
+  - {x: 0.7990711, y: 0.9745946, z: 0}
+  - {x: 0.70002484, y: 1.0895263, z: 0}
+  - {x: 0.65035546, y: 1.2046609, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -4510,10 +4575,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!4 &1099508909
 Transform:
   m_ObjectHideFlags: 0
@@ -4527,7 +4595,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 388446180}
-  m_RootOrder: 5
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 30.086, y: 173.247, z: 89.73}
 --- !u!95 &1099508910
 Animator:
@@ -4549,7 +4617,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1206288198
 GameObject:
   m_ObjectHideFlags: 0
@@ -4571,6 +4638,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &1206288199
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4676,10 +4744,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1206288200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4770,7 +4841,7 @@ Transform:
   m_Children:
   - {fileID: 593718716}
   m_Father: {fileID: 388446180}
-  m_RootOrder: 7
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 13.152}
 --- !u!95 &1206288202
 Animator:
@@ -4792,7 +4863,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1242520804
 GameObject:
   m_ObjectHideFlags: 0
@@ -4825,10 +4895,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 249245790}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -135}
 --- !u!120 &1242520806
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4932,10 +5003,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1242520807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5026,7 +5100,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!21 &1320184586
 Material:
   serializedVersion: 8
@@ -5036,6 +5109,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Legacy Shaders/Particles/Alpha Blended Premultiply
   m_Shader: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -5044,6 +5119,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -5065,6 +5141,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Legacy Shaders/Particles/Alpha Blended Premultiply
   m_Shader: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -5073,6 +5151,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -5136,6 +5215,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &1480434006
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5238,10 +5318,13 @@ LineRenderer:
     numCapVertices: 6
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1480434007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5325,7 +5408,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 446368176}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1512569446
 GameObject:
@@ -5347,6 +5430,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &1512569447
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5450,10 +5534,13 @@ LineRenderer:
     numCapVertices: 6
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1512569448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5539,7 +5626,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 446368176}
-  m_RootOrder: 4
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1527016498
 GameObject:
@@ -5572,10 +5659,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 120565710}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 210}
 --- !u!120 &1527016500
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5678,10 +5766,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1527016501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5762,6 +5853,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &1541515827
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5866,10 +5958,13 @@ LineRenderer:
     numCapVertices: 6
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1541515828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5957,7 +6052,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 446368176}
-  m_RootOrder: 3
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1607558355
 GameObject:
@@ -5979,6 +6074,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &1607558356
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -6081,10 +6177,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1607558357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6169,7 +6268,7 @@ Transform:
   m_Children:
   - {fileID: 453808231}
   m_Father: {fileID: 388446180}
-  m_RootOrder: 6
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1682261868
 GameObject:
@@ -6202,10 +6301,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 692800100}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -25}
 --- !u!120 &1682261870
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -6308,10 +6408,13 @@ LineRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1682261871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6393,6 +6496,7 @@ GameObject:
   m_IsActive: 1
 --- !u!120 &1863692307
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -6496,10 +6600,13 @@ LineRenderer:
     numCapVertices: 6
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!114 &1863692308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6583,7 +6690,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 644860414}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1863692310
 Animator:
@@ -6605,7 +6712,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1894890500
 GameObject:
   m_ObjectHideFlags: 0
@@ -6699,6 +6805,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Legacy Shaders/Particles/Alpha Blended Premultiply
   m_Shader: {fileID: 4800000, guid: acd899f7ccf081b4ba126e1515d5b8d3, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _EMISSION
@@ -6708,6 +6816,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -6804,6 +6913,8 @@ GameObject:
   - component: {fileID: 2107459995}
   - component: {fileID: 2107459994}
   - component: {fileID: 2107459993}
+  - component: {fileID: 2107459997}
+  - component: {fileID: 2107459996}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6877,3 +6988,80 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2107459996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107459992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeTrigger: {fileID: 2107459995}
+  volumeLayer:
+    serializedVersion: 2
+    m_Bits: 2147483647
+  stopNaNPropagation: 1
+  finalBlitToCameraTarget: 0
+  antialiasingMode: 2
+  temporalAntialiasing:
+    jitterSpread: 0.75
+    sharpness: 0.25
+    stationaryBlending: 0.95
+    motionBlending: 0.85
+  subpixelMorphologicalAntialiasing:
+    quality: 2
+  fastApproximateAntialiasing:
+    fastMode: 0
+    keepAlpha: 0
+  fog:
+    enabled: 1
+    excludeSkybox: 1
+  debugLayer:
+    lightMeter:
+      width: 512
+      height: 256
+      showCurves: 1
+    histogram:
+      width: 512
+      height: 256
+      channel: 3
+    waveform:
+      exposure: 0.12
+      height: 256
+    vectorscope:
+      size: 256
+      exposure: 0.12
+    overlaySettings:
+      linearDepth: 0
+      motionColorIntensity: 4
+      motionGridSize: 64
+      colorBlindnessType: 0
+      colorBlindnessStrength: 1
+  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
+  m_ShowToolkit: 0
+  m_ShowCustomSorter: 0
+  breakBeforeColorGrading: 0
+  m_BeforeTransparentBundles: []
+  m_BeforeStackBundles: []
+  m_AfterStackBundles: []
+--- !u!114 &2107459997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107459992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: ddf9130ad2e3c4f4389669cdfdb2b774, type: 2}
+  isGlobal: 1
+  blendDistance: 0
+  weight: 1
+  priority: 0

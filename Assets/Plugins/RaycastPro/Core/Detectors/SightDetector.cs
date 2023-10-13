@@ -54,9 +54,7 @@ namespace RaycastPro.Detectors
                 colliders = new Collider[limitCount];
             }
         }
-
-
-
+        
         public float minRadius = 1f;
         public float fullAwareness = 2f;
 
@@ -83,8 +81,8 @@ namespace RaycastPro.Detectors
                 colliders = Physics.OverlapSphere(_p, radius, detectLayer.value, triggerInteraction);
             }
 
-            DetectedColliders.Clear();
-
+            Clear();
+            
             foreach (var c in colliders)
             {
                 if (!TagPass(c)) continue;
@@ -109,18 +107,13 @@ namespace RaycastPro.Detectors
                 else if (LOSPass(TDP, c)) DetectedColliders.Add(c);
             }
 
-            ColliderDetectorEvents();
+            EventPass();
         }
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
         private static string Info = "Receiving colliders within the specified FOV angles with a detect point solver." + HCDetector + HLOS_Solver + HIPulse + HIRadius + HINonAllocator;
 #pragma warning restore CS0414
-
-        private void OnValidate()
-        {
-            DetectFunction = SetupDetectFunction();
-        }
 
 
         private float lerp, sinX, sinY;
@@ -214,10 +207,10 @@ namespace RaycastPro.Detectors
                 
                 var fullAwarenessProp = _so.FindProperty(nameof(fullAwareness));
                 EditorGUILayout.PropertyField(fullAwarenessProp, fullAwarenessProp.displayName.ToContent("The range of full awareness will always be detected regardless of the viewing angle."));
-                fullAwarenessProp.floatValue = Mathf.Clamp(fullAwarenessProp.floatValue, -1, radius);
+                fullAwarenessProp.floatValue = Mathf.Clamp(fullAwarenessProp.floatValue, 0, radius);
                 
-                PropertySliderField(_so.FindProperty(nameof(angleX)), 0f, 360f, "Arc X".ToContent("The horizontal range of vision, which is counted in Degress units."));
-                PropertySliderField(_so.FindProperty(nameof(angleY)), 0f, 360f, "Arc Y".ToContent("The vertical range of vision, which is counted in Degress units."));
+                PropertySliderField(_so.FindProperty(nameof(angleX)), 0f, 360f, CArcHorizontal.ToContent("The horizontal range of vision, which is counted in Degress units."));
+                PropertySliderField(_so.FindProperty(nameof(angleY)), 0f, 180, CArcVertical.ToContent("The vertical range of vision, which is counted in Degress units."));
                 GUI.enabled = true;
             }
 

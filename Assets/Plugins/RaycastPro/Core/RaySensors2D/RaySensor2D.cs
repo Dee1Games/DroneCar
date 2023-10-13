@@ -257,7 +257,7 @@
                     liner.positionCount = 2;
                     if (cutOnHit)
                     {
-                        var _pos =(HitDistance / RayLength);
+                        var _pos = hit.transform ? hit.distance / RayLength : 1f;
                         var _b = Base;
                         if (_pos >= linerBasePosition)
                         {
@@ -279,7 +279,7 @@
                 {
                     liner.positionCount = 2;
                     liner.SetPosition(0, Base);
-                    liner.SetPosition(1, cutOnHit ? TipTarget : Tip);
+                    liner.SetPosition(1, cutOnHit ? TipTarget : Tip.ToDepth(z));
                 }
             }
         }
@@ -435,12 +435,12 @@
         }
         internal override void SafeRemove()
         {
-            if (cloneRaySensor)
+            if (cloneRaySensor?.gameObject)
             {
                 cloneRaySensor.SafeRemove();
             }
 
-            if (gameObject) Destroy(gameObject);
+            if (this && gameObject) Destroy(gameObject);
         }
         public static void CloneDestroy(RaySensor2D sensor)
         {

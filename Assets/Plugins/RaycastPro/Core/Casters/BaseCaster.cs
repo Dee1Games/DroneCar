@@ -16,8 +16,8 @@ namespace RaycastPro
         /// <summary>
         /// Allow to manuel Casting.
         /// </summary>
-        /// <param name="_index">Bullet Array Index</param>
-        public abstract void Cast(int _index);
+        /// <param name="_bulletIndex">Bullet Array Index</param>
+        public abstract void Cast(int _bulletIndex);
         
         [Tooltip("Automatically instantiate into this object.")]
         public Transform poolManager;
@@ -26,7 +26,13 @@ namespace RaycastPro
         public UnityEvent onRate;
         [SerializeField]
         public UnityEvent onReload;
+        
+                
+        [Tooltip("When turn on, gun auto reload on enable or end of shooting.")]
+        public bool autoReload = true;
+        
         public abstract void Reload();
+        
         #region Update
         protected void Update()
         {
@@ -45,8 +51,6 @@ namespace RaycastPro
         }
 
         #endregion
-
-
 
         protected static void CopyBullet<T>(T to, T from)
         {
@@ -69,7 +73,7 @@ namespace RaycastPro
         public class Ammo
         {
             [Tooltip("When activate, the cost of shooting will be zero.")]
-            [SerializeField] public bool infiniteAmmo;
+            [SerializeField] public bool infiniteAmmo = true;
             
             [Tooltip("The total number of bullets out of the magazine")]
             [SerializeField] public int amount = 12;
@@ -84,12 +88,12 @@ namespace RaycastPro
             [SerializeField] public float reloadTime = 2f;
             
             [Tooltip("The firing pause time between each shot")]
-            [SerializeField] public float inBetweenTime = .1f;
+            [SerializeField] public float rateTime = .1f;
             
             [Tooltip("Randomness")]
             [SerializeField] public float randomness = 0f;
             
-            [Tooltip("MissRate")]
+            [Tooltip("Chance to miss shooting when cast, 0-1 : 0-100%")]
             [SerializeField] public float missRate = 0f;
             /// <summary>
             /// The number of all available bullets, which is calculated from the "amount + magazineAmount".
@@ -124,16 +128,17 @@ namespace RaycastPro
                 
                 if (magazineAmount < _amount)
                 {
-                    inReload = true;
-                    _caster.onReload?.Invoke();
-                    _caster.StartCoroutine(IReload());
+                    if (_caster.autoReload)
+                    {
+                        _caster.StartCoroutine(IReload());
+                        _caster.onReload?.Invoke();
+                    }
 
                     return false;
                 }
                 if (value > missRate)
                 {       
                     magazineAmount -= _amount;
-                    inRate = true;
                     _inRateC = _caster.StartCoroutine(IRate());
                     _caster.onRate?.Invoke();
                 }
@@ -147,14 +152,16 @@ namespace RaycastPro
             /// </summary>
             internal IEnumerator IRate()
             {
-                yield return new WaitForSeconds(Range(inBetweenTime - randomness,
-                    randomness + randomness));
+                inRate = true;
+                yield return new WaitForSeconds(Range(rateTime - randomness, randomness + randomness));
                 inRate = false;
             }
 
             public float currentReloadTime { get; private set; } = 0f;
             internal IEnumerator IReload()
             {
+                inReload = true;
+                currentReloadTime = 0f;
                 while (currentReloadTime <= reloadTime)
                 {
                     currentReloadTime += Time.deltaTime;
@@ -188,7 +195,7 @@ namespace RaycastPro
                 PropertyMaxIntField(mCapProp, "Magazine Capacity".ToContent());
                 PropertySliderField(serializedProperty.FindPropertyRelative(nameof(magazineAmount)), 0, mCapProp.intValue, "Magazine Amount".ToContent(), i => {});
                 PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(reloadTime)));
-                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(inBetweenTime)));
+                PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(rateTime)));
                 PropertyMaxField(serializedProperty.FindPropertyRelative(nameof(randomness)));
                 PropertySliderField(serializedProperty.FindPropertyRelative(nameof(missRate)), 0, 1, "Miss Rate".ToContent());
             }

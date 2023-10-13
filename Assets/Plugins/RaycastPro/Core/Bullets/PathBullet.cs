@@ -34,6 +34,7 @@ namespace RaycastPro.Bullets
         // Cached Variables
         private Vector3 _pos, _dir, newPos;
         private float _dt;
+        
         protected override void OnCast() => PathSetup(raySource);
 
         private List<Vector3> _tPath;

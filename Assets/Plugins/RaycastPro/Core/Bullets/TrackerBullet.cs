@@ -44,7 +44,15 @@
             }
 #endif
 
-            targetPoint = target.position;
+            if (target)
+            {
+                targetPoint = target.position;
+            }
+            else
+            {
+                targetPoint = raySource.TipTarget;
+            }
+            
             currentForce = force;
             _t = transform;
         }

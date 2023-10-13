@@ -22,15 +22,8 @@ namespace RaycastPro.Casters2D
         private bool pingPongPhase;
 
         public CastType castType = CastType.Together;
-        
-        public UnityEvent onCast;
-        protected override void OnCast()
-        {
-            Cast(index);
-            onCast?.Invoke();
-        }
 
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
@@ -43,25 +36,25 @@ namespace RaycastPro.Casters2D
                     {
                         foreach (var ray in raySensors)
                         {
-                            BulletCast(_index, ray);
+                            BulletCast(_bulletIndex, ray);
                         }
                     }
                     break;
                 case CastType.Sequence:
                     
-                    if (AmmoCheck() && BulletCast(_index, raySensors[currentIndex]))
+                    if (AmmoCheck() && BulletCast(_bulletIndex, raySensors[currentIndex]))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.Random:
-                    if (AmmoCheck() && BulletCast(_index, raySensors[new System.Random().Next(0, raySensors.Length)]))
+                    if (AmmoCheck() && BulletCast(_bulletIndex, raySensors[new System.Random().Next(0, raySensors.Length)]))
                     {
                         currentIndex = ++currentIndex % raySensors.Length;
                     }
                     break;
                 case CastType.PingPong:
-                    if (AmmoCheck() && BulletCast(_index, raySensors[currentIndex]))
+                    if (AmmoCheck() && BulletCast(_bulletIndex, raySensors[currentIndex]))
                     {
                         currentIndex = pingPongPhase ? --currentIndex : ++currentIndex;
                         if (currentIndex == raySensors.Length - 1 || currentIndex == 0) pingPongPhase = !pingPongPhase;

@@ -173,7 +173,7 @@ namespace RaycastPro.Detectors
             if (hasInfo)
             {
                 InformationField(PanelGate);
-                ProgressField(DirectValue, "Detected");
+                PercentProgressField(DirectValue, "Detected");
             }
         }
 

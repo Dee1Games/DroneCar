@@ -258,12 +258,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
-  gizmosUpdate: 2
+  gizmosUpdate: 0
   liner: {fileID: 241451242}
-  useLinerClampedPosition: 0
+  useLinerClampedPosition: 1
   cutOnHit: 1
-  linerEndPosition: 1
-  linerBasePosition: 0
+  linerEndPosition: 0.6627358
+  linerBasePosition: 0.45754722
   stamp: {fileID: 1870644313}
   local: 1
   scalable: 0
@@ -293,9 +293,9 @@ MonoBehaviour:
   onEndDetect:
     m_PersistentCalls:
       m_Calls: []
-  direction: {x: 0, y: 0, z: 8}
+  direction: {x: 0, y: 0, z: 15}
   mainCamera: {fileID: 1225270667}
-  radius: 0.1
+  radius: 0
   rayFromCamera: 1
   eyeType: 2
 --- !u!1001 &265147441
@@ -519,8 +519,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018c4f1f1f26c7140b3928497916a169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   raySensor: {fileID: 241451243}
   raySensor2D: {fileID: 0}
+  autoUpdate: 1
+  syncCondition: 0
 --- !u!1 &729585622 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4162728184149694220, guid: 4fa4cf9181f56a74db82e06e479f0eca, type: 3}

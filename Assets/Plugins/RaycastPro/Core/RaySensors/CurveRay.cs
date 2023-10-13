@@ -18,6 +18,7 @@
             get => radius;
             set => radius = Mathf.Max(0,value);
         }
+        
         public AnimationCurve clumpY = AnimationCurve.EaseInOut(0, 0, 1, 0);
         public AnimationCurve clumpX = AnimationCurve.EaseInOut(0, 0, 1, 0);
         public AnimationCurve clumpZ = AnimationCurve.Linear(0, 0, 1, 1);
@@ -30,21 +31,23 @@
 
         private float step;
         private Vector3 curve;
+
+        
         protected override void UpdatePath()
         {
             PathPoints.Clear();
-            for (int i = 0; i < segments; i++)
+            for (int i = 0; i <= segments; i++)
             {
                 step = (float) i / segments;
-                curve.x = clumpX.Evaluate(step) * direction.x / direction.z;
-                curve.y = clumpY.Evaluate(step) * direction.y / direction.z;
-                curve.z = clumpZ.Evaluate(step)*direction.z;
+                curve.x = clumpX.Evaluate(step) * direction.x;
+                curve.y = clumpY.Evaluate(step) * direction.y;
+                curve.z = clumpZ.Evaluate(step) * direction.z;
                 PathPoints.Add(transform.position + (local ? transform.TransformDirection(curve) : curve));
             }
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Send a ray based on triple curves and return the hit information."+HAccurate+HDirectional+HPathRay+HIRadius+HPreview;
+        private static string Info = "Send a ray based on curves and return the hit information."+HAccurate+HDirectional+HPathRay+HIRadius;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {
@@ -59,9 +62,7 @@
             if (hasMain)
             {
                 DirectionField(_so);
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(segments)),
-                    CSegments.ToContent(TSegments));
-                segments = Mathf.Max(1, segments);
+                PropertyMaxIntField(_so.FindProperty(nameof(segments)), CSegments.ToContent(TSegments), 1);
                 EditorGUILayout.CurveField(_so.FindProperty(nameof(clumpX)), RCProEditor.Aqua, new Rect(0, 0, 1, 1), CClumpX.ToContent(CClumpX));
                 EditorGUILayout.CurveField(_so.FindProperty(nameof(clumpY)), RCProEditor.Aqua, new Rect(0, 0, 1, 1), CClumpY.ToContent(CClumpY));
                 EditorGUILayout.CurveField(_so.FindProperty(nameof(clumpZ)), RCProEditor.Aqua, new Rect(0, 0, 1, 1), CClumpZ.ToContent(CClumpZ));

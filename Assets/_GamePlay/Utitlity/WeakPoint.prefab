@@ -535,6 +535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9205170870499727921}
   - component: {fileID: 8344917384970343396}
+  - component: {fileID: 3365818378960946441}
   m_Layer: 14
   m_Name: WeakPoint
   m_TagString: Untagged
@@ -574,6 +575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCore: {fileID: 0}
+  target: {fileID: 3365818378960946441}
   index: 1
   textNumber: {fileID: 8960409879550804561}
   damagePlus: 0
@@ -581,3 +583,20 @@ MonoBehaviour:
   attachedLimb: {fileID: 0}
   explodeEffect: {fileID: 0}
   particle: []
+--- !u!114 &3365818378960946441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5584087559696114291}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 0, g: 1, b: 0.96998096, a: 1}
+  needBoxIndicator: 1
+  needArrowIndicator: 1
+  needDistanceText: 1
+  indicator: {fileID: 0}

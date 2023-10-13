@@ -5665,7 +5665,8 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 40}
   mainCamera: {fileID: 1097350927}
   radius: 0.4
-  rayFromCamera: 1
+  cameraBase: 0
+  secondRay: 1
   eyeType: 2
 --- !u!1001 &1101658493
 PrefabInstance:
@@ -10843,9 +10844,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_text
-      value: This is another example to make sure this code is optimized. As you
-        can see, the iron fishes going to the target side and each one improvises
-        a path to reach the goal.
+      value: The iron fishes going to the target side and each one improvises a path
+        to reach the goal. Look at the to Agent scripts to know how the steering
+        Detector.
       objectReference: {fileID: 0}
     - target: {fileID: 4083403223832581891, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
       propertyPath: m_fontColorGradient.bottomLeft.b

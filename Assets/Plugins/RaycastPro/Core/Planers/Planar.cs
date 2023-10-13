@@ -161,7 +161,7 @@
             PlanarBaseField(_so);
             DetectLayerField(_so);
             BaseDirectionField(_so);
-            PropertyMaxField(_so.FindProperty(nameof(offset)),  COffset.ToContent(), 0.02f);
+            PropertyMaxField(_so.FindProperty(nameof(offset)),  COffset.ToContent());
             if (lengthControlField) LengthControlField(_so);
             if (outerField) OuterField(_so.FindProperty(nameof(outerType)), _so.FindProperty(nameof(outerRay)));
             BaseField(_so, hasInfluence: true, hasInteraction: false, hasUpdateMode: false);

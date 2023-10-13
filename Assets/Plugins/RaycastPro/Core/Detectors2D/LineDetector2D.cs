@@ -73,9 +73,10 @@ namespace RaycastPro.Detectors2D
         protected override void OnCast()
         {
             PreviousColliders = DetectedColliders.ToArray();
-            DetectedColliders.Clear();
-            
             PreviousHits = DetectedHits.ToArray();
+            
+            Clear();
+
             if (limited)
             {
                 Array.Clear(nonAllocatedHits, 0, nonAllocatedHits.Length);
@@ -140,8 +141,8 @@ namespace RaycastPro.Detectors2D
 
             #region Events
             CallEvents(DetectedHits, PreviousHits, onHit, onNewHit, onLostHit);
-            DetectedColliders = DetectedHits.Select(hit => hit.collider).Distinct().ToList();
-            CallEvents(DetectedColliders, PreviousColliders, onDetectCollider, onNewCollider, onLostCollider);
+            
+            EventPass();
             #endregion
         }
         
@@ -203,6 +204,7 @@ namespace RaycastPro.Detectors2D
             {
                 if (raycastHit2D)
                 {
+                    
                     DrawCross(raycastHit2D.point.ToDepth(z), Vector3.forward);
                 }
                 
@@ -267,7 +269,21 @@ namespace RaycastPro.Detectors2D
                 if (EventFoldout) RCProEditor.EventField(_so, events);
             }
 
-            if (hasInfo) InformationField(PanelGate);
+            if (hasInfo) InformationField(() =>
+            {
+                BeginVertical();
+                foreach (var D in DetectedColliders)
+                {
+                    if (!D) continue;
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Box(D.name, RCProEditor.LabelStyle);
+                    GUILayout.Box("<color=#3DED33>Detect</color>",  RCProEditor.BoxStyle, GUILayout.Width(50));
+                        
+                    GUILayout.EndHorizontal();
+                }
+                EndVertical();
+            });
         }
 #endif
     }

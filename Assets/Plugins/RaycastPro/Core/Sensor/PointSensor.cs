@@ -35,32 +35,37 @@
 
         public Vector3 extents = Vector3.one;
 
-        public override bool Performed { get; protected set; }
+        public override bool Performed
+        {
+            get => performed;
+            protected set {}
+        }
+
+        private bool performed;
+        
         protected override void OnCast()
         {
             var _t = transform;
             
+            performed = false;
             switch (dotType)
             {
                 case DotType.Sphere:
                     if (height > 0)
                     {
                         var h = _t.up * height / 2;
-                        Performed = Physics.CheckCapsule(_t.position - h, _t.position + h, radius,
+                        performed = Physics.CheckCapsule(_t.position - h, _t.position + h, radius,
                             detectLayer.value, triggerInteraction);
                     }
                     else
                     {
-                        Performed = Physics.CheckSphere(_t.position, radius, detectLayer.value, triggerInteraction);
+                        performed = Physics.CheckSphere(_t.position, radius, detectLayer.value, triggerInteraction);
                     }
 
                     break;
                 case DotType.Box:
-                    Performed = Physics.CheckBox(_t.position, extents / 2, _t.rotation, detectLayer.value,
+                    performed = Physics.CheckBox(_t.position, extents / 2, _t.rotation, detectLayer.value,
                         triggerInteraction);
-                    break;
-                default:
-                    Performed = false;
                     break;
             }
         }

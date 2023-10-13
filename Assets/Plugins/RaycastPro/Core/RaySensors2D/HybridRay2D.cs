@@ -107,6 +107,7 @@
                 
                 DrawNormal(hitDepth+hit.normal.ToDepth()*DotSize, hit.normal);
             }
+            DrawNormalFilter();
         }
 
         private Vector3 hitDepth;

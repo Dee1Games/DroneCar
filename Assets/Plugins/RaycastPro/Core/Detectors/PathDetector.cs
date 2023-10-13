@@ -13,46 +13,57 @@
     using UnityEngine;
     
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(PathDetector))]
-    public class PathDetector : ColliderDetector, IPulse
+    public class PathDetector : ColliderDetector, IRadius, IPulse
     {
-        public PathRay pathRay;
+        /// <summary>
+        /// Main Source of Getting Path, Its better to disable it if don't need single casting.
+        /// </summary>
+        public RaySensor sourceRay;
+        
+        [SerializeField] private float radius = 2f;
+        
+        public float Radius
+        {
+            get => radius;
+            set => radius = Mathf.Max(0, value);
+        }
         
         public RaycastEvent onHit;
         public RaycastEvent onNewHit;
         public RaycastEvent onLostHit;
+
+        public List<Vector3> PathPoints;
         public override bool Performed
         {
             get => DetectedHits.Count > 0;
             protected set { }
         }
         
-        protected void Start() // Refreshing
-        {
-            PreviousColliders = new HashSet<Collider>();
-            DetectedColliders = new HashSet<Collider>();
-        }
         protected override void OnCast()
         {
-            if (!pathRay.enabled) pathRay.Cast();
+            if (!sourceRay) return;
+
+            if (!sourceRay.enabled) sourceRay.Cast();
             
             CachePrevious();
-            PreviousHits = DetectedHits.ToArray();
+            
+            sourceRay.GetPath(ref PathPoints);
 
 #if UNITY_EDITOR
             CleanGate();
 #endif
-            if (pathRay)
+            if (sourceRay)
             {
                 if (usingTagFilter)
                 {
-                    if (pathRay is IRadius radius)
+                    if (sourceRay is IRadius radius)
                     {
-                        PathCastAll(pathRay.PathPoints, ref DetectedHits, radius.Radius);
+                        PathCastAll(PathPoints, ref DetectedHits, radius.Radius);
                         foreach (var r in DetectedHits) if (!r.collider.CompareTag(tagFilter)) DetectedHits.Remove(r);
                     }
                     else
                     {
-                        PathCastAll(pathRay.PathPoints, ref DetectedHits);
+                        PathCastAll(PathPoints, ref DetectedHits);
                         foreach (var r in DetectedHits)
                         {
                             if (!r.collider.CompareTag(tagFilter)) DetectedHits.Remove(r);
@@ -67,12 +78,13 @@
                 }
                 else
                 {
-                    if (pathRay is IRadius radius) PathCastAll(pathRay.PathPoints, ref DetectedHits, radius.Radius);
-                    else PathCastAll(pathRay.PathPoints, ref DetectedHits);
+                    if (sourceRay is IRadius _r) PathCastAll(PathPoints, ref DetectedHits, _r.Radius);
+                    else PathCastAll(PathPoints, ref DetectedHits, radius);
                 }
             }
             
-            DetectedColliders.Clear();
+            Clear();
+            
             foreach (var _dHit in DetectedHits) DetectedColliders.Add(_dHit.collider);
             
 #if UNITY_EDITOR
@@ -81,19 +93,21 @@
             if (onHit != null) foreach (var _member in DetectedHits) onHit.Invoke(_member);
             if (onNewHit != null) foreach (var _member in DetectedHits.Except(PreviousHits)) onNewHit.Invoke(_member);
             if (onLostHit != null) foreach (var _member in PreviousHits.Except(DetectedHits)) onLostHit.Invoke(_member);
-            ColliderDetectorEvents();
+            EventPass();
         }
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Receive all passing hits from the entered path ray." + HAccurate + HIPulse + HPathRay + HRDetector + HDependent;
+        private static string Info = "Receive all passing hits from the entered path ray." + HAccurate + HIPulse + HPathRay + HRDetector + HIRadius + HDependent;
 #pragma warning restore CS0414
 
-        protected readonly string[] CEventNames = {"onHit", "onNewHit", "onLostHit", "onDetectCollider", "onNewCollider", "onLostCollider"};
+        protected new readonly string[] CEventNames = new []{"onHit", "onNewHit", "onLostHit", "onDetectCollider", "onNewCollider", "onLostCollider"};
         internal override void OnGizmos()
         {
             EditorUpdate();
-            DrawPath(pathRay.PathPoints, drawSphere:true, radius: (pathRay is IRadius _iRad ? _iRad.Radius+DotSize : 0f), dotted: true);
+            
+            DrawPath(PathPoints, drawSphere:true, radius: (sourceRay is IRadius _iRad ? _iRad.Radius+DotSize : radius), dotted: true);
+            
             Handles.color = DetectColor;
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
@@ -102,18 +116,24 @@
         {
             if (hasMain)
             {
-                if (pathRay)
+                if (sourceRay)
                 {
                     BeginVerticalBox();
-                    RCProEditor.TypeField("Path Ray", ref pathRay);
-                    var _tSo = new SerializedObject(pathRay);
+                    RCProEditor.TypeField("Path Ray", ref sourceRay);
+                    var _tSo = new SerializedObject(sourceRay);
                     _tSo.Update();
-                    pathRay?.EditorPanel(_tSo, hasMain: true, hasGeneral: false, hasEvents: false, hasInfo: false);
+                    sourceRay?.EditorPanel(_tSo, hasMain: true, hasGeneral: false, hasEvents: false, hasInfo: false);
                     _tSo.ApplyModifiedProperties();
                     
                     EndVertical();
                 }
-                else RCProEditor.TypeField("Path Ray", ref pathRay);
+                else RCProEditor.TypeField("Path Ray", ref sourceRay);
+
+                if (!(sourceRay is IRadius))
+                {
+                    RadiusField(_so);
+                }
+
             }
 
             if (hasGeneral)
@@ -133,8 +153,6 @@
         protected override void DrawDetectorGuide(Vector3 point) { }
 #endif
         public List<RaycastHit> DetectedHits = new List<RaycastHit>();
-        public RaycastHit[] PreviousHits = Array.Empty<RaycastHit>();
-        public HashSet<Collider> DetectedColliders = new HashSet<Collider>();
-        public HashSet<Collider> PreviousColliders  = new HashSet<Collider>();
+        public readonly RaycastHit[] PreviousHits = Array.Empty<RaycastHit>();
     }
 }

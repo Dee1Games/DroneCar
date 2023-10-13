@@ -149,22 +149,6 @@
         }
 
         private Vector3 _l;
-        public void OnSceneGUI()
-        {
-            return;
-            if (relative || chainReference == ChainReference.Transform) return;
-
-            for (int i = 0; i < chainPoints.Length; i++)
-            {
-                _l = chainPoints[i].ToLocal(transform);
-                var newPosition = Handles.DoPositionHandle(_l, Quaternion.identity);
-                if (_l != newPosition)
-                {
-                    Undo.RecordObject(this, "Move Bezier Control Point");
-                    chainPoints[i] = newPosition.ToWorld(transform);
-                }
-            }
-        }
 #endif
     }
 }

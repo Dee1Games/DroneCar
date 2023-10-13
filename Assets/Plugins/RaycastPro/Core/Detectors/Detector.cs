@@ -20,149 +20,14 @@
         /// Temp Detected Point
         /// </summary>
         protected Vector3 TDP;
-        private Vector3 TSP;
-        
-        #region BlockSystem
-        
-        public Vector3 blockSolverOffset;
-        public Vector3 detectVector;
-        
-        /// <summary>
-        /// Solver Point in world Space
-        /// </summary>
-        public override Vector3 SolverPoint => checkLineOfSight ? transform.TransformPoint(blockSolverOffset) : transform.position;
-        
-        public override Vector3 DetectVectorPoint => transform.TransformPoint(detectVector);
 
+        #region BlockSystem
+        public Vector3 detectVector;
+        public override Vector3 DetectVectorPoint => transform.TransformPoint(detectVector);
         #endregion
 
-        protected Vector3 BoundsCenter(Collider _c) => boundsCenter ? _c.bounds.center : _c.transform.position;
-        protected Func<Collider, Vector3> SetupDetectFunction()
-        {
-            TSP = SolverPoint;
-            switch (solverType)
-            {
-                case SolverType.Ignore: return c => c.transform.position;
-                case SolverType.Pivot: return BoundsCenter;
-                case SolverType.Nearest:
-                    if (boundsSolver) return c => c.ClosestPointOnBounds(TSP);
-                    return c => c.ClosestPoint(TSP);
-                case SolverType.Furthest:
-                    if (boundsSolver) return c => c.ClosestPointOnBounds(TSP + (BoundsCenter(c) - TSP) * int.MaxValue);
-                    return c => c.ClosestPoint(TSP + (c.transform.position - TSP) * int.MaxValue);
-                case SolverType.Focused:
-                    if (boundsSolver) return c => c.ClosestPointOnBounds(transform.TransformPoint(detectVector));
-                    return c => c.ClosestPoint(transform.TransformPoint(detectVector));
-                case SolverType.Dodge:
-                    return c =>
-                    {
-                        var closetPoint = boundsSolver || c is MeshCollider
-                            ? (Func<Vector3, Vector3>) c.ClosestPointOnBounds : c.ClosestPoint;
-                        var _ct = c.transform;
-                        var cPos = BoundsCenter(c);
-                        var crossUp = Vector3.Cross(cPos - TSP, transform.right);
-                        var cross = Vector3.Cross(cPos - TSP, transform.up);
-                        var value = blockLayer.value;
-                        TDP = cPos;
-                        if (!Physics.Linecast(TSP, TDP, out var hit, value, triggerInteraction) ||
-                            hit.transform == _ct) return TDP;
-                        TDP = c.bounds.center;
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
-                            hit.transform == _ct) return TDP;
-                        TDP = closetPoint(cPos + cross * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
-                            hit.transform == _ct) return TDP;
-                        TDP = closetPoint(cPos - cross * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit,value, triggerInteraction) ||
-                            hit.transform == _ct) return TDP;
-                        TDP = closetPoint(cPos + crossUp * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
-                            hit.transform == _ct) return TDP;
-                        TDP = closetPoint(cPos - crossUp * int.MaxValue);
-                        if (!Physics.Linecast(TSP, TDP, out hit, value, triggerInteraction) ||
-                            hit.transform == _ct) return TDP;
-                        return cPos;
-                    };
-            }
-            return BoundsCenter;
-        }
-
-        /// <summary>
-        /// Check Line of Sight
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="c"></param>
-        /// <returns></returns>
-        protected bool LOSPass(Vector3 point, Collider c)
-        {
-            if (!checkLineOfSight)
-            {
+   
 #if UNITY_EDITOR
-                SetupGates(c, point, false, default);
-#endif
-                return true;
-            }
-
-            if (Physics.Linecast(SolverPoint, point, out var blockHit, blockLayer.value, triggerInteraction) &&
-                blockHit.transform != c.transform)
-            {
-#if UNITY_EDITOR
-                SetupGates(c, point, true, blockHit);
-#endif
-                return false;
-            }
-#if UNITY_EDITOR
-            SetupGates(c, point, false, default);
-#endif
-            return true;
-        }
-#if UNITY_EDITOR
-        protected void SetupGates(Collider c, Vector3 point, bool blocked, RaycastHit blockHit)
-        {
-            void DrawDetectBox(Collider _col)
-            {
-                if (boundsSolver)
-                {
-                    Gizmos.DrawWireCube(_col.bounds.center, _col.bounds.size);
-                }
-                else
-                {
-                    if (_col is MeshCollider _meshD)
-                    {
-                        Gizmos.DrawWireMesh(_meshD.sharedMesh, _col.transform.position, _col.transform.rotation);
-                    }
-                    else
-                    {
-                        Gizmos.DrawWireCube(_col.bounds.center, _col.bounds.size);
-                    }
-                }
-            }
-
-            PanelGate += () => DetectorInfoField(c.transform, point, blocked);
-            GizmoGate += () =>
-            {
-                if (blocked)
-                {
-                    DrawBlockLine(SolverPoint, point, c.transform, blockHit);
-                    if (IsGuide)
-                    {
-                        GizmoColor = BlockColor;
-                        DrawDetectBox(c);
-                    }
-                }
-                else
-                {
-                    GizmoColor = DetectColor;
-                    if (IsLabel) Handles.Label(c.transform.position, c.name);
-                    if (IsDetectLine) DrawLine(checkLineOfSight ? SolverPoint : transform.position, point);
-                    if (IsGuide)
-                    {
-                        DrawDetectBox(c);
-                        DrawDetectorGuide(point);
-                    }
-                }
-            };
-        }
         protected void DrawDetectVector()
         {
             if (!RCProPanel.DrawGuide) return;
@@ -181,32 +46,12 @@
             if (solverType != SolverType.Ignore && checkLineOfSight)
             {
                 Gizmos.color = HelperColor;
-                Gizmos.DrawLine(transform.position, SolverPoint);
-                Gizmos.DrawWireSphere(SolverPoint, DotSize);
+                Gizmos.DrawLine(transform.position, transform.position);
+                Gizmos.DrawWireSphere(transform.position, DotSize);
             }
         }
         protected abstract void DrawDetectorGuide(Vector3 point);
-        protected void SolverField(SerializedObject _so)
-        {
-            BaseSolverField(_so, () =>
-            {
-                if (IsIgnoreSolver) return;
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(blockLayer)), CBlockLayer.ToContent(TBlockLayer));
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(boundsSolver)), CBoundsSolver.ToContent(TBoundsSolver));
-                if (IsPivotSolver)
-                {
-                    EditorGUILayout.PropertyField(_so.FindProperty(nameof(boundsCenter)), CBoundsCenter.ToContent(TBoundsCenter));
-                }
-                if (IsFocusedSolver)
-                {
-                    EditorGUILayout.PropertyField(_so.FindProperty(nameof(detectVector)), CFocusPoint.ToContent(TFocusPoint));
-                }
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(checkLineOfSight)), CCheckLineOfSight.ToContent(TCheckLineOfSight));
-                GUI.enabled = checkLineOfSight && GUI.enabled;
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(blockSolverOffset)), CBlockSolverOffset.ToContent(TBlockSolverOffset));
-                GUI.enabled = true;
-            });
-        }
+
 
         protected void GeneralField(SerializedObject _so, bool layerField = true, bool hasTagField = true)
         {

@@ -85,9 +85,7 @@ namespace RaycastPro.RaySensors
             if (hasMain)
             {
                 DirectionField(_so);
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(segments)),
-                    CSegments.ToContent(TSegments));
-                segments = Mathf.Max(1, segments);
+                PropertyMaxIntField(_so.FindProperty(nameof(segments)), CSegments.ToContent(TSegments), 1);
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(waveSpeed)),
                     CWaveSpeed.ToContent(CWaveSpeed));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(scale)),

@@ -15,7 +15,6 @@
         /// TempDetectedPoint
         /// </summary>
         protected Vector3 TDP;
-        private Vector3 TSP;
 
         #region BlockSystem
         public Vector2 blockSolverOffset;
@@ -24,7 +23,6 @@
         /// <summary>
         /// POV based on offset
         /// </summary>
-        public override Vector3 SolverPoint => checkLineOfSight ? transform.TransformPoint(blockSolverOffset).ToDepth(z) : transform.position;
         public override Vector3 DetectVectorPoint => transform.TransformPoint(detectVector);
         public Vector2 Position2D => transform.position;
         #endregion
@@ -59,34 +57,33 @@
                 case SolverType.Nearest: return c => c.ClosestPoint(transform.position);
                 case SolverType.Furthest:
                 {
-                    return c => c.ClosestPoint(SolverPoint + (c.transform.position - SolverPoint) * int.MaxValue);
+                    return c => c.ClosestPoint(transform.position + (c.transform.position - transform.position) * int.MaxValue);
                 }
                 case SolverType.Focused: return c => c.ClosestPoint(DetectVectorPoint);
                 case SolverType.Dodge:
                     return c =>
                     {
                         TDP = c.bounds.center;
-                        TSP = SolverPoint;
                         var maxUp = transform.up * int.MaxValue;
                         var maxRight = transform.right * int.MaxValue;
                         var _ct = c.transform;
-                        var hit2D = Physics2D.Linecast(TSP, TDP, blockLayer.value, MinDepth, MaxDepth);
+                        var hit2D = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
                         if (!hit2D || hit2D.transform == _ct) return TDP;
 
                         TDP = c.ClosestPoint(TDP + maxUp);
-                        hit2D = Physics2D.Linecast(TSP, TDP, blockLayer.value, MinDepth, MaxDepth);
+                        hit2D = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
                         if (!hit2D || hit2D.transform == _ct) return TDP;
 
                         TDP = c.ClosestPoint(TDP - maxUp);
-                        hit2D = Physics2D.Linecast(TSP, TDP, blockLayer.value, MinDepth, MaxDepth);
+                        hit2D = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
                         if (!hit2D || hit2D.transform == _ct) return TDP;
 
                         TDP = c.ClosestPoint(TDP + maxRight);
-                        hit2D = Physics2D.Linecast(TSP, TDP, blockLayer.value, MinDepth, MaxDepth);
+                        hit2D = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
                         if (!hit2D || hit2D.transform == _ct) return TDP;
 
                         TDP = c.ClosestPoint(TDP - maxRight);
-                        hit2D = Physics2D.Linecast(TSP, TDP, blockLayer.value, MinDepth, MaxDepth);
+                        hit2D = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
                         if (!hit2D || hit2D.transform == _ct) return TDP;
                         return c.bounds.center;
                     };
@@ -104,13 +101,13 @@
                 {
                     Gizmos.color = BlockColor;
                     if (IsGuide) Gizmos.DrawWireCube(c.bounds.center, c.bounds.extents * 2);
-                    DrawBlockLine2D(SolverPoint, point, z, c.transform, blockHit);
+                    DrawBlockLine2D(transform.position, point, z, c.transform, blockHit);
                 }
                 else if (IsDetectLine)
                 {
                     GizmoColor = DetectColor;
                     if (IsGuide) Gizmos.DrawWireCube(c.bounds.center, c.bounds.extents * 2);
-                    Handles.DrawLine(SolverPoint.ToDepth(z), point.ToDepth(z));
+                    Handles.DrawLine(transform.position.ToDepth(z), point.ToDepth(z));
                 }
             };
             PanelGate += () => DetectorInfoField(c.transform, point, blockHit && blockHit.collider != c);
@@ -120,10 +117,10 @@
             Handles.color = HelperColor;
             if (RCProPanel.DrawGuide)
             {
-                Handles.DrawLine(transform.position, SolverPoint);
-                Handles.DrawWireDisc(SolverPoint, Vector3.forward, DotSize);
+                Handles.DrawLine(transform.position, transform.position);
+                Handles.DrawWireDisc(transform.position, Vector3.forward, DotSize);
             }
-            if (RCProPanel.ShowLabels)  Handles.Label(SolverPoint, "Block Solver Point");
+            if (RCProPanel.ShowLabels)  Handles.Label(transform.position, "Block Solver Point");
 
             if (!IsFocusedSolver) return;
 
@@ -168,41 +165,6 @@
             Handles.DrawWireDisc(transform.position.ToDepth(MinDepth), Vector3.forward, radius);
 
             Handles.DrawWireDisc(transform.position.ToDepth(MaxDepth), Vector3.forward, radius);
-        }
-        protected void SolverField(SerializedObject _so)
-        {
-            BaseSolverField(_so, () =>
-            {
-                if (IsIgnoreSolver) return;
-
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(blockLayer)),
-                    CBlockLayer.ToContent(TBlockLayer));
-
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(boundsSolver)),
-                    CBoundsSolver.ToContent(TBoundsSolver));
-                
-                if (IsPivotSolver)
-                {
-                    EditorGUILayout.PropertyField(_so.FindProperty(nameof(boundsCenter)),
-                        CBoundsCenter.ToContent(TBoundsCenter));
-                }
-
-                if (IsFocusedSolver)
-                {
-                    EditorGUILayout.PropertyField(_so.FindProperty(nameof(detectVector)),
-                        CFocusPoint.ToContent(TFocusPoint));
-                }
-                
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(checkLineOfSight)),
-                    CCheckLineOfSight.ToContent(TCheckLineOfSight));
-
-                GUI.enabled = checkLineOfSight;
-
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(blockSolverOffset)),
-                    CBlockSolverOffset.ToContent(TBlockSolverOffset));
-
-                GUI.enabled = true; 
-            });
         }
 #endif
     }

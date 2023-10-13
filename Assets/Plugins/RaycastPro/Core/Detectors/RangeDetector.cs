@@ -115,7 +115,9 @@ namespace RaycastPro.Detectors
                     colliders = Physics.OverlapSphere(_t.position, radius, detectLayer.value, triggerInteraction);
                 }
             }
-            DetectedColliders.Clear();
+            
+            Clear();
+            
             if (IsIgnoreSolver)
             {
                 foreach (var c in colliders)
@@ -161,7 +163,7 @@ namespace RaycastPro.Detectors
                     }
                 }
             }
-            ColliderDetectorEvents();
+            EventPass();
         }
 #if UNITY_EDITOR
         

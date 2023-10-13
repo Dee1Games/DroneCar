@@ -117,7 +117,7 @@ namespace RaycastPro.Detectors
                 downPointsFar[i] = worldPointsFar[i] - h;
             }
             
-            DetectedColliders.Clear();
+            Clear();
             
             if (limited)
             {
@@ -153,7 +153,7 @@ namespace RaycastPro.Detectors
                     if (PassCondition(TDP) && LOSPass(TDP, c)) DetectedColliders.Add(c);
                 }
             }
-            ColliderDetectorEvents();
+            EventPass();
         }
         private bool PassCondition(Vector3 point)
         {

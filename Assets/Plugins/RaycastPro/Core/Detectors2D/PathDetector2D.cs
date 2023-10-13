@@ -30,12 +30,13 @@
         
         public List<RaycastHit2D> DetectedHits = new List<RaycastHit2D>();
         public RaycastHit2D[] PreviousHits = Array.Empty<RaycastHit2D>();
+        
         public HashSet<Collider2D> DetectedColliders = new HashSet<Collider2D>();
         public HashSet<Collider2D> PreviousColliders  = new HashSet<Collider2D>();
+        
         protected override void OnCast()
         {
             if (!pathRay.enabled) pathRay.Cast();
-
             PreviousHits = DetectedHits.ToArray();
 
 #if UNITY_EDITOR

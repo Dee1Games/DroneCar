@@ -21,8 +21,8 @@
     public abstract class BaseDetector : RaycastCore
     {
         public LayerMask blockLayer;
-        public bool boundsSolver;
-        public bool boundsCenter;
+
+        
         public enum SolverType { Ignore, Nearest, Pivot, Furthest, Focused, Dodge, }
         protected bool IsIgnoreSolver => solverType == SolverType.Ignore;
         protected bool IsFocusedSolver => solverType == SolverType.Focused;
@@ -30,8 +30,7 @@
         protected bool IsPivotSolver => solverType == SolverType.Pivot;
         protected bool IsFurthestSolver => solverType == SolverType.Furthest;
         protected bool IsDodgeSolver => solverType == SolverType.Dodge;
-
-        public abstract Vector3 SolverPoint { get; }
+        
         public abstract Vector3 DetectVectorPoint { get; }
 
         public SolverType solverType;
@@ -140,6 +139,7 @@
             } };
             return true;
         }
+        
         protected void PassColliderGate(Collider c)
         {
             PanelGate += () => DetectorInfoField(c.transform, c.bounds.center, false);
@@ -153,7 +153,6 @@
                 }
             };
         }
-
         protected void PassColliderGate(Collider2D c)
         {
             PanelGate += () => DetectorInfoField(c.transform, c.transform.position, false);

@@ -19,20 +19,25 @@ namespace RaycastPro.Bullets
         [Tooltip("If the desired object is not fixed, you can activate this option so that the parenting action is performed and the bullet remains move along with that object.")]
         public bool forceToParentHit;
 
+        [Tooltip("It works like Planar Sensitive and is placed on the last clone.")]
+        public bool throughClones = true;
+
         internal override void RuntimeUpdate() => UpdateLifeProcess(GetDelta(timeMode));
 
-        private RaySensor lastClone;
+        private RaySensor lastRay;
         private Vector3 hitDirection;
+        
         protected override void OnCast()
         {
-            lastClone = (raySource.planarSensitive) ? raySource.LastClone : raySource;
-            if (lastClone.hit.transform)
+            lastRay = throughClones && raySource.planarSensitive ? raySource.LastClone : raySource;
+            
+            if (lastRay.hit.transform)
             {
-                hitDirection = lastClone.HitDirection.normalized;
-                transform.position = lastClone.TipTarget - hitDirection * hitOffset;
+                hitDirection = lastRay.HitDirection.normalized;
+                transform.position = lastRay.TipTarget - hitDirection * hitOffset;
                 transform.forward = hitDirection;
                 
-                if (forceToParentHit) transform.SetParent(lastClone.hit.transform, true);
+                if (forceToParentHit) transform.SetParent(lastRay.hit.transform, true);
                     InvokeDamageEvent(raySource.hit.transform);
             }
             else if (endOnMiss)
@@ -54,6 +59,7 @@ namespace RaycastPro.Bullets
             {
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(hitOffset)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(endOnMiss)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(throughClones)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(forceToParentHit)));
             }
             if (hasGeneral) GeneralField(_so);

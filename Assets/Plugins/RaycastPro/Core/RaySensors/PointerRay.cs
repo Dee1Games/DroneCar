@@ -23,21 +23,35 @@
             set => radius = Mathf.Max(0,value);
         }
         
-        [Tooltip("Force main ray to casting from camera pivot.")]
-        public bool rayFromCamera;
+        [Tooltip("It will make ray origin directly on camera.")]
+        public bool cameraBase = false;
+        
+        [Tooltip("When you enable this option, the first ray casting from camera to detect Hit point then second ray from target Object will cast according to the mouseHit..")]
+        public bool secondRay = true;
         
         public Camera.MonoOrStereoscopicEye eyeType = Camera.MonoOrStereoscopicEye.Mono;
         private Ray mouseRay;
 
         public override Vector3 Tip => mouseRay.origin + mouseRay.direction * direction.z;
         public override float RayLength => direction.z;
-        public override Vector3 Base => transform.position;
-
-
+        public override Vector3 Base => cameraBase ? mainCamera.transform.position : transform.position;
+        
         private Vector3 input;
         private RaycastHit mouseHit;
         private Vector3 secondDir;
         private Vector3 p1, p2;
+        private Vector3 pos;
+        
+        private void Reset()
+        {
+            mainCamera = Camera.main;
+            
+            if (!mainCamera)
+            {
+                mainCamera = FindObjectOfType<Camera>();
+            }
+        }
+
         protected override void OnCast()
         {
 #if UNITY_EDITOR
@@ -49,38 +63,25 @@
                 {
                     GUI.color = HelperColor;
                     var _mt = transform;
-                    
-                    if (rayFromCamera)
+
+                    if (cameraBase || transform == mainCamera.transform)
                     {
                         _mt = IsSceneView ? SceneCamera.transform : mainCamera.transform;
-                        if (IsPlaying)
-                        {
-                            p1 = mouseRay.origin;
-                            p2 = p1 + mouseRay.direction * direction.z;
-                        }
-                        else
-                        {
-                            p1 = _mt.position;
-                            p2 =  p1 + _mt.forward * direction.z;
-                        }
+                    }
+
+                    if (IsPlaying)
+                    {
+                        p1 = _mt.position;
+                        p2 = p1 + secondDir.normalized * direction.z;
                     }
                     else
                     {
-                        if (IsPlaying)
-                        {
-                            p1 = _mt.position;
-                            p2 = p1 + secondDir.normalized * direction.z;
-                        }
-                        else
-                        {
-                            p1 = _mt.position;
-                            p2 =  p1 + _mt.forward * direction.z;
-                        }
+                        p1 = _mt.position;
+                        p2 =  p1 + _mt.forward * direction.z;
                     }
 
-
                     
-                    GizmoColor = Performed ? DefaultColor : DefaultColor;
+                    GizmoColor = Performed ? DetectColor : DefaultColor;
                     DrawLine(p1 + _mt.right * radius, p2 + _mt.right * radius);
                     DrawLine(p1 + _mt.up * radius, p2 + _mt.up * radius);
                     DrawLine(p1 - _mt.right * radius, p2 - _mt.right * radius);
@@ -105,45 +106,29 @@
 #endif
             mouseRay = mainCamera.ScreenPointToRay(input, eyeType);
 
-            if (rayFromCamera)
+            pos = Base;
+            
+            if (secondRay && Physics.Raycast(mouseRay.origin, mouseRay.direction, out mouseHit, direction.z, detectLayer.value, triggerInteraction))
             {
-                if (radius > 0)
-                {
-                    Physics.SphereCast(mouseRay.origin, radius, mouseRay.direction, out hit, direction.z,
-                        detectLayer.value, triggerInteraction);
-                }
-                else
-                {
-                    Physics.Raycast(mouseRay.origin, mouseRay.direction, out hit, direction.z, detectLayer.value,
-                        triggerInteraction);
-                }
-#if UNITY_EDITOR
-                DrawGizmos();
-#endif
+                secondDir = mouseHit.point - pos;
             }
             else
             {
-                // detect point of impact for calculating direction
-                Physics.Raycast(mouseRay.origin, mouseRay.direction, out mouseHit, Mathf.Infinity, detectLayer.value,
-                    triggerInteraction);
-
-                secondDir = TipDirection;
-
-                if (radius > 0)
-                {
-                    Physics.SphereCast(transform.position, radius, secondDir, out hit, direction.z, detectLayer.value,
-                        triggerInteraction);
-                }
-                else
-                {
-                    Physics.Raycast(transform.position, secondDir, out hit, direction.z, detectLayer.value,
-                        triggerInteraction);
-                }
+                secondDir = (mouseRay.origin + mouseRay.direction*direction.z) - pos;
+            }
+            
+            if (radius > 0)
+            {
+                Physics.SphereCast(pos, radius, secondDir, out hit, direction.z, detectLayer.value, triggerInteraction);
+            }
+            else
+            {
+                Physics.Raycast(pos,secondDir, out hit, direction.z, detectLayer.value, triggerInteraction);
+            }
 
 #if UNITY_EDITOR
-                DrawGizmos();
+            DrawGizmos();
 #endif
-            }
         }
         
 #if UNITY_EDITOR
@@ -168,7 +153,9 @@
                 EndHorizontal();
                 DirectionField(_so);
                 RadiusField(_so);
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(rayFromCamera)));
+                
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(cameraBase)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(secondRay)));
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(eyeType)));
             }
             

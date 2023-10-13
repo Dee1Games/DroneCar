@@ -1,4 +1,6 @@
-﻿namespace RaycastPro
+﻿using RaycastPro.Detectors;
+
+namespace RaycastPro
 {
     using UnityEngine;
     using System;
@@ -28,10 +30,12 @@
         public C[] ignoreColliders = Array.Empty<C>();
         public Ammo ammo;
 
+
         [Tooltip("This option is exclusive to Tracker Bullet, you need to set the target before shooting and it will be automatically inserted into the bullet.")]
         public Transform trackTarget;
 
-        [SerializeField] protected int index;
+        public int bulletIndex;
+
         [SerializeField] protected int cloneIndex;
         
         [Tooltip("Using Ammo quickly provides a classic weapon system that you will benefit from the amount of bullets, magazine capacity and reload speed, if it is necessary for your weapon to have a custom form, you can write a separate code and use the Cast() method.")]
@@ -76,7 +80,19 @@
 
         private B tempBullet;
         
-        private void OnArrayCast(B bulletObject)
+        public UnityEvent onCast;
+
+        protected override void OnCast()
+        {
+            Cast(bulletIndex);
+            onCast?.Invoke();
+        }
+
+        /// <summary>
+        /// Auto setup new Index or Replace Bullets by ID checking
+        /// </summary>
+        /// <param name="bulletObject"></param>
+        private void OnArrayCast(B bulletObject, Vector3 _base, Vector3 _dir)
         {
             if (cloneBullets[cloneIndex])
             {
@@ -84,7 +100,7 @@
                 if (bulletObject.bulletID != cloneBullets[cloneIndex].bulletID)
                 {
                     Destroy(cloneBullets[cloneIndex].gameObject);
-                    tempBullet = Instantiate(bulletObject, _base, transform.rotation, poolManager);
+                    tempBullet = Instantiate(bulletObject, poolManager);
                     // Set Clone Index to this bullet
                     cloneBullets[cloneIndex] = tempBullet;
                     BulletSetup(tempBullet);
@@ -97,14 +113,14 @@
             }
             else
             {
-                tempBullet = Instantiate(bulletObject, _base, transform.rotation, poolManager);
+                tempBullet = Instantiate(bulletObject, poolManager);
                 // Set Clone Index to this bullet
                 cloneBullets[cloneIndex] = tempBullet;
                 BulletSetup(tempBullet);
             }
             
             tempBullet.transform.position = _base;
-            tempBullet.transform.forward = _direction;
+            tempBullet.transform.forward = _dir;
             
             // Revive Again
             tempBullet.ended = false;
@@ -114,12 +130,16 @@
             tempBullet.endFunction = BaseBullet.EndType.Disable;
         }
 
-        private void OnNormalCast(B bulletObject)
+        /// <summary>
+        /// Just Instantiate Bullets
+        /// </summary>
+        /// <param name="bulletObject"></param>
+        private void OnNormalCast(B bulletObject, Vector3 _base, Vector3 _dir)
         {
-            tempBullet = Instantiate(bulletObject, _base, transform.rotation, poolManager);
+            tempBullet = Instantiate(bulletObject, poolManager);
             tempBullet.endFunction = BaseBullet.EndType.Destroy;
             tempBullet.transform.position = _base;
-            tempBullet.transform.forward = _direction;
+            tempBullet.transform.forward = _dir;
             BulletSetup(tempBullet);
         }
         
@@ -132,56 +152,118 @@
             _bullet.Life = 0;
             BulletSetup(_bullet);
         }
-
-        private Vector3 _base, _direction;
         private B _bulletObject;
 
+        #region Public Methods
+        
+        /// <summary>
+        /// Safe Reload
+        /// </summary>
         public override void Reload()
         {
             StartCoroutine(ammo.IReload());
             onReload?.Invoke();
         }
+        
+        public void SetBulletIndex(int _i) => bulletIndex = _i;
 
-        protected bool AmmoCheck(int count = 1) => !usingAmmo || ammo.Use(this, count);
+        public void RandomBulletIndex() => bulletIndex = UnityEngine.Random.Range(0, bullets.Length);
+
+        public void NextBulletIndex() => bulletIndex = (bulletIndex + 1) % bullets.Length;
+        
+        public void BackBulletIndex()
+        {
+            bulletIndex = (bulletIndex - 1);
+
+            if (bulletIndex == 0)
+            {
+                bulletIndex = bullets.Length - 1;
+            }
+        }
+
+        public void SetTrackerTarget(Transform target) => trackTarget = target;
+
+        /// <summary>r
+        /// Sync TrackTarget to nearest detector Collider
+        /// </summary>
+        /// <param name="colliderDetector"></param>
+        public void SyncTrackTarget(ColliderDetector colliderDetector)
+        {
+            colliderDetector.GetNearestCollider(out var col);
+            trackTarget = col.transform;
+        }
+
+        public bool AmmoCheck(int count = 1) => !usingAmmo || ammo.Use(this, count);
+
+        #endregion
         
         private void OnEnable()
         {
             if (ammo == null) return;
+            
+            if (autoReload && ammo.magazineAmount == 0 && !ammo.IsReloading) Reload();
+        }
 
-            if (ammo.inRate)
-            {
-                ammo.inRate = false;
-            }
-            if (ammo.inReload)
-            {
-                Reload();
-            }
+        private void OnDisable()
+        {
+            if (ammo == null) return;
+
+            ammo.inRate = false;
+            ammo.inReload = false;
+        }
+
+        /// <summary>
+        /// Switchable Cast Between Array and Normal. 100% be sure to Define. _dir and _base before.
+        /// </summary>
+        protected void AutoCast(Vector3 _base, Vector3 _dir)
+        {
+            if (arrayCasting) OnArrayCast(_bulletObject, _base, _dir);
+            else OnNormalCast(_bulletObject, _base, _dir);
+            _bulletObject.ownerReference = gameObject;
         }
         
-        protected bool BulletCast(int _index = 0, R _raySensor = default)
+        protected bool BulletCast(int _index, R _raySensor = default)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
 #endif
             _bulletObject = bullets[_index];
-
+            
             if (_raySensor is RaySensor r)
             {
-                _direction = r.LocalDirection;
-                _base = r.Base;
+                AutoCast(r.Base, r.TipDirection);
             }
             else if (_raySensor is RaySensor2D r2D)
             {
-                _direction = r2D.LocalDirection;
-                _base = r2D.Base;
+                AutoCast(r2D.Base, r2D.TipDirection);
             }
 
-            if (arrayCasting) OnArrayCast(_bulletObject);
-            else OnNormalCast(_bulletObject);
+            
             tempBullet.Cast(this, _raySensor);
             return true;
         }
 
+        protected bool BulletCast(int _index, ColliderDetector _cDetector)
+        {
+#if UNITY_EDITOR
+            alphaCharge = AlphaLifeTime;
+#endif
+            _bulletObject = bullets[_index];
+            
+            foreach (var detectedTarget in _cDetector.DetectedColliders)
+            {
+                if (_bulletObject is Bullet _B)
+                {
+                    AutoCast(transform.position, (detectedTarget.transform.position - transform.position).normalized);
+                    _B.caster = this;
+                    _B.DirectCast();
+                }
+
+            }
+            
+            return true;
+        }
+        
         // ReSharper disable Unity.PerformanceAnalysis
         private void BulletSetup(B _bullet)
         {
@@ -204,11 +286,15 @@
             // Add Track Target 
             if (trackTarget)
             {
-                if (_bullet is TrackerBullet _trB) _trB.target = trackTarget;
-                else if (_bullet is TrackerBullet2D _trB2D)  _trB2D.target = trackTarget;
+                if (_bullet is TrackerBullet _trB)
+                {
+                    _trB.target = trackTarget;
+                }
+                else if (_bullet is TrackerBullet2D _trB2D)
+                {
+                    _trB2D.target = trackTarget;
+                }
             }
-            // Rotation Fixer
-            _bullet.transform.up = transform.up;
         }
         
         protected Coroutine multiCast;
@@ -300,7 +386,7 @@
             var bulletsProp = _so.FindProperty(nameof(bullets));
             RCProEditor.PropertyArrayField(bulletsProp,
                 "Bullets".ToContent(), i => $"Bullet {i+1}".ToContent($"Index {i}"));
-            PropertySliderField(_so.FindProperty(nameof(index)), 0,  bullets != null ? Mathf.Max(bulletsProp.arraySize-1,0) : 0 , "Index".ToContent(),
+            PropertySliderField(_so.FindProperty(nameof(bulletIndex)), 0,  bullets != null ? Mathf.Max(bulletsProp.arraySize-1,0) : 0 , "Index".ToContent(),
                 I => { });
             EndVertical();
 
@@ -313,6 +399,24 @@
                 if (ammo == null) ammo = new Ammo();
                 var ammoProp = _so.FindProperty(nameof(ammo));
                 ammo?.EditorPanel(ammoProp);
+                
+                BeginHorizontal();
+                if (GUILayout.Button("Cast"))
+                {
+                    Cast(bulletIndex);
+                }
+                if (GUILayout.Button("Reload"))
+                {
+                    Reload();
+                }
+                ProgressField(ammo.currentReloadTime/ammo.reloadTime, $"{ammo.currentReloadTime:F1}/{ammo.reloadTime:F1} Sec");
+                
+                EditorUtility.SetDirty(this);
+                SceneView.RepaintAll();
+                
+                EndHorizontal();
+                
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(autoReload)));
             }
             else ammo = null;
             EndVertical();
@@ -341,7 +445,7 @@
                     BeginHorizontal();
                     EditorGUILayout.LabelField($"{i} {cloneBullet.GetInstanceID().ToString()}",
                         GUILayout.Width(200));
-                    ProgressField(cloneBullet.life/cloneBullet.lifeTime, "Life");
+                    PercentProgressField(cloneBullet.life/cloneBullet.lifeTime, "Life");
                     EndHorizontal();
                 }
             });

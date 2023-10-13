@@ -5,8 +5,6 @@
     using UnityEngine;
     using Bullets;
 
-    using UnityEngine.Events;
-    
 #if UNITY_EDITOR
     using UnityEditor;
     using Editor;
@@ -18,21 +16,16 @@
         [SerializeField]
         public RaySensor[] raySensors = Array.Empty<RaySensor>();
         
-        public int currentIndex;
+        [Tooltip("current ray (Gun Barrel) in shooting.")]
+        public int rayIndex;
         
-        public bool pingPongPhase;
+        [Tooltip("Ping Phong Phase")]
+        public bool PPhase;
 
         public CastType castType = CastType.Together;
 
-        public UnityEvent onCast;
-        protected override void OnCast()
-        {
-            Cast(index);
-            onCast?.Invoke();
-        }
-
         // ReSharper disable Unity.PerformanceAnalysis
-        public override void Cast(int _index)
+        public override void Cast(int _bulletIndex)
         {
 #if UNITY_EDITOR
             alphaCharge = AlphaLifeTime;
@@ -46,28 +39,28 @@
                     {
                         foreach (var ray in raySensors)
                         {
-                            BulletCast(_index, ray);
+                            BulletCast(_bulletIndex, ray);
                         }
                     }
 
                     break;
                 case CastType.Sequence:
-                    if (AmmoCheck() && BulletCast(_index, raySensors[currentIndex]))
+                    if (AmmoCheck() && BulletCast(_bulletIndex, raySensors[rayIndex]))
                     {
-                        currentIndex = ++currentIndex % raySensors.Length;
+                        rayIndex = ++rayIndex % raySensors.Length;
                     }
                     break;
                 case CastType.Random:
-                    if (AmmoCheck() && BulletCast(_index, raySensors[UnityEngine.Random.Range(0, raySensors.Length)]))
+                    if (AmmoCheck() && BulletCast(_bulletIndex, raySensors[UnityEngine.Random.Range(0, raySensors.Length)]))
                     {
-                        currentIndex = ++currentIndex % raySensors.Length;
+                        rayIndex = ++rayIndex % raySensors.Length;
                     }
                     break;
                 case CastType.PingPong:
-                    if (AmmoCheck() && BulletCast(_index, raySensors[currentIndex]))
+                    if (AmmoCheck() && BulletCast(_bulletIndex, raySensors[rayIndex]))
                     {
-                        currentIndex = pingPongPhase ? --currentIndex : ++currentIndex;
-                        if (currentIndex == raySensors.Length - 1 || currentIndex == 0) pingPongPhase = !pingPongPhase;
+                        rayIndex = PPhase ? --rayIndex : ++rayIndex;
+                        if (rayIndex == raySensors.Length - 1 || rayIndex == 0) PPhase = !PPhase;
                     }
                     break;
             }
@@ -87,7 +80,7 @@
                 if (!sensor) continue;
                 
                 position = sensor ? sensor.Base : transform.position;
-                DrawCapLine(position, position + sensor.Direction);
+                DrawCapLine(position, position + sensor.TipDirection);
             }
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,

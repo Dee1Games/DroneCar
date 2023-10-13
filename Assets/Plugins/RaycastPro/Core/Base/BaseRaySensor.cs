@@ -35,7 +35,8 @@
     public class RaycastEvent : UnityEvent<RaycastHit> { }
     [Serializable]
     public class RaycastEvent2D : UnityEvent<RaycastHit2D> { }
-
+    [Serializable]
+    public class VectorEvent : UnityEvent<Vector3> {}
 
     
     /// <summary>
@@ -337,9 +338,9 @@
                 if (TryGetComponent(out LineRenderer lineRenderer)) liner = lineRenderer;
                 else
                 {
-                    prop.objectReferenceValue = gameObject.AddComponent<LineRenderer>();
+                    prop.objectReferenceValue = (_so.targetObject as MonoBehaviour)?.gameObject.AddComponent<LineRenderer>();
+                    liner = prop.objectReferenceValue as LineRenderer;
                     _so.ApplyModifiedProperties();
-                    liner.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
                 }
 
                 liner.endWidth = Mathf.Min(RCProPanel.linerMaxWidth, .1f);
@@ -362,16 +363,16 @@
             GUI.enabled = useLinerClampedPosition;
             PropertyMinMaxField(_so.FindProperty(nameof(linerBasePosition)), _so.FindProperty(nameof(linerEndPosition)), ref linerBasePosition, ref linerEndPosition, 0, 1);
             GUI.enabled = true;
-
+            
             liner.startWidth = EditorGUILayout.Slider(CStartWidth, liner.startWidth, 0f, RCProPanel.linerMaxWidth);
             liner.endWidth = EditorGUILayout.Slider(CEndWidth, liner.endWidth, 0f, RCProPanel.linerMaxWidth);
             liner.numCapVertices = EditorGUILayout.IntField(CCap, liner.numCapVertices);
             liner.numCornerVertices = EditorGUILayout.IntField(CCorner, liner.numCornerVertices);
             
             GUI.backgroundColor = Color.white;
+            // liner.material = (Material) EditorGUILayout.ObjectField("Liner Material".ToContent(), liner.material, typeof(Material));
             liner.colorGradient = EditorGUILayout.GradientField(CGradient, liner.colorGradient);
             GUI.backgroundColor = RCProEditor.Violet;
-
             EndVertical();
 
             #endregion

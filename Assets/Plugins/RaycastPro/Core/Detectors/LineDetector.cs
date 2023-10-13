@@ -67,7 +67,7 @@ namespace RaycastPro.Detectors
         public Vector3 extents = new Vector3(.4f, .4f, 0f);
 
 #if UNITY_EDITOR
-        private void OnValidate()
+        private new void OnValidate()
         {
             nonAllocatedHits = new RaycastHit[limitCount];
         }  
@@ -85,11 +85,13 @@ namespace RaycastPro.Detectors
         protected override void OnCast()
         {
             CachePrevious();
-            
-            DetectedColliders.Clear();
             PreviousHits = DetectedHits.ToArray();
-            if (limited)
+
+            Clear();
+
+            if (limited) // Non-Allocated
             {
+                Array.Clear(nonAllocatedHits, 0, nonAllocatedHits.Length);
                 switch (rayType)
                 {
                     case RayType.Ray:
@@ -100,7 +102,7 @@ namespace RaycastPro.Detectors
                         if (height > 0)
                         {
                             up = transform.up * height/2;
-                            Physics.CapsuleCastNonAlloc(transform.position+up, transform.position-up, radius, Direction, nonAllocatedHits, direction.magnitude, detectLayer.value, triggerInteraction);
+                            Physics.CapsuleCastNonAlloc(transform.position+up, transform.position-up, radius, Direction.normalized, nonAllocatedHits, direction.magnitude, detectLayer.value, triggerInteraction);
                         }
                         else
                         {
@@ -176,9 +178,9 @@ namespace RaycastPro.Detectors
             {
                 DetectedColliders.Add(detectedHit.collider);
             }
-            ColliderDetectorEvents();
+            
+            EventPass();
             #endregion
-
         }
 #if UNITY_EDITOR
 #pragma warning disable CS0414
@@ -208,7 +210,7 @@ namespace RaycastPro.Detectors
                     break;
             }
 
-            Handles.color = DetectColor;
+            GizmoColor = HelperColor;
             foreach (var detectedRaycast in DetectedHits) DrawCross(detectedRaycast.point, detectedRaycast.normal);
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
@@ -272,11 +274,27 @@ namespace RaycastPro.Detectors
             if (hasEvents)
             {
                 EventField(_so);
-                if (EventFoldout)
-                    RCProEditor.EventField(_so,events);
+                if (EventFoldout) RCProEditor.EventField(_so,events);
             }
 
-            if (hasInfo) InformationField(PanelGate);
+            if (hasInfo)
+            {
+                InformationField(() =>
+                {
+                    BeginVertical();
+                    foreach (var D in DetectedColliders)
+                    {
+                        if (!D) continue;
+
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Box(D.name, RCProEditor.LabelStyle);
+                        GUILayout.Box("<color=#3DED33>Detect</color>",  RCProEditor.BoxStyle, GUILayout.Width(50));
+                        
+                        GUILayout.EndHorizontal();
+                    }
+                    EndVertical();
+                });
+            }
         }
 
         private static readonly string[] events = new[]

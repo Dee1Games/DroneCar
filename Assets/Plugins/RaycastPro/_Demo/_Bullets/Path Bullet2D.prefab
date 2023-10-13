@@ -53,6 +53,7 @@ MonoBehaviour:
   autoUpdate: 0
   gizmosUpdate: 0
   timeMode: 0
+  baseIgnoreTime: 0.1
   bulletID: 
   onCast:
     m_PersistentCalls:
@@ -63,22 +64,22 @@ MonoBehaviour:
   onEnd:
     m_PersistentCalls:
       m_Calls: []
-  moveType: 0
-  hasCollision: 0
-  planarSensitive: 1
-  radius: 0.2
-  offset: -0.5
-  length: 0.5
+  onPlanar:
+    m_PersistentCalls:
+      m_Calls: []
+  moveType: 1
   callMethod: OnBullet
   messageUpward: 0
   damage: 10
   speed: 2
   lifeTime: 2.07
-  endDelay: 16.94
+  endDelay: 0
   endFunction: 1
+  endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
-  duration: 1
+  collisionRay: {fileID: 0}
+  duration: 2
   curve:
     serializedVersion: 2
     m_Curve:
@@ -105,7 +106,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   axisRun:
     axis: 0
-    syncAxis: 0
+    syncAxis: 1
     flipAxis: 0
   rigidBody: {fileID: 0}
   local: 0

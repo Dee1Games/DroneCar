@@ -8,16 +8,13 @@
 #endif
 
     using UnityEngine;
-    
-    [Serializable]
-    public class VectorEvent : UnityEvent<Vector3> {}
 
     [AddComponentMenu("RaycastPro/Rey Sensors/" + nameof(NoiseRay))]
     public sealed class NoiseRay : RaySensor, IPulse
     {
         private Vector3 currentDirection;
         private Vector2 random;
-        public Vector2 randomRadius;
+        public Vector2 randomRadius = new Vector2(.2f, .2f);
 
         public float pulse = .4f;
         private float currentTime;
@@ -65,7 +62,7 @@
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Emits a ray on pulse time along direction with random point inside a circle." + HAccurate + HDirectional + HPreview;
+        private static string Info = "Emits a ray on pulse time along direction with random point inside a circle." + HIPulse + HAccurate + HDirectional;
 #pragma warning restore CS0414
 
         private Vector3 _p;
@@ -73,7 +70,9 @@
         {
             EditorUpdate();
             _p = transform.position;
-            Gizmos.color = Performed ? DetectColor : DefaultColor;
+            GizmoColor = Performed ? DetectColor : DefaultColor;
+            
+            DrawLine(_p, _p + Direction, true, HelperColor);
             if (IsManuelMode)
             {
                 Gizmos.DrawRay(transform.position, currentDirection);
@@ -95,15 +94,21 @@
             if (hasMain)
             {
                 DirectionField(_so);
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(pulse)));
+                BeginHorizontal();
+                PropertyMaxField(_so.FindProperty(nameof(pulse)));
+                if (GUILayout.Button("Pulse", GUILayout.Width(60))) OnPulse();
+                EndHorizontal();
                 EditorGUILayout.PropertyField(_so.FindProperty(nameof(randomRadius)));
+                
+
             }
             if (hasGeneral) GeneralField(_so);
-            if (hasEvents) EventField(_so, eventsName);
+            if (hasEvents) EventField(_so);
             if (hasInfo) InformationField();
+
         }
 #endif
-        public override Vector3 Tip => transform.position + Direction;
+        public override Vector3 Tip => transform.position + currentDirection;
         public override float RayLength => direction.magnitude;
         public override Vector3 Base => transform.position;
     }

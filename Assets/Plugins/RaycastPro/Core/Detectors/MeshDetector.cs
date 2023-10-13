@@ -76,7 +76,7 @@ namespace RaycastPro.Detectors
                 }
                 RaycastToCenter(_hit.point+(to-point).normalized*.01f, to, hitCount);
             }
-
+            
             return hitCount;
         }
 
@@ -96,12 +96,14 @@ namespace RaycastPro.Detectors
             {
                 colliders = Physics.OverlapBox(meshCollider.bounds.center, meshCollider.bounds.extents, transform.rotation, detectLayer.value, triggerInteraction);
             }
-            DetectedColliders.Clear();
+            
+            Clear();
+            
             if (IsIgnoreSolver)
             {
                 foreach (var c in colliders)
                 {
-                    if (TagPass(c) && CheckMeshPass(c.bounds.center))
+                    if (c.transform != transform && TagPass(c) && CheckMeshPass(c.bounds.center))
                     {
 #if UNITY_EDITOR
                         PassColliderGate(c);
@@ -118,8 +120,7 @@ namespace RaycastPro.Detectors
                 {
                     if (c.transform == transform || !TagPass(c)) continue;
                     TDP = DetectFunction(c); // 1: Get Detect Point
-                    _dir = transform.position - TDP;
-                    if (CheckMeshPass(c.bounds.center) && LOSPass(TDP, c))
+                    if (CheckMeshPass(BoundsCenter(c)) && LOSPass(TDP, c))
                     {
                         DetectedColliders.Add(c);
                     }
@@ -129,7 +130,7 @@ namespace RaycastPro.Detectors
             }
             
             
-            ColliderDetectorEvents();
+            EventPass();
         }
 #if UNITY_EDITOR
         
@@ -146,7 +147,6 @@ namespace RaycastPro.Detectors
             {
                 Gizmos.DrawWireMesh(meshCollider.sharedMesh, transform.position, transform.rotation, transform.lossyScale);
             }
-
         }
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true, bool hasInfo = true)

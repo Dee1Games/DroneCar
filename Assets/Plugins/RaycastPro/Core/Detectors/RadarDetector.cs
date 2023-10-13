@@ -214,7 +214,7 @@ namespace RaycastPro.Detectors
                     BeginHorizontal();
                     EditorGUILayout.LabelField($"{key.gameObject.name}: ",
                         GUILayout.Width(160));
-                    ProgressField(DetectProfile[key] / cacheTime, "Life");
+                    PercentProgressField(DetectProfile[key] / cacheTime, "Life");
                     EndHorizontal();
                 }
                 EndVertical();

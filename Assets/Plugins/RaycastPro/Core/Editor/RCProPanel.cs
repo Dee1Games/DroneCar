@@ -1,4 +1,6 @@
-﻿#if UNITY_EDITOR
+﻿
+
+#if UNITY_EDITOR
 namespace RaycastPro.Editor
 {
     using System;
@@ -30,43 +32,45 @@ namespace RaycastPro.Editor
         internal static CoreMode coreMode = CoreMode.RaySensors;
 
         internal static bool showOnStart;
+
+        public RCProSettings settingProfile;
+        internal static RCProSettings SettingProfile;
+        
+        [SavePreference] internal string settingProfilePath;
         [SavePreference] internal static bool realtimeEditor = true;
         [SavePreference] internal static bool rcProInspector = true;
-        
-        [SavePreference] internal static Color DefaultColor = RCProEditor.Aqua;
-        [SavePreference] internal static Color DetectColor = new Color(.3f, 1, .3f, 1f);
-        [SavePreference] internal static Color HelperColor = new Color(1f, .7f, .0f, 1f);
-        [SavePreference] internal static Color BlockColor = new Color(1f, .2f, .2f, 1f);
 
-        [SavePreference] internal static float defaultValue = .4f;
-        [SavePreference] internal static float normalDiscRadius = .2f;
-        [SavePreference] internal static float elementDotSize = .05f;
-        [SavePreference] internal static float alphaAmount = .2f;
-        [SavePreference] internal static float gizmosOffTime = 4f;
+        internal static Color DefaultColor => SettingProfile ? SettingProfile.DefaultColor : RCProEditor.Aqua;
+        internal static Color DetectColor => SettingProfile ? SettingProfile.DetectColor : new Color(.3f, 1, .3f, 1f);
+        internal static Color HelperColor => SettingProfile ? SettingProfile.HelperColor : new Color(1f, .7f, .0f, 1f);
+        internal static Color BlockColor => SettingProfile ? SettingProfile.BlockColor : new Color(1f, .2f, .2f, 1f);
         
-        [SavePreference] internal static float raysStepSize = 4f;
-        [SavePreference] internal static float normalFilterRadius = 1f;
-        [SavePreference] internal static float linerMaxWidth = 1f;
+        internal static float normalDiscRadius => SettingProfile ? SettingProfile.normalDiscRadius : .2f;
+        internal static float elementDotSize => SettingProfile ? SettingProfile.elementDotSize :.05f;
+        internal static float alphaAmount => SettingProfile ? SettingProfile.alphaAmount :.2f;
+        internal static float gizmosOffTime => SettingProfile ? SettingProfile.gizmosOffTime :4f;
 
-        [SavePreference] internal static bool DrawBlockLine = true;
-        [SavePreference] internal static bool DrawDetectLine = true;
-        [SavePreference] internal static bool DrawGuide = true;
-        [SavePreference] internal static bool ShowLabels = true;
-        [SavePreference] internal static int DrawGuideLimitCount = 50;
+        internal static float raysStepSize => SettingProfile ? SettingProfile.raysStepSize : 4f;
+        internal static float normalFilterRadius => SettingProfile ? SettingProfile.normalFilterRadius : 1f;
+        internal static float linerMaxWidth => SettingProfile ? SettingProfile.linerMaxWidth : 1f;
         
-        [SavePreference] internal static int maxSubdivideTime = 6;
-
-        [SavePreference] internal static bool drawHierarchyIcons = true;
-        [SavePreference] internal static int hierarchyIconsOffset = 100;
+        internal static bool DrawBlockLine =>  !SettingProfile || SettingProfile.DrawBlockLine;
+        internal static bool DrawDetectLine =>  !SettingProfile || SettingProfile.DrawDetectLine;
+        internal static bool DrawGuide =>  !SettingProfile || SettingProfile.DrawGuide;
+        internal static bool ShowLabels => !SettingProfile || SettingProfile.ShowLabels;
+        
+        internal static int maxSubdivideTime => SettingProfile ? SettingProfile.maxSubdivideTime : 6;
+        internal static bool drawHierarchyIcons => !SettingProfile || SettingProfile.drawHierarchyIcons; 
+        internal static int hierarchyIconsOffset => SettingProfile ? SettingProfile.hierarchyIconsOffset : 100;
         
 
-        private static readonly bool[] settingFoldout = new bool[5];
         internal static Dictionary<Type, Texture2D> ICON_DICTIONARY = new Dictionary<Type, Texture2D>();
         internal static EditorWindow window;
         internal static bool LoadWhenOpen = false;
         private Texture2D headerTexture;
         private Vector2 scrollPos;
         internal static string ResourcePath => GetFolderPath("Resource", "RaycastPro");
+   
         public static string GetFolderPath(string currentFolderName, string parentFolderName)
         {
             string[] guids = AssetDatabase.FindAssets($"t:Folder {currentFolderName}");
@@ -85,6 +89,9 @@ namespace RaycastPro.Editor
         }
 
         private float timer;
+
+        private SerializedObject _so;
+        
         private void OnEnable()
         {
             LoadPreferences();
@@ -93,36 +100,78 @@ namespace RaycastPro.Editor
             RefreshIcons();
 
             modes = new[] {"Utility", "2D", "3D"};
+
+            _so = new SerializedObject(this);
+            
+            // Load Settings
+            settingProfilePath = EditorPrefs.GetString(KEY + nameof(settingProfilePath));
+            var file = AssetDatabase.LoadAssetAtPath<RCProSettings>(settingProfilePath);
+            if (file)
+            {
+                settingProfile = file;
+                // Singleton
+                SettingProfile = settingProfile;
+                settingProfSO = new SerializedObject(settingProfile);
+            }
         }
         private void OnDisable()
         {
-            SavePreferences();
             EditorPrefs.SetBool(KEY + CShowOnStart, showOnStart);
+
+            _so = null;
+        }
+
+        private void OnFocus()
+        {
+            Repaint();
         }
 
         private List<Type> cores = new List<Type>();
 
-        private Color randomColor;
+        private Color lineColor;
 
         private static string[] modes;
+
+        private SerializedObject settingProfSO;
+        
+        private float time;
+        private string ColorHash;
+        private Color randomColor;
+        private void OnInspectorUpdate()
+        {
+            time += .1f;
+            if (time > 1)
+            {
+                time %= 1f;
+            }
+
+            randomColor = Color.HSVToRGB(time % 1f, 1f, 1f);
+            ColorHash = ColorUtility.ToHtmlStringRGB(randomColor);
+            
+            Repaint();
+        }
+
         private void OnGUI()
         {
-            randomColor = Color.HSVToRGB(Time.time % 1f, 1, 1f);
+            lineColor = RCProEditor.Aqua;
             GUI.color = Color.white;
             var boxStyle = new GUIStyle(GUI.skin.box)
             {
                 margin = new RectOffset(0, 0, 0, 0),
                 alignment = TextAnchor.UpperCenter
             };
-            if (headerTexture) GUILayout.Box(headerTexture, boxStyle, GUILayout.Width(width), GUILayout.Height(153));
-            RCProEditor.GUILine(randomColor);
+            if (headerTexture)
+            {
+                GUILayout.Box(headerTexture, boxStyle, GUILayout.Width(width), GUILayout.Height(153));
+            }
+            RCProEditor.GUILine(lineColor);
             var labelStyle = new GUIStyle(EditorStyles.boldLabel)
             {
                 alignment = TextAnchor.UpperCenter,
                 richText = true
             };
-            GUILayout.Label($"<b>RAYCAST_PRO 1.0.9x</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
-            RCProEditor.GUILine(randomColor);
+            GUILayout.Label($"<b>RAYCAST_PRO 1.1.0</b> developed by <color=#2BC6D2>KIYNL</color>", labelStyle);
+            RCProEditor.GUILine(lineColor);
             #region Content Buttons
             GUI.contentColor = RCProEditor.Aqua;
             GUI.backgroundColor = RCProEditor.Violet;
@@ -135,7 +184,7 @@ namespace RaycastPro.Editor
             {
                 cores = new List<Type>
                 {
-                    typeof(RayManager), typeof(PointSensor), typeof(RayStamp), typeof(RayLiner)
+                    typeof(RayManager), typeof(PointSensor), typeof(RayStamp), typeof(RayLiner), typeof(RayCollider)
                 };
             }
             else
@@ -170,7 +219,7 @@ namespace RaycastPro.Editor
                         break;
                     case CoreMode.Casters:
                         cores = new List<Type>
-                            {typeof(BasicCaster), typeof(AdvanceCaster)};
+                            {typeof(BasicCaster), typeof(AdvanceCaster), typeof(RadiusCaster)};
                         break;
                     case CoreMode.Bullets:
                         cores = new List<Type>
@@ -185,7 +234,7 @@ namespace RaycastPro.Editor
                         {
                             typeof(BasicRay2D), typeof(PipeRay2D), typeof(BoxRay2D), typeof(RadialRay2D),
                             typeof(ChainRay2D), typeof(ReflectRay2D),
-                            typeof(TargetRay2D), typeof(PointerRay2D), typeof(WaveRay2D), typeof(ArcRay2D), typeof(HybridRay2D)
+                            typeof(TargetRay2D), typeof(PointerRay2D), typeof(WaveRay2D), typeof(NoiseRay2D), typeof(CurveRay2D), typeof(ArcRay2D), typeof(HybridRay2D)
                         };
                         break;
                     case CoreMode.Detectors:
@@ -225,121 +274,73 @@ namespace RaycastPro.Editor
             IconLayout(cores, 7);
             
             GUILayout.Space(4);
-            RCProEditor.GUILine(randomColor);
-
-
+            RCProEditor.GUILine(lineColor);
+            
             scrollPos = GUILayout.BeginScrollView(scrollPos);
             // UNDO SYSTEM
+
+            EditorGUILayout.BeginVertical(RCProEditor.BoxStyle);
+            
             EditorGUI.BeginChangeCheck();
-
-            settingFoldout[0] = EditorGUILayout.BeginFoldoutHeaderGroup(settingFoldout[0],
-                "General Settings".ToContent(), RCProEditor.HeaderFoldout);
-            if (settingFoldout[0])
+            realtimeEditor = EditorGUILayout.Toggle("Realtime Editor", realtimeEditor);
+            if (EditorGUI.EndChangeCheck())
             {
-                EditorGUILayout.BeginVertical(RCProEditor.BoxStyle);
-                
-                EditorGUI.BeginChangeCheck();
-                realtimeEditor = EditorGUILayout.Toggle("Realtime Editor", realtimeEditor);
-                if (EditorGUI.EndChangeCheck())
+                IconDrawer.SetEvent(drawHierarchyIcons);
+                SceneView.RepaintAll();
+                RCProEditor.Log($"Realtime Editor <color=#B794FF>{(realtimeEditor ? "Enabled" : "Disabled")}</color>.");
+            }
+            EditorGUI.BeginChangeCheck();
+            rcProInspector = EditorGUILayout.Toggle("RCPro Inspector", rcProInspector);
+            if (EditorGUI.EndChangeCheck())
+            {
+                SceneView.RepaintAll();
+                RCProEditor.Log($"RCPro Inspector <color=#B794FF>{(rcProInspector ? "Enabled" : "Disabled")}</color>.");
+            }
+
+            _so.Update();
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(_so.FindProperty(nameof(settingProfile)));
+            _so.ApplyModifiedProperties();
+            if (EditorGUI.EndChangeCheck())
+            {
+                settingProfilePath = AssetDatabase.GetAssetPath(settingProfile);
+                SettingProfile = settingProfile;
+                if (settingProfile)
                 {
-                    IconDrawer.SetEvent(drawHierarchyIcons);
+                    settingProfSO = new SerializedObject(settingProfile);
+                    EditorPrefs.SetString(KEY + nameof(settingProfilePath), settingProfilePath);
                     SceneView.RepaintAll();
-                    RCProEditor.Log($"Realtime Editor <color=#B794FF>{(realtimeEditor ? "Enabled" : "Disabled")}</color>.");
                 }
-                
-                rcProInspector = EditorGUILayout.Toggle("RCPro Inspector", rcProInspector);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    RCProEditor.Log($"RCPro Inspector <color=#B794FF>{(rcProInspector ? "Enabled" : "Disabled")}</color>.");
-                }
-                
-                EditorGUI.BeginChangeCheck();
-                ShowLabels = EditorGUILayout.Toggle("Show Labels", ShowLabels);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-                
-                EditorGUI.BeginChangeCheck();
-                DrawBlockLine = EditorGUILayout.Toggle("Draw Block Line", DrawBlockLine);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-
-                EditorGUI.BeginChangeCheck();
-                DrawDetectLine = EditorGUILayout.Toggle("Draw Detect Line", DrawDetectLine);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-
-                
-                EditorGUI.BeginChangeCheck();
-                drawHierarchyIcons = EditorGUILayout.Toggle("Draw Hierarchy Icons", drawHierarchyIcons);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    IconDrawer.SetEvent(drawHierarchyIcons);
-                    EditorApplication.RepaintHierarchyWindow();
-                    RCProEditor.Log($"Hierarchy Icons <color=#B794FF>{(drawHierarchyIcons ? "Enabled" : "Disabled")}</color>.");
-                }
-                
-                
-                if (drawHierarchyIcons)
-                    hierarchyIconsOffset = EditorGUILayout.IntField("Icons Offset", hierarchyIconsOffset);
-                
-                EditorGUI.BeginChangeCheck();
-                DefaultColor = EditorGUILayout.ColorField("Default Color".ToContent("When your Core is ready to work without detection and in normal mode."), DefaultColor);
-                DetectColor = EditorGUILayout.ColorField("Detect Color".ToContent("When your Core is in its Perform mode."), DetectColor);
-                HelperColor = EditorGUILayout.ColorField("Helper Color".ToContent("Secondary auxiliary lines that appear in Ray to give more information or a specific message."), HelperColor);
-                BlockColor = EditorGUILayout.ColorField("Block Color".ToContent("blocked lines behind Detect."), BlockColor);
-
-                defaultValue = EditorGUILayout.FloatField("Default Value", defaultValue);
-                alphaAmount = EditorGUILayout.FloatField("Alpha Amount", alphaAmount);
-                gizmosOffTime = EditorGUILayout.FloatField("Gizmos Off Time", gizmosOffTime);
-                raysStepSize = EditorGUILayout.FloatField("Dotted Rays Step", raysStepSize);
-                normalDiscRadius = EditorGUILayout.FloatField("Normal Disc Radius", normalDiscRadius);
-                elementDotSize = EditorGUILayout.FloatField("Element Dot Size", elementDotSize);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-                
-                EditorGUILayout.EndVertical();
             }
 
-            EditorGUILayout.EndFoldoutHeaderGroup();
-
-            GUILayout.Space(2);
-
-            settingFoldout[1] = EditorGUILayout.BeginFoldoutHeaderGroup(settingFoldout[1], "RaySensors".ToContent(),
-                RCProEditor.HeaderFoldout);
-            if (settingFoldout[1])
+            if (settingProfile)
             {
-                EditorGUILayout.BeginVertical(RCProEditor.BoxStyle);
-                normalFilterRadius =
-                    EditorGUILayout.FloatField("Normal Filter Radius", Mathf.Max(0, normalFilterRadius));
-                linerMaxWidth = EditorGUILayout.FloatField("Liner Max Width", Mathf.Max(0, linerMaxWidth));
-                EditorGUILayout.EndVertical();
+                settingProfSO.Update();
+                var property = settingProfSO.GetIterator();
+                if (property.NextVisible(true)) {
+                    do {
+                        EditorGUILayout.PropertyField(settingProfSO.FindProperty(property.name), true);
+                    }
+                    while (property.NextVisible(false));
+                }
+                settingProfSO.ApplyModifiedProperties();
             }
+            
 
-            EditorGUILayout.EndFoldoutHeaderGroup();
-
-            GUILayout.Space(2);
-
-            settingFoldout[2] = EditorGUILayout.BeginFoldoutHeaderGroup(settingFoldout[2], "Detectors".ToContent(),
-                RCProEditor.HeaderFoldout);
-            if (settingFoldout[2])
-            {
-                EditorGUILayout.BeginVertical(RCProEditor.BoxStyle);
-                EditorGUILayout.BeginHorizontal();
-                
-                EditorGUI.BeginChangeCheck();
-                DrawGuide = EditorGUILayout.Toggle("Draw Guide", DrawGuide);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-
-                EditorGUI.BeginChangeCheck();
-                DrawGuideLimitCount = EditorGUILayout.IntField("Limit Count".ToContent("If you limit this variable. The number of drawing guide items in Detector does not exceed this value, so that many gizmos do not disturb the view."), DrawGuideLimitCount);
-                if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-                EditorGUILayout.EndHorizontal();
-                
-                EditorGUILayout.EndVertical();
-            }
-            EditorGUILayout.EndFoldoutHeaderGroup();
+            EditorGUILayout.EndVertical();
+            
             GUILayout.Space(4);
-            RCProEditor.GUILine(randomColor);
+            RCProEditor.GUILine(lineColor);
+            var buttonStyle = new GUIStyle(GUI.skin.button)
+            {
+                richText = true
+            };
+            var heart = GetColorHash('♥');
+            var play = GetColorHash('▶');
+            string GetColorHash(char str) => $"<color=#{ColorHash}>{str}</color>";
+            if (GUILayout.Button($"{heart} Thanks for Submit a Review {heart}", buttonStyle)) Application.OpenURL("https://assetstore.unity.com/packages/tools/physics/raycastpro-214714#reviews");
+            if (GUILayout.Button($"Follow tutorials on  {play} YouTube", buttonStyle)) Application.OpenURL("https://www.youtube.com/@KiynL");
             
-            if (GUILayout.Button("Reset Settings")) ResetSettings();
-            
-            if (GUILayout.Button("Thank for Submit a Review!")) Application.OpenURL("https://assetstore.unity.com/packages/tools/physics/raycastpro-214714#reviews");
             GUILayout.EndScrollView();
             GUILayout.Space(2);
             RCProEditor.GUILine(Color.white);
@@ -347,7 +348,7 @@ namespace RaycastPro.Editor
             GUILayout.Label("Copyright all rights reserved", labelStyle);
             GUILayout.Space(2);
             RCProEditor.GUILine(Color.white);
-            showOnStart = EditorGUILayout.Toggle("Show Panel When Start", showOnStart);
+            showOnStart = EditorGUILayout.Toggle("Show Panel on Start", showOnStart);
             RCProEditor.GUILine(Color.white);
         }
 
@@ -364,34 +365,7 @@ namespace RaycastPro.Editor
             
             mode = SceneView.lastActiveSceneView.in2DMode ? Mode.TwoD : Mode.ThreeD;
         }
-        private static void ResetSettings()
-        {
-            DefaultColor = RCProEditor.Aqua;
-            DetectColor = new Color(.3f, 1, .3f, 1f);
-            HelperColor = new Color(1f, .7f, .0f, 1f);
-            BlockColor = new Color(1f, .2f, .2f, 1f);
 
-            drawHierarchyIcons = true;
-            hierarchyIconsOffset = 100;
-
-            normalFilterRadius = 5f;
-            raysStepSize = 4f;
-
-            defaultValue = .4f;
-            normalDiscRadius = .2f;
-            elementDotSize = .05f;
-            alphaAmount = .2f;
-
-            raysStepSize = 4f;
-            normalFilterRadius = 1f;
-            linerMaxWidth = 1f;
-
-            DrawBlockLine = true;
-            DrawDetectLine = true;
-            DrawGuide = true;
-            ShowLabels = true;
-            maxSubdivideTime = 6;
-        }
         public static void SavePreferences()
         {
             RCProEditor.Log("<color=#00FF00>Preferences Saves.</color>");
@@ -472,25 +446,30 @@ namespace RaycastPro.Editor
         public static void RefreshIcons()
         {
             ICON_DICTIONARY = IconManager.GetIcons();
+            
             foreach (var type in ICON_DICTIONARY.Keys.ToList())
             {
                 if (type.IsAbstract) continue;
                 try
                 {
                     var obj = new GameObject();
-                    var component = obj.AddComponent(type);
-                    
-                    component.SetIcon(ICON_DICTIONARY[type]);
-                    DestroyImmediate(obj);
+                    if (obj)
+                    {
+                        var component = obj.AddComponent(type);
+                        component?.SetIcon(ICON_DICTIONARY[type]);
+                        DestroyImmediate(obj);
+                    }
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    RCProEditor.Log(e.Message);
                     throw;
                 }
             }
 
         }
+        
+        
         public static void IconLayout(List<Type> types, int columnWidth)
         {
             var rows = types.Count / columnWidth;

@@ -38,7 +38,7 @@
         {
             _t = transform;
             PathPoints.Clear();
-            PathPoints.Add(_t.position);
+
             for (i = 0; i < raySensors.Length; i++)
             {
                 var _r = raySensors[i];

@@ -1,3 +1,4 @@
+using RaycastPro;
 using RaycastPro.Detectors;
 
 namespace Plugins.RaycastPro.Demo.Scripts
@@ -12,7 +13,8 @@ namespace Plugins.RaycastPro.Demo.Scripts
         public Color red = Color.red;
         public Color green = Color.green;
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
-
+        private static readonly int Speed = Shader.PropertyToID("_Speed");
+        
         public Image left, right, up, down;
 
         private void Start()
@@ -22,32 +24,35 @@ namespace Plugins.RaycastPro.Demo.Scripts
 
         private Color col;
 
+
         void Update()
         {
             left.color = right.color = up.color = down.color = Color.grey;
             if (soundDetector.Performed)
             {
+                
                 if (soundDetector.IsHearingBack)
                 {
-                    down.color = col = Color.cyan;
+                    down.color = Color.cyan;
                 }
                 else if (soundDetector.IsHearingForward)
                 {
-                    up.color = col = Color.green;
+                    up.color = Color.green;
                 }
                 else if (soundDetector.IsHearingLeft)
                 {
-                    left.color = col = Color.yellow;
+                    left.color = Color.yellow;
                 }
                 else if (soundDetector.IsHearingRight)
                 {
-                    right.color = col = Color.white;
+                    right.color = Color.white;
                 }
-
+                
+                
                 _meshRenderer.materials[1].SetColor(EmissionColor, col);
                 _meshRenderer.materials[2].SetColor(EmissionColor, col);
             }
-
+            
         }
     }
 }

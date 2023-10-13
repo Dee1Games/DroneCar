@@ -26,7 +26,6 @@ namespace RaycastPro.RaySensors2D
             p2 = transform.position + Direction.ToDepth();
             if (IsManuelMode)
             {
-                
                 DrawLine(p1, p2, false, DefaultColor);
             }
             else
