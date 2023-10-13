@@ -50,7 +50,6 @@ public class UserManager : MonoBehaviour
 
     public void NextLevel()
     {
-        Debug.LogError("ff");
         ResetVehicleUpgrades();
         Data.Level++;
         Data.MonsterHealth = 1f;

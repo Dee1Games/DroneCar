@@ -159,18 +159,21 @@ public class Giant_Core : MonoBehaviour, IHitable
 
     public void TakeDamage(float damage)
     {
-        if (!GameManager.Instance.Player.IsActive)
-            return;
-
         GameManager.Instance.CurrentRunDamage += damage;
 
         monster.Health -= damage * (1 - armor);
         if (monster.Health <= 0)
         {
             OnDie();
-            GameManager.Instance.Player.Core.End();
+            if (GameManager.Instance.Player.IsActive)
+            {
+                GameManager.Instance.Player.Core.End(false, false);
+            }
             UserManager.Instance.NextLevel();
+            GameManager.Instance.Player.Core.CameraZoomOut();
+            //UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
         }
+
     }
 
     public void SetHealth(float amount)

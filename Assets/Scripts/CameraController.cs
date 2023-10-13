@@ -73,6 +73,9 @@ public class CameraController : MonoBehaviour
 
     public void TakeLongShot(Vector3 hitPoint, Vector3 axis)
     {
+        if (!following)
+            return;
+        
         StartCoroutine(takeLongShot(hitPoint, axis));
     }
 

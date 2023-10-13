@@ -71,12 +71,9 @@ public class CarCore : MonoBehaviour
             UI_Core._.carHealth.UpdateHealthUI(hp, maxHp);
             if (hp <= 0)
             {
-                Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
-                try
-                {
-                    //SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
-                } catch {}
-                End();
+                End(true);
+                CameraZoomOut();
+                //UIManager.Instance.ShowScreen(UIScreenID.EndRun);
             }
         }
     }
@@ -106,17 +103,16 @@ public class CarCore : MonoBehaviour
     
     public void OnRayHit(RaycastHit hit)
     {
+        if(!GameManager.Instance.Player.IsActive)
+            return;
+        
         Debug.Log("F Ray Hit on: "+hit.transform.name);
         var hitable = hit.transform.GetComponentInParent<IHitable>();
         if (hitable != null)
         {
+            End(false);
             hitable.OnHit(this, vehicle.Bomb);
-            Debug.Log($"Run {UserManager.Instance.Data.Run} Completed");
-            try
-            {
-                //SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
-            } catch {}
-            End();
+            CameraZoomOut();
         }
     }
     private Collider[] _colliders = Array.Empty<Collider>();
@@ -134,7 +130,7 @@ public class CarCore : MonoBehaviour
         Hp = MaxHp;
         CollidersActivate(true);
     }
-    public void End(bool explode = true)
+    public void End(bool runFailed, bool explode = true)
     {
         if (!vehicle.IsActive)
             return;
@@ -152,9 +148,30 @@ public class CarCore : MonoBehaviour
         vehicle.Deactivate();
         
         CollidersActivate(false);
-        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
+
+        if (runFailed)
+        {
+            Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
+            try
+            {
+                //SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
+            } catch {}
+        }
+        else
+        {
+            Debug.Log($"Run {UserManager.Instance.Data.Run} Completed");
+            try
+            {
+                //SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
+            } catch {}
+        }
         
         UserManager.Instance.NextRun();
+    }
+
+    public void CameraZoomOut()
+    {
+        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
     }
 
     private IHitable hitable;

@@ -26,7 +26,7 @@ public class MergeScreen : UIScreen
     {
         base.Show();
         RefreshUpgradePrice();
-        coinsText.text = "$" + UserManager.Instance.Data.Coins.ToString();
+        coinsText.text = UserManager.Instance.Data.Coins.ToString();
         levelText.text = "Level " + UserManager.Instance.Data.Level.ToString();
         
         if (!UserManager.Instance.Data.SeenMergeTutorial)

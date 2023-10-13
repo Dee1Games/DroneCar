@@ -224,6 +224,11 @@ public class PlayerVehicle : MonoBehaviour
             {
                 currentSpeed = 0f;
             }
+            
+            if (transform.position.magnitude > LevelManager.Instance.GetSpaceLimit())
+            {
+                //currentSpeed = 0f;
+            }
             // باف سرعت رو داخل کور اصلی حساب میکنه
 
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
@@ -251,6 +256,11 @@ public class PlayerVehicle : MonoBehaviour
             if(Physics.Raycast(transform.position, transform.forward, 3f, LayerMask.GetMask("Props")))
             {
                 currentSpeed = 0f;
+            }
+            
+            if (transform.position.magnitude > LevelManager.Instance.GetSpaceLimit())
+            {
+                //currentSpeed = 0f;
             }
 
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
@@ -362,7 +372,6 @@ public class PlayerVehicle : MonoBehaviour
         rigidbody.isKinematic = true;
         rigidbody.velocity = Vector3.zero;
         rigidbody.angularVelocity = Vector3.zero;
-        explodeFeedback.PlayFeedbacks();
         OnExploded?.Invoke();
     }
 
