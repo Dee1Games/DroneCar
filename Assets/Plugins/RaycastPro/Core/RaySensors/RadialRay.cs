@@ -96,7 +96,7 @@ namespace RaycastPro.RaySensors
                 {
                     GizmoColor = _b ? DetectColor : DefaultColor;
                     DrawCross(transform.position + _p, _n);
-                    DrawBlockLine(transform.position, transform.position + _tDir, _b, transform.position +_p);
+                    DrawBlockLine(transform.position, transform.position + _tDir, _b, transform.position +_p, ClampedAlphaCharge);
 
                 };
 #endif
@@ -116,7 +116,7 @@ namespace RaycastPro.RaySensors
             EditorUpdate();
             var color = (Performed ? DetectColor : DefaultColor);
             DrawZTest(() => Handles.DrawSolidArc(transform.position, transform.up, ArcStartPoint, arcAngle, DirectionLength),
-                color.ToAlpha(RCProPanel.alphaAmount/2), color.ToAlpha(RCProPanel.alphaAmount));
+                color.ToAlpha((RCProPanel.alphaAmount / 2) * ClampedAlphaCharge), color.ToAlpha(RCProPanel.alphaAmount * ClampedAlphaCharge));
 
             DrawNormal(hit);
 

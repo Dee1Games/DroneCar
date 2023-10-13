@@ -8,6 +8,7 @@ namespace RaycastPro.RaySensors2D
 
     using UnityEngine;
     
+    [HelpURL("https://www.youtube.com/watch?v=D-C4J_zpkbQ")]
     [AddComponentMenu("RaycastPro/Rey Sensors/"+nameof(PipeRay2D))]
     public sealed class PipeRay2D : RaySensor2D, IRadius
     {
@@ -46,7 +47,7 @@ namespace RaycastPro.RaySensors2D
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Emit a 2D capsule pipe in the specified direction and return the Hit information."+HAccurate+HDirectional+HIRadius;
+        private static string Info = "Emit a 2D pipe shape ray in the specified direction and return the Hit information."+HAccurate+HDirectional+HIRadius;
 #pragma warning restore CS0414
 
         private Vector3 p1, p2;

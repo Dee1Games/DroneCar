@@ -24,7 +24,7 @@ public abstract class GunCore : MonoBehaviour
         mainSensor = caster.raySensors[0];
         if (onCastParticle)
         {
-            caster.onCast.AddListener(b =>
+            caster.onCast.AddListener(() =>
             {
                 Instantiate(onCastParticle, mainSensor.transform.position, mainSensor.transform.rotation);
             });

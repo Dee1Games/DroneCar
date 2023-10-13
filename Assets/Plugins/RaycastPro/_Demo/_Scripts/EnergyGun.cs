@@ -18,11 +18,23 @@ namespace Plugins.RaycastPro.Demo.Scripts
         {
             lineDetector.SyncDetection(detectedEnemies);
         }
-        
+
+        private IEnumerator WaveTween(float to, float duration = 1f)
+        {
+            var progress = 0f;
+            var basePos = waveRay.linerEndPosition;
+            while (progress <= 1)
+            {
+                waveRay.linerEndPosition = Mathf.Lerp(basePos, to, progress);
+                progress += Time.deltaTime/duration;
+                yield return new WaitForSeconds(Time.deltaTime);
+            }
+        }
         private void Update()
         {
-            if (Input.GetMouseButton(0))
+            if (waveRay.Influence > 0 && Input.GetMouseButton(0))
             {
+                
                 waveRay.linerEndPosition += Time.deltaTime / linerSetupTime;
                 waveRay.Cast();
                 
@@ -34,13 +46,12 @@ namespace Plugins.RaycastPro.Demo.Scripts
             }
             if (Input.GetMouseButtonDown(0))
             {
-                waveRay.gameObject.SetActive(true);
+                StartCoroutine(WaveTween(1, .4f));
             }
 
             if (Input.GetMouseButtonUp(0))
             {
-                waveRay.gameObject.SetActive(false);
-                waveRay.linerEndPosition = 0;
+                StartCoroutine(WaveTween(0, .4f));
             }
         
             // Optimized Way

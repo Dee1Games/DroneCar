@@ -1,4 +1,6 @@
-﻿namespace RaycastPro.Detectors
+﻿using System.Collections.Generic;
+
+namespace RaycastPro.Detectors
 {
     using UnityEngine;
 
@@ -74,10 +76,10 @@
         private Quaternion axis;
         protected override void OnCast()
         {
+            CachePrevious();
 #if UNITY_EDITOR
             CleanGate();
 #endif
-            PreviousColliders = DetectedColliders.ToArray();
             if (worldPointsFar.Length != edgeCount + 1) Resize();
             position = transform.position;
             up = Vector3.up;
@@ -133,7 +135,7 @@
             {
                 foreach (var c in colliders)
                 {
-                    if (CheckGeneralPass(c) && PassCondition(c.transform.position))
+                    if (TagPass(c) && PassCondition(c.transform.position))
                     {
 #if UNITY_EDITOR
                         PassColliderGate(c);
@@ -146,9 +148,9 @@
             {
                 foreach (var c in colliders)
                 {
-                    if (!CheckGeneralPass(c)) continue;
+                    if (!TagPass(c)) continue;
                     TDP = DetectFunction(c);
-                    if (PassCondition(TDP) && CheckSolverPass(TDP, c)) DetectedColliders.Add(c);
+                    if (PassCondition(TDP) && LOSPass(TDP, c)) DetectedColliders.Add(c);
                 }
             }
             EventPass();

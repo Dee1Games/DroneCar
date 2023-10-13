@@ -23,7 +23,6 @@
             set => radius = Mathf.Max(0,value);
         }
         public Vector3[] chainPoints = {Vector3.forward, Vector3.right, Vector3.up};
-        
         public Transform[] targets = Array.Empty<Transform>();
         public enum ChainReference
         {
@@ -43,6 +42,21 @@
         }
 
         private Transform target;
+
+        private Vector3 sum;
+        private int i, j;
+        internal void ToRelative()
+        {
+            PathPoints.Clear();
+            PathPoints.Add(transform.position);
+            for (i = 0; i < chainPoints.Length; i++)
+            {
+                sum = Vector3.zero;
+                for (j = 0; j <= i; j++) sum += chainPoints[j];
+                if (local) sum = transform.TransformPoint(sum);
+                PathPoints.Add(sum);
+            }
+        }
         protected override void UpdatePath()
         {
             PathPoints.Clear();
@@ -50,7 +64,17 @@
             switch (chainReference)
             {
                 case ChainReference.Point:
-                    PathPoints.AddRange((relative ? chainPoints.ToRelative() : chainPoints).ToLocal(transform));
+                    if (relative)
+                    {
+                        ToRelative();
+                    }
+                    else
+                    {
+                        foreach (var _cP in chainPoints)
+                        {
+                            PathPoints.Add(transform.TransformPoint(_cP));
+                        }
+                    }
                     break;
                 case ChainReference.Transform:
                 {
@@ -111,7 +135,10 @@
                 }
                 
                 EndVertical();
+                BeginHorizontal();
                 RadiusField(_so);
+                LocalField(_so.FindProperty(nameof(local)));
+                EndHorizontal();
             }
             
             if (hasGeneral) PathRayGeneralField(_so);

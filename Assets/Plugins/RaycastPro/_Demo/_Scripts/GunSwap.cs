@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using RaycastPro;
 using RaycastPro.Casters;
+using RaycastPro.RaySensors;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Plugins.RaycastPro.Demo.Scripts
 {
@@ -15,10 +17,17 @@ namespace Plugins.RaycastPro.Demo.Scripts
 
         private int index;
 
-        [SerializeField] private TextMeshProUGUI amountText;
+        [SerializeField] private TextMeshProUGUI gunText;
+        [SerializeField] private TextMeshProUGUI mGunText;
+        [SerializeField] private Image eGunFill;
+        [SerializeField] private TextMeshProUGUI sGunText;
+        [SerializeField] private TextMeshProUGUI targetText;
 
-        public BasicCaster basicCaster;
-
+        public BasicCaster gun;
+        public AdvanceCaster miniGun;
+        public RaySensor energyGun;
+        public AdvanceCaster shotgun;
+        public BasicCaster trackGun;
         private void Awake()
         {
             singleton = this;
@@ -26,10 +35,46 @@ namespace Plugins.RaycastPro.Demo.Scripts
 
         private void Start()
         {
-            basicCaster.onCast.AddListener(b =>
+            gun.onRate.AddListener(() =>
             {
-                amountText.text = $"{basicCaster.ammo.Amount} / {basicCaster.ammo.MagazineAmount}";
+                gunText.text = $"{gun.ammo.Amount} / {gun.ammo.MagazineAmount}";
             });
+            miniGun.onRate.AddListener(() =>
+            {
+                mGunText.text = $"E / {miniGun.ammo.MagazineAmount}";
+            });
+            energyGun.onCast.AddListener(() =>
+            {
+                eGunFill.fillAmount = energyGun.Influence;
+            });
+            shotgun.onCast.AddListener(() =>
+            {
+                sGunText.text = $"{(shotgun.ammo.reloadTime - shotgun.ammo.currentReloadTime):F1} sec";
+            });
+            trackGun.onRate.AddListener(() =>
+            {
+                targetText.text = $"{trackGun.trackTarget.GetInstanceID()}";
+            });
+        }
+
+        public void Update()
+        {
+            var sign = Input.mouseScrollDelta.y;
+            if (sign > 0)
+            {
+                index = (index + 1) % guns.Length;
+                OnChange(index);
+            }
+            else if (sign < 0)
+            {
+                index--;
+                if (index <= 0)
+                {
+                    index = guns.Length - 1;
+                }
+                OnChange(index);
+            }
+
         }
 
         public void Revive(HoverEnemy enemy, float delay)

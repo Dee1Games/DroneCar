@@ -48,7 +48,7 @@
 
         internal override void RuntimeUpdate()
         {
-            _dt = GetModeDeltaTime(timeMode);
+            _dt = GetDelta(timeMode);
             UpdateLifeProcess(_dt);
             
             targetPoint = target ? target.position + trackOffset : _t.position;
@@ -63,7 +63,7 @@
                 OnEndCast(caster);
                 return;
             }
-            _dt = GetModeDeltaTime(timeMode);
+            _dt = GetDelta(timeMode);
             _dir = targetPoint - _t.position;
             
             switch (trackType)

@@ -132,6 +132,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Default-Line (Instance)
   m_Shader: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -140,6 +142,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -305,6 +308,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -360,6 +364,7 @@ PrefabInstance:
       value: Pyrogem.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1 &573444912
 GameObject:
@@ -413,6 +418,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -472,12 +478,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1001 &736082303
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -533,12 +541,14 @@ PrefabInstance:
       value: Pyrogem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1001 &911546007
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -598,12 +608,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1001 &946449077
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1090231600675573113, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
@@ -759,12 +771,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bbbcf296c88ab8f40970051e044d6722, type: 3}
 --- !u!1001 &1136282970
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -820,6 +834,7 @@ PrefabInstance:
       value: Pyrogem.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1 &1166158200
 GameObject:
@@ -1009,10 +1024,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1732768055}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &1453868499
 LineRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1118,15 +1134,19 @@ LineRenderer:
     numCapVertices: 6
     alignment: 0
     textureMode: 0
+    textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+  m_ApplyActiveColorSpace: 1
 --- !u!1001 &1589765159
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -1186,12 +1206,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1001 &1644186675
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -1251,12 +1273,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1001 &1700011650
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -1316,6 +1340,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1 &1732768053
 GameObject:
@@ -1400,8 +1425,7 @@ MonoBehaviour:
   boundsSolver: 0
   boundsCenter: 0
   collectLOS: 0
-  sourceRay: {fileID: 1453868497}
-  radius: 2
+  pathRay: {fileID: 1453868497}
   onHit:
     m_PersistentCalls:
       m_Calls: []
@@ -1411,7 +1435,6 @@ MonoBehaviour:
   onLostHit:
     m_PersistentCalls:
       m_Calls: []
-  PathPoints: []
 --- !u!114 &1732768057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,6 +1468,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -1500,12 +1524,14 @@ PrefabInstance:
       value: Pyrogem.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
 --- !u!1001 &2090921788
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1033722768814427030, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}
@@ -1565,4 +1591,5 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 711ecbb5723212548ba10f8372980dfb, type: 3}

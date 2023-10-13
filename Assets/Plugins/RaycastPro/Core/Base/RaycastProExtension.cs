@@ -1,4 +1,6 @@
-﻿namespace RaycastPro
+﻿
+
+namespace RaycastPro
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +10,12 @@
     using RaySensors2D;
     using UnityEngine;
     using Object = UnityEngine.Object;
+    using RaySensors;
+
+#if UNITY_EDITOR
+    using Editor;
+#endif
+
 
     internal static class IListExtensions {
         public static void Swap<T>(
@@ -121,7 +129,6 @@
             for (var i = 0; i < points.Length; i++)  newPoints[i] = _t.TransformPoint(points[i]);
             return newPoints;
         }
-        
         internal static Vector3 ToWorld(this Vector3 point, Transform _t) => _t.InverseTransformPoint(point);
         internal static Vector3 ToLocal(this Vector3 point, Transform _t) => _t.TransformPoint(point);
         internal static Vector2[] ToLocal(this Vector2[] points, Transform _t)
@@ -167,11 +174,99 @@
         {
             return hit.transform && hit.transform.CompareTag(_tag);
         }
+        public static bool OutComponent<T>(this RaycastHit hit, out T component)
+        {
+            return hit.transform.TryGetComponent(out component);
+        }
         public static bool IsInTag(this RaycastHit2D hit, string _tag)
         {
             return hit.transform && hit.transform.CompareTag(_tag);
         }
-        
+
+        #region RaycastHit
+
+        public static int GetTerrainIndex(this RaycastHit hit)
+        {
+            if (!hit.transform) return -1;
+
+            if (hit.transform.TryGetComponent(out Terrain terrain))
+            {
+                var terrainPos = hit.point - terrain.GetPosition();
+                var splatPos = new Vector3(terrainPos.x / terrain.terrainData.size.x, 0,
+                    terrainPos.z / terrain.terrainData.size.z);
+
+                var x = Mathf.FloorToInt(splatPos.x * terrain.terrainData.alphamapWidth);
+                var z = Mathf.FloorToInt(splatPos.z * terrain.terrainData.alphamapHeight);
+
+                var alphaMaps = terrain.terrainData.GetAlphamaps(x, z, 1, 1);
+
+                var _cIndex = 0;
+                for (var i = 0; i < alphaMaps.Length; i++)
+                {
+                    if (alphaMaps[0,0,i] > alphaMaps[0, 0, _cIndex])
+                    {
+                        _cIndex = i;
+                    }
+                }
+
+                return _cIndex;
+            }
+            return -1;
+        }
+
+        public static void GetTerrainAlpha(this RaycastHit hit, ref float[] alphasValues)
+        {
+            if (hit.transform.TryGetComponent(out Terrain terrain))
+            {
+                var terrainPos = hit.point - terrain.GetPosition();
+                var splatPos = new Vector3(terrainPos.x / terrain.terrainData.size.x, 0,
+                    terrainPos.z / terrain.terrainData.size.z);
+
+                var x = Mathf.FloorToInt(splatPos.x * terrain.terrainData.alphamapWidth);
+                var z = Mathf.FloorToInt(splatPos.z * terrain.terrainData.alphamapHeight);
+
+                var alphaMaps = terrain.terrainData.GetAlphamaps(x, z, 1, 1);
+                
+                for (var i = 0; i < alphaMaps.Length; i++) alphasValues[i] = alphaMaps[0, 0, i];
+            }
+        }
+        #endregion
+        public static Material GetMaterial(this RaycastHit hit)
+        {
+            if (!hit.transform) return null;
+            var materials = hit.transform.GetComponent<MeshRenderer>().materials;
+            var index = hit.triangleIndex;
+            var mesh = hit.transform.GetComponent<MeshFilter>().mesh;
+            var subMeshIndex = RaySensor.GetSubMeshIndex(mesh, index);
+            return materials[subMeshIndex];
+        }
+        public static Color GetColor(this RaycastHit hit)
+        {
+            var material = hit.GetMaterial();
+            if (!material) return Color.black;
+            var tex = material.mainTexture as Texture2D;
+            if (tex)
+            {
+                if (tex.isReadable)
+                {
+                    var scale = material.mainTextureScale;
+                    var offset = material.mainTextureOffset;
+                    var pixelUV = hit.textureCoord;
+                    pixelUV.x *= tex.width*scale.x;
+                    pixelUV.y *= tex.height*scale.y;
+                    offset.x *= tex.width;
+                    offset.y *= tex.height;
+                        
+                    return tex.GetPixel((int) (offset.x + pixelUV.x), (int) (offset.y + pixelUV.y)) * material.color;
+                }
+#if UNITY_EDITOR
+                RCProEditor.Log($"{hit.transform.name} material texture isn't readable!");
+#endif
+                return material.color;
+            }
+            return material.color;
+        }
+
         public static bool IsInLayerMask(this RaycastHit hit, LayerMask mask) {
             return mask == ( mask | ( 1 << hit.transform.gameObject.layer ) );
         }
