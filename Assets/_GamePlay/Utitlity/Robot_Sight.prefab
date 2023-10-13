@@ -54,9 +54,7 @@ MonoBehaviour:
   blockLayer:
     serializedVersion: 2
     m_Bits: 256
-  boundsSolver: 1
-  boundsCenter: 0
-  solverType: 4
+  solverType: 5
   checkLineOfSight: 1
   usingTagFilter: 0
   tagFilter: Untagged
@@ -67,8 +65,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   pulseTime: 0.2
-  blockSolverOffset: {x: 0, y: 0, z: 0}
-  detectVector: {x: 0, y: 0, z: 150}
+  detectVector: {x: 0, y: 0, z: 250}
   onDetectCollider:
     m_PersistentCalls:
       m_Calls: []
@@ -79,12 +76,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ignoreList: []
-  colliders:
-  - {fileID: 0}
-  angleX: 230
+  colliders: []
+  boundsSolver: 1
+  boundsCenter: 0
+  collectLOS: 0
+  angleX: 120
   angleY: 180
   radius: 250
   limited: 0
   limitCount: 3
   minRadius: 30
-  fullAwareness: 120
+  fullAwareness: 60

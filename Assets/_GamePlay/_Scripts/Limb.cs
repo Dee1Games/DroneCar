@@ -77,6 +77,7 @@ public class Limb : MonoBehaviour, IHitable
     public void GetHit()
     {
         transform.localScale = Vector3.zero;
+        gameObject.SetActive(false);
 
         if (_joint) Destroy(_joint);
         if (_rigidbody) Destroy(_rigidbody);

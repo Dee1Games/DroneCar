@@ -205,6 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2691406234566487492}
+  - component: {fileID: 8165033929404514998}
   m_Layer: 0
   m_Name: Mount_Arm_R
   m_TagString: Untagged
@@ -228,6 +229,28 @@ Transform:
   m_Father: {fileID: 2691406234566487494}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8165033929404514998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2691406234566586796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  giantCore: {fileID: 0}
+  limbType: 2
+  armor: 0
+  health: 100
+  maxHealth: 100
+  giantFinisher: 0
+  unbreakable: 0
+  particle: {fileID: 0}
+  member: {fileID: 0}
+  forceToDeScale: {fileID: 0}
 --- !u!1 &2691406234566586798
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +532,7 @@ MonoBehaviour:
   mass: 15
   drag: 3
   angularDrag: 3
-  particleSystem: {fileID: 0}
+  particleSystem: {fileID: 198000011976894484, guid: c9e88831f0c9c774ca8fb1a53dd19258, type: 3}
 --- !u!114 &1899676388669836376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,6 +716,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2691406234566487528}
+  - component: {fileID: 5081437842000856373}
   m_Layer: 0
   m_Name: Mech_Walker_LeftLeg
   m_TagString: Untagged
@@ -716,6 +740,28 @@ Transform:
   m_Father: {fileID: 2691406234566487530}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5081437842000856373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2691406234566586824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  giantCore: {fileID: 0}
+  limbType: 3
+  armor: 0
+  health: 100
+  maxHealth: 100
+  giantFinisher: 0
+  unbreakable: 0
+  particle: {fileID: 0}
+  member: {fileID: 0}
+  forceToDeScale: {fileID: 0}
 --- !u!1 &2691406234566586826
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,6 +1029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2691406234566487546}
+  - component: {fileID: 8040221454890469598}
   m_Layer: 0
   m_Name: Mech_Walker_RightLeg
   m_TagString: Untagged
@@ -1006,6 +1053,28 @@ Transform:
   m_Father: {fileID: 2691406234566487540}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8040221454890469598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2691406234566586842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  giantCore: {fileID: 0}
+  limbType: 4
+  armor: 0
+  health: 100
+  maxHealth: 100
+  giantFinisher: 0
+  unbreakable: 0
+  particle: {fileID: 0}
+  member: {fileID: 0}
+  forceToDeScale: {fileID: 0}
 --- !u!1 &2691406234566586844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,6 +1149,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeakPoint (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
+      objectReference: {fileID: 5081437842000856373}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1142,6 +1215,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeakPoint (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
+      objectReference: {fileID: 8040221454890469598}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1309,6 +1386,22 @@ PrefabInstance:
     - target: {fileID: 400024, guid: 6c0a4a402baeefd4cb83f41cea461bf7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 556384769282300995, guid: 6c0a4a402baeefd4cb83f41cea461bf7, type: 3}
+      propertyPath: m_Positions.Array.data[0].x
+      value: 6.366337
+      objectReference: {fileID: 0}
+    - target: {fileID: 556384769282300995, guid: 6c0a4a402baeefd4cb83f41cea461bf7, type: 3}
+      propertyPath: m_Positions.Array.data[0].z
+      value: -11.350625
+      objectReference: {fileID: 0}
+    - target: {fileID: 556384769282300995, guid: 6c0a4a402baeefd4cb83f41cea461bf7, type: 3}
+      propertyPath: m_Positions.Array.data[1].x
+      value: 6.366337
+      objectReference: {fileID: 0}
+    - target: {fileID: 556384769282300995, guid: 6c0a4a402baeefd4cb83f41cea461bf7, type: 3}
+      propertyPath: m_Positions.Array.data[1].z
+      value: -11.350625
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c0a4a402baeefd4cb83f41cea461bf7, type: 3}
@@ -1633,7 +1726,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 762057443526485557, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: solverType
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 762057443526485557, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: colliders.Array.size
@@ -1704,6 +1797,10 @@ PrefabInstance:
     - target: {fileID: 5584087559696114291, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_Name
       value: WeakPoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
@@ -1829,9 +1926,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeakPoint
       objectReference: {fileID: 0}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
+      objectReference: {fileID: 8165033929404514998}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1839,7 +1944,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.625
+      value: 0.62500006
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.z

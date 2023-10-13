@@ -124,7 +124,6 @@ MonoBehaviour:
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -134,15 +133,18 @@ MonoBehaviour:
   onEnd:
     m_PersistentCalls:
       m_Calls: []
+  onPlanar:
+    m_PersistentCalls:
+      m_Calls: []
   moveType: 0
   callMethod: OnBullet
   messageUpward: 0
+  ownerReference: {fileID: 0}
   damage: 80
   speed: 6
   lifeTime: 4
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
@@ -180,7 +182,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3817342509432198470}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5879414053087945655
 MonoBehaviour:
@@ -198,7 +200,7 @@ MonoBehaviour:
   triggerInteraction: 0
   detectLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 257
   autoUpdate: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
@@ -208,6 +210,7 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
+  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
