@@ -70,14 +70,23 @@ public class MergePlatform : MonoBehaviour
                 {
                     if (GameManager.Instance.Player.SetUpgrade(currentSelectedItem.Type, currentSelectedItem.Level))
                     {
-                        merged = true;
-                        GameManager.Instance.Player.ShowUpgradeVisuals();
-                        MergeItem currentItem = currentSelectedItem;
-                        currentSelectedItem.MoveToPlayerVehicle(moveSpeed, () =>
+                        if (UserManager.Instance.Data.SeenMergeTutorial || (!UserManager.Instance.Data.SeenMergeTutorial && NumberOfFullCells()==0))
                         {
-                            PlayParticle();
-                            Destroy(currentItem.gameObject);
-                        });
+                            merged = true;
+                            GameManager.Instance.Player.ShowUpgradeVisuals();
+                            MergeItem currentItem = currentSelectedItem;
+                            currentSelectedItem.MoveToPlayerVehicle(moveSpeed, () =>
+                            {
+                                PlayParticle();
+                                Destroy(currentItem.gameObject);
+                                if (!UserManager.Instance.Data.SeenMergeTutorial)
+                                {
+                                    TutorialManager.Instance.ShowPlayHint();
+                                    UserManager.Instance.SeenMergeTutorial();
+                                    UIManager.Instance.Refresh();
+                                }
+                            });
+                        }
                     }
                 }
 
@@ -90,6 +99,11 @@ public class MergePlatform : MonoBehaviour
                     currentSelectedItem.MoveToCell(closestCell, moveSpeed, () =>
                     {
                         closestCell.SetItem(currentItem);
+                        if (!UserManager.Instance.Data.SeenMergeTutorial && closestCell != currentItem.CurrentCell)
+                        {
+                            TutorialManager.Instance.ShowAssembleHint();
+                            TutorialManager.Instance.ShowHand(camera.WorldToScreenPoint(closestCell.transform.position), camera.WorldToScreenPoint(GameManager.Instance.Player.transform.position));
+                        }
                     });
                 }
                 
@@ -105,11 +119,26 @@ public class MergePlatform : MonoBehaviour
 
     public void SpawnUpgrade()
     {
+        if (NumberOfFullCells() == 6)
+            return;
+
+
+        int price = GetCurrentUpgradePrice();
+        if(price>UserManager.Instance.Data.Coins)
+            return;
+        
+        UserManager.Instance.Data.Coins -= firstUpgradePrice;
+        
         SpawnItemInCell(GetRandomEmptyCell());
         
-        UserManager.Instance.Data.Coins -= GetCurrentUpgradePrice();
         UserManager.Instance.NextUpgrade();
         UIManager.Instance.Refresh();
+        
+        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==3)
+        {
+            TutorialManager.Instance.ShowMergeHint();
+            TutorialManager.Instance.ShowHand(camera.WorldToScreenPoint(cells[0].transform.position), camera.WorldToScreenPoint(cells[1].transform.position));
+        }
     }
 
     private void SpawnItemInCell(MergeCell cell)
@@ -122,6 +151,15 @@ public class MergePlatform : MonoBehaviour
 
     private MergeCell GetRandomEmptyCell()
     {
+        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount == 1)
+        {
+            return cells[0];
+        } 
+        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount == 2)
+        {
+            return cells[1];
+        } 
+        
         List<MergeCell> emptyCells = new List<MergeCell>();
         foreach (MergeCell cell in cells)
         {
@@ -145,12 +183,21 @@ public class MergePlatform : MonoBehaviour
     
     private Item GetRandomItem()
     {
+        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount == 1)
+        {
+            return GameManager.Instance.Player.Config.GetItem(UpgradeType.Gun, 1);
+        } 
+        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount == 2)
+        {
+            return GameManager.Instance.Player.Config.GetItem(UpgradeType.Gun, 1);
+        } 
+        
         List<UpgradeType> probabilities = new List<UpgradeType>();
         foreach(UpgradeType upgradeType in UpgradeType.GetValues(typeof(UpgradeType)))
         {
             int p = GameManager.Instance.Player.Config.GetProbability(upgradeType);
             if (GameManager.Instance.Player.Config.GetItem(upgradeType,
-                UserManager.Instance.GetUpgradeLevel(UserManager.Instance.Data.CurrentVehicleID, upgradeType)+1) == null)
+                UserManager.Instance.GetUpgradeLevel(LevelManager.Instance.CurrentLevelData.Vehicle, upgradeType)+1) == null)
             {
                 p = 0;
             } 

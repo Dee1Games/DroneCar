@@ -82,7 +82,7 @@
             _pos = transform.position;
 
             hitCounts = 0;
-            delta = GetDelta(timeMode);
+            delta = GetModeDeltaTime(timeMode);
 
             _dir = (destination.position - _pos.ToDepth(z));
             _dis = Vector2.Distance(destination.position, _pos);

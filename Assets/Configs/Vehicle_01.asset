@@ -20,7 +20,7 @@ MonoBehaviour:
   Gun: 5
   JumpForce: 10
   FireRate: 1.5
-  AlwaysShoot: 0
+  AlwaysShoot: 1
   upgrades:
   - Type: 0
     accelerationCurve:
@@ -469,6 +469,15 @@ MonoBehaviour:
     - Level: 2
       Type: 1
       MergePrefab: {fileID: 8527887436437427152, guid: 3d1e97f363ee5f447ac8a5ac096b1c59, type: 3}
+    - Level: 3
+      Type: 1
+      MergePrefab: {fileID: 8527887436437427152, guid: 8872394dec618ef4ba4166c86d1f01af, type: 3}
+    - Level: 4
+      Type: 1
+      MergePrefab: {fileID: 8527887436437427152, guid: de3be9e30f7b5444c9dbe0660ce88ccc, type: 3}
+    - Level: 5
+      Type: 1
+      MergePrefab: {fileID: 8527887436437427152, guid: 5da4f3a5b983fd342b6b484ed477b3a5, type: 3}
   - Type: 2
     Probability: 0
     Items:
@@ -488,7 +497,7 @@ MonoBehaviour:
       Type: 2
       MergePrefab: {fileID: 8527887436437427152, guid: 8d8edd62066ec2d40aa87c04dcee1dc3, type: 3}
   - Type: 3
-    Probability: 2
+    Probability: 1
     Items:
     - Level: 0
       Type: 3

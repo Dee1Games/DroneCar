@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RaycastPro.Detectors
+﻿namespace RaycastPro.Detectors
 {
     using UnityEngine;
 
@@ -11,14 +9,11 @@ namespace RaycastPro.Detectors
 
     [AddComponentMenu("RaycastPro/Detectors/" + nameof(RangeDetector))]
     public sealed class RangeDetector : ColliderDetector, IRadius, IPulse
+#if UNITY_EDITOR
+        ,ISceneGUI
+#endif
     {
         [SerializeField] private float radius = 2f;
-        
-        public float Radius
-        {
-            get => radius;
-            set => radius = Mathf.Max(0, value);
-        }
 
         [SerializeField] private float height;
 
@@ -29,7 +24,13 @@ namespace RaycastPro.Detectors
             get => height;
             set => height = Mathf.Max(0, value);
         }
-        
+
+        public float Radius
+        {
+            get => radius;
+            set => radius = Mathf.Max(0, value);
+        }
+
         [SerializeField] private bool limited;
         [SerializeField] private int limitCount = 3;
         
@@ -56,9 +57,7 @@ namespace RaycastPro.Detectors
             }
         }
 
-        private Collider nearestMember;
 
-        public Collider NearestMember => nearestMember;
         private bool HeightCheck(Vector3 point)
         {
             _h = _t.InverseTransformDirection(point - _t.position);
@@ -70,19 +69,18 @@ namespace RaycastPro.Detectors
 
         #region Temps
         private Vector3 _h;
-        private float m, _distance;
+        private float m;
         private Transform _t;
         private float cylinderH;
         private Vector3 h;
         #endregion
-        
-        
         protected override void OnCast()
         {
-            CachePrevious();
 #if UNITY_EDITOR
             CleanGate();
 #endif
+            
+            PreviousColliders = DetectedColliders.ToArray();
             _t = transform;
             if (limited)
             {
@@ -122,7 +120,7 @@ namespace RaycastPro.Detectors
             {
                 foreach (var c in colliders)
                 {
-                    if (TagPass(c))
+                    if (CheckGeneralPass(c))
                     {
 #if UNITY_EDITOR
                         PassColliderGate(c);
@@ -135,31 +133,15 @@ namespace RaycastPro.Detectors
             {
                 foreach (var c in colliders)
                 {
-                    if (!TagPass(c)) continue;
+                    if (!CheckGeneralPass(c)) continue;
                     TDP = DetectFunction(c); // 1: Get Detect Point
                     if (height > 0)
                     {
-                        if (HeightCheck(TDP) && LOSPass(TDP, c))
-                        {
-                            if (_distance <= _tDis)
-                            {
-                                _tDis = _distance;
-                                nearestMember = c;
-                            }
-                            DetectedColliders.Add(c);
-                        }
+                        if (HeightCheck(TDP) && CheckSolverPass(TDP, c)) DetectedColliders.Add(c);
                     }
                     else
                     {
-                        if ((_t.position-TDP).sqrMagnitude <= radius*radius && LOSPass(TDP, c))
-                        {
-                            if (_distance <= _tDis)
-                            {
-                                _tDis = _distance;
-                                nearestMember = c;
-                            }
-                            DetectedColliders.Add(c);
-                        }
+                        if ((_t.position-TDP).sqrMagnitude <= radius*radius && CheckSolverPass(TDP, c)) DetectedColliders.Add(c);
                     }
                 }
             }
@@ -232,6 +214,17 @@ namespace RaycastPro.Detectors
                 
                 Handles.color = HelperColor;
                 Handles.DrawDottedLine(point, _t.position + direct.normalized * radius, StepSizeLine);
+            }
+        }
+        
+        public void OnSceneGUI()
+        {
+            return;
+            var newRadius = Handles.RadiusHandle(local ? transform.rotation : Quaternion.identity, transform.position, Radius);
+            if (newRadius != radius)
+            {
+                Undo.RecordObject(this, "Change Sphere Radius");
+                Radius = newRadius;
             }
         }
 #endif

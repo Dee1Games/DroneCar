@@ -491,7 +491,6 @@ GameObject:
   m_Component:
   - component: {fileID: 400024}
   - component: {fileID: 9500000}
-  - component: {fileID: 124069668855601858}
   m_Layer: 0
   m_Name: Backpack_Dish_Lvl3
   m_TagString: Untagged
@@ -537,21 +536,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &124069668855601858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ee95c20aa926b46949c9620162c260, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetRay: {fileID: 0}
-  target: {fileID: 0}
-  effect: {fileID: 0}
 --- !u!1 &1406645877542623039
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +587,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
+  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 556384769282300995}
   useLinerClampedPosition: 1

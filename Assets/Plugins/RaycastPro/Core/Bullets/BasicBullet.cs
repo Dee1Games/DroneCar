@@ -17,7 +17,7 @@
 
         internal override void RuntimeUpdate()
         {
-            delta = GetDelta(timeMode);
+            delta = GetModeDeltaTime(timeMode);
             _forward = transform.forward;
             transform.position += _forward * (speed * delta);
             UpdateLifeProcess(delta);

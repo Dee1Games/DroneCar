@@ -83,6 +83,7 @@
                     InstantiateClone(raySensor);
                     break;
             }
+
             OnReceiveRay(raySensor);
         }
         private void InstantiateReference(RaySensor raySensor)
@@ -116,7 +117,7 @@
 #if UNITY_EDITOR
         
         private Collider validateCollideGizmo;
-        private void OnValidate()
+        protected override void AfterValidate()
         {
             if (transform.TryGetComponent(out Collider collider))
             {

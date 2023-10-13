@@ -130,6 +130,9 @@ public class Giant_Core : MonoBehaviour, IHitable
     /// <param name="phase"></param>
     public void OnDie()
     {
+        if (isDead)
+            return;
+        
         isDead = true;
         aiCore.Active(false);
 
@@ -153,14 +156,23 @@ public class Giant_Core : MonoBehaviour, IHitable
             animator.SetTrigger(Die);
         }
     }
+
     public void TakeDamage(float damage)
     {
-        monster.Health -= damage * (1-armor);
+        if (!GameManager.Instance.Player.IsActive)
+            return;
+
+        GameManager.Instance.CurrentRunDamage += damage;
+
+        monster.Health -= damage * (1 - armor);
         if (monster.Health <= 0)
         {
             OnDie();
+            GameManager.Instance.Player.Core.End();
+            UserManager.Instance.NextLevel();
         }
     }
+
     public void SetHealth(float amount)
     {
         monster.Health = amount;

@@ -40,7 +40,7 @@
 #if UNITY_EDITOR
             if (!target)
             {
-                RCProEditor.Log($"<color=#4AFF98>{caster.name}</color> missing <color=#FF1E21>TrackTarget</color> transform!");
+                Debug.Log(RCProEditor.RPro+$"<color=#4AFF98>{caster.name}</color> missing <color=#FF1E21>TrackTarget</color> transform!");
             }
 #endif
 
@@ -64,7 +64,7 @@
 
         internal override void RuntimeUpdate()
         {
-            _dt = GetDelta(timeMode);
+            _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
             
             targetPoint = target ? target.position + trackOffset : _t.position;
@@ -79,7 +79,7 @@
                 OnEndCast(caster);
                 return;
             }
-            _dt = GetDelta(timeMode);
+            _dt = GetModeDeltaTime(timeMode);
             _dir = targetPoint - _t.position;
             
             if (collisionRay)  CollisionRun(_dt);

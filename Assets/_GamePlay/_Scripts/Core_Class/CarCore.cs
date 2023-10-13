@@ -71,6 +71,11 @@ public class CarCore : MonoBehaviour
             UI_Core._.carHealth.UpdateHealthUI(hp, maxHp);
             if (hp <= 0)
             {
+                Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
+                try
+                {
+                    //SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
+                } catch {}
                 End();
             }
         }
@@ -106,7 +111,11 @@ public class CarCore : MonoBehaviour
         if (hitable != null)
         {
             hitable.OnHit(this, vehicle.Bomb);
-
+            Debug.Log($"Run {UserManager.Instance.Data.Run} Completed");
+            try
+            {
+                //SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
+            } catch {}
             End();
         }
     }
@@ -127,15 +136,25 @@ public class CarCore : MonoBehaviour
     }
     public void End(bool explode = true)
     {
+        if (!vehicle.IsActive)
+            return;
+        
         FRay.enabled = false;
         foreach (var aiCore in FindObjectsOfType<AI_Core>())
         {
             aiCore.OnEnd(this);
         }
-
-        if (explode) vehicle.Explode();
-
+        
+        if (explode)
+        {
+            vehicle.Explode();
+        }
+        vehicle.Deactivate();
+        
         CollidersActivate(false);
+        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
+        
+        UserManager.Instance.NextRun();
     }
 
     private IHitable hitable;

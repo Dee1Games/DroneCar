@@ -25,21 +25,6 @@ namespace RaycastPro.RaySensors2D
         public Transform[] targets = Array.Empty<Transform>();
 
         public bool relative;
-        
-        private Vector2 sum;
-        private int i, j;
-        internal void ToRelative()
-        {
-            PathPoints.Clear();
-            PathPoints.Add(transform.position);
-            for (i = 0; i < chainPoints.Length; i++)
-            {
-                sum = Vector2.zero;
-                for (j = 0; j <= i; j++) sum += chainPoints[j];
-                if (local) sum = transform.TransformPoint(sum);
-                PathPoints.Add(sum.ToDepth());
-            }
-        }
         protected override void OnCast()
         {
             UpdatePath();
@@ -54,20 +39,11 @@ namespace RaycastPro.RaySensors2D
         {
             PathPoints.Clear();
             PathPoints.Add(Position2D);
+            
             switch (chainReference)
             {
                 case ChainReference.Point:
-                    if (relative)
-                    {
-                        ToRelative();
-                    }
-                    else
-                    {
-                        foreach (var _cP in chainPoints)
-                        {
-                            PathPoints.Add(transform.TransformPoint(_cP));
-                        }
-                    }
+                    PathPoints.AddRange((relative ? chainPoints.ToRelative() : chainPoints).ToLocal(transform));
                     break;
                 
                 case ChainReference.Transform:
@@ -84,7 +60,7 @@ namespace RaycastPro.RaySensors2D
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Send a point oriented 2D ray and return Hit information." + HAccurate + HPathRay + HIRadius + HScalable;
+        private static string Info = "Send a point oriented 2D ray and return Hit information." + HAccurate + HPathRay + HIRadius;
 #pragma warning restore CS0414
         internal override void OnGizmos()
         {

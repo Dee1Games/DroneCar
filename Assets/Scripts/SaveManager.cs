@@ -48,6 +48,14 @@ public class SaveManager : MonoBehaviour
         File.Delete(Path.Combine(Application.persistentDataPath, saveFileName));
     }
     
+    [MenuItem("EditorTools/Open User Data")]
+    public static void OpenUserData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, saveFileName);
+        path = path.Replace(@"/", @"\");
+        System.Diagnostics.Process.Start("explorer.exe", "/select,"+path);
+    }
+    
     [MenuItem("EditorTools/Select Monster")]
     public static void SelectMonster()
     {

@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
-    
+    public int debugLevel = 0;
+
     [SerializeField] private LevelsConfig Config;
 
 #if UNITY_EDITOR
-    public bool debugLevel = true;
-    public int CurrentLevelIndex => debugLevel ? Config.level : UserManager.Instance.Data.Level;
+    public int CurrentLevelIndex => debugLevel > 0 ? debugLevel : UserManager.Instance.Data.Level;
 #else
-    public int CurrentLevelIndex => UserManager.Instance.Data.Level;
+    public int CurrentLevelIndex => debugLevel > 0 ? debugLevel : UserManager.Instance.Data.Level;
+    //public int CurrentLevelIndex => UserManager.Instance.Data.Level;
 #endif
 
     public LevelData CurrentLevelData => Config.Levels[(CurrentLevelIndex - 1)%Config.Levels.Count];
@@ -42,11 +44,27 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.Map.transform.rotation = Quaternion.identity;
         
         GameManager.Instance.Monster = Instantiate(CurrentLevelData.MonsterPrefab.gameObject, GameManager.Instance.Map.GetMonsterParent()).GetComponentInChildren<Monster>();
+        GameManager.Instance.GiantCore = GameManager.Instance.Monster.GetComponentInChildren<Giant_Core>();
         GameManager.Instance.Monster.transform.localPosition = Vector3.zero;
         GameManager.Instance.Monster.transform.localRotation = Quaternion.identity;
         GameManager.Instance.Monster.Init(CurrentLevelData.MonsterData);
         
         WeakPoint.CurrentIndex = 1;
 
+    }
+    
+    public float GetCurrentMonsterHealth()
+    {
+        return Config.InitMonsterHealth + (CurrentLevelIndex * Config.AddUpMonsterHealth);
+    }
+
+    public int GetRunReward()
+    {
+        return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
+    }
+
+    public float GetSpaceLimit()
+    {
+        return Config.SpaceLimit;
     }
 }

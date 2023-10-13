@@ -62,7 +62,7 @@ namespace RaycastPro.RaySensors
         protected override void UpdatePath()
         {
             PathPoints.Clear();
-            dt = GetDelta(timeMode);
+            dt = GetModeDeltaTime(timeMode);
             cycle += dt*waveSpeed % Mathf.PI*2;
             step = direction.z / segments;
             for (var i = 0; i <= segments; i++) PathPoints.Add(Function3D(i, step));

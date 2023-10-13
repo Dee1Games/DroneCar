@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RaycastPro.Detectors
+﻿namespace RaycastPro.Detectors
 {
     using UnityEngine;
 
@@ -44,10 +42,10 @@ namespace RaycastPro.Detectors
         }
         protected override void OnCast()
         {
-            CachePrevious();
 #if UNITY_EDITOR
             CleanGate();
 #endif
+            PreviousColliders = DetectedColliders.ToArray();
             TDP = transform.position;
             if (limited)
             {
@@ -69,7 +67,7 @@ namespace RaycastPro.Detectors
             {
                 foreach (var c in colliders)
                 {
-                    if (TagPass(c))
+                    if (CheckGeneralPass(c))
                     {
 #if UNITY_EDITOR
                         PassColliderGate(c);
@@ -82,10 +80,10 @@ namespace RaycastPro.Detectors
             {
                 foreach (var c in colliders)
                 {
-                    if (!TagPass(c)) continue;
+                    if (!CheckGeneralPass(c)) continue;
                     TDP = DetectFunction(c); 
                     boundPoint = local ? transform.InverseTransformPoint(TDP) : TDP - transform.position;
-                    if (new Bounds(Vector3.zero, extents).Contains(boundPoint) && LOSPass(TDP, c)) DetectedColliders.Add(c);
+                    if (new Bounds(Vector3.zero, extents).Contains(boundPoint) && CheckSolverPass(TDP, c)) DetectedColliders.Add(c);
                 }
             }
             

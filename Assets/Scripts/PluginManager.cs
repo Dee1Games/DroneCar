@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using SupersonicWisdomSDK;
+//using SupersonicWisdomSDK;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,8 +8,8 @@ public class PluginManager : MonoBehaviour
 {
     private void Awake()
     {
-        SupersonicWisdom.Api.AddOnReadyListener(OnPluginReady);
-        SupersonicWisdom.Api.Initialize();
+        //SupersonicWisdom.Api.AddOnReadyListener(OnPluginReady);
+        //SupersonicWisdom.Api.Initialize();
     }
 
     private void OnPluginReady()

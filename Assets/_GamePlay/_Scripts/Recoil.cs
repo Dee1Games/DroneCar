@@ -16,7 +16,7 @@ public class Recoil : MonoBehaviour
     void Start()
     {
         _advanceCaster = GetComponent<AdvanceCaster>();
-        _advanceCaster.onCast.AddListener( () =>
+        _advanceCaster.onCast.AddListener(b =>
         {
             if (_advanceCaster.rayIndex == 0)
             {

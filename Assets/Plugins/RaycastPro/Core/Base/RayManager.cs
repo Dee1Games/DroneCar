@@ -63,6 +63,11 @@ namespace RaycastPro
         }
 
 #if UNITY_EDITOR
+        
+        protected override void AfterValidate()
+        {
+            Reset();
+        }
 
 #pragma warning disable CS0414
         private static string Info = "The ray control and management tool automatically detects children rays."+HUtility+HDependent;

@@ -79,7 +79,7 @@
             {
                 posM = position * pathLength;
             }
-            _dt = GetDelta(timeMode);
+            _dt = GetModeDeltaTime(timeMode);
             UpdateLifeProcess(_dt);
             switch (moveType)
             {

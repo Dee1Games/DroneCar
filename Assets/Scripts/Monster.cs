@@ -55,12 +55,15 @@ public class Monster : MonoBehaviour
         Health = data.Health;
         _ = this;
 
-        if (weakPoints.Count > 0)
+        foreach (WeakPoint p in weakPoints)
         {
-            weakPoints.ForEach(w => w.gameObject.SetActive(false));
-            RandomActive();
-            weakPoints = weakPoints.Where(w => w.gameObject.activeInHierarchy).OrderBy(w => w.index).ToList();
+            Target t = p.gameObject.AddComponent<Target>();
         }
+        
+        weakPoints.ForEach(w => w.gameObject.SetActive(false));
+        
+        RandomActive();
+        weakPoints = weakPoints.Where(w => w.gameObject.activeInHierarchy).OrderBy(w => w.index).ToList();
     }
 
     private int count;

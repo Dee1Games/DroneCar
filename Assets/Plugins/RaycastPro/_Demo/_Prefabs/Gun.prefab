@@ -141,7 +141,6 @@ MonoBehaviour:
   linerBasePosition: 0
   stamp: {fileID: 0}
   local: 1
-  scalable: 0
   stampOnHit: 0
   stampAutoHide: 0
   stampOffset: 0
@@ -279,30 +278,11 @@ MonoBehaviour:
     m_Bits: 1
   autoUpdate: 0
   gizmosUpdate: 0
+  createPoolAtStart: 1
   poolManager: {fileID: 0}
-  onRate:
-    m_PersistentCalls:
-      m_Calls: []
-  onReload:
-    m_PersistentCalls:
-      m_Calls: []
   bullets:
-  - {fileID: 6851432507371259564, guid: 5c043e562e4f06343af6a8971bf8d428, type: 3}
+  - {fileID: 7556153797623680155, guid: d77a2471fed0821458ca9629992f6164, type: 3}
   cloneBullets:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -311,14 +291,12 @@ MonoBehaviour:
   - {fileID: 0}
   ignoreColliders: []
   ammo:
-    infiniteAmmo: 0
+    infiniteAmmo: 1
     amount: 100
-    magazineCapacity: 18
-    magazineAmount: 18
+    magazineCapacity: 6
+    magazineAmount: 6
     reloadTime: 0.5
-    inBetweenTime: 0.01
-    randomness: 0.01
-    missRate: 0
+    inBetweenTime: 0.1
     inRate: 0
     inReload: 0
   trackTarget: {fileID: 0}
@@ -326,11 +304,11 @@ MonoBehaviour:
   cloneIndex: 0
   usingAmmo: 1
   arrayCasting: 1
-  arrayCapacity: 20
-  raySource: {fileID: 1297270659291096208}
+  arrayCapacity: 6
   onCast:
     m_PersistentCalls:
       m_Calls: []
+  raySource: {fileID: 1297270659291096208}
 --- !u!114 &1335678964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,7 +322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _caster: {fileID: 0}
-  _colliderDetector: {fileID: 0}
 --- !u!114 &1335678965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,8 +334,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018c4f1f1f26c7140b3928497916a169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   raySensor: {fileID: 0}
   raySensor2D: {fileID: 0}
-  autoUpdate: 1
-  syncCondition: 0

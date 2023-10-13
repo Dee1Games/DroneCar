@@ -49,7 +49,7 @@
             CleanGate();
 #endif
             PreviousColliders = DetectedColliders.ToArray();
-            delta = GetDelta(timeMode);
+            delta = GetModeDeltaTime(timeMode);
             
 #if UNITY_EDITOR
             if (IsSceneView && !IsPlaying) currentAngle = Time.realtimeSinceStartup * speed;
@@ -88,7 +88,7 @@
                 _blockHit = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
                 _blockHit = Physics2D.Linecast(transform.position, TDP, blockLayer.value, MinDepth, MaxDepth);
 #if UNITY_EDITOR
-                PassGate(tCollider, TDP, _blockHit);
+                BlockLineGizmo(tCollider, TDP, _blockHit);
 #endif
                 if (_blockHit && _blockHit.transform != tCollider.transform) continue;
                 

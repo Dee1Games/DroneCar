@@ -1,6 +1,4 @@
-﻿using UnityEngine.Experimental.GlobalIllumination;
-
-namespace RaycastPro.Detectors
+﻿namespace RaycastPro.Detectors
 {
     using System;
     using System.Collections.Generic;
@@ -11,159 +9,78 @@ namespace RaycastPro.Detectors
     using Editor;
     using UnityEditor;
 #endif
-    
-    public sealed class LightDetector : Detector, IRadius, IPulse
-    {
-        [Tooltip("Collider your sounds on the specified layer and assign a special Collider Detector to automatically feed the sounds to the filtering source.")]
-        public ColliderDetector lightFinder;
-        
-        public List<Light> sources = new List<Light>();
-        
-        public UnityEvent onFullShadow;
-        public UnityEvent onFullLight;
-        
-        [SerializeField] private float radius = 2f;
-        public TimeMode timeMode = TimeMode.DeltaTime;
-        public float Radius
-        {
-            get => radius;
-            set => radius = Mathf.Max(0, value);
-        }
 
-        public float changeSharpness = 15;
+    [Serializable]
+    public class LightEvent : UnityEvent<Light> {  }
+
+    [AddComponentMenu("RaycastPro/Detectors/" + nameof(LightDetector))]
+    public sealed class LightDetector : Detector, IPulse
+    {
+        public Light[] Lights = Array.Empty<Light>();
+        public float minIntensity, maxIntensity = 100;
         
-        private Color currentColor, sumColor, lerpColor;
-        public override bool Performed {
-            get => value > 0;
+        public Color targetColor;
+        public Color colorTolerance = Color.white;
+
+        public LightEvent onDetectLight;
+        public LightEvent onNewLight;
+        public LightEvent onLostLight;
+        public override bool Performed
+        {
+            get => DetectedLights.Count > 0;
             protected set { }
         }
 
-        private float value, total;
+        #region Public Methods
+        public void TurnOnLight(Light _l) => _l.enabled = true;
+        public void TurnOffLight(Light _l) => _l.enabled = false;
+        #endregion
 
-        private int hits;
-
-        private RaycastHit _hit;
+        private float inRange;
+        private bool trueIntensity, trueColor;
         
         private void Start() // Refreshing
         {
-            Sync();
+            DetectedLights = new List<Light>();
+            PreviousLights = Array.Empty<Light>();
         }
 
-        /// <summary>
-        /// Light Finder will be sync on source
-        /// </summary>
-        public void Sync()
-        {
-            lightFinder?.SyncDetection(sources);
-        }
-
-        public void UnSync()
-        {
-            lightFinder?.UnSyncDetection(sources);
-        }
-
-        private void Reset()
-        {
-            OnValidate();
-        }
-
-        private int count;
-        private void OnValidate()
-        {
-            count = 0;
-            total = 0;
-            foreach (var t in sources)
-            {
-                if (t)
-                {
-                    count++;
-                    total += t.intensity;
-                }
-            }
-        }
-
-        private float delta;
-        private float lastValue;
         protected override void OnCast()
         {
-#if UNITY_EDITOR
-            CleanGate();
-#endif
-            lastValue = value;
-            
-            value = 1;
-            foreach (var _l in sources)
-            {
-                if (!_l) continue;
-                if (_l.type == LightType.Directional)
-                {
-                    RaycastHit _h;
-                    if (radius > 0)
-                    {
-                        Physics.Raycast(transform.position, -_l.transform.forward, out _h, Mathf.Infinity,
-                            blockLayer.value, triggerInteraction);
-                    }
-                    else
-                    {
-                        Physics.SphereCast(transform.position, radius, -_l.transform.forward, out _h,
-                            Mathf.Infinity,
-                            blockLayer.value, triggerInteraction);
-                    }
+            DetectedLights.Clear();
 
-                    if (_h.transform)
-                    {
-                        value -= _l.intensity / total;
-                    }
-                }
-                else
-                {
-                    var _dir = _l.transform.position - transform.position;
-                    RaycastHit _h;
-                    if (radius > 0)
-                    {
-                        Physics.Raycast(transform.position, _dir, out _h, _dir.magnitude
-                         ,blockLayer.value, triggerInteraction);
-                    }
-                    else
-                    {
-                        Physics.SphereCast(transform.position, radius, _dir, out _h, _dir.magnitude, blockLayer.value, triggerInteraction);
-                    }
-                    
-                    if (_h.transform)
-                    {
-                        value -= _l.intensity / total;
-                    }
-                }
-            }
 #if UNITY_EDITOR
-            GizmoGate += () =>
-            {
-                GizmoColor = Color.Lerp(Color.black, Color.white, value);
-                if (radius > 0)
-                {
-                    DrawSphere(transform.position, transform.up, radius+RCProPanel.elementDotSize);
-                    DrawSphere(transform.position, transform.up, radius);
-                }
-            };
+            GizmoGate = null;
 #endif
 
-            if (lastValue != value)
+            foreach (var l in Lights)
             {
-                if (value == 1f)
+                if (!l || !InLayer(l.gameObject)) continue;
+                if (Vector3.Distance(l.transform.position, transform.position) > l.range) continue;
+                trueIntensity = l.intensity < minIntensity || l.intensity > maxIntensity;
+                trueColor = l.color.InColorTolerance(targetColor, colorTolerance);
+#if UNITY_EDITOR
+                GizmoGate += () =>
                 {
-                    onFullLight?.Invoke();
-                }
-                else if (value == 0f)
-                {
-                    onFullShadow?.Invoke();
-                }
+                    Gizmos.DrawLine(transform.position, l.transform.position);
+                    Gizmos.color = trueIntensity && trueColor ? DetectColor : DefaultColor;
+                    Gizmos.DrawWireSphere(l.transform.position, l.range);
+                    Gizmos.color = l.color;
+                    Gizmos.DrawWireSphere(l.transform.position, l.range / .95f);
+                };
+#endif
+                DetectedLights.Add(l);
             }
+
+            CallEvents(DetectedLights, PreviousLights, onDetectLight, onNewLight, onLostLight);
         }
 
 #if UNITY_EDITOR
 #pragma warning disable CS0414
-        private static string Info = "Raycast processing scattered in the environment to detect the color and brightness of light with the input of specific sources." +HPreview+ HDependent;
+        private static string Info = "Detection and filtering of scene lights based on filtration." + HDirectional;
 #pragma warning restore CS0414
+        
+        private readonly string[] CEventNames = {"onDetectLight", "onNewLight", "onLostLight"};
         internal override void OnGizmos() => EditorUpdate();
         internal override void EditorPanel(SerializedObject _so, bool hasMain = true, bool hasGeneral = true,
             bool hasEvents = true,
@@ -171,19 +88,21 @@ namespace RaycastPro.Detectors
         {
             if (hasMain)
             {
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(lightFinder)));
-                RCProEditor.PropertyArrayField(_so.FindProperty(nameof(sources)), "Lights".ToContent("Points"),
-                    (i) => $"Light {i+1}".ToContent($"Index {i}"));
+                if (GUILayout.Button(CCollectAll)) Lights = FindObjectsOfType<Light>();
 
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(blockLayer)));
-
-                RadiusField(_so);
-
+                var prop = _so.FindProperty(nameof(Lights));
                 BeginVerticalBox();
-                EditorGUILayout.PropertyField(_so.FindProperty(nameof(changeSharpness)));
-                PropertyTimeModeField(_so.FindProperty(nameof(timeMode)));
-                EndVertical();
+                RCProEditor.PropertyArrayField(prop,
+                    CLight.ToContent(),
+                    i => $"Light {i + 1}".ToContent($"Index {i}"));
 
+                EndVertical();
+                
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(minIntensity)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(minIntensity)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(maxIntensity)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(targetColor)));
+                EditorGUILayout.PropertyField(_so.FindProperty(nameof(colorTolerance)));
             }
 
             if (hasGeneral)
@@ -195,12 +114,15 @@ namespace RaycastPro.Detectors
             if (hasEvents)
             {
                 EventField(_so);
-                if (EventFoldout) RCProEditor.EventField(_so, new string[] {nameof(onFullLight), nameof(onFullShadow)});
+                if (EventFoldout) RCProEditor.EventField(_so, CEventNames);
             }
 
             if (hasInfo) InformationField(PanelGate);
         }
         protected override void DrawDetectorGuide(Vector3 point) { }
 #endif
+
+        public List<Light> DetectedLights { get; set; } = new List<Light>();
+        private Light[] PreviousLights = Array.Empty<Light>();
     }
 }

@@ -1,4 +1,5 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,14 +24,13 @@ public class Track : MonoBehaviour
     }
 
     private Tweener alertTween;
-    public void DoAlert(float duration = 1f, Color color = default, Action onComplete = null)
+    public void DoAlert(float duration = 1f, Color color = default)
     {
         alertTween.SafeKill();
-        alertImage.DOColor(color == default ? Color.white : color, duration);
         alertTween = alertImage.DOFillAmount(1, duration).OnComplete(() =>
         {
+            alertImage.DOColor(color == default ? Color.white : color, .4f);
             alertImage.transform.DOPunchScale(Vector3.one * 0.5f, .4f);
-            onComplete?.Invoke();
         });
     }
     public void ResetAlert()

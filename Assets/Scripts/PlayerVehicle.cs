@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MoreMountains.Feedbacks;
-using SupersonicWisdomSDK;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -40,7 +39,7 @@ public class PlayerVehicle : MonoBehaviour
     
     public static System.Action OnExploded;
 
-    private CarCore core;
+    public CarCore Core;
     public bool IsActive
     {
         get;
@@ -56,6 +55,10 @@ public class PlayerVehicle : MonoBehaviour
     private Rigidbody rigidbody;
     private Vector3 direction;
 
+
+    private float fireRateMultiplyer;
+    private float lastInputTouchTime;
+
     #region Cached_Animatios
 
     private static readonly int Reset = Animator.StringToHash("reset");
@@ -68,7 +71,7 @@ public class PlayerVehicle : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
-        core = GetComponent<CarCore>();
+        Core = GetComponent<CarCore>();
 
         levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
         List<LevelIndicatorUI> allLevelUIs = GetComponentsInChildren<LevelIndicatorUI>(true).ToList();
@@ -80,9 +83,11 @@ public class PlayerVehicle : MonoBehaviour
 
     public void InitPlayMode()
     {
+        fireRateMultiplyer = 1f;
+        lastInputTouchTime = -1f;
         upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         anim.SetTrigger(Reset);
-        core.Restore();
+        Core.Restore();
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = true;
@@ -168,6 +173,16 @@ public class PlayerVehicle : MonoBehaviour
         if (!IsActive || isChanging)
             return;
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            lastInputTouchTime = Time.timeSinceLevelLoad;
+            fireRateMultiplyer = 3f;
+        }
+        else if (Time.timeSinceLevelLoad - lastInputTouchTime > 0.2f)
+        {
+            fireRateMultiplyer = 1f;
+        }
+
         float height = getDistanceToGround();
 
         if (!isHovering && height > convertHeight)
@@ -248,11 +263,37 @@ public class PlayerVehicle : MonoBehaviour
             Shoot();
             lastTimeShooting = Time.timeSinceLevelLoad;
         }
+        
+        if (!UserManager.Instance.Data.SeenMoveTutorial)
+        {
+            if (currentSpeed == 0f)
+            {
+                TutorialManager.Instance.ShowMoveHint();
+            }
+            else
+            {
+                UserManager.Instance.SeenMoveTutorial();
+                TutorialManager.Instance.Hide();
+            }
+        }
+        
+        if (!UserManager.Instance.Data.SeenFlyTutorial && UserManager.Instance.Data.SeenMoveTutorial && currentSpeed>0f && transform.position.y<10f)
+        {
+            if (!isHovering)
+            {
+                TutorialManager.Instance.ShowFlyHint();
+            }
+            else
+            {
+                UserManager.Instance.SeenFlyTutorial();
+                TutorialManager.Instance.Hide();
+            }
+        }
     }
 
     private bool CanShoot()
     {
-        if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / Config.FireRate) && gunExitPoints.Length!=0)
+        if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / (Config.FireRate*fireRateMultiplyer)) && gunExitPoints.Length!=0)
         {
             if (Config.AlwaysShoot)
             {
@@ -294,7 +335,7 @@ public class PlayerVehicle : MonoBehaviour
         {
 
             
-            rigidbody.velocity = transform.forward * core.ApplySpeedBuff(currentSpeed);
+            rigidbody.velocity = transform.forward * Core.ApplySpeedBuff(currentSpeed);
             rigidbody.angularVelocity = Vector3.zero;
         }
         else
@@ -308,28 +349,12 @@ public class PlayerVehicle : MonoBehaviour
 
     public void Explode()
     {
-        if (!IsActive)
-            return;
-        
-        CameraController.Instance.TakeLongShot(transform.position, (transform.position-Camera.main.transform.position).normalized);
-
         explodeFeedback.PlayFeedbacks();
-        Deactivate();
-        Debug.Log($"Run {UserManager.Instance.Data.Run} Ended");
-        try
-        {
-            SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
-        }
-        catch
-        {
-        }
-        UserManager.Instance.NextRun();
     }
 
     public void Deactivate()
     {
         IsActive = false;
-        CarCore._.End(false);
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
         anim.SetBool(Hover, false);

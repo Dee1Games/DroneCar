@@ -6,19 +6,19 @@ public class UserData
 {
     public int Level;
     public int Run;
-    public VehicleID CurrentVehicleID;
-    public List<VehicleID> OwnedVehicles;
     public List<VehicleUpgradeData> VehicleUpgrades;
     public int Coins;
     public int UpgradeCount;
     public List<UpgradeLevel> MergePlatform;
+    public float MonsterHealth;
+    public bool SeenMergeTutorial;
+    public bool SeenMoveTutorial;
+    public bool SeenFlyTutorial;
 
     public UserData()
     {
         Level = 1;
         Run = 1;
-        CurrentVehicleID = VehicleID.Vehicle_01;
-        OwnedVehicles = new List<VehicleID>() {VehicleID.Vehicle_01};
         VehicleUpgrades = new List<VehicleUpgradeData>()
         {
             new VehicleUpgradeData()
@@ -44,5 +44,9 @@ public class UserData
             new UpgradeLevel {Type = UpgradeType.Tire, Level = -1},
             new UpgradeLevel {Type = UpgradeType.Tire, Level = -1}
         };
+        MonsterHealth = 1f;
+        SeenMergeTutorial = false;
+        SeenMoveTutorial = false;
+        SeenFlyTutorial = false;
     }
 }

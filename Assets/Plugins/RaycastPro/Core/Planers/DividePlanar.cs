@@ -24,7 +24,7 @@ namespace RaycastPro.Planers
             switch (baseDirection)
             {
                 case DirectionOutput.NegativeHitNormal: forward = -raySensor.hit.normal; return;
-                case DirectionOutput.HitDirection: forward = raySensor.HitDirection.normalized; return;
+                case DirectionOutput.HitDirection: forward = raySensor.HitDirection; return;
                 case DirectionOutput.SensorLocal: forward = raySensor.LocalDirection.normalized; return;
             }
             forward = transform.forward;
