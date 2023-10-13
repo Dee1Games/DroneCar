@@ -67,6 +67,10 @@ public class CarCore : MonoBehaviour
         get => hp;
         set
         {
+            if (value < hp)
+            {
+                PlayerVehicle.OnTookDamage();
+            }
             hp = Mathf.Clamp(value, 0, maxHp);
             UI_Core._.carHealth.UpdateHealthUI(hp, maxHp);
             if (hp <= 0)

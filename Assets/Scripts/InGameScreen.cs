@@ -12,11 +12,13 @@ public class InGameScreen : UIScreen
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject retryButton;
+    [SerializeField] private Animator damageUI;
 
     private void OnEnable()
     {
         Monster.OnHealthChange += UpdateMonsterHealthBar;
         PlayerVehicle.OnExploded += HideRetryButton;
+        PlayerVehicle.OnTookDamage += ShowDamageUI;
         
         _camera = Camera.main;
     }
@@ -25,6 +27,7 @@ public class InGameScreen : UIScreen
     {
         Monster.OnHealthChange -= UpdateMonsterHealthBar;
         PlayerVehicle.OnExploded -= HideRetryButton;
+        PlayerVehicle.OnTookDamage -= ShowDamageUI;
     }
 
     public override void Init()
@@ -68,5 +71,9 @@ public class InGameScreen : UIScreen
     private void HideRetryButton()
     {
         retryButton.SetActive(false);
+    }
+    private void ShowDamageUI()
+    {
+        damageUI.SetTrigger("damage");
     }
 }

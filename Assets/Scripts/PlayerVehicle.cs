@@ -38,6 +38,7 @@ public class PlayerVehicle : MonoBehaviour
     private float lastTimeShooting;
     
     public static System.Action OnExploded;
+    public static System.Action OnTookDamage;
 
     public CarCore Core;
     public bool IsActive

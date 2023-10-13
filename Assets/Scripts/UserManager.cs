@@ -51,6 +51,7 @@ public class UserManager : MonoBehaviour
     public void NextLevel()
     {
         ResetVehicleUpgrades();
+        MergePlatform.Instance.ClearPlatform();
         Data.Level++;
         Data.MonsterHealth = 1f;
         SaveManager.Instance.SaveUserData(Data);
