@@ -38,7 +38,7 @@ public class WeakPoint : MonoBehaviour, IHitable
             CurrentActive = Monster._.weakPoints.First(w => w.index == value);
             CurrentActive.transform.DOScale(.4f, 1f);
             CurrentActive.target.enabled = true;
-            UI_Core._.weakPointIndex.text = value.ToString();
+        //    UI_Core._.weakPointIndex.text = value.ToString();
         }
     }
     
