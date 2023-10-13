@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4000013197965828}
   - component: {fileID: 198000012107099302}
   - component: {fileID: 199000010454953822}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: sphereFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4893,7 +4893,7 @@ GameObject:
   - component: {fileID: 4000012572821648}
   - component: {fileID: 198000011708101332}
   - component: {fileID: 199000010259268804}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: flarespikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4932,7 +4932,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9703,7 +9703,7 @@ GameObject:
   - component: {fileID: 4000013957168258}
   - component: {fileID: 198000012992438334}
   - component: {fileID: 199000011592337768}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: fire_floaters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9742,7 +9742,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -14607,7 +14607,7 @@ GameObject:
   - component: {fileID: 4000010768021990}
   - component: {fileID: 198000012525642622}
   - component: {fileID: 199000012959962680}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: flarespikes_delayed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14646,7 +14646,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -19426,7 +19426,7 @@ GameObject:
   - component: {fileID: 4000012435647134}
   - component: {fileID: 198000011314615104}
   - component: {fileID: 199000010104902038}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: inner_fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19465,7 +19465,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -24226,7 +24226,7 @@ GameObject:
   - component: {fileID: 4000014047895246}
   - component: {fileID: 198000012253202536}
   - component: {fileID: 199000011999158468}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: decal_heatedStrike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24265,7 +24265,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -24804,7 +24804,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 0
+    type: 10
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -28995,7 +28995,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -29036,7 +29036,7 @@ GameObject:
   - component: {fileID: 4000010834443888}
   - component: {fileID: 198000011852537954}
   - component: {fileID: 199000012853719644}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: circle_area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29075,7 +29075,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -33927,7 +33927,7 @@ GameObject:
   - component: {fileID: 4000010921236120}
   - component: {fileID: 198000011976894484}
   - component: {fileID: 199000010420214726}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Dismember_Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33943,7 +33943,7 @@ Transform:
   m_GameObject: {fileID: 1000012903210382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.35, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4000012572821648}
@@ -33971,14 +33971,14 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 4
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -38763,7 +38763,7 @@ GameObject:
   - component: {fileID: 4000012530910420}
   - component: {fileID: 198000014005480098}
   - component: {fileID: 199000012201596490}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: circularSmoke_component
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38802,7 +38802,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -43438,7 +43438,7 @@ GameObject:
   - component: {fileID: 4028938907317232}
   - component: {fileID: 198969987391498998}
   - component: {fileID: 199833769802365476}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: firey_debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43478,7 +43478,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -48159,7 +48159,7 @@ GameObject:
   - component: {fileID: 4184707956609004}
   - component: {fileID: 198223017791518046}
   - component: {fileID: 199871834362751436}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: smokeUp_component
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48198,7 +48198,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -52825,7 +52825,7 @@ GameObject:
   - component: {fileID: 4706000119258396}
   - component: {fileID: 198239750201079418}
   - component: {fileID: 199531533555254196}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: explosion_lamp_component
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52864,7 +52864,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -57714,7 +57714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4357761477767002}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Plane Transform 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57747,7 +57747,7 @@ GameObject:
   - component: {fileID: 4919008459236956}
   - component: {fileID: 198606377281600422}
   - component: {fileID: 199985759621221332}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57786,7 +57786,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -58343,7 +58343,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 0
+    type: 10
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -58418,7 +58418,7 @@ ParticleSystem:
     m_SpriteRenderer: {fileID: 0}
     m_UseMeshMaterialIndex: 0
     m_UseMeshColors: 1
-    alignToDirection: 0
+    alignToDirection: 1
     m_Texture: {fileID: 0}
     m_TextureClipChannel: 3
     m_TextureClipThreshold: 0
@@ -62534,7 +62534,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -62555,7 +62555,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_VertexStreams: 0001030405
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -62574,8 +62574,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4943179974077624}
   - component: {fileID: 108886344203612496}
-  - component: {fileID: 3190197881066097986}
-  m_Layer: 0
+  - component: {fileID: 5531726488465415197}
+  m_Layer: 2
   m_Name: light_fireexplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62659,7 +62659,7 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &3190197881066097986
+--- !u!114 &5531726488465415197
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -62690,7 +62690,7 @@ GameObject:
   - component: {fileID: 4983770871882892}
   - component: {fileID: 198060361127641440}
   - component: {fileID: 199229083211244562}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: decals_group_component
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62731,7 +62731,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -67516,7 +67516,7 @@ GameObject:
   - component: {fileID: 4300387626559020}
   - component: {fileID: 198937352194865334}
   - component: {fileID: 199964353092550464}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67555,7 +67555,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -72133,7 +72133,7 @@ GameObject:
   - component: {fileID: 4887078599520268}
   - component: {fileID: 198254225246539200}
   - component: {fileID: 199614175852495628}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: firey_debris_group_component
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72174,7 +72174,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:

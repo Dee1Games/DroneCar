@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2312aa5b1363ae64b8f49530df3d5a7d, type: 3}
   m_Name: LevelsConfig
   m_EditorClassIdentifier: 
-  level: 0
   Levels:
   - MonsterData:
       Health: 100
@@ -23,7 +22,7 @@ MonoBehaviour:
       Health: 100
     MapPrefab: {fileID: 2466872084783868318, guid: 66e50263aa391334aa6e1deb6e5f6aec, type: 3}
     MonsterPrefab: {fileID: 206502350192013607, guid: e8062105187d43e43856cb7c31fcedc6, type: 3}
-    Vehicle: 1
+    Vehicle: 6
   - MonsterData:
       Health: 0
     MapPrefab: {fileID: 2466872084783868318, guid: 66e50263aa391334aa6e1deb6e5f6aec, type: 3}
@@ -64,3 +63,8 @@ MonoBehaviour:
     MapPrefab: {fileID: 2466872084783868318, guid: 66e50263aa391334aa6e1deb6e5f6aec, type: 3}
     MonsterPrefab: {fileID: 2244784723894402073, guid: ee7b2da281879a144a19251584bcecf8, type: 3}
     Vehicle: 0
+  RewardRunMultiplier: 10
+  RewardDamageMultiplier: 5
+  SpaceLimit: 900
+  InitMonsterHealth: 2000
+  AddUpMonsterHealth: 250

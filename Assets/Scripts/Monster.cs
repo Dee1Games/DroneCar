@@ -27,6 +27,7 @@ public class Monster : MonoBehaviour
         {
             health = value;
             OnHealthChange?.Invoke(health, data.Health);
+            UserManager.Instance.SetMonsterHealth(health/data.Health);
         }
     }
 
@@ -52,7 +53,7 @@ public class Monster : MonoBehaviour
     public void Init(MonsterData data)
     {
         this.data = data;
-        Health = data.Health;
+        Health = data.Health*UserManager.Instance.Data.MonsterHealth;
         _ = this;
 
         foreach (WeakPoint p in weakPoints)

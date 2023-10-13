@@ -38,6 +38,7 @@ public class InGameScreen : UIScreen
         retryButton.SetActive(true);
         coinsText.text = UserManager.Instance.Data.Coins.ToString();
         levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
+        monsterHealthUI.SetHealth(UserManager.Instance.Data.MonsterHealth);
     }
 
     public override void Hide()
@@ -54,13 +55,7 @@ public class InGameScreen : UIScreen
     
     public void OnClick_Retry()
     {
-        Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
-        try
-        {
-            //SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
-        } catch {}
-        
-        GameManager.Instance.Player.Core.End();
+        GameManager.Instance.Player.Core.End(true, false);
         
         GameManager.Instance.GoToUpgradeMode();
     }

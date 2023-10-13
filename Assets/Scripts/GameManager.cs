@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour
         catch
         {
         }
+        
+        LevelManager.Instance.InitCurrentLevel();
     }
 
     public void SpawnPlayer()
