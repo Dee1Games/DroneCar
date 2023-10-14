@@ -14,6 +14,8 @@ public class OffScreenIndicator : MonoBehaviour
     [Tooltip("Distance offset of the indicators from the centre of the screen")]
     [SerializeField] private float screenBoundOffset = 0.9f;
 
+    [SerializeField] private LayerMask enemylayer;
+
     private Camera mainCamera;
     private Vector3 screenCentre;
     private Vector3 screenBounds;
@@ -65,6 +67,22 @@ public class OffScreenIndicator : MonoBehaviour
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
+            }
+
+            if (GameManager.Instance.Player != null)
+            {
+                Vector3 playerPos = GameManager.Instance.Player.transform.position;
+                Vector3 dir = playerPos - target.transform.position;
+                Vector3 dirN = dir.normalized;
+                Debug.DrawRay(target.transform.position, dir, Color.blue);
+                if (Physics.Raycast(target.transform.position, dirN, dir.magnitude, enemylayer))
+                {
+                    indicator.SetImageAlpha(0.2f);
+                }
+                else
+                {
+                    indicator.SetImageAlpha(1f);
+                }
             }
         }
     }

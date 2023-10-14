@@ -115,6 +115,7 @@ public class CarCore : MonoBehaviour
         if (hitable != null)
         {
             End(false);
+            UserManager.Instance.SeenFlyTutorial();
             hitable.OnHit(this, vehicle.Bomb);
             CameraZoomOut();
         }

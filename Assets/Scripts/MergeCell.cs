@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MergeCell : MonoBehaviour
@@ -14,11 +15,16 @@ public class MergeCell : MonoBehaviour
     
     public bool IsFull => (Item!=null);
 
+    [SerializeField] private SellUI sellUI;
+
     public void Init()
     {
         foreach (Transform child in transform)
         {
-            Destroy(child.gameObject);
+            if (child.GetComponent<SellUI>() == null)
+            {
+                Destroy(child.gameObject);
+            }
         }
         RemoveItem();
     }
@@ -50,5 +56,27 @@ public class MergeCell : MonoBehaviour
         MergePlatform.Instance.ItemSelected(Item);
         RemoveItem();
         UserManager.Instance.SetMergePlatformCell(Index, UpgradeType.Tire, -1);
+    }
+
+    public void ShowSellUI()
+    {
+        sellUI.gameObject.SetActive(true);
+    }
+
+    public void HideSellUI()
+    {
+        sellUI.gameObject.SetActive(false);
+    }
+
+    public void OnClick_Sell()
+    {
+        if (Item == null)
+            return;
+        DestroyImmediate(Item.gameObject);
+        RemoveItem();
+        UserManager.Instance.SetMergePlatformCell(Index, UpgradeType.Tire, -1);
+        UserManager.Instance.AddCoins(Mathf.RoundToInt(0.8f * MergePlatform.Instance.GetCurrentUpgradePrice() * (Mathf.Pow(2, (UserManager.Instance.Data.Level-1)))));
+        UIManager.Instance.Refresh();
+        
     }
 }

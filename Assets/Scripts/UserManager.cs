@@ -161,4 +161,10 @@ public class UserManager : MonoBehaviour
         Data.SeenFlyTutorial = true;
         SaveManager.Instance.SaveUserData(Data);
     }
+
+    public void SeenHitGiantTutorial()
+    {
+        Data.SeenHitGiantTutorial = true;
+        SaveManager.Instance.SaveUserData(Data);
+    }
 }

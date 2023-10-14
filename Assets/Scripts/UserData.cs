@@ -14,6 +14,7 @@ public class UserData
     public bool SeenMergeTutorial;
     public bool SeenMoveTutorial;
     public bool SeenFlyTutorial;
+    public bool SeenHitGiantTutorial;
 
     public UserData()
     {
@@ -48,5 +49,6 @@ public class UserData
         SeenMergeTutorial = false;
         SeenMoveTutorial = false;
         SeenFlyTutorial = false;
+        SeenHitGiantTutorial = false;
     }
 }

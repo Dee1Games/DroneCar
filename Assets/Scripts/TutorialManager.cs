@@ -14,6 +14,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject play;
     [SerializeField] private GameObject move;
     [SerializeField] private GameObject fly;
+    [SerializeField] private GameObject hitGiant;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class TutorialManager : MonoBehaviour
         assemble.SetActive(false);
         move.SetActive(false);
         fly.SetActive(false);
+        hitGiant.SetActive(false);
     }
 
     public void HideHand()
@@ -82,6 +84,12 @@ public class TutorialManager : MonoBehaviour
     {
         Hide();
         fly.SetActive(true);
+    }
+
+    public void ShowHitGiantHint()
+    {
+        Hide();
+        hitGiant.SetActive(true);
     }
     
     public void ShowHand(Vector3 a , Vector3 b)

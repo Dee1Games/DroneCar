@@ -20,6 +20,7 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private GameObject[] visuals;
     [SerializeField] private MMFeedbacks explodeFeedback;
     [SerializeField] private Animator anim;
+    [SerializeField] private LayerMask enemyLayer;
     
     private List<UpgradeLevel> upgrades;
     private float acceleration;
@@ -297,6 +298,18 @@ public class PlayerVehicle : MonoBehaviour
             else
             {
                 UserManager.Instance.SeenFlyTutorial();
+                TutorialManager.Instance.Hide();
+            }
+        }
+
+        if (isHovering && !UserManager.Instance.Data.SeenHitGiantTutorial)
+        {
+            if (!Physics.Raycast(transform.position, transform.forward, 1000f, enemyLayer))
+            {
+                TutorialManager.Instance.ShowHitGiantHint();
+            }
+            else
+            {
                 TutorialManager.Instance.Hide();
             }
         }
