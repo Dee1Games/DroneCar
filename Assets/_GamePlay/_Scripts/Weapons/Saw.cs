@@ -6,6 +6,7 @@ public class Saw : Packable
 {
     [SerializeField] private float sawSpeed;
     private static readonly int CSaw = Animator.StringToHash("saw");
+    public TrailRenderer trailRenderer;
 
     public float SawSpeed
     {

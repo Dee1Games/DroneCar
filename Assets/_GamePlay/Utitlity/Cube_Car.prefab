@@ -50,7 +50,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
-  EventFoldout: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
   useLinerClampedPosition: 0
@@ -102,7 +101,6 @@ GameObject:
   - component: {fileID: 8702064041907007548}
   - component: {fileID: 2734375042387123080}
   - component: {fileID: 5087906565969365271}
-  - component: {fileID: 195018553976810223}
   m_Layer: 6
   m_Name: Cube_Car
   m_TagString: Untagged
@@ -210,6 +208,10 @@ MonoBehaviour:
   visuals: []
   explodeFeedback: {fileID: 0}
   anim: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  Core: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -255,63 +257,3 @@ MonoBehaviour:
     m_RotationOrder: 4
   vehicle: {fileID: 2734375042387123080}
   targetOn: {fileID: 0}
---- !u!114 &195018553976810223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8702064041907007551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41f425a4a83914b04af3f1642c000f5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  otherLookAtTarget: {fileID: 0}
-  otherTargetsRoot: {fileID: 0}
-  positionOffsetSpace: {fileID: 0}
-  weightCurves:
-  - type: 0
-    curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 1.8883513
-        outSlope: 1.8883513
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.50970596
-        value: 0.9625039
-        inSlope: -0.037382185
-        outSlope: -0.037382185
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: -1.9631157
-        outSlope: -1.9631157
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  multipliers: []
-  events:
-  - time: 2
-    pause: 0
-    pickUp: 0
-    animations: []
-    messages: []
-    unityEvent:
-      m_PersistentCalls:
-        m_Calls: []

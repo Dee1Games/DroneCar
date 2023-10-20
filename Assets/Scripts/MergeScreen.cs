@@ -36,7 +36,8 @@ public class MergeScreen : UIScreen
                 TutorialManager.Instance.ShowBuyHint();
             }
 
-            playButton.interactable = false;
+            //این قسمت رو یک چک بزن 
+            //playButton.interactable = false;
         }
         else
         {

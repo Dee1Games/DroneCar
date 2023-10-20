@@ -5,7 +5,7 @@ using RaycastPro.Casters;
 using RaycastPro.RaySensors;
 using UnityEngine;
 
-public abstract class GunCore : MonoBehaviour
+public class GunCore : MonoBehaviour
 {
     public AdvanceCaster caster;
     public Color alertColor = Color.red;

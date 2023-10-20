@@ -5,7 +5,7 @@ using UnityEngine;
 public class Robot_Double_Gun_AI : AI_Core
 {
     [Title("Weapons")]
-    public Gun gun;
+    public GunCore gun;
     public Shield shield;
     
     [SerializeField] private float turnStopDelay = 8;
@@ -14,6 +14,8 @@ public class Robot_Double_Gun_AI : AI_Core
     {
         StartCoroutine(TurnRateStop());
         StartCoroutine(ShieldRun());
+        
+        
     }
     
     private IEnumerator ShieldRun()

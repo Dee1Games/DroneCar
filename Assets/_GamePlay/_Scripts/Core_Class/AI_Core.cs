@@ -12,9 +12,8 @@ public class AI_Core : MonoBehaviour
 {
     
     // Start is Free Here!!
-    
-    
     protected Giant_Core myCore;
+    [SerializeField] protected Transform pivot;
 
     [Range(0, 1)]
     public float hardiness = 0f;
@@ -62,7 +61,7 @@ public class AI_Core : MonoBehaviour
     public NavMeshAgent Agent => agent;
     
     protected CarCore carCore;
-    
+
     protected void Awake()
     {
         myCore = GetComponent<Giant_Core>();
@@ -70,6 +69,7 @@ public class AI_Core : MonoBehaviour
         sightDetector = GetComponentInChildren<SightDetector>();
         animator = GetComponentInChildren<Animator>();
         agent = GetComponentInChildren<NavMeshAgent>();
+        
 
         sightDetector?.onNewCollider.AddListener(col =>
         {
@@ -202,4 +202,14 @@ public class AI_Core : MonoBehaviour
             }
         }).OnComplete(() =>  SetIKsTarget(null));
     }
+
+    #region Properties
+
+    protected Vector3 CarDirection => Vector3.ProjectOnPlane(carCore.transform.position - transform.position, transform.up);
+    protected float Dot => Vector3.Dot(transform.forward, CarDirection.normalized);
+
+    protected float Distance => Vector3.Distance(pivot.position, carCore.transform.position);
+
+    #endregion
+
 }

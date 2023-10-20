@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 400000}
   - component: {fileID: 9500000}
   - component: {fileID: 8628742547573100982}
-  - component: {fileID: 8991094184025916173}
+  - component: {fileID: 2829188132040998048}
   m_Layer: 0
   m_Name: Mech_Walker_Legs_Lt
   m_TagString: Untagged
@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4d041e49afe4944a1480e09432adba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monster: {fileID: 0}
   fullBodyBipedIK: {fileID: 0}
   armor: 0
   giantIcon: {fileID: 0}
@@ -79,7 +80,7 @@ MonoBehaviour:
   drag: 3
   angularDrag: 3
   particleSystem: {fileID: 0}
---- !u!114 &8991094184025916173
+--- !u!114 &2829188132040998048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,18 +89,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1983839848b72f14e839dd3ff1544ef1, type: 3}
+  m_Script: {fileID: 11500000, guid: 171d27c2569787d458b08ddb59511d59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hardiness: 0
-  sightDetector: {fileID: 0}
-  lookAtIK: {fileID: 0}
   allowTurning: 1
   allowSitting: 0
   aimIks: []
   IKs: []
   handsUp: 0
   refreshAimIks: 0
+  gun: {fileID: 0}
+  shield: {fileID: 0}
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0

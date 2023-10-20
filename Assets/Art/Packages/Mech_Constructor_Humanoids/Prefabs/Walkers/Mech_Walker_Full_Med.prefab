@@ -1828,15 +1828,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a629ced6d9635334a945665ce5b8736b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pivot: {fileID: 0}
   hardiness: 0
-  sightDetector: {fileID: 0}
-  lookAtIK: {fileID: 1994355368650669312}
   allowTurning: 1
   allowSitting: 0
   aimIks: []
   IKs: []
   handsUp: 0
   refreshAimIks: 0
+  sawPeriodTime: 6
+  minimumDistanceThreshold: 15
+  sharpness: 0
   saw: {fileID: 0}
 --- !u!1 &100102
 GameObject:

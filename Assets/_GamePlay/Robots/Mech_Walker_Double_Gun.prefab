@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6642172655797098076}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0aea4f039d54275960047154c0caedb, type: 3}
   m_Name: 
@@ -1207,6 +1207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9af8a7d1daafe940b9cfaa4c738de5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pivot: {fileID: 0}
   hardiness: 0
   allowTurning: 1
   allowSitting: 0
@@ -1216,10 +1217,10 @@ MonoBehaviour:
   IKs: []
   handsUp: 0
   refreshAimIks: 0
-  turnStopDelay: 8
-  turnStopTime: 10
   gun: {fileID: 6642167089431836765}
   shield: {fileID: 6056266654561034444}
+  turnStopDelay: 8
+  turnStopTime: 10
 --- !u!114 &6642167089431836765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2876,6 +2877,10 @@ PrefabInstance:
       propertyPath: myCore
       value: 
       objectReference: {fileID: 7398747037815146370}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
+      objectReference: {fileID: 8621293714134413276}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
       value: 0
