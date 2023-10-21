@@ -28,7 +28,6 @@ public class Robot_Double_Gun_AI : AI_Core
             yield return new WaitForSeconds(4f);
             shield?.Deactivate();
         }
-        shield?.Deactivate();
     }
     public IEnumerator TurnRateStop()
     {

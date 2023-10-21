@@ -19,15 +19,18 @@ public class GunCore : MonoBehaviour
     private RaySensor mainSensor;
     private void Start()
     {
-        TryGetComponent(out caster);
+        ;
 
-        mainSensor = caster.raySensors[0];
-        if (onCastParticle)
+        if (TryGetComponent(out caster))
         {
-            caster.onCast.AddListener(() =>
+            mainSensor = caster.raySensors[0];
+            if (onCastParticle)
             {
-                Instantiate(onCastParticle, mainSensor.transform.position, mainSensor.transform.rotation);
-            });
+                caster.onCast.AddListener(() =>
+                {
+                    Instantiate(onCastParticle, mainSensor.transform.position, mainSensor.transform.rotation);
+                });
+            }
         }
     }
 
@@ -35,13 +38,19 @@ public class GunCore : MonoBehaviour
 
     public void Activate()
     {
-        UI_Core._?.track.DoAlert(activeDelay, alertColor);
-        DOVirtual.DelayedCall(activeDelay, () => caster.enabled = true);
+        if (caster)
+        {
+            UI_Core._?.track.DoAlert(activeDelay, alertColor);
+            DOVirtual.DelayedCall(activeDelay, () => caster.enabled = true);
+        }
     }
 
     public void Deactivate()
     {
-        UI_Core._?.track.ResetAlert();
-        caster.enabled = false;
+        if (caster)
+        {
+            UI_Core._?.track.ResetAlert();
+            caster.enabled = false;
+        }
     }
 }
