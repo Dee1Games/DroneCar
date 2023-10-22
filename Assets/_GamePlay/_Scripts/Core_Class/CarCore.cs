@@ -141,10 +141,7 @@ public class CarCore : MonoBehaviour
             return;
         
         FRay.enabled = false;
-        foreach (var aiCore in FindObjectsOfType<AI_Core>())
-        {
-            aiCore.OnEnd(this);
-        }
+
         
         if (explode)
         {

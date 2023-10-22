@@ -1,21 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
-using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class Robot_AI : AI_Core
+public class Robot_Shield_Gun_AI : AI_Core
 {
-    public Gun gun;
+    [Title("Weapons")]
+    public GunCore gun;
+    public RobotShield shield;
+
+    protected void Start()
+    {
+
+    }
+
+
     protected override void OnPlayerFound(CarCore _core)
     {
         base.OnPlayerFound(_core);
-        gun.Activate();
+        gun?.Activate();
     }
+
     protected override void OnPlayerLost(CarCore _core)
     {
         base.OnPlayerLost(_core);
-        gun.Deactivate();
+        gun?.Deactivate();
     }
 }

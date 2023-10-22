@@ -9,7 +9,7 @@ public class Giant_Core : MonoBehaviour, IHitable
     public Monster monster;
     protected AI_Core aiCore;
     protected Animator animator;
-    [HideInInspector] public FullBodyBipedIK fullBodyBipedIK;
+    public FullBodyBipedIK fullBodyBipedIK;
 
     [Title("Options", titleAlignment: TitleAlignments.Centered)]
     [Range(0, 1)]
@@ -35,6 +35,23 @@ public class Giant_Core : MonoBehaviour, IHitable
     private void Awake()
     {
         aiCore = GetComponent<AI_Core>();
+        monster = GetComponentInParent<Monster>();
+        animator = GetComponentInChildren<Animator>();
+        fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
+        
+        // Get All Ragdolls via ignore self;
+        ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
+
+        limbs = GetComponentsInChildren<Limb>();
+        foreach (var limb in limbs)
+        {
+            limb.giantCore = this;
+        }
+
+        if (UI_Core._)
+        {
+            UI_Core._.giantIcon.sprite = giantIcon;
+        }
     }
 
     public Transform GetRandomMember()
@@ -51,28 +68,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
         return fullBodyBipedIK.references.head;
     }
-    private void Start()
-    {
-        monster = GetComponentInParent<Monster>();
-        animator = GetComponentInChildren<Animator>();
-        fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
-        
-        aiCore = GetComponent<AI_Core>();
-        // Get All Ragdolls via ignore self;
-        ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
 
-        limbs = GetComponentsInChildren<Limb>();
-        foreach (var limb in limbs)
-        {
-            limb.giantCore = this;
-        }
-
-        if (UI_Core._)
-        {
-            UI_Core._.giantIcon.sprite = giantIcon;
-        }
-    }
-    
     [FoldoutGroup("Ragdoll Setup")]
     [Button("Set Ragdoll")]
     private void SetRagdoll()
