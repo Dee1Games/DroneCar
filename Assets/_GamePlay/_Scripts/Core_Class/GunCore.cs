@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using RaycastPro.Casters;
 using RaycastPro.RaySensors;
@@ -19,8 +17,6 @@ public class GunCore : MonoBehaviour
     private RaySensor mainSensor;
     private void Start()
     {
-        ;
-
         if (TryGetComponent(out caster))
         {
             mainSensor = caster.raySensors[0];

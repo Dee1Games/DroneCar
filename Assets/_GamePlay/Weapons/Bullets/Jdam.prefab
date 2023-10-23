@@ -50,8 +50,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   autoUpdate: 0
-  EventFoldout: 0
-  gizmosUpdate: 0
+  gizmosUpdate: 3
   liner: {fileID: 0}
   useLinerClampedPosition: 0
   cutOnHit: 0
@@ -82,7 +81,19 @@ MonoBehaviour:
       m_Calls: []
   onBeginDetect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6211786049363476975}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onEndDetect:
     m_PersistentCalls:
       m_Calls: []
@@ -142,21 +153,44 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   autoUpdate: 0
-  EventFoldout: 1
   gizmosUpdate: 0
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
   onCast:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7539406964681678561}
+        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7856551182254307634}
+        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onEndCast:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6211786049363476975}
-        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
+      - m_Target: {fileID: 7556153797623680155}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -165,8 +199,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7556153797623680155}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+      - m_Target: {fileID: 7856551182254307634}
+        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7539406964681678561}
+        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
         m_Arguments:
@@ -186,8 +232,9 @@ MonoBehaviour:
   moveType: 0
   callMethod: OnBullet
   messageUpward: 0
+  ownerReference: {fileID: 0}
   damage: 20
-  speed: 60
+  speed: 120
   lifeTime: 3
   endDelay: 2
   endFunction: 1
@@ -268,9 +315,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 691c54fd8fc099b458b7707a792ac704, type: 3}
+--- !u!64 &7539406964681678561 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 6839005779028982641, guid: 691c54fd8fc099b458b7707a792ac704, type: 3}
+  m_PrefabInstance: {fileID: 3911478759142237584}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7634470871455659424 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6898190799214137392, guid: 691c54fd8fc099b458b7707a792ac704, type: 3}
+  m_PrefabInstance: {fileID: 3911478759142237584}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7856551182254307634 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6575341877293866146, guid: 691c54fd8fc099b458b7707a792ac704, type: 3}
   m_PrefabInstance: {fileID: 3911478759142237584}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6092206420469377531

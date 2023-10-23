@@ -85,16 +85,29 @@ public class CameraController : MonoBehaviour
         //axis.y = 0f;
         following = false;
         float timer = 0f;
-        Vector3 startPos = transform.position;
-        Vector3 endPos = hitPoint - (axis*longShotOffset);
-        while (timer<longShotDuration)
+        // Vector3 startPos = transform.position;
+        // Vector3 endPos = hitPoint - (axis*longShotOffset);
+        // while (timer<longShotDuration)
+        // {
+        //     Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(endPos), timer / longShotDuration);
+        //     transform.position = Vector3.Lerp(transform.position, endPos, timer / longShotDuration);
+        //     timer += Time.deltaTime;
+        //     yield return new WaitForEndOfFrame();
+        // }
+
+        // Camera Long shot Fixed
+        var dir = (Monster._.com.position - transform.position).normalized;
+        var basePos = transform.position;
+        var endPos = transform.position - dir * longShotOffset;
+        var baseRot = transform.rotation;
+        while (timer <= longShotDuration)
         {
-            Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(endPos), timer / longShotDuration);
-            transform.position = Vector3.Lerp(transform.position, endPos, timer / longShotDuration);
+            transform.position = Vector3.Lerp(basePos, endPos, timer / longShotDuration);
+            transform.rotation = Quaternion.Lerp(baseRot, Quaternion.LookRotation(dir, Vector3.up), timer / longShotDuration);
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        
+
         if (GameManager.Instance.Monster.IsDead)
         {
             UIManager.Instance.ShowScreen(UIScreenID.EndLevel);

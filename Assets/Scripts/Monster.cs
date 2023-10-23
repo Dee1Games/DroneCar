@@ -15,7 +15,7 @@ public class Monster : MonoBehaviour
     
     [SerializeField] private float health = 100f;
     [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private Transform com;
+    public Transform com;
 
     /// <summary>
     /// Auto property health for better managing
@@ -56,6 +56,7 @@ public class Monster : MonoBehaviour
         Health = data.Health*UserManager.Instance.Data.MonsterHealth;
         _ = this;
 
+        
         FindWeakPoints();
         weakPoints.ForEach(w => w.gameObject.SetActive(false));
         RandomActive();
@@ -66,7 +67,7 @@ public class Monster : MonoBehaviour
     private WeakPoint _wP;
     private void RandomActive()
     {
-        if (count == weakPointCount) return;
+        if (count == weakPointCount || count == weakPoints.Count) return;
 
         _wP = weakPoints[Random.Range(0, weakPoints.Count)];
         
