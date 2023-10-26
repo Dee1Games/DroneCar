@@ -28,13 +28,7 @@ public class Target : MonoBehaviour
     /// <summary>
     /// Gets the color for the target indicator.
     /// </summary>
-    public Color TargetColor
-    {
-        get
-        {
-            return targetColor;
-        }
-    }
+    public Color TargetColor;
 
     /// <summary>
     /// Gets if box indicator is required for the target.

@@ -24,7 +24,7 @@ public class UserData
         {
             new VehicleUpgradeData()
             {
-                VehicleID = VehicleID.Vehicle_01,
+                VehicleID = VehicleID.Vehicle_00,
                 UpgradeLevels = new List<UpgradeLevel>()
                 {
                     new UpgradeLevel() {Type = UpgradeType.Tire, Level = 0},

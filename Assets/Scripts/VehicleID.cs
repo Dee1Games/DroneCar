@@ -1,5 +1,6 @@
 public enum VehicleID
 {
+    Vehicle_00,
     Vehicle_01,
     Vehicle_02,
     Vehicle_03,
