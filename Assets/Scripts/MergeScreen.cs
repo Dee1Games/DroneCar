@@ -67,11 +67,16 @@ public class MergeScreen : UIScreen
 
     public void OnClick_Play()
     {
+        if (!UserManager.Instance.Data.SeenMergeTutorial)
+            return;
         GameManager.Instance.GoToPlayMode();
     }
 
     public void OnClick_Upgrade()
     {
+        if (!UserManager.Instance.Data.SeenMergeTutorial && MergePlatform.Instance.NumberOfFullCells() >= 2)
+            return;
+        
         if (UserManager.Instance.Data.Coins >= MergePlatform.Instance.GetCurrentUpgradePrice())
         {
             MergePlatform.Instance.SpawnUpgrade();

@@ -183,7 +183,7 @@ public class MergePlatform : MonoBehaviour
         return emptyCells[Random.Range(0, emptyCells.Count)];
     }
 
-    private int NumberOfFullCells()
+    public int NumberOfFullCells()
     {
         int n = 0;
         foreach (MergeCell cell in cells)
