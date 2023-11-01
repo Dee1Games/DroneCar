@@ -12,6 +12,7 @@ public class UserData
     public List<UpgradeLevel> MergePlatform;
     public float MonsterHealth;
     public bool SeenMergeTutorial;
+    public bool SeenAssembleTutorial;
     public bool SeenMoveTutorial;
     public bool SeenFlyTutorial;
     public bool SeenHitGiantTutorial;
@@ -34,7 +35,7 @@ public class UserData
                 }
             }
         };
-        Coins = 9999999;
+        Coins = 1000;
         UpgradeCount = 1;
         MergePlatform = new List<UpgradeLevel>()
         {
@@ -47,6 +48,7 @@ public class UserData
         };
         MonsterHealth = 1f;
         SeenMergeTutorial = false;
+        SeenAssembleTutorial = false;
         SeenMoveTutorial = false;
         SeenFlyTutorial = false;
         SeenHitGiantTutorial = false;

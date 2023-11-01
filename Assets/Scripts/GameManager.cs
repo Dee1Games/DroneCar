@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         MergePlatform.Instance.Init();
         MergePlatform.Instance.Show();
         UIManager.Instance.ShowScreen(UIScreenID.Merge);
-        
+        MergePlatform.Instance.ShowTutorialsIfNeeded();
         Debug.Log($"Run {UserManager.Instance.Data.Run} Started");
         try
         {

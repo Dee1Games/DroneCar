@@ -172,7 +172,11 @@ public class Giant_Core : MonoBehaviour, IHitable
 
     public void TakeDamage(float damage)
     {
-        GameManager.Instance.CurrentRunDamage += damage;
+        if (GameManager.Instance.Player != null && GameManager.Instance.Player.IsActive)
+        {
+            GameManager.Instance.CurrentRunDamage += damage;
+        }
+            
 
         monster.Health -= damage * (1 - armor);
         
