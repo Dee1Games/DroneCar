@@ -410,9 +410,12 @@ namespace RaycastPro
                     Reload();
                 }
                 ProgressField(ammo.currentReloadTime/ammo.reloadTime, $"{ammo.currentReloadTime:F1}/{ammo.reloadTime:F1} Sec");
-                
-                EditorUtility.SetDirty(this);
-                SceneView.RepaintAll();
+
+                if (IsPlaying)
+                {
+                    SceneView.RepaintAll();
+                }
+
                 
                 EndHorizontal();
                 

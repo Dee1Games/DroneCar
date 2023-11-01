@@ -35,11 +35,10 @@ public class WeakPoint : MonoBehaviour, IHitable
         set
         {
             currentIndex = value;
-            CurrentActive = Monster._.weakPoints.First(w => w.index == value);
-            CurrentActive.transform.DOScale(.4f, 1f);
+            
+            CurrentActive = Monster._.weakPoints[currentIndex];
             CurrentActive.target.enabled = true;
             CurrentActive.target.TargetColor = Color.white;
-        //    UI_Core._.weakPointIndex.text = value.ToString();
         }
     }
     
@@ -102,7 +101,5 @@ public class WeakPoint : MonoBehaviour, IHitable
             effect.transform.up = -core.transform.forward;
         }
         attachedLimb?.Dismember();
-        
-        transform.DOScale(0, 1f).OnComplete(() => gameObject.SetActive(false));
     }
 }

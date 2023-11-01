@@ -147,11 +147,11 @@ public class ProjectileMoveScript : MonoBehaviour {
                 }
                 
                 
-                if (co.gameObject.TryGetComponent(out IHitable hit))
+                if (co.gameObject.TryGetComponent(out IHitable hit)) // Weak point
                 {
 	                hit.OnHit(CarCore._, damage);
                 }
-                else
+                else // On Giant hit
                 {
 	                Giant_Core giant = co.gameObject.GetComponentInParent<Giant_Core>();
 	                if (giant != null)

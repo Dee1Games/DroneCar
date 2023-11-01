@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 public class Monster : MonoBehaviour
 {
     public static Monster _;
-    public List<WeakPoint> weakPoints;
+    public List<WeakPoint> weakPoints = new List<WeakPoint>();
     
     [SerializeField] private float health = 100f;
     [SerializeField] private float maxHealth = 100f;
@@ -39,6 +39,10 @@ public class Monster : MonoBehaviour
 
     public int weakPointCount = 3;
 
+    private void Awake()
+    {        
+        _ = this;
+    }
 
     [Button("WeakPoints Setup")]
     public void FindWeakPoints()
@@ -54,7 +58,7 @@ public class Monster : MonoBehaviour
     {
         this.data = data;
         Health = data.Health*UserManager.Instance.Data.MonsterHealth;
-        _ = this;
+
 
         
         FindWeakPoints();

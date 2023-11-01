@@ -41,13 +41,13 @@ public class Robot_Double_Gun_AI : AI_Core
         }
     }
 
-    protected override void OnPlayerFound(CarCore _core)
+    public override void OnPlayerFound(CarCore _core)
     {
         base.OnPlayerFound(_core);
         gun?.Activate();
     }
 
-    protected override void OnPlayerLost(CarCore _core)
+    public override void OnPlayerLost(CarCore _core)
     {
         base.OnPlayerLost(_core);
         gun?.Deactivate();

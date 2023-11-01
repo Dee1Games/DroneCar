@@ -72,8 +72,6 @@ public class Limb : MonoBehaviour, IHitable
         Health -= amount;
         giantCore.TakeDamage(amount);
     }
-    
-
     public void GetHit()
     {
         transform.localScale = Vector3.zero;
@@ -87,7 +85,7 @@ public class Limb : MonoBehaviour, IHitable
     }
     
     [Button("Dismember")]
-    public void Dismember()
+    public void Dismember(bool instantiateParticle = true, bool instantiateMember = true)
     {
         if (unbreakable) return;
 
@@ -104,8 +102,8 @@ public class Limb : MonoBehaviour, IHitable
             }
         }
 
-        if (particle) Instantiate(particle, transform.position, transform.rotation, transform.root);
-        if (member)
+        if (particle && instantiateParticle) Instantiate(particle, transform.position, transform.rotation, transform.root);
+        if (member && instantiateMember) // Part instantiate
         {
             var gameObject = Instantiate(member, transform.position, transform.rotation, null);
             gameObject.transform.localScale = giantCore.transform.localScale;
@@ -118,5 +116,6 @@ public class Limb : MonoBehaviour, IHitable
         }
     }
 
+    
     public void OnHit(CarCore core, float damage) => TakeDamage(damage);
 }

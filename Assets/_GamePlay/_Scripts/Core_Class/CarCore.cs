@@ -28,8 +28,10 @@ public class CarCore : MonoBehaviour
     
     private Tween slowMotion;
     [SerializeField] private AnimationCurve slowMotionCurve = AnimationCurve.EaseInOut(0, 0f, 1, 1);
-    
-    private Tween fastMotion;
+
+    public ParticleSystem iceBuff;
+
+    private ParticleSystem currentIceBuff;
 
     #endregion
 
@@ -54,6 +56,19 @@ public class CarCore : MonoBehaviour
     }
     #endregion
 
+    public void ApplySlowMotion(float duration = 3f) 
+    {
+        currentIceBuff?.Play(true);
+        
+        if (slowMotion.SafeCheck())
+        {
+            slowMotion.Restart();
+            return;
+        }
+        slowMotion = DOVirtual.DelayedCall(duration, () => currentIceBuff?.Stop(true));
+
+        BuffPlay(ref slowMotion, duration);
+    }
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -90,20 +105,30 @@ public class CarCore : MonoBehaviour
 
     public PlayerVehicle vehicle;
 
-    public Sprite targetOn;
-    
+
+    private void OnEnable()
+    {
+        // Always Singleton to last
+        _ = this;
+    }
+
     void Start()
     {
         vehicle = GetComponent<PlayerVehicle>();
         _colliders = GetComponentsInChildren<Collider>();
-        _ = this;
 
+        if (!currentIceBuff)
+        {
+            currentIceBuff = Instantiate(iceBuff, transform.position, Quaternion.identity, transform);
+        }
+        
         if (!FRay)
         {
             FRay = GetComponentInChildren<RaySensor>();
         }
         FRay?.onBeginDetect.AddListener(OnRayHit);
     }
+    
     
     public void OnRayHit(RaycastHit hit)
     {

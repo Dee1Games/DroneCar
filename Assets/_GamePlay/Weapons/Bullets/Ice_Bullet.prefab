@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1388906069209387575
 Transform:
   m_ObjectHideFlags: 0
@@ -140,91 +140,6 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!1 &1969805228473533440
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2154203073277103727}
-  - component: {fileID: 3961936137387844215}
-  m_Layer: 0
-  m_Name: Explode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2154203073277103727
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1969805228473533440}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7378283170070012583}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3961936137387844215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1969805228473533440}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2979db1e4f954ef48dddfdb2c21cb9d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  influence: 1
-  triggerInteraction: 0
-  detectLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  autoUpdate: 0
-  gizmosUpdate: 0
-  blockLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  boundsSolver: 0
-  boundsCenter: 0
-  solverType: 0
-  checkLineOfSight: 1
-  usingTagFilter: 0
-  tagFilter: Untagged
-  onCast:
-    m_PersistentCalls:
-      m_Calls: []
-  onDetect:
-    m_PersistentCalls:
-      m_Calls: []
-  pulseTime: 0
-  blockSolverOffset: {x: 0, y: 0, z: 0}
-  detectVector: {x: 0, y: 0, z: 0}
-  onDetectCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  onNewCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  onLostCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  ignoreList: []
-  colliders: []
-  radius: 10
-  height: 0
-  local: 0
-  limited: 0
-  limitCount: 3
 --- !u!1 &3892361128834090598
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +173,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1388906069209387575}
-  - {fileID: 2154203073277103727}
   - {fileID: 8011993784422129809}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -336,13 +250,24 @@ MonoBehaviour:
   timeMode: 0
   baseIgnoreTime: 0.1
   bulletID: 
-  unParentChild: 0
   onCast:
     m_PersistentCalls:
       m_Calls: []
   onEndCast:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9189085495217955049}
+        m_TargetAssemblyTypeName: RaycastPro.RaycastCore, RaycastPro
+        m_MethodName: InstantiateOnPoint
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1345363817292117656, guid: 5fb552135e7d76a42b53d486417ed6ef, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onEnd:
     m_PersistentCalls:
       m_Calls:
@@ -358,15 +283,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onPlanar:
+    m_PersistentCalls:
+      m_Calls: []
   moveType: 0
   callMethod: OnBullet
   messageUpward: 1
+  ownerReference: {fileID: 0}
   damage: 15
   speed: 6
   lifeTime: 2
   endDelay: 0
   endFunction: 1
-  trailRenderer: {fileID: 0}
   endOnCollide: 1
   caster: {fileID: 0}
   raySource: {fileID: 0}
@@ -374,11 +302,11 @@ MonoBehaviour:
   target: {fileID: 0}
   body: {fileID: 0}
   targetPoint: {x: 0, y: 0, z: 0}
-  force: 70
-  drag: 2
+  force: 200
+  drag: 3
   trackOffset: {x: 0, y: 0, z: 0}
   distanceThreshold: 2
-  turnSharpness: 12
+  turnSharpness: 45
   trackType: 1
 --- !u!114 &2781381987886351431
 MonoBehaviour:
@@ -392,9 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f3ea58207076eb44a942964a660dcfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explodeArea: {fileID: 3961936137387844215}
-  damage: 30
-  effects: {fileID: 10984143438720838, guid: 62f5fb1c51cc65a4cbb08252a991d8f0, type: 3}
+  explosionRange: 10
 --- !u!1 &7310630571765667455
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +351,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7378283170070012583}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &483337669415817291
 MonoBehaviour:

@@ -49,8 +49,7 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.Monster.transform.localRotation = Quaternion.identity;
         GameManager.Instance.Monster.Init(CurrentLevelData.MonsterData);
         
-        WeakPoint.CurrentIndex = 1;
-
+        WeakPoint.CurrentIndex = 0;
     }
     
     public float GetCurrentMonsterHealth()
