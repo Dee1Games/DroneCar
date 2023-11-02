@@ -27,6 +27,8 @@ public class GunCore : MonoBehaviour
                     Instantiate(onCastParticle, mainSensor.transform.position, mainSensor.transform.rotation);
                 });
             }
+            
+            caster.trackTarget = CarCore._.transform;
         }
     }
 
@@ -36,7 +38,7 @@ public class GunCore : MonoBehaviour
     {
         if (caster)
         {
-            UI_Core._?.track.DoAlert(activeDelay, alertColor);
+            // UI_Core._?.track.DoAlert(activeDelay, alertColor);
             DOVirtual.DelayedCall(activeDelay, () => caster.enabled = true);
         }
     }
@@ -45,7 +47,7 @@ public class GunCore : MonoBehaviour
     {
         if (caster)
         {
-            UI_Core._?.track.ResetAlert();
+            // UI_Core._?.track.ResetAlert();
             caster.enabled = false;
         }
     }

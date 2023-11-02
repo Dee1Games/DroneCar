@@ -81,7 +81,24 @@ public class Giant_Core : MonoBehaviour, IHitable
             ragdollPart.angularDrag = angularDrag;
         }
     }
+    [Button("Remove Ragdoll")]
+    private void RemoveRagdoll()
+    {
+        for (var index = 0; index < ragdollParts.Count; index++)
+        {
+            if (!ragdollParts[index]) continue;
 
+            if (ragdollParts[index].TryGetComponent(out Joint joint))
+            {
+                DestroyImmediate(joint);
+            }
+            if (ragdollParts[index].TryGetComponent(out Collider col))
+            {
+                DestroyImmediate(col);
+            }
+            DestroyImmediate(ragdollParts[index]);
+        }
+    }
     [Button("Remove Mesh Colliders")]
     [FoldoutGroup("Ragdoll Setup")]
     public void RemoveMeshColliders()
@@ -155,9 +172,16 @@ public class Giant_Core : MonoBehaviour, IHitable
 
     public void TakeDamage(float damage)
     {
-        GameManager.Instance.CurrentRunDamage += damage;
+        if (GameManager.Instance.Player != null && GameManager.Instance.Player.IsActive)
+        {
+            GameManager.Instance.CurrentRunDamage += damage;
+        }
+            
 
         monster.Health -= damage * (1 - armor);
+        
+        aiCore.OnPlayerFound(CarCore._);
+        
         if (monster.Health <= 0)
         {
             OnDie();

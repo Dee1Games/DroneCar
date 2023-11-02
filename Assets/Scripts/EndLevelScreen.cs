@@ -21,7 +21,7 @@ public class EndLevelScreen : UIScreen
         base.Show();
         levelText.text = "Boss " + (UserManager.Instance.Data.Level-1).ToString();
         coinText.text = UserManager.Instance.Data.Coins.ToString();
-        rewardText.text = "+" + LevelManager.Instance.GetRunReward().ToString();
+        rewardText.text = "+" + LevelManager.Instance.GetPreviousRunReward().ToString();
     }
 
     public override void Hide()

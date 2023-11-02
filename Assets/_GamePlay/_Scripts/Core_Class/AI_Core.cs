@@ -161,13 +161,18 @@ public class AI_Core : MonoBehaviour
 
     private Tween IkTween;
 
-    protected virtual void OnPlayerFound(CarCore _core)
+    protected bool aware;
+
+    public bool Aware => aware;
+
+    public virtual void OnPlayerFound(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> founded.");
 
-        if (UI_Core._) UI_Core._.track.Begin();
-        
         SetIKsTarget(_core.transform);
+
+        aware = true;
+        
         IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 1, IKDelay, f =>
         {
@@ -182,12 +187,13 @@ public class AI_Core : MonoBehaviour
             }
         });
     }
-    protected virtual void OnPlayerLost(CarCore _core)
+
+    public virtual void OnPlayerLost(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> Lost.");
-
-        if (UI_Core._) UI_Core._.track.End();
-
+        
+        aware = false;
+        
         IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 0, IKDelay, f =>
         {

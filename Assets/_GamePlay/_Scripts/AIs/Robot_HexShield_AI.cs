@@ -28,13 +28,13 @@ public class Robot_HexShield_AI : AI_Core
         shield.SetPack(Dot < .5f);
     }
 
-    protected override void OnPlayerFound(CarCore _core)
+    public override void OnPlayerFound(CarCore _core)
     {
         base.OnPlayerFound(_core);
         miniGun.Activate();
     }
 
-    protected override void OnPlayerLost(CarCore _core)
+    public override void OnPlayerLost(CarCore _core)
     {
         base.OnPlayerLost(_core);
         miniGun.Deactivate();

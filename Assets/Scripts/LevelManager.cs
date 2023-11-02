@@ -49,8 +49,7 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.Monster.transform.localRotation = Quaternion.identity;
         GameManager.Instance.Monster.Init(CurrentLevelData.MonsterData);
         
-        WeakPoint.CurrentIndex = 1;
-
+        WeakPoint.CurrentIndex = 0;
     }
     
     public float GetCurrentMonsterHealth()
@@ -61,6 +60,11 @@ public class LevelManager : MonoBehaviour
     public int GetRunReward()
     {
         return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
+    }
+    
+    public int GetPreviousRunReward()
+    {
+        return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + ((UserManager.Instance.Data.Run-1) * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
     }
 
     public float GetSpaceLimit()
