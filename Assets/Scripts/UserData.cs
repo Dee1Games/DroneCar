@@ -35,7 +35,7 @@ public class UserData
                 }
             }
         };
-        Coins = 1000;
+        Coins = 200;
         UpgradeCount = 1;
         MergePlatform = new List<UpgradeLevel>()
         {
