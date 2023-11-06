@@ -172,7 +172,7 @@ public class Giant_Core : MonoBehaviour, IHitable
 
     public void TakeDamage(float damage)
     {
-        if (GameManager.Instance.Player == null || !GameManager.Instance.Player.IsActive)
+        if (GameManager.Instance.Player == null || GameManager.Instance.Player.Core.hitedMonster)
         {
             return;
         }

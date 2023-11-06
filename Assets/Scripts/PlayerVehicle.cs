@@ -90,6 +90,7 @@ public class PlayerVehicle : MonoBehaviour
         upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         anim.SetTrigger(Reset);
         Core.Restore();
+        Core.hitedMonster = false;
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = true;

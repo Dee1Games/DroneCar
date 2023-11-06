@@ -23,6 +23,8 @@ public class CarCore : MonoBehaviour
 
     [Header("Debug")] public bool debug;
 
+    public bool hitedMonster;
+
 
     #region Buff System
     
@@ -142,6 +144,7 @@ public class CarCore : MonoBehaviour
             End(false);
             UserManager.Instance.SeenFlyTutorial();
             hitable.OnHit(this, vehicle.Bomb);
+            hitedMonster = true;
             CameraZoomOut();
         }
     }
