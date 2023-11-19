@@ -61,6 +61,11 @@ public class LevelManager : MonoBehaviour
     {
         return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
     }
+    
+    public int GetPreviousRunReward()
+    {
+        return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + ((UserManager.Instance.Data.Run-1) * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
+    }
 
     public float GetSpaceLimit()
     {

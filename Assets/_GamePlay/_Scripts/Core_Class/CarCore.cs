@@ -23,6 +23,8 @@ public class CarCore : MonoBehaviour
 
     [Header("Debug")] public bool debug;
 
+    public bool hitedMonster;
+
 
     #region Buff System
     
@@ -130,14 +132,14 @@ public class CarCore : MonoBehaviour
         }
         FRay?.onBeginDetect.AddListener(OnRayHit);
     }
-
+    
+    
     public void OnRayHit(RaycastHit hit)
     {
         if(!GameManager.Instance.Player.IsActive)
             return;
         
         Debug.Log("F Ray Hit on: "+hit.transform.name);
-
         var hitable = hit.transform.GetComponentInParent<IHitable>();
         if (hitable != null)
         {

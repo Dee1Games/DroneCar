@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc4ac734f0793f4394ff734d1caadc5, type: 3}
   m_Name: VehicleConfig
   m_EditorClassIdentifier: 
-  Acceleration: 1
+  Acceleration: 3
   ReverseAcceleration: 1
-  MaxSpeed: 1
-  Handeling: 2
-  Bomb: 50
-  Gun: 5
+  MaxSpeed: 3
+  Handeling: 5
+  Bomb: 200
+  Gun: 10
   JumpForce: 10
   FireRate: 1.5
   AlwaysShoot: 1
@@ -86,7 +86,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    handlingRemap: {x: 2, y: 15}
+    handlingRemap: {x: 5, y: 15}
     bombCurve:
       serializedVersion: 2
       m_Curve: []
@@ -161,7 +161,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    bombRemap: {x: 50, y: 500}
+    bombRemap: {x: 200, y: 800}
     gunCurve:
       serializedVersion: 2
       m_Curve: []
@@ -237,7 +237,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    accelerationRemap: {x: 1, y: 37}
+    accelerationRemap: {x: 3, y: 37}
     reverseAccelerationCurve:
       serializedVersion: 2
       m_Curve: []
@@ -305,7 +305,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    maxSpeedRemap: {x: 1, y: 37}
+    maxSpeedRemap: {x: 3, y: 37}
     handlingCurve:
       serializedVersion: 2
       m_Curve: []

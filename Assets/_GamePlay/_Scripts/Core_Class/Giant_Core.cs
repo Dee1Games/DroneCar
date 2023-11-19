@@ -7,12 +7,10 @@ using UnityEngine;
 public class Giant_Core : MonoBehaviour, IHitable
 {
     public Monster monster;
-    
     protected AI_Core aiCore;
     protected Animator animator;
     public FullBodyBipedIK fullBodyBipedIK;
-    
-    
+
     [Title("Options", titleAlignment: TitleAlignments.Centered)]
     [Range(0, 1)]
     public float armor;
@@ -40,7 +38,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         monster = GetComponentInParent<Monster>();
         animator = GetComponentInChildren<Animator>();
         fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
-
+        
         // Get All Ragdolls via ignore self;
         ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
 
@@ -124,6 +122,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
     }
 
+
     private static readonly int Die = Animator.StringToHash("die");
     
     private bool isDead;
@@ -162,15 +161,16 @@ public class Giant_Core : MonoBehaviour, IHitable
             animator.SetTrigger(Die);
         }
     }
-    
+
     public void TakeDamage(float damage)
     {
-        if (GameManager.Instance.Player == null)
+        if (GameManager.Instance.Player == null || GameManager.Instance.Player.Core.hitedMonster)
         {
             return;
         }
         
         GameManager.Instance.CurrentRunDamage += damage;
+            
 
         monster.Health -= damage * (1 - armor);
         

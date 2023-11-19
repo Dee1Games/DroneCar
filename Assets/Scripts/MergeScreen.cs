@@ -27,14 +27,17 @@ public class MergeScreen : UIScreen
         base.Show();
         RefreshUpgradePrice();
         coinsText.text = UserManager.Instance.Data.Coins.ToString();
-        levelText.text = "Level " + UserManager.Instance.Data.Level.ToString();
+        levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
         
         if (!UserManager.Instance.Data.SeenMergeTutorial)
         {
             if (UserManager.Instance.Data.UpgradeCount==1)
             {
                 TutorialManager.Instance.ShowBuyHint();
-            }
+            } else if(UserManager.Instance.Data.UpgradeCount==2)
+            {
+                TutorialManager.Instance.ShowBuyHint2();
+            } 
 
             //این قسمت رو یک چک بزن 
             //playButton.interactable = false;
@@ -67,15 +70,30 @@ public class MergeScreen : UIScreen
 
     public void OnClick_Play()
     {
-        if (!UserManager.Instance.Data.SeenMergeTutorial)
+        if (!UserManager.Instance.Data.SeenAssembleTutorial)
             return;
         GameManager.Instance.GoToPlayMode();
     }
 
     public void OnClick_Upgrade()
     {
-        if (!UserManager.Instance.Data.SeenMergeTutorial && MergePlatform.Instance.NumberOfFullCells() >= 2)
-            return;
+        if (!UserManager.Instance.Data.SeenAssembleTutorial)
+        {
+            if (!UserManager.Instance.Data.SeenMergeTutorial)
+            {
+                if (MergePlatform.Instance.NumberOfFullCells() >= 2)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (MergePlatform.Instance.NumberOfFullCells() >= 1)
+                {
+                    return;
+                }
+            }
+        }
         
         if (UserManager.Instance.Data.Coins >= MergePlatform.Instance.GetCurrentUpgradePrice())
         {

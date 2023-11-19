@@ -23,7 +23,7 @@ public class EndRunScreen : UIScreen
         monsterHealthUI.SetHealth(UserManager.Instance.Data.MonsterHealth);
         levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
         coinText.text = UserManager.Instance.Data.Coins.ToString();
-        rewardText.text = "+" + LevelManager.Instance.GetRunReward().ToString();
+        rewardText.text = "+" + LevelManager.Instance.GetPreviousRunReward().ToString();
     }
 
     public override void Hide()

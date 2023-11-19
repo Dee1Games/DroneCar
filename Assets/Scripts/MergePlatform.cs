@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MergePlatform : MonoBehaviour
@@ -75,7 +76,7 @@ public class MergePlatform : MonoBehaviour
                 {
                     if (GameManager.Instance.Player.SetUpgrade(currentSelectedItem.Type, currentSelectedItem.Level))
                     {
-                        if (UserManager.Instance.Data.SeenMergeTutorial || (!UserManager.Instance.Data.SeenMergeTutorial && NumberOfFullCells()==0))
+                        if (UserManager.Instance.Data.SeenAssembleTutorial || (!UserManager.Instance.Data.SeenAssembleTutorial && NumberOfFullCells()==0))
                         {
                             merged = true;
                             GameManager.Instance.Player.ShowUpgradeVisuals();
@@ -84,10 +85,10 @@ public class MergePlatform : MonoBehaviour
                             {
                                 PlayParticle();
                                 Destroy(currentItem.gameObject);
-                                if (!UserManager.Instance.Data.SeenMergeTutorial)
+                                if (!UserManager.Instance.Data.SeenAssembleTutorial)
                                 {
                                     TutorialManager.Instance.ShowPlayHint();
-                                    UserManager.Instance.SeenMergeTutorial();
+                                    UserManager.Instance.SeenAssembleTutorial();
                                     UIManager.Instance.Refresh();
                                 }
                             });
@@ -105,6 +106,11 @@ public class MergePlatform : MonoBehaviour
                     {
                         closestCell.SetItem(currentItem);
                         if (!UserManager.Instance.Data.SeenMergeTutorial && closestCell != currentItem.CurrentCell)
+                        {
+                            UserManager.Instance.SeenMergeTutorial();
+                        }
+
+                        if (!UserManager.Instance.Data.SeenAssembleTutorial && closestCell != currentItem.CurrentCell)
                         {
                             TutorialManager.Instance.ShowAssembleHint();
                             TutorialManager.Instance.ShowHand(camera.WorldToScreenPoint(closestCell.transform.position), camera.WorldToScreenPoint(GameManager.Instance.Player.transform.position));
@@ -141,18 +147,14 @@ public class MergePlatform : MonoBehaviour
         if(price>UserManager.Instance.Data.Coins)
             return;
         
-        UserManager.Instance.Data.Coins -= firstUpgradePrice;
+        UserManager.Instance.Data.Coins -= price;
         
         SpawnItemInCell(GetRandomEmptyCell());
         
         UserManager.Instance.NextUpgrade();
         UIManager.Instance.Refresh();
         
-        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==3)
-        {
-            TutorialManager.Instance.ShowMergeHint();
-            TutorialManager.Instance.ShowHand(camera.WorldToScreenPoint(cells[0].transform.position), camera.WorldToScreenPoint(cells[1].transform.position));
-        }
+        ShowTutorialsIfNeeded();
     }
 
     private void SpawnItemInCell(MergeCell cell)
@@ -270,6 +272,21 @@ public class MergePlatform : MonoBehaviour
         }
 
         return closestCell;
+    }
+
+    public void ShowTutorialsIfNeeded()
+    {
+        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==3)
+        {
+            TutorialManager.Instance.ShowMergeHint();
+            TutorialManager.Instance.ShowHand(camera.WorldToScreenPoint(cells[0].transform.position), camera.WorldToScreenPoint(cells[1].transform.position));
+        } 
+        if (UserManager.Instance.Data.SeenMergeTutorial && !UserManager.Instance.Data.SeenAssembleTutorial)
+        {
+            TutorialManager.Instance.ShowAssembleHint();
+            MergeCell cell = cells.FirstOrDefault(c => c.IsFull);
+            TutorialManager.Instance.ShowHand(camera.WorldToScreenPoint(cell.transform.position), camera.WorldToScreenPoint(GameManager.Instance.Player.transform.position));
+        }
     }
 
     public void ClearPlatform()

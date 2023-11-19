@@ -66,7 +66,7 @@ public class UserManager : MonoBehaviour
     
     public void AddCoins(int coins)
     {
-        Data.Coins += LevelManager.Instance.GetRunReward();
+        Data.Coins += coins;
         SaveManager.Instance.SaveUserData(Data);
     }
     
@@ -147,6 +147,12 @@ public class UserManager : MonoBehaviour
     public void SeenMergeTutorial()
     {
         Data.SeenMergeTutorial = true;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+    
+    public void SeenAssembleTutorial()
+    {
+        Data.SeenAssembleTutorial = true;
         SaveManager.Instance.SaveUserData(Data);
     }
 
