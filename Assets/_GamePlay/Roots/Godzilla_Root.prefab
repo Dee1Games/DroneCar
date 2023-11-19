@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 434097109856661635}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: GLTF_created_0_rootJoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 520931458341045834}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeIndJA_JNT_113_128
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2918139224577914734}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_handJA_JNT_43_51
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1813120421172443674}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeMidJA_JNT_116_131
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8869050557723694408}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: spineJB_JNT_53_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5177005978384959780}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngPnkyBaseJA_JNT_21_42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8170346387192691210}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_eyeJA_JNT_2_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3743370172220385062}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeMidJA_JNT_100_115
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5281200809404439364}
-  m_Layer: 13
+  - component: {fileID: 8277468313578054737}
+  m_Layer: 9
   m_Name: tailJY_JNT_67_91
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,6 +293,34 @@ Transform:
   m_Father: {fileID: 4246426388666750010}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.6025598, y: 0.54958886, z: -0.9310268}
+--- !u!114 &8277468313578054737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467677219139205101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &496285591607332680
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9037322424794814004}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toePnkyJB_JNT_118_135
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +362,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3142739396117909210}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_eyeJA_JNT_2_23_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -364,7 +393,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2297435279546102847}
-  m_Layer: 13
+  - component: {fileID: 8194207549240972037}
+  m_Layer: 9
   m_Name: tailJC_JNT_89_69
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,6 +417,34 @@ Transform:
   m_Father: {fileID: 9199824693767408951}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.047766406, y: 0.38301995, z: 0.13727559}
+--- !u!114 &8194207549240972037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590605039017162440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &602476867372216478
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +454,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5669442075735758544}
-  m_Layer: 13
+  - component: {fileID: 7403807993628159446}
+  m_Layer: 9
   m_Name: tailJAD_JNT_62_96
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -419,6 +478,34 @@ Transform:
   m_Father: {fileID: 4442688997796053026}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.8424288, y: 0.58960456, z: -1.2103775}
+--- !u!114 &7403807993628159446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602476867372216478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &663580636351208295
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +515,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1861282335597265647}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeMidJB_JNT_99_116
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -460,7 +547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9131449483406941284}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_handJB_JNT_28_52
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -492,7 +579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1294993449236443854}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_armJBroll_JNT_23_29
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -524,7 +611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2609745392008035272}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngThumbJB_JNT_30_54
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -556,7 +643,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3027811166422175239}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: neckJC_JNT_0_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +675,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7516329944224345242}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toePnkyJA_JNT_103_118
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -620,7 +707,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5209607151421619739}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: spineJF_JNT_49_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -654,7 +741,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5305494195403225382}
-  m_Layer: 13
+  - component: {fileID: 1633316972725399123}
+  m_Layer: 9
   m_Name: tailJAB_JNT_64_94
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -677,6 +765,34 @@ Transform:
   m_Father: {fileID: 3938411681113576734}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.2086349, y: 0.35629565, z: -0.8435217}
+--- !u!114 &1633316972725399123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928426110824016557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &946597605837270977
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +802,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5734091904923590191}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_eyeJA_JNT_3_24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -718,7 +834,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1895356921247680468}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: apexRigBoundGodzillaARAscaledLODcTop_GRP_130_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -750,7 +866,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3824514026716936326}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeIndJB_JNT_112_129
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -782,7 +898,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3240719269519239640}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeThumbJC_JNT_108_127_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -813,7 +929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4690385697985765297}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngPnkyJA_JNT_41_64
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,8 +961,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5441052032019601344}
-  - component: {fileID: 1703822903}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: headJA_JNT_4_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -874,28 +989,6 @@ Transform:
   m_Father: {fileID: 4882949488760897767}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 36.061226, y: -0.5136915, z: -5.814933}
---- !u!114 &1703822903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356200589008088491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  giantCore: {fileID: 0}
-  limbType: 0
-  armor: 0
-  health: 100
-  maxHealth: 100
-  giantFinisher: 0
-  unbreakable: 0
-  particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
-  member: {fileID: 5337975426911618428, guid: c2e1e0a90bbde0e4aa6e1184af0a897e, type: 3}
-  forceToDeScale: {fileID: 0}
 --- !u!1 &1403275453752036395
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,7 +998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1216213579681731781}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngThumbJC_JNT_29_55
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -937,7 +1030,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3557854784261929906}
-  m_Layer: 13
+  - component: {fileID: 4591200213779037218}
+  m_Layer: 9
   m_Name: tailJM_JNT_79_79
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -960,6 +1054,34 @@ Transform:
   m_Father: {fileID: 5632537619545937059}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 5.1261253, y: 0.6197142, z: 2.2710617}
+--- !u!114 &4591200213779037218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420116122146092610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &1486574893787727401
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +1091,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 10990462332976506}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_armJAroll_JNT_25_27
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1001,7 +1123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8045673539400118845}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_armJB_JNT_24_28
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1033,7 +1155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5529791974194326779}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngThumbJC_JNT_8_34_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1064,7 +1186,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6033827029729888034}
-  m_Layer: 13
+  - component: {fileID: 2018611734840105766}
+  m_Layer: 9
   m_Name: tailJAF_JNT_60_98
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1087,6 +1210,34 @@ Transform:
   m_Father: {fileID: 1998456338418514017}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -1.1872319, y: 0.45023867, z: -0.9162431}
+--- !u!114 &2018611734840105766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693109794619425577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &1752524751233962840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,7 +1247,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7122338439477016961}
-  m_Layer: 13
+  - component: {fileID: 343481149574052146}
+  m_Layer: 9
   m_Name: spineJD_JNT_51_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1119,6 +1271,34 @@ Transform:
   m_Father: {fileID: 3479991335320197368}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.0925496, y: -1.2569913, z: -0.070572734}
+--- !u!114 &343481149574052146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752524751233962840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &1782827095059235647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,7 +1308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8121399161941583369}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngPnkyJB_JNT_19_44
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1160,7 +1340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6216856065686385959}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngIndJB_JNT_12_36
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1192,7 +1372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4882949488760897767}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: neckJB_JNT_5_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1225,7 +1405,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3292909848647919203}
-  m_Layer: 13
+  - component: {fileID: 9074321637170221255}
+  m_Layer: 9
   m_Name: tailJV_JNT_70_88
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1248,6 +1429,34 @@ Transform:
   m_Father: {fileID: 2597828857705450255}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.67906874, y: 0.33667642, z: -1.4626508}
+--- !u!114 &9074321637170221255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928580672446962430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &2038887549979390763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,7 +1466,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8155383332154550239}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeMidJB_JNT_115_132
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1289,7 +1498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 616351582065583069}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngMidBaseJA_JNT_17_38
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1321,7 +1530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1935478357066394531}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_eyeJA_JNT_3_24_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1352,7 +1561,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7757005362652742403}
-  m_Layer: 13
+  - component: {fileID: 2432726730147823156}
+  m_Layer: 9
   m_Name: tailJA_JNT_91_67
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1375,6 +1585,34 @@ Transform:
   m_Father: {fileID: 137758666202000589}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 22.186905, y: -3.3559306, z: 5.4919}
+--- !u!114 &2432726730147823156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2536509409702457252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &2594004457905311313
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,7 +1622,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7248395442330164559}
-  m_Layer: 13
+  - component: {fileID: 855197596574474842}
+  m_Layer: 9
   m_Name: tailJN_JNT_78_80
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1407,6 +1646,34 @@ Transform:
   m_Father: {fileID: 3557854784261929906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 7.929342, y: 0.5883116, z: 2.1899738}
+--- !u!114 &855197596574474842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2594004457905311313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &2685239577727635157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,7 +1683,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6475291433871110602}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeIndJC_JNT_111_130_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1447,7 +1714,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3938411681113576734}
-  m_Layer: 13
+  - component: {fileID: 8234495181626540552}
+  m_Layer: 9
   m_Name: tailJAA_JNT_65_93
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1470,6 +1738,34 @@ Transform:
   m_Father: {fileID: 7883926064836322585}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.1777718, y: 0.367406, z: -0.9449101}
+--- !u!114 &8234495181626540552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711394715779431900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &2735982126720434518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,7 +1777,7 @@ GameObject:
   - component: {fileID: 884344519894291038}
   - component: {fileID: 2560765174697080973}
   - component: {fileID: 1623228273772317047}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: Sight Detector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1910,7 +2206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 99479456772465075}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeThumbJB_JNT_109_126
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1942,7 +2238,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4537933049318159487}
-  m_Layer: 13
+  - component: {fileID: 92271515757541425}
+  m_Layer: 9
   m_Name: tailJI_JNT_83_75
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1965,6 +2262,34 @@ Transform:
   m_Father: {fileID: 1111506442932768843}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.4099519, y: 0.45033944, z: 0.85345507}
+--- !u!114 &92271515757541425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2815184030611206750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &2970556474828524864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1974,7 +2299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2479056986426389586}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: spineJE_JNT_50_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2006,7 +2331,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6314855205985414930}
-  m_Layer: 13
+  - component: {fileID: 3582259617920641522}
+  m_Layer: 9
   m_Name: tailJF_JNT_86_72
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2029,6 +2355,34 @@ Transform:
   m_Father: {fileID: 2099936296408837976}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.26263162, y: 0.34325635, z: 0.36533487}
+--- !u!114 &3582259617920641522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3045571326665312699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &3063968963964220816
 GameObject:
   m_ObjectHideFlags: 0
@@ -2038,7 +2392,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1111506442932768843}
-  m_Layer: 13
+  - component: {fileID: 2025518981073686976}
+  m_Layer: 9
   m_Name: tailJH_JNT_84_74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2061,6 +2416,34 @@ Transform:
   m_Father: {fileID: 2773961146322100717}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.8222021, y: 0.48890167, z: 0.4834028}
+--- !u!114 &2025518981073686976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3063968963964220816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &3066554467928839572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2070,7 +2453,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4432640938893991476}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: jawJA_JNT_1_22_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2101,7 +2484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4217272555191920382}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: neckJC_JNT_0_20_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2132,7 +2515,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7462953977743059020}
-  m_Layer: 13
+  - component: {fileID: 5759563648455366321}
+  m_Layer: 9
   m_Name: tailJS_JNT_73_85
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2155,6 +2539,34 @@ Transform:
   m_Father: {fileID: 4629421437824328678}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 3.9247885, y: 0.33276218, z: -0.7133906}
+--- !u!114 &5759563648455366321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3211356335639208193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &3268252638567945064
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,7 +2576,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5632537619545937059}
-  m_Layer: 13
+  - component: {fileID: 6748535155131324710}
+  m_Layer: 9
   m_Name: tailJL_JNT_80_78
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2187,6 +2600,34 @@ Transform:
   m_Father: {fileID: 4899703560332623158}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 18.000563, y: 0.89521456, z: 1.84518}
+--- !u!114 &6748535155131324710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3268252638567945064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &3348475032443811011
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,7 +2637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1240646404779095859}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngMidJB_JNT_36_61
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2228,7 +2669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5503523277038044558}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngIndJA_JNT_34_56
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2260,7 +2701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8828649601677411084}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_handJB_JNT_28_52_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2291,7 +2732,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1118005441471259088}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngPnkyJC_JNT_18_45_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2322,7 +2763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1418305558263066165}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngIndJC_JNT_11_37
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2354,7 +2795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9069576597119976749}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeMidJC_JNT_98_117
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2386,7 +2827,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7660234047405907146}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: jawJA_JNT_1_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2418,7 +2859,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7220041366628906293}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeIndJA_JNT_97_112
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2450,7 +2891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 716254094001612931}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngPnkyJB_JNT_40_65
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2482,7 +2923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8640562200097239296}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toePnkyJC_JNT_101_120_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2513,7 +2954,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4629421437824328678}
-  m_Layer: 13
+  - component: {fileID: 171740476633406119}
+  m_Layer: 9
   m_Name: tailJR_JNT_74_84
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2536,6 +2978,34 @@ Transform:
   m_Father: {fileID: 2292498341191571077}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 5.3393483, y: 0.35454854, z: -0.94329596}
+--- !u!114 &171740476633406119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3990018951293940465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &4170306888767861045
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,7 +3015,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1376306705253139992}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_armJBroll_JNT_44_50
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2577,7 +3047,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2099936296408837976}
-  m_Layer: 13
+  - component: {fileID: 1014917656812995015}
+  m_Layer: 9
   m_Name: tailJE_JNT_87_71
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2600,6 +3071,34 @@ Transform:
   m_Father: {fileID: 3582062701192532722}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -1.3485297, y: 0.35635287, z: 0.23464194}
+--- !u!114 &1014917656812995015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4230208322628056186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &4231945865391524620
 GameObject:
   m_ObjectHideFlags: 0
@@ -2609,7 +3108,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4246426388666750010}
-  m_Layer: 13
+  - component: {fileID: 7084339179443404374}
+  m_Layer: 9
   m_Name: tailJX_JNT_68_90
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2632,6 +3132,34 @@ Transform:
   m_Father: {fileID: 2370270773543714082}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.42758664, y: 0.45246923, z: -0.922088}
+--- !u!114 &7084339179443404374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231945865391524620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &4240540273814367422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2641,7 +3169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 834734731141749152}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_footJA_JNT_121_123
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2673,7 +3201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5738975012751724044}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeThumbJA_JNT_94_109
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2705,7 +3233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5425210385648663379}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeIndJC_JNT_95_114
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2737,7 +3265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6684357586067925893}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngThumbJA_JNT_31_53
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2769,7 +3297,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4442688997796053026}
-  m_Layer: 13
+  - component: {fileID: 5190083382859476508}
+  m_Layer: 9
   m_Name: tailJAC_JNT_63_95
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2792,6 +3321,34 @@ Transform:
   m_Father: {fileID: 5305494195403225382}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.76428556, y: 0.34697613, z: -1.1729565}
+--- !u!114 &5190083382859476508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4324565991091801917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &4334297022491847032
 GameObject:
   m_ObjectHideFlags: 0
@@ -2801,7 +3358,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3939942806173070096}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngPnkyJA_JNT_20_43
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2833,7 +3390,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9119255827379824917}
-  m_Layer: 13
+  - component: {fileID: 6549804599843798470}
+  m_Layer: 9
   m_Name: tailJO_JNT_77_81
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2856,6 +3414,34 @@ Transform:
   m_Father: {fileID: 7248395442330164559}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 4.776291, y: 0.47959483, z: 1.4042332}
+--- !u!114 &6549804599843798470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4355957257196190997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &4403212924952304022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2865,7 +3451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 402402464879608984}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeIndJB_JNT_96_113
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2897,7 +3483,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5352702992625937317}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngIndJA_JNT_13_35
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2929,7 +3515,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7320425085260870336}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeMidJC_JNT_114_133
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2961,7 +3547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 186875086141031955}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: outSkeleton_GRP_126_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2993,7 +3579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8271470540166476136}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: tailJAL_JNT_54_104_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3024,7 +3610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 311860183446543112}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeIndJC_JNT_95_114_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3055,7 +3641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5064427470628753242}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: GLTF_created_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3087,7 +3673,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8754685249161397236}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngMidJC_JNT_35_62
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3119,7 +3705,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3582062701192532722}
-  m_Layer: 13
+  - component: {fileID: 1670166508829675351}
+  m_Layer: 9
   m_Name: tailJD_JNT_88_70
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3142,6 +3729,34 @@ Transform:
   m_Father: {fileID: 2297435279546102847}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.9439057, y: 0.37718013, z: 0.17512608}
+--- !u!114 &1670166508829675351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4805057746335004663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &4939971795037715624
 GameObject:
   m_ObjectHideFlags: 0
@@ -3151,7 +3766,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4949697181896036260}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_legJB_JNT_122_122
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3183,7 +3798,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9199824693767408951}
-  m_Layer: 13
+  - component: {fileID: 4978661814364696275}
+  m_Layer: 9
   m_Name: tailJB_JNT_90_68
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3206,6 +3822,34 @@ Transform:
   m_Father: {fileID: 7757005362652742403}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.56263953, y: 0.48795676, z: 0.118870914}
+--- !u!114 &4978661814364696275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959274133427405376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &5013464039158256066
 GameObject:
   m_ObjectHideFlags: 0
@@ -3215,7 +3859,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4547981913286550285}
-  m_Layer: 13
+  - component: {fileID: 8950442587346218591}
+  m_Layer: 9
   m_Name: tailJT_JNT_72_86
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3238,6 +3883,34 @@ Transform:
   m_Father: {fileID: 7462953977743059020}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 3.0773425, y: 0.3766418, z: -0.8080709}
+--- !u!114 &8950442587346218591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5013464039158256066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &5042760742923029292
 GameObject:
   m_ObjectHideFlags: 0
@@ -3247,7 +3920,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5319339424279217276}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: tailJAL_JNT_54_104
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3279,7 +3952,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7644702690512066590}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeIndJC_JNT_111_130
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3313,7 +3986,7 @@ GameObject:
   - component: {fileID: 5845273564798482729}
   - component: {fileID: 1995882844}
   - component: {fileID: 1995882845}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_armJA_JNT_47_47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3348,16 +4021,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
   giantCore: {fileID: 0}
-  limbType: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 0
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
-  member: {fileID: 2883206440660558688, guid: e19f48cc8e32eb64c8d6d15747362695, type: 3}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!114 &1995882845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3424,7 +4103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7847703213852263185}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_footJA_JNT_105_107
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3456,7 +4135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5449798353122368061}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngIndJC_JNT_11_37_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3487,7 +4166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1210105767860711592}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toePnkyJC_JNT_101_120
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3519,7 +4198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6492424854547715262}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeMidJC_JNT_114_133_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3550,7 +4229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7532105637471701694}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngThumbJB_JNT_9_33
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3582,7 +4261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1659001474607562815}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeThumbJA_JNT_110_125
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3614,7 +4293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4149722888971316987}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toePnkyJC_JNT_117_136_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3645,7 +4324,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3849595457556995080}
-  m_Layer: 13
+  - component: {fileID: 4950304085004660109}
+  m_Layer: 9
   m_Name: tailJAH_JNT_58_100
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3668,6 +4348,34 @@ Transform:
   m_Father: {fileID: 5529191554360982240}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.9277685, y: 0.36037284, z: -2.6303391}
+--- !u!114 &4950304085004660109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5665660741675033764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &5712810730806095362
 GameObject:
   m_ObjectHideFlags: 0
@@ -3677,7 +4385,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4899703560332623158}
-  m_Layer: 13
+  - component: {fileID: 1601382164537671326}
+  m_Layer: 9
   m_Name: tailJK_JNT_81_77
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3700,6 +4409,34 @@ Transform:
   m_Father: {fileID: 1037306519546572936}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.1455655, y: 0.4518237, z: 0.924125}
+--- !u!114 &1601382164537671326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5712810730806095362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &5772043533914779261
 GameObject:
   m_ObjectHideFlags: 0
@@ -3709,7 +4446,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7423674974712902196}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngMidBaseJA_JNT_38_59
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3741,7 +4478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5188675246350861940}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toesJA_JNT_104_108
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3776,7 +4513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6575878067960973573}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toesJA_JNT_120_124
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3811,7 +4548,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5381139330293590384}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toeThumbJC_JNT_108_127
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3843,7 +4580,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7883926064836322585}
-  m_Layer: 13
+  - component: {fileID: 2409218345055035556}
+  m_Layer: 9
   m_Name: tailJZ_JNT_66_92
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3866,6 +4604,34 @@ Transform:
   m_Father: {fileID: 5281200809404439364}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.07507074, y: 0.543922, z: -0.73691654}
+--- !u!114 &2409218345055035556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997469706807751946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6060346083841490842
 GameObject:
   m_ObjectHideFlags: 0
@@ -3875,7 +4641,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2973228505499687852}
-  m_Layer: 13
+  - component: {fileID: 3486457229678068228}
+  m_Layer: 9
   m_Name: tailJP_JNT_76_82
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3898,6 +4665,34 @@ Transform:
   m_Father: {fileID: 9119255827379824917}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -7.386108, y: 0.39902183, z: 0.5979343}
+--- !u!114 &3486457229678068228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6060346083841490842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6071744138018009330
 GameObject:
   m_ObjectHideFlags: 0
@@ -3907,7 +4702,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1543915300094950032}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngPnkyJC_JNT_39_66
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3939,7 +4734,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1853822786075702754}
-  m_Layer: 13
+  - component: {fileID: 6645175372638405736}
+  m_Layer: 9
   m_Name: tailJAI_JNT_57_101
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3962,6 +4758,34 @@ Transform:
   m_Father: {fileID: 3849595457556995080}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 3.1609523, y: 0.31967193, z: -2.6838086}
+--- !u!114 &6645175372638405736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106071061045046592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6340783072701963403
 GameObject:
   m_ObjectHideFlags: 0
@@ -3971,7 +4795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4505012613359812989}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: pelvis2JA_JNT_124_137_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4033,7 +4857,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9036020629494871150}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_armJAroll_JNT_46_48
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4065,7 +4889,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5913249805346719282}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_armJB_JNT_45_49
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4097,7 +4921,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5484877690418585885}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: GLTF_created_0_rootJoint_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4129,7 +4953,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3725312038890346015}
-  m_Layer: 13
+  - component: {fileID: 7062352971691386544}
+  m_Layer: 9
   m_Name: tailJAK_JNT_55_103
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4152,6 +4977,34 @@ Transform:
   m_Father: {fileID: 6748818130546131424}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.5188084, y: 0.340391, z: -1.7376003}
+--- !u!114 &7062352971691386544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6689040514065677792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6764138379255843711
 GameObject:
   m_ObjectHideFlags: 0
@@ -4161,7 +5014,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6108312998764359832}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngIndJB_JNT_33_57
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4193,7 +5046,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1930006304368179319}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngIndJC_JNT_32_58
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4225,7 +5078,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2292498341191571077}
-  m_Layer: 13
+  - component: {fileID: 3259107313896661561}
+  m_Layer: 9
   m_Name: tailJQ_JNT_75_83
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4248,6 +5102,34 @@ Transform:
   m_Father: {fileID: 2973228505499687852}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 6.0990944, y: 0.37057483, z: -0.8052479}
+--- !u!114 &3259107313896661561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6857117513859656985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6857169348747638838
 GameObject:
   m_ObjectHideFlags: 0
@@ -4257,7 +5139,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4138286633558639156}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngThumbJC_JNT_29_55_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4288,7 +5170,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1037306519546572936}
-  m_Layer: 13
+  - component: {fileID: 1966815593843843492}
+  m_Layer: 9
   m_Name: tailJJ_JNT_82_76
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4311,6 +5194,34 @@ Transform:
   m_Father: {fileID: 4537933049318159487}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.4236784, y: 0.43491197, z: 0.986531}
+--- !u!114 &1966815593843843492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6871613238246077315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6929230217555956896
 GameObject:
   m_ObjectHideFlags: 0
@@ -4320,7 +5231,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1998456338418514017}
-  m_Layer: 13
+  - component: {fileID: 6526881879361548029}
+  m_Layer: 9
   m_Name: tailJAE_JNT_61_97
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4343,6 +5255,34 @@ Transform:
   m_Father: {fileID: 5669442075735758544}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.2024686, y: 0.56093836, z: -1.166111}
+--- !u!114 &6526881879361548029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6929230217555956896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6966342456959025307
 GameObject:
   m_ObjectHideFlags: 0
@@ -4352,7 +5292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3147590507785529072}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngMidJA_JNT_16_39
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4384,7 +5324,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1057057142601141576}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngMidJC_JNT_35_62_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4415,7 +5355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1902538052607028137}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeThumbJC_JNT_92_111_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4446,7 +5386,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8776644817797857275}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngMidJB_JNT_15_40
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4478,7 +5418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 147270552292232857}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngMidJC_JNT_14_41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4510,7 +5450,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2597828857705450255}
-  m_Layer: 13
+  - component: {fileID: 2754262358421801901}
+  m_Layer: 9
   m_Name: tailJU_JNT_71_87
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4533,6 +5474,34 @@ Transform:
   m_Father: {fileID: 4547981913286550285}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -1.3486524, y: 0.40873182, z: -1.4155376}
+--- !u!114 &2754262358421801901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7259670937764292934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &7278096705058462717
 GameObject:
   m_ObjectHideFlags: 0
@@ -4542,7 +5511,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3334949639454068811}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_handJB_JNT_7_31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4574,7 +5543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2085349249075030422}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngMidJA_JNT_37_60
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4606,7 +5575,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3479991335320197368}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: spineJC_JNT_52_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4638,7 +5607,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 621079459726771654}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngThumbJC_JNT_8_34
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4670,7 +5639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 646921614755064670}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toePnkyJA_JNT_119_134
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4702,7 +5671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6731849474043804674}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeThumbJB_JNT_93_110
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4734,7 +5703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3619948713295731673}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngMidJC_JNT_14_41_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4765,7 +5734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8322494584821462801}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngIndJC_JNT_32_58_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4796,7 +5765,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8143548831702878110}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_handJA_JNT_22_30
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4832,7 +5801,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3878754915639587260}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeThumbJC_JNT_92_111
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4864,7 +5833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5171917970170019165}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_clavicleJA_JNT_48_46
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4896,7 +5865,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1114825617993039725}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngPnkyJC_JNT_18_45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4928,7 +5897,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3485722878060299424}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_fngThumbJA_JNT_10_32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4960,7 +5929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3990458730329896421}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_clavicleJA_JNT_27_25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4992,7 +5961,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3809093217629002162}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: pelvis2JA_JNT_124_137
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5024,7 +5993,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3074366096211930587}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_toePnkyJC_JNT_117_136
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5056,7 +6025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8843448262585732747}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngPnkyJC_JNT_39_66_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5136,12 +6105,11 @@ MonoBehaviour:
   - {fileID: 1124810581}
   - {fileID: 29573707}
   - {fileID: 2133587014}
-  - {fileID: 1703822903}
+  - {fileID: 0}
   - {fileID: 1995882844}
   mass: 15
   drag: 0.5
   angularDrag: 1
-  particleSystem: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
 --- !u!114 &2244784723894402073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5191,7 +6159,7 @@ GameObject:
   - component: {fileID: 6584001605159064088}
   - component: {fileID: 1124810581}
   - component: {fileID: 1124810582}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_legJA_JNT_107_105
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5226,16 +6194,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
   giantCore: {fileID: 0}
-  limbType: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 0
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
-  member: {fileID: 2860519003462535922, guid: 6937db38a700ff645803353293591c32, type: 3}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!114 &1124810582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5321,7 +6295,7 @@ Transform:
   m_GameObject: {fileID: 8284474824726197702}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 399512256890977906}
@@ -5397,7 +6371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5924682915117188241}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_fngPnkyBaseJA_JNT_42_63
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5429,7 +6403,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6748818130546131424}
-  m_Layer: 13
+  - component: {fileID: 7510975054849225419}
+  m_Layer: 9
   m_Name: tailJAJ_JNT_56_102
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5452,6 +6427,34 @@ Transform:
   m_Father: {fileID: 1853822786075702754}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.9062028, y: 0.32444963, z: -2.2467902}
+--- !u!114 &7510975054849225419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8422461385900894551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &8430349335496611279
 GameObject:
   m_ObjectHideFlags: 0
@@ -5461,7 +6464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8154675820040781937}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: global_CTRL_127_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5476,7 +6479,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8430349335496611279}
   m_LocalRotation: {x: -0.000000007574776, y: 2.7034225e-32, z: 1.1475441e-16, w: 1}
-  m_LocalPosition: {x: 1.1475444e-18, y: 0, z: 7.574776e-11}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5493,7 +6496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8009993641047839034}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toeMidJC_JNT_98_117_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5524,7 +6527,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5206952958030820776}
-  m_Layer: 13
+  - component: {fileID: 4754859452538709317}
+  m_Layer: 9
   m_Name: neckJA_JNT_6_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5547,6 +6551,34 @@ Transform:
   m_Father: {fileID: 5209607151421619739}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -75.478714, y: 1.3107958, z: -2.415751}
+--- !u!114 &4754859452538709317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562273703748416502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &8635853898175209590
 GameObject:
   m_ObjectHideFlags: 0
@@ -5556,7 +6588,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5381157564488945393}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_legJB_JNT_106_106
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5588,7 +6620,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5529191554360982240}
-  m_Layer: 13
+  - component: {fileID: 8779821097380317573}
+  m_Layer: 9
   m_Name: tailJAG_JNT_59_99
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5611,6 +6644,34 @@ Transform:
   m_Father: {fileID: 6033827029729888034}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.6492217, y: 0.397103, z: -1.684679}
+--- !u!114 &8779821097380317573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655293550886041788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &8735042820194965637
 GameObject:
   m_ObjectHideFlags: 0
@@ -5620,7 +6681,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 137758666202000589}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: spineJA_JNT_125_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5656,7 +6717,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2370270773543714082}
-  m_Layer: 13
+  - component: {fileID: 8044505171348883438}
+  m_Layer: 9
   m_Name: tailJW_JNT_69_89
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5679,6 +6741,34 @@ Transform:
   m_Father: {fileID: 3292909848647919203}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.03423497, y: 0.36212683, z: -1.2250494}
+--- !u!114 &8044505171348883438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8745351577919542228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &8789123711294928235
 GameObject:
   m_ObjectHideFlags: 0
@@ -5688,7 +6778,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2873538031405582262}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_handJB_JNT_7_31_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5721,7 +6811,7 @@ GameObject:
   - component: {fileID: 2721453561838858887}
   - component: {fileID: 2133587014}
   - component: {fileID: 2133587015}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_armJA_JNT_26_26
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5756,16 +6846,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
   giantCore: {fileID: 0}
-  limbType: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 0
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
-  member: {fileID: 2948773266175329327, guid: 0bcd41cc8381534488b62696c2f4e430, type: 3}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!114 &2133587015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5832,7 +6928,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7034895008707552168}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: l_toePnkyJB_JNT_102_119
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5864,7 +6960,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2773961146322100717}
-  m_Layer: 13
+  - component: {fileID: 3487248236972858489}
+  m_Layer: 9
   m_Name: tailJG_JNT_85_73
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5887,6 +6984,34 @@ Transform:
   m_Father: {fileID: 6314855205985414930}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.02726598, y: 0.48419318, z: 0.35543168}
+--- !u!114 &3487248236972858489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104577023393208264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 4871797285505523594}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 40
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &9148517637143123248
 GameObject:
   m_ObjectHideFlags: 0
@@ -5898,7 +7023,7 @@ GameObject:
   - component: {fileID: 993442405945007569}
   - component: {fileID: 29573707}
   - component: {fileID: 29573708}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: r_legJA_JNT_123_121
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5933,16 +7058,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
-  limbType: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 0
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 198000011976894484, guid: a384c8b02995de44d801df08608563fe, type: 3}
-  member: {fileID: 4970151265887056372, guid: 93dc6cdce78438945aa3c328a1984775, type: 3}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!114 &29573708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6010,6 +7141,10 @@ PrefabInstance:
     - target: {fileID: 132074511043067934, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: moveWithTransform
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132074511061522814, guid: 59fde5727206f964499889104c26df0a, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 834351196271308451, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: m_Name
@@ -6129,7 +7264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3314086863624622361, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4285440315423560780, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: m_Name
@@ -6137,7 +7272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4285440315423560780, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4285440315423560783, guid: 59fde5727206f964499889104c26df0a, type: 3}
       propertyPath: m_RootOrder
@@ -6225,6 +7360,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5441052032019601344}
     m_Modifications:
+    - target: {fileID: 592115538370163095, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 847047261455072751, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 889083527289661349, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_Size.x
       value: 0.52
@@ -6253,6 +7396,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3656304399705109745, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3799336242686893328, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 5584087559696114291, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_Name
       value: WeakPoint
@@ -6264,7 +7415,7 @@ PrefabInstance:
     - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: attachedLimb
       value: 
-      objectReference: {fileID: 1703822903}
+      objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
       value: 4

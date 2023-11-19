@@ -30,11 +30,11 @@ public class TeslaBot_AI : AI_Core
         while (!myCore.IsDead)
         {
             yield return new WaitForSeconds(4f);
-            shield.Activate();
+            shield?.Activate();
             yield return new WaitForSeconds(4f);
-            shield.Deactivate();
+            shield?.Deactivate();
         }
-        shield.Deactivate();
+        shield?.Deactivate();
     }
     private bool isAlerting;
     public void TurnTesla(bool active)
@@ -43,7 +43,11 @@ public class TeslaBot_AI : AI_Core
         {
             if (isAlerting) return;
             isAlerting = true;
-            UI_Core._.track.DoAlert(teslaReadyTime, Color.red);
+            if (UI_Core._)
+            {
+                UI_Core._.track.DoAlert(teslaReadyTime, Color.red);
+            }
+
             teslaTween = DOVirtual.DelayedCall(teslaReadyTime, () =>
             {
                 TeslaGun.enabled = true;
@@ -52,7 +56,12 @@ public class TeslaBot_AI : AI_Core
         }
         else
         {
-            UI_Core._.track.alertImage.fillAmount = 0;
+            if (UI_Core._)
+            {
+                UI_Core._.track.alertImage.fillAmount = 0;
+            }
+
+
             TeslaGun.enabled = false;
             TeslaGun.trackTarget = null;
             UI_Core._.track.ResetAlert();

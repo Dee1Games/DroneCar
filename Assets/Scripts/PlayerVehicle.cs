@@ -54,7 +54,9 @@ public class PlayerVehicle : MonoBehaviour
     
     private float currentSpeed;
 
-    private Rigidbody rigidbody;
+    private Rigidbody rigidBody;
+    public Rigidbody RigidBody => rigidBody;
+    
     private Vector3 direction;
 
 
@@ -72,7 +74,7 @@ public class PlayerVehicle : MonoBehaviour
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
         Core = GetComponent<CarCore>();
 
         levelsUI = new Dictionary<UpgradeType, LevelIndicatorUI>();
@@ -90,6 +92,9 @@ public class PlayerVehicle : MonoBehaviour
         upgrades = UserManager.Instance.GetUpgradeLevels(ID);
         anim.SetTrigger(Reset);
         Core.Restore();
+
+        //Core.hitedMonster = false;
+
         GetUpgradeValues();
         ShowUpgradeVisuals();
         IsActive = true;
@@ -97,10 +102,10 @@ public class PlayerVehicle : MonoBehaviour
         isChanging = false;
         CameraController.Instance.SetTarget(transform);
         SetVisualsVisibility(true);
-        rigidbody.isKinematic = false;
-        rigidbody.useGravity = true;
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.angularVelocity = Vector3.zero;
+        rigidBody.isKinematic = false;
+        rigidBody.useGravity = true;
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
         input.Init();
 
         foreach (LevelIndicatorUI levelUI in levelsUI.Values)
@@ -119,10 +124,10 @@ public class PlayerVehicle : MonoBehaviour
         IsActive = false;
         isHovering = false;
         SetVisualsVisibility(true);
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.angularVelocity = Vector3.zero;
+        rigidBody.isKinematic = true;
+        rigidBody.useGravity = false;
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
         anim.SetTrigger(Showcase);
         
         
@@ -359,15 +364,15 @@ public class PlayerVehicle : MonoBehaviour
         {
 
             
-            rigidbody.velocity = transform.forward * Core.ApplySpeedBuff(currentSpeed);
-            rigidbody.angularVelocity = Vector3.zero;
+            rigidBody.velocity = transform.forward * Core.ApplySpeedBuff(currentSpeed);
+            rigidBody.angularVelocity = Vector3.zero;
         }
         else
         {
             Vector3 v = transform.forward * currentSpeed;
-            v.y = rigidbody.velocity.y;
-            rigidbody.velocity = v;
-            rigidbody.angularVelocity = Vector3.zero;
+            v.y = rigidBody.velocity.y;
+            rigidBody.velocity = v;
+            rigidBody.angularVelocity = Vector3.zero;
         }
     }
 
@@ -382,10 +387,10 @@ public class PlayerVehicle : MonoBehaviour
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
         anim.SetBool(Hover, false);
-        rigidbody.useGravity = false;
-        rigidbody.isKinematic = true;
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.angularVelocity = Vector3.zero;
+        rigidBody.useGravity = false;
+        rigidBody.isKinematic = true;
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
         OnExploded?.Invoke();
     }
 
@@ -409,7 +414,7 @@ public class PlayerVehicle : MonoBehaviour
         isChanging = true;
         isHovering = false;
         anim.SetBool(Hover, false);
-        rigidbody.useGravity = true;
+        rigidBody.useGravity = true;
         while (getDistanceToGround()>1f)
         {
             yield return new WaitForEndOfFrame();
@@ -428,7 +433,7 @@ public class PlayerVehicle : MonoBehaviour
         isHovering = true;
         anim.SetBool(Hover, true);
         if(jump) 
-            rigidbody.AddForce(Vector3.up*jumpForce, ForceMode.VelocityChange);
+            rigidBody.AddForce(Vector3.up*jumpForce, ForceMode.VelocityChange);
 
         Quaternion startRot = transform.rotation;
         Quaternion targetRot = Quaternion.Euler(0f, startRot.eulerAngles.y, 0f);
@@ -436,18 +441,18 @@ public class PlayerVehicle : MonoBehaviour
         float dur = 1f;
         //rigidbody.velocity = Vector3.zero;
         //rigidbody.useGravity = false;
-        rigidbody.angularVelocity = Vector3.zero;
-        Vector3 startV = rigidbody.velocity;
+        rigidBody.angularVelocity = Vector3.zero;
+        Vector3 startV = rigidBody.velocity;
         while (timer<dur)
         {
             //rigidbody.velocity = new Vector3(startV.x, startV.y*(1-(timer/dur)), startV.z);
             transform.rotation = Quaternion.Lerp(startRot, targetRot, timer/dur);
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
-            rigidbody.angularVelocity = Vector3.zero;
+            rigidBody.angularVelocity = Vector3.zero;
         }
         
-        rigidbody.useGravity = false;
+        rigidBody.useGravity = false;
         isChanging = false;
 
         //yield return new WaitForSeconds(999);

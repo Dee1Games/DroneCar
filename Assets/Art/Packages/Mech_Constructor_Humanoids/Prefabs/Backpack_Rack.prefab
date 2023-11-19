@@ -92,6 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400002}
+  - component: {fileID: 4241757893217340792}
   m_Layer: 0
   m_Name: Backpack_Rack
   m_TagString: Untagged
@@ -115,3 +116,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4241757893217340792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 10
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}

@@ -1,34 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public enum LimbType
-{
-    Head,
-    LeftHand,
-    RightHand,
-    LeftFoot,
-    RightFoot,
-}
 public class Limb : MonoBehaviour, IHitable
 {
-    private List<Limb> childLimbs;
-
-    private Rigidbody _rigidbody;
-    private Collider _collider;
-    private Joint _joint;
+    public SkinnedMeshRenderer referenceSkin;
     
     [HideInInspector] public Giant_Core giantCore;
-    
-    [Header("General")]
-    public LimbType limbType;
+
+    public Vector3 rotationOffset;
 
     [Range(0, 1)]
     public float armor;
     public float health = 100f;
     public float maxHealth = 100f;
+    public float explosionForce = 150f;
+    public float explosionRadius = 15f;
+    
+    public LayerMask bakeLayer;
+    public float scaleFactor = 1f;
+    public float rigidBodyMass = 12f;
 
     public float Health
     {
@@ -53,69 +48,167 @@ public class Limb : MonoBehaviour, IHitable
     /// This will stop run dismember Method
     /// </summary>
     public bool unbreakable;
+    public Transform boneRoot;
 
-    [Header("Art")]
-    public ParticleSystem particle;
-    public GameObject member;
-    public Transform forceToDeScale;
-
-    void Start()
+    private void Reset()
     {
-        _joint = GetComponent<Joint>();
-        _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>();
-        childLimbs = GetComponentsInChildren<Limb>().ToList();
+        referenceSkin = transform.root.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
     }
+
     public void TakeDamage(float amount)
     {
         amount *= (1 - armor);
         Health -= amount;
+        
+        Dismember();
         giantCore.TakeDamage(amount);
     }
-    public void GetHit()
-    {
-        transform.localScale = Vector3.zero;
-        gameObject.SetActive(false);
 
-        if (_joint) Destroy(_joint);
-        if (_rigidbody) Destroy(_rigidbody);
-        if (_collider) Destroy(_collider);
-        
-        Destroy(this);
-    }
-    
+    private Transform dismember;
     [Button("Dismember")]
     public void Dismember(bool instantiateParticle = true, bool instantiateMember = true)
     {
         if (unbreakable) return;
-
-        if (forceToDeScale)
-        {
-            forceToDeScale.localScale = Vector3.zero;
-        }
         
-        foreach (var childLimb in childLimbs)
+        if (instantiateMember) // Part instantiate
         {
-            if (childLimb)
+            if (referenceSkin)
             {
-                childLimb.GetHit();
+                BakeMesh();
+            }
+            else
+            {
+                dismember = Instantiate(transform, transform);
+                dismember.gameObject.layer = LayerMask.NameToLayer("Ragdolls");
+                dismember.localScale = Vector3.one;
+                dismember.localEulerAngles = rotationOffset;
+                dismember.localPosition = Vector3.zero;
+                dismember.parent = null;
+                var rb = dismember.AddComponent<Rigidbody>();
+                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+                rb.mass = rigidBodyMass;
             }
         }
-
-        if (particle && instantiateParticle) Instantiate(particle, transform.position, transform.rotation, transform.root);
-        if (member && instantiateMember) // Part instantiate
+        
+        if (boneRoot)
         {
-            var gameObject = Instantiate(member, transform.position, transform.rotation, null);
-            gameObject.transform.localScale = giantCore.transform.localScale;
+            boneRoot.localScale = Vector3.zero;
         }
+        else
+        {
+            transform.localScale = Vector3.zero;
+        }
+
+        gameObject.SetActive(false);
+        if (instantiateParticle && LimbManager.DismemberEffect)
+        {
+            LimbManager.ExplodeEffect(dismember);
+        }
+
         
         if (giantFinisher)
         {
-            // Ultra Damage
             giantCore.SetHealth(0);
         }
-    }
 
+        unbreakable = true;
+    }
     
-    public void OnHit(CarCore core, float damage) => TakeDamage(damage);
+
+    public void OnHit(CarCore core, float damage)
+    {
+        TakeDamage(damage);
+    }
+    
+    private List<int> boneIndex = new List<int>();
+
+    private Rigidbody rb;
+
+    [Button("Bake Mesh")]
+    public void BakeMesh()
+    {
+        boneIndex.Clear();
+
+        foreach (var child in transform.GetAllChildren())
+        {
+            boneIndex.Add(System.Array.IndexOf(referenceSkin.bones, child));
+        }
+
+        var originalMesh = referenceSkin.sharedMesh;
+        
+        // Create a new mesh
+        var bakedMesh = new Mesh
+        {
+            // Copy necessary data from the original mesh
+            vertices = originalMesh.vertices,
+            normals = originalMesh.normals,
+            uv = originalMesh.uv,
+            triangles = originalMesh.triangles
+        };
+        
+        referenceSkin.BakeMesh(bakedMesh, false);
+        
+        // Iterate through the vertices and check if each vertex is influenced by the specific bone
+        var boneWeights = originalMesh.boneWeights;
+        var vertices = bakedMesh.vertices;
+        var boneIndices = boneWeights.Select(bw => bw.boneIndex0).ToArray();
+
+        var root = boneRoot ? boneRoot : referenceSkin.transform;
+        var offset = root.transform.InverseTransformDirection(transform.position - root.position);
+        offset.x /= scaleFactor;
+
+        
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            if (boneIndex.Contains(boneIndices[i]))
+            {
+                vertices[i] -= offset;
+            }
+            else
+            {
+                vertices[i] = Vector3.zero;
+            }
+        }
+
+        var rO = Quaternion.Euler(rotationOffset);
+        for (var i = 0; i < vertices.Length; i++)
+        {
+            vertices[i] = rO * vertices[i];
+        }
+        
+        bakedMesh.vertices = vertices;
+        
+        bakedMesh.Optimize();
+        bakedMesh.OptimizeIndexBuffers();
+        bakedMesh.OptimizeReorderVertexBuffer();
+
+        bakedMesh.RecalculateBounds();
+        bakedMesh.RecalculateNormals();
+
+
+        dismember = new GameObject($"{name} Limb").transform;
+
+//        createdMesh.layer = LayerMask.NameToLayer("Ragdolls");
+        
+        dismember.position = transform.position;
+        //createdMesh.transform.rotation = transform.rotation;
+        dismember.localScale = Vector3.one * scaleFactor;
+        
+        dismember.AddComponent<MeshRenderer>();
+        
+        var targetMeshFilter = dismember.AddComponent<MeshFilter>();
+        targetMeshFilter.sharedMesh = bakedMesh;
+        targetMeshFilter.sharedMesh.vertices = bakedMesh.vertices;
+        targetMeshFilter.GetComponent<MeshRenderer>().sharedMaterials = referenceSkin.sharedMaterials;
+        
+        var col = dismember.AddComponent<MeshCollider>();
+        col.convex = true;
+
+        rb = dismember.AddComponent<Rigidbody>();
+        if (explosionForce > 0)
+        {
+            rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+        }
+        rb.mass = rigidBodyMass;
+    }
 }

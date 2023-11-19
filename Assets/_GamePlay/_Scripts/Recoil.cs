@@ -10,22 +10,13 @@ public class Recoil : MonoBehaviour
 {
     public AdvanceCaster _advanceCaster;
     public Animator animator;
-    private static readonly int RecoilR = Animator.StringToHash("recoil_R");
-    private static readonly int RecoilL = Animator.StringToHash("recoil_L");
+    private static readonly int m_Recoil = Animator.StringToHash("recoil");
 
     void Start()
     {
-        _advanceCaster = GetComponent<AdvanceCaster>();
-        _advanceCaster.onCast.AddListener(() =>
+        _advanceCaster?.onRate.AddListener(() =>
         {
-            if (_advanceCaster.rayIndex == 0)
-            {
-                animator.SetTrigger(RecoilL);
-            }
-            else
-            {
-                animator.SetTrigger(RecoilR);
-            }
+            animator.SetTrigger(m_Recoil);
         });
     }
 }

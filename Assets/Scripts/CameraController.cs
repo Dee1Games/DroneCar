@@ -96,7 +96,7 @@ public class CameraController : MonoBehaviour
         // }
 
         // Camera Long shot Fixed
-        var dir = (Monster._.com.position - transform.position).normalized;
+        var dir = (Monster._.transform.position - CarCore._.transform.position).normalized;
         var basePos = transform.position;
         var endPos = transform.position - dir * longShotOffset;
         var baseRot = transform.rotation;

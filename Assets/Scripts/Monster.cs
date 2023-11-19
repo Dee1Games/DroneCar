@@ -27,7 +27,7 @@ public class Monster : MonoBehaviour
         {
             health = value;
             OnHealthChange?.Invoke(health, data.Health);
-            UserManager.Instance.SetMonsterHealth(health/data.Health);
+            UserManager.Instance?.SetMonsterHealth(health/data.Health);
         }
     }
 

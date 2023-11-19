@@ -7,10 +7,12 @@ using UnityEngine;
 public class Giant_Core : MonoBehaviour, IHitable
 {
     public Monster monster;
+    
     protected AI_Core aiCore;
     protected Animator animator;
     public FullBodyBipedIK fullBodyBipedIK;
-
+    
+    
     [Title("Options", titleAlignment: TitleAlignments.Centered)]
     [Range(0, 1)]
     public float armor;
@@ -38,7 +40,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         monster = GetComponentInParent<Monster>();
         animator = GetComponentInChildren<Animator>();
         fullBodyBipedIK = GetComponentInChildren<FullBodyBipedIK>();
-        
+
         // Get All Ragdolls via ignore self;
         ragdollParts = GetComponentsInChildren<Rigidbody>().ToList();
 
@@ -112,24 +114,15 @@ public class Giant_Core : MonoBehaviour, IHitable
     }
     [Button("Find Limbs")]
     [FoldoutGroup("Ragdoll Setup")]
-    private void FindLimbs()
+    private void RefreshLimbs()
     {
         limbs = GetComponentsInChildren<Limb>();
-    }
-    
-    [FoldoutGroup("Ragdoll Setup")]
-    public ParticleSystem particleSystem;
-    
-    [Button("Set Particles")]
-    [FoldoutGroup("Ragdoll Setup")]
-    public void SetParticles()
-    {
-        foreach (var limb in limbs)
+        var skin =  GetComponentInChildren<SkinnedMeshRenderer>();
+        for (var i = 0; i < limbs.Length; i++)
         {
-            limb.particle = particleSystem;
+            limbs[i].referenceSkin = skin;
         }
     }
-
 
     private static readonly int Die = Animator.StringToHash("die");
     
@@ -169,9 +162,14 @@ public class Giant_Core : MonoBehaviour, IHitable
             animator.SetTrigger(Die);
         }
     }
-
+    
     public void TakeDamage(float damage)
     {
+        if (GameManager.Instance.Player == null)
+        {
+            return;
+        }
+        
         GameManager.Instance.CurrentRunDamage += damage;
 
         monster.Health -= damage * (1 - armor);
@@ -201,4 +199,27 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
     }
     public void OnHit(CarCore core, float damage) => TakeDamage(damage);
+}
+public static class CoreExtension
+{
+    public static Transform[] GetAllChildren(this Transform parent)
+    {
+        var children = new List<Transform>();
+        
+        children.Add(parent);
+        
+        GetAllChildrenRecursive(parent, children);
+
+        return children.ToArray();
+    }
+
+    private static void GetAllChildrenRecursive(Transform parent, List<Transform> childrenList)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            childrenList.Add(child);
+            GetAllChildrenRecursive(child, childrenList);
+        }
+    }
 }

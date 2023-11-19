@@ -73,15 +73,20 @@ public class AI_Core : MonoBehaviour
 
         sightDetector?.onNewCollider.AddListener(col =>
         {
-            if (col.TryGetComponent(out carCore))
+            var _c = col.GetComponentInChildren<CarCore>();
+            if (_c)
             {
+                carCore = _c;
                 OnPlayerFound(carCore);
             }
         });
         sightDetector?.onLostCollider.AddListener(col =>
         {
-            OnPlayerLost(carCore);
-            carCore = null;
+            var _c = col.GetComponentInChildren<CarCore>();
+            if (_c)
+            {
+                OnPlayerLost(_c);
+            }
         });
     }
 
@@ -127,6 +132,11 @@ public class AI_Core : MonoBehaviour
                 animator.SetFloat(CarHeight, CarCore._.transform.position.y);
             }
         }
+
+        if (aiming)
+        {
+            OnAim();
+        }
     }
 
     public void OnEnd(CarCore vehicle)
@@ -165,13 +175,27 @@ public class AI_Core : MonoBehaviour
 
     public bool Aware => aware;
 
+
+    private bool aiming;
+    public void OnAim()
+    {
+        if (carCore)
+        {
+            Debug.Log("On Aim");
+            foreach (var aimIk in aimIks)
+            {
+                aimIk.solver.IKPosition = carCore.transform.position + carCore.transform.forward * 7f;
+            }
+        }
+    }
     public virtual void OnPlayerFound(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> founded.");
-
-        SetIKsTarget(_core.transform);
-
+        carCore = _core;
+        
         aware = true;
+
+        aiming = true;
         
         IkTween.SafeKill();
         IkTween = DOVirtual.Float(weight, 1, IKDelay, f =>
@@ -179,7 +203,7 @@ public class AI_Core : MonoBehaviour
             weight = f;
             if (lookAtIK)
             {
-             lookAtIK.solver.IKPositionWeight = weight;
+                 lookAtIK.solver.IKPositionWeight = weight;
             }
             foreach (var aimIk in aimIks)
             {
@@ -191,7 +215,9 @@ public class AI_Core : MonoBehaviour
     public virtual void OnPlayerLost(CarCore _core)
     {
         Debug.Log($"<color=#83FF5F>{_core}</color> Lost.");
-        
+        carCore = null;
+
+        aiming = false;
         aware = false;
         
         IkTween.SafeKill();
@@ -214,7 +240,7 @@ public class AI_Core : MonoBehaviour
     protected Vector3 CarDirection => Vector3.ProjectOnPlane(carCore.transform.position - transform.position, transform.up);
     protected float Dot => Vector3.Dot(transform.forward, CarDirection.normalized);
 
-    protected float Distance => Vector3.Distance(pivot.position, carCore.transform.position);
+    protected float Distance => carCore ? Vector3.Distance(pivot.position, carCore.transform.position) : 10000f;
 
     #endregion
 

@@ -110,10 +110,7 @@ public class CarCore : MonoBehaviour
     {
         // Always Singleton to last
         _ = this;
-    }
-
-    void Start()
-    {
+        
         vehicle = GetComponent<PlayerVehicle>();
         _colliders = GetComponentsInChildren<Collider>();
 
@@ -122,26 +119,36 @@ public class CarCore : MonoBehaviour
             currentIceBuff = Instantiate(iceBuff, transform.position, Quaternion.identity, transform);
         }
         
+
+    }
+
+    private void Start()
+    {
         if (!FRay)
         {
             FRay = GetComponentInChildren<RaySensor>();
         }
         FRay?.onBeginDetect.AddListener(OnRayHit);
     }
-    
-    
+
     public void OnRayHit(RaycastHit hit)
     {
         if(!GameManager.Instance.Player.IsActive)
             return;
         
         Debug.Log("F Ray Hit on: "+hit.transform.name);
+
         var hitable = hit.transform.GetComponentInParent<IHitable>();
         if (hitable != null)
         {
             End(false);
             UserManager.Instance.SeenFlyTutorial();
             hitable.OnHit(this, vehicle.Bomb);
+            if (hit.transform.TryGetComponent(out Limb limb))
+            {
+                vehicle.RigidBody.AddExplosionForce(200, hit.point, 20f);
+            }
+            Debug.Log(hit.transform.name);
             CameraZoomOut();
         }
     }

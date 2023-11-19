@@ -37,17 +37,21 @@ public class Shield : MonoBehaviour, IHitable
     }
     public void Activate()
     {
+        if (!enabled) return;
+
         _collider.enabled = true;
         transform.position = trackTransform.position;
         transform.DOScale(activeScale, fadeInDuration).SetEase(ease);
-        UI_Core._.shieldIcon.DOFillAmount(1, fadeInDuration).SetEase(ease);
+//        UI_Core._.shieldIcon.DOFillAmount(1, fadeInDuration).SetEase(ease);
     }
 
     public void Deactivate()
     {
+        if (!enabled) return;
+
         _collider.enabled = false;
         transform.DOScale(Vector3.zero, fadeOutDuration).SetEase(ease);
-        UI_Core._.shieldIcon.DOFillAmount(0, fadeOutDuration).SetEase(ease);
+     //   UI_Core._.shieldIcon.DOFillAmount(0, fadeOutDuration).SetEase(ease);
     }
 
     public void OnHit(CarCore core, float damage)
