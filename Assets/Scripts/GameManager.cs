@@ -80,7 +80,10 @@ public class GameManager : MonoBehaviour
         {
         }
         
-        LevelManager.Instance.InitCurrentLevel();
+        if(GameManager.Instance.Monster.Health <= 0f)
+        {
+            LevelManager.Instance.InitCurrentLevel();
+        }
     }
 
     public void SpawnPlayer()
