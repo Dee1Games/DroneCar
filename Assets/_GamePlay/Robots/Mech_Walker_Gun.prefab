@@ -623,6 +623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137499348377}
+  - component: {fileID: 16535869099816996}
   m_Layer: 0
   m_Name: Mech_Humanoid_LeftArm
   m_TagString: Untagged
@@ -646,6 +647,34 @@ Transform:
   m_Father: {fileID: 830349137557734724}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &16535869099816996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830349137499348358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 830349137486778082}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &830349137557734725
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,6 +1534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138136529844}
+  - component: {fileID: 1078760139003933906}
   m_Layer: 0
   m_Name: Mech_Humanoid_LeftUpLeg
   m_TagString: Untagged
@@ -1529,6 +1559,34 @@ Transform:
   m_Father: {fileID: 830349137398252899}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1078760139003933906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830349138136529845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 830349138015614819}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &830349138155096154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,6 +1596,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138155096157}
+  - component: {fileID: 470749668724193437}
   m_Layer: 0
   m_Name: Mech_Humanoid_RightArm
   m_TagString: Untagged
@@ -1562,6 +1621,34 @@ Transform:
   m_Father: {fileID: 830349138560091413}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &470749668724193437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830349138155096154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 830349136937842740}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &830349138232301688
 GameObject:
   m_ObjectHideFlags: 0
@@ -1715,7 +1802,6 @@ MonoBehaviour:
   mass: 15
   drag: 3
   angularDrag: 3
-  particleSystem: {fileID: 198000011976894484, guid: c9e88831f0c9c774ca8fb1a53dd19258, type: 3}
 --- !u!114 &5662790035268240660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1821,8 +1907,8 @@ MonoBehaviour:
     magazineCapacity: 6
     magazineAmount: 6
     reloadTime: 4
-    rateTime: 0.5
-    randomness: 0.1
+    rateTime: 4
+    randomness: 2
     missRate: 0
     inRate: 0
     inReload: 0
@@ -2410,7 +2496,7 @@ MonoBehaviour:
   turnStopDelay: 8
   turnStopTime: 4
   targetRay: {fileID: 0}
-  laserDamage: 0
+  laserDamage: 30
 --- !u!114 &1445204563036061489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2425,7 +2511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   caster: {fileID: 5222615453654295507}
   alertColor: {r: 1, g: 0, b: 0, a: 1}
-  activeDelay: 0
+  activeDelay: 1
   onCastParticle: {fileID: 0}
 --- !u!1 &830349138302691199
 GameObject:
@@ -3078,16 +3164,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 830349138015614819}
   giantCore: {fileID: 0}
-  limbType: 4
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!1 &830349138828887391
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,16 +3355,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 830349137846097463}
   giantCore: {fileID: 0}
-  limbType: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!1 &830349138902673479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3543,6 +3641,7 @@ GameObject:
   - component: {fileID: 1633447894711019905}
   - component: {fileID: 78821998426444213}
   - component: {fileID: 403871229026316745}
+  - component: {fileID: 5517191829918382658}
   m_Layer: 0
   m_Name: Backpack_Box_2_Geom
   m_TagString: Untagged
@@ -3629,6 +3728,34 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: e7710a666d2e7b841b62b368e4b78215, type: 3}
+--- !u!114 &5517191829918382658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400356935109701029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &5794177924628958678
 GameObject:
   m_ObjectHideFlags: 0
