@@ -49,11 +49,7 @@ public class Limb : MonoBehaviour, IHitable
     /// </summary>
     public bool unbreakable;
     public Transform boneRoot;
-
-    private void Reset()
-    {
-        referenceSkin = transform.root.gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
-    }
+    
 
     public void TakeDamage(float amount)
     {

@@ -241,16 +241,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
-  limbType: 2
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!1 &2691406234566586798
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +539,6 @@ MonoBehaviour:
   mass: 15
   drag: 3
   angularDrag: 3
-  particleSystem: {fileID: 198000011976894484, guid: c9e88831f0c9c774ca8fb1a53dd19258, type: 3}
 --- !u!114 &1899676388669836376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,6 +551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6439c32a184658741a081d412c7b7ac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pivot: {fileID: 0}
   hardiness: 0
   allowTurning: 1
   allowSitting: 0
@@ -751,16 +757,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
-  limbType: 3
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!1 &2691406234566586826
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,16 +1076,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
-  limbType: 4
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!1 &2691406234566586844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,6 +1473,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400004, guid: fdb7b174dda9c7f4caa737db9c94e7bc, type: 3}
   m_PrefabInstance: {fileID: 2691406233787161109}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2691406233787063475 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100006, guid: fdb7b174dda9c7f4caa737db9c94e7bc, type: 3}
+  m_PrefabInstance: {fileID: 2691406233787161109}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &886403240199339781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2691406233787063475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1001 &2691406233983296596
 PrefabInstance:
   m_ObjectHideFlags: 0

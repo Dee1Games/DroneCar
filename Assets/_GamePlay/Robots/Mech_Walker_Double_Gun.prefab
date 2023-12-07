@@ -589,6 +589,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6642172655797455466}
+  - component: {fileID: 2451411308067852683}
   m_Layer: 9
   m_Name: Mech_Walker_RightUpLeg
   m_TagString: Untagged
@@ -613,6 +614,34 @@ Transform:
   m_Father: {fileID: 6642172655797455482}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2451411308067852683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6642172655797098058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 6642172655791889244}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6642172655797098060
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,16 +816,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 6642172655791889244}
   giantCore: {fileID: 0}
-  limbType: 3
+  rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!1 &6642172655797098070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,7 +1230,6 @@ MonoBehaviour:
   mass: 15
   drag: 3
   angularDrag: 3
-  particleSystem: {fileID: 0}
 --- !u!114 &8761177693482489517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1443,6 +1477,7 @@ GameObject:
   - component: {fileID: 6642172656087921592}
   - component: {fileID: 6642172656089018744}
   - component: {fileID: 3943140011798193622}
+  - component: {fileID: 1544823647823789487}
   m_Layer: 9
   m_Name: Shotgun_Lvl3_Geom
   m_TagString: Untagged
@@ -1530,6 +1565,34 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: dbc69c6e38423a045a5362bb7a0a6b69, type: 3}
+--- !u!114 &1544823647823789487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6642172656086757304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6642172656086757306
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,6 +1755,7 @@ GameObject:
   - component: {fileID: 6642172656242407124}
   - component: {fileID: 6642172656243536916}
   - component: {fileID: 9209433015098643632}
+  - component: {fileID: 3436900575878956781}
   m_Layer: 9
   m_Name: Backpack_Radio_Geom
   m_TagString: Untagged
@@ -1775,9 +1839,37 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: e7710a666d2e7b841b62b368e4b78215, type: 3}
+--- !u!114 &3436900575878956781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6642172656241601236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6642172656241601238
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,8 +2177,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6642172656271585662}
-  m_LocalRotation: {x: 0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 2.2737367e-15, y: 1.589689, z: -0.026253268}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 2.5768421e-15, y: 1.589689, z: -0.026253268}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2105,6 +2197,7 @@ GameObject:
   - component: {fileID: 6642172656857709443}
   - component: {fileID: 6642172656856709443}
   - component: {fileID: 8392080537617163489}
+  - component: {fileID: 1080391354025604233}
   m_Layer: 9
   m_Name: Shotgun_Lvl2_Geom
   m_TagString: Untagged
@@ -2192,6 +2285,34 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: dbc69c6e38423a045a5362bb7a0a6b69, type: 3}
+--- !u!114 &1080391354025604233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6642172656858900355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
+  maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
 --- !u!1 &6642172656858900359
 GameObject:
   m_ObjectHideFlags: 0

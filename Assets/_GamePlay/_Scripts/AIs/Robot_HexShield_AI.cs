@@ -17,7 +17,7 @@ public class Robot_HexShield_AI : AI_Core
     {
         DOVirtual.DelayedCall(1f, PulseUpdate).SetLoops(400);
         
-        dish.Activate();
+        dish?.Activate();
         DOVirtual.DelayedCall(7f, () => dish.Activate()).SetLoops(-1);
     }
 
@@ -25,18 +25,18 @@ public class Robot_HexShield_AI : AI_Core
     {
         if (!carCore) return;
         Debug.Log(Dot);
-        shield.SetPack(Dot < .5f);
+        shield?.SetPack(Dot < .5f);
     }
 
     public override void OnPlayerFound(CarCore _core)
     {
         base.OnPlayerFound(_core);
-        miniGun.Activate();
+        miniGun?.Activate();
     }
 
     public override void OnPlayerLost(CarCore _core)
     {
         base.OnPlayerLost(_core);
-        miniGun.Deactivate();
+        miniGun?.Deactivate();
     }
 }
