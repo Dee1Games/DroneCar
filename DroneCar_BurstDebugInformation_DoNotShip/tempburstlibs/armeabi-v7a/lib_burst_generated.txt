@@ -6,7 +6,7 @@ Library: C:\Projects\DroneCar\Temp\StagingArea\tempburstlibs\armeabi-v7a\lib_bur
 --meta-data-generation=False
 --dump=Function
 --float-precision=Standard
---compilation-defines=UNITY_2021_3_26
+--compilation-defines=UNITY_2021_3_29
 --compilation-defines=UNITY_2021_3
 --compilation-defines=UNITY_2021
 --compilation-defines=UNITY_5_3_OR_NEWER
@@ -48,8 +48,6 @@ Library: C:\Projects\DroneCar\Temp\StagingArea\tempburstlibs\armeabi-v7a\lib_bur
 --compilation-defines=ENABLE_UNITYWEBREQUEST
 --compilation-defines=ENABLE_WWW
 --compilation-defines=ENABLE_CLOUD_SERVICES
---compilation-defines=ENABLE_CLOUD_SERVICES_COLLAB
---compilation-defines=ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS
 --compilation-defines=ENABLE_CLOUD_SERVICES_ADS
 --compilation-defines=ENABLE_CLOUD_SERVICES_USE_WEBREQUEST
 --compilation-defines=ENABLE_CLOUD_SERVICES_CRASH_REPORTING
@@ -96,11 +94,8 @@ Library: C:\Projects\DroneCar\Temp\StagingArea\tempburstlibs\armeabi-v7a\lib_bur
 --compilation-defines=ENABLE_UNITYADS_RUNTIME
 --compilation-defines=UNITY_UNITYADS_API
 --compilation-defines=ENABLE_MONO
---compilation-defines=NET_STANDARD_2_0
---compilation-defines=NET_STANDARD
---compilation-defines=NET_STANDARD_2_1
---compilation-defines=NETSTANDARD
---compilation-defines=NETSTANDARD2_1
+--compilation-defines=NET_4_6
+--compilation-defines=NET_UNITY_4_8
 --compilation-defines=UNITY_PRO_LICENSE
 --compilation-defines=ENABLE_CUSTOM_RENDER_TEXTURE
 --compilation-defines=ENABLE_DIRECTOR
@@ -119,6 +114,9 @@ Library: C:\Projects\DroneCar\Temp\StagingArea\tempburstlibs\armeabi-v7a\lib_bur
 --compilation-defines=MOREMOUNTAINS_TOOLS
 --compilation-defines=MOREMOUNTAINS_TOOLS_FOR_MMFEEDBACKS
 --compilation-defines=MOREMOUNTAINS_TEXTMESHPRO_INSTALLED
+--compilation-defines=SW_STAGE_STAGE1
+--compilation-defines=SW_STAGE_STAGE1_OR_ABOVE
+--compilation-defines=UNITY_VISUAL_SCRIPTING
 --compilation-defines=PACKAGE_PHYSICS
 --compilation-defines=PACKAGE_PHYSICS2D
 --compilation-defines=PACKAGE_TILEMAP
@@ -136,11 +134,13 @@ Library: C:\Projects\DroneCar\Temp\StagingArea\tempburstlibs\armeabi-v7a\lib_bur
 --compilation-defines=MODULE_PHYSICS_EXISTS
 --compilation-defines=MODULE_PHYSICS_2D_EXISTS
 --compilation-defines=MODULE_PARTICLE_SYSTEM_EXISTS
+--compilation-defines=USING_PARTICLE_SYSTEM
 --compilation-defines=TIMELINE_FRAMEACCURATE
 --compilation-defines=MOREMOUNTAINS_URP_INSTALLED
+--compilation-defines=TCP2_UNIVERSAL_RP
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Projects\DroneCar\Temp\Burst
---key-folder=C:/Program Files/Unity/Hub/Editor/2021.3.26f1/Editor/Data/PlaybackEngines/AndroidPlayer
+--key-folder=C:/Program Files/Unity/Hub/Editor/2021.3.29f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Projects\DroneCar\Library\Burst
 --output=C:\Projects\DroneCar\Temp\StagingArea\tempburstlibs\armeabi-v7a\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/

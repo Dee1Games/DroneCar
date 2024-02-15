@@ -38,7 +38,10 @@ public class GunCore : MonoBehaviour
 
     private void Update()
     {
-        if (caster.raySensors.Length > 0 && !caster.raySensors[0].gameObject.activeInHierarchy)
+        if (caster.raySensors.Length == 1 && !caster.raySensors[0].gameObject.activeInHierarchy)
+        {
+            Deactivate();
+        } else  if (caster.raySensors.Length == 2 && (!caster.raySensors[0].gameObject.activeInHierarchy || !caster.raySensors[1].gameObject.activeInHierarchy))
         {
             Deactivate();
         }
