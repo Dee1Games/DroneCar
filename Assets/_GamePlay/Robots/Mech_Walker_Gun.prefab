@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 830349136937842741}
   - component: {fileID: 830349136937842740}
   - component: {fileID: 2883094110317348003}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Arm_R_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137043134842}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mount_Cockpit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137100332049}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mount_Backpack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 830349137125900179}
   - component: {fileID: 596408146405583864}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Spine_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830349137125900176}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45281828b4c9247558c7c695124d6877, type: 3}
   m_Name: 
@@ -244,7 +244,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137183484759}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHandMiddle4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,7 +275,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137246536955}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137247015920}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHandMiddle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137275693419}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mount_Gadget_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137346037958}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,7 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137398252899}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137439486091}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,6 +456,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2125609415378912479}
   - {fileID: 830349138899638791}
   m_Father: {fileID: 830349137898151319}
   m_RootOrder: 1
@@ -471,7 +472,7 @@ GameObject:
   - component: {fileID: 830349137486778083}
   - component: {fileID: 830349137486778082}
   - component: {fileID: 650543018657526015}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Arm_L_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -592,7 +593,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137488186568}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHandMiddle4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 830349137499348377}
   - component: {fileID: 16535869099816996}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +665,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
-  maxHealth: 100
+  maxHealth: 400
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:
@@ -684,7 +685,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137557734724}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -717,7 +718,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137566937802}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -750,7 +751,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137568882083}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mount_HalfShoulder_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -782,7 +783,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137569713630}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -814,7 +815,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137775367257}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_ROOT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -846,7 +847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137778235253}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHandMiddle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -880,7 +881,7 @@ GameObject:
   - component: {fileID: 830349137802526383}
   - component: {fileID: 830349137802526382}
   - component: {fileID: 1419898482421954017}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Hand_R_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1005,7 +1006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137830284718}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHandMiddle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1039,7 +1040,7 @@ GameObject:
   - component: {fileID: 830349137846097460}
   - component: {fileID: 830349137846097463}
   - component: {fileID: 8299758450433838764}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Body_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1164,7 +1165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137851152234}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftForeArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1197,7 +1198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349137898151319}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Spine_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1233,7 +1234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138014084131}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightToe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1267,7 +1268,7 @@ GameObject:
   - component: {fileID: 830349138015614816}
   - component: {fileID: 830349138015614819}
   - component: {fileID: 4587327346393157423}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Legs_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1407,7 +1408,7 @@ GameObject:
   - component: {fileID: 830349138080263845}
   - component: {fileID: 830349138080263842}
   - component: {fileID: 4982182695310301809}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HalfShoulder_Hog_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1502,7 +1503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138108688039}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftToe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1535,7 +1536,8 @@ GameObject:
   m_Component:
   - component: {fileID: 830349138136529844}
   - component: {fileID: 1078760139003933906}
-  m_Layer: 0
+  - component: {fileID: 957780149209889658}
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftUpLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1576,6 +1578,34 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
+  maxHealth: 250
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
+--- !u!114 &957780149209889658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830349138136529845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
   maxHealth: 100
   explosionForce: 150
   explosionRadius: 15
@@ -1597,7 +1627,8 @@ GameObject:
   m_Component:
   - component: {fileID: 830349138155096157}
   - component: {fileID: 470749668724193437}
-  m_Layer: 0
+  - component: {fileID: 8766783387281608339}
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1638,6 +1669,34 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
+  maxHealth: 400
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
+  giantFinisher: 0
+  unbreakable: 0
+  boneRoot: {fileID: 0}
+--- !u!114 &8766783387281608339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830349138155096154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
+  giantCore: {fileID: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  armor: 0
+  health: 100
   maxHealth: 100
   explosionForce: 150
   explosionRadius: 15
@@ -1658,7 +1717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138232301691}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHandThumb1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1690,7 +1749,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138242358681}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHeel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1730,7 +1789,7 @@ GameObject:
   - component: {fileID: 983960790049371749}
   - component: {fileID: 3104900403615396251}
   - component: {fileID: 1445204563036061489}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Walker_Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1744,7 +1803,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830349138268292959}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 16, y: 16, z: 16}
   m_ConstrainProportionsScale: 0
@@ -1817,8 +1876,8 @@ MonoBehaviour:
   fixTransforms: 1
   solver:
     executedInEditor: 0
-    IKPosition: {x: -8.956584, y: 73.22641, z: 65.744774}
-    IKPositionWeight: 0
+    IKPosition: {x: -84.88887, y: 63.245796, z: 101.57045}
+    IKPositionWeight: 0.5
     root: {fileID: 830349138268292958}
     target: {fileID: 0}
     tolerance: 1
@@ -1827,7 +1886,7 @@ MonoBehaviour:
     XY: 0
     bones:
     - transform: {fileID: 830349137125900179}
-      weight: 1
+      weight: 0.4
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 0}
       defaultLocalPosition: {x: -0, y: 0.547707, z: 0}
@@ -1836,7 +1895,7 @@ MonoBehaviour:
       sqrMag: 0
       axis: {x: 0, y: 0, z: 0}
     - transform: {fileID: 830349137898151319}
-      weight: 1
+      weight: 0.6
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 0}
       defaultLocalPosition: {x: -0, y: 0.45339984, z: 0}
@@ -1844,28 +1903,46 @@ MonoBehaviour:
       length: 0
       sqrMag: 0
       axis: {x: 0, y: 0, z: 0}
-    - transform: {fileID: 830349137439486091}
-      weight: 1
+    - transform: {fileID: 830349138155096157}
+      weight: 0.4
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 0}
-      defaultLocalPosition: {x: -0, y: 0.90670484, z: 0}
-      defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
+      defaultLocalPosition: {x: 1.0661302, y: -0.17401165, z: -0.106109194}
+      defaultLocalRotation: {x: 0.13880473, y: -0.16338198, z: -0.6523729, w: 0.7269452}
       length: 0
       sqrMag: 0
       axis: {x: 0, y: 0, z: 0}
-    - transform: {fileID: 830349138899638791}
+    - transform: {fileID: 830349137566937802}
       weight: 1
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 0}
-      defaultLocalPosition: {x: -0, y: 0.5679821, z: 0.12558025}
-      defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
+      defaultLocalPosition: {x: 0.97097826, y: 0.0000003373301, z: 0.12492439}
+      defaultLocalRotation: {x: -0.0000000068145303, y: -0.60976934, z: 0.000000035273416, w: 0.792579}
       length: 0
       sqrMag: 0
       axis: {x: 0, y: 0, z: 0}
-    transform: {fileID: 2873862516944300614}
+    - transform: {fileID: 830349139025141087}
+      weight: 1
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: 1.1558923, y: 0.00000004789144, z: 0.37403405}
+      defaultLocalRotation: {x: 0.04461667, y: -0.2549444, z: -0.16651167, w: 0.9514655}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0, y: 0, z: 0}
+    - transform: {fileID: 830349137986008274}
+      weight: 1
+      solverPosition: {x: 0, y: 0, z: 0}
+      solverRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: 0.54308456, y: -0.099633746, z: 0.14562134}
+      defaultLocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
+      length: 0
+      sqrMag: 0
+      axis: {x: 0, y: 0, z: 0}
+    transform: {fileID: 3889857464843068435}
     axis: {x: 0, y: 0, z: 1}
     poleAxis: {x: 0, y: 1, z: 0}
-    polePosition: {x: -6.676706, y: 69.70609, z: 65.10483}
+    polePosition: {x: -82.60899, y: 59.725475, z: 100.930504}
     poleWeight: 0
     poleTarget: {fileID: 0}
     clampWeight: 0.2
@@ -1877,7 +1954,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830349138268292959}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0aea4f039d54275960047154c0caedb, type: 3}
   m_Name: 
@@ -1899,17 +1976,77 @@ MonoBehaviour:
   autoReload: 1
   bullets:
   - {fileID: 9189085495217955049, guid: ab152c62297c5194e8bcfa8d54f35d76, type: 3}
-  cloneBullets: []
+  cloneBullets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   ignoreColliders: []
   ammo:
-    infiniteAmmo: 0
+    infiniteAmmo: 1
     amount: 12
-    magazineCapacity: 6
+    magazineCapacity: 12
     magazineAmount: 6
-    reloadTime: 4
-    rateTime: 4
-    randomness: 2
-    missRate: 0
+    reloadTime: 6
+    rateTime: 2
+    randomness: 0.4
+    missRate: 0.4
     inRate: 0
     inReload: 0
   trackTarget: {fileID: 0}
@@ -1917,7 +2054,7 @@ MonoBehaviour:
   cloneIndex: 0
   usingAmmo: 1
   arrayCasting: 1
-  arrayCapacity: 6
+  arrayCapacity: 60
   onCast:
     m_PersistentCalls:
       m_Calls: []
@@ -1941,9 +2078,9 @@ MonoBehaviour:
   fixTransforms: 0
   solver:
     executedInEditor: 0
-    IKPosition: {x: 0, y: 0, z: 0}
+    IKPosition: {x: -86.33875, y: 71.74587, z: 78.36808}
     IKPositionWeight: 1
-    root: {fileID: 0}
+    root: {fileID: 830349138268292958}
     target: {fileID: 0}
     spine:
     - transform: {fileID: 830349137439486091}
@@ -1956,26 +2093,16 @@ MonoBehaviour:
       sqrMag: 0
       axis: {x: 0, y: 0, z: 1}
       baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
-    - transform: {fileID: 830349138899638791}
-      weight: 0
-      solverPosition: {x: 0, y: 0, z: 0}
-      solverRotation: {x: 0, y: 0, z: 0, w: 0}
-      defaultLocalPosition: {x: -0, y: 0.5679821, z: 0.12558025}
-      defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
-      length: 0
-      sqrMag: 0
-      axis: {x: 0, y: 0, z: 1}
-      baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
     head:
       transform: {fileID: 830349138899638791}
       weight: 1
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 1}
-      defaultLocalPosition: {x: 0, y: 0, z: 0}
-      defaultLocalRotation: {x: 0, y: 0, z: 0, w: 0}
+      defaultLocalPosition: {x: -0, y: 0.5679821, z: 0.12558025}
+      defaultLocalRotation: {x: 0, y: -0, z: -0, w: 1}
       length: 0
       sqrMag: 0
-      axis: {x: -1, y: -0, z: -0}
+      axis: {x: 0, y: 0, z: 1}
       baseForwardOffsetEuler: {x: 0, y: 0, z: 0}
     eyes: []
     bodyWeight: 0.5
@@ -2489,13 +2616,12 @@ MonoBehaviour:
   - {fileID: 5662790035268240660}
   IKs:
   - {fileID: 5662790035268240660}
-  - {fileID: 8504166217523549251}
   handsUp: 0
   refreshAimIks: 0
   gun: {fileID: 1445204563036061489}
   turnStopDelay: 8
   turnStopTime: 4
-  targetRay: {fileID: 0}
+  targetRay: {fileID: 2227999682868918939}
   laserDamage: 30
 --- !u!114 &1445204563036061489
 MonoBehaviour:
@@ -2522,7 +2648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138302691198}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mount_HalfShoulder_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2554,7 +2680,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138361323934}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHandThumb1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2586,7 +2712,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138401098452}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHeel_End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2617,7 +2743,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138523872223}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHandThumb3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2648,7 +2774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138560091413}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightShoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2681,7 +2807,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138568967478}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHandMiddle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2713,7 +2839,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138578776731}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHeel_End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2744,7 +2870,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138626352944}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHeel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2779,7 +2905,7 @@ GameObject:
   - component: {fileID: 830349138682436909}
   - component: {fileID: 830349138682436906}
   - component: {fileID: 720193990128215134}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HalfShoulder_Hog_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2874,7 +3000,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138686659336}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftToe_End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2905,7 +3031,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138757863722}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mount_Gadget_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2936,7 +3062,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138761434111}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHandThumb2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2970,7 +3096,7 @@ GameObject:
   - component: {fileID: 830349138800928001}
   - component: {fileID: 830349138800928000}
   - component: {fileID: 3227446188072539329}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_Hand_L_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3095,7 +3221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138823172486}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHandThumb2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3128,7 +3254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 830349138825777522}
   - component: {fileID: 5570694204184970541}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightUpLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3169,7 +3295,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
-  maxHealth: 100
+  maxHealth: 250
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:
@@ -3189,7 +3315,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138828887390}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3222,7 +3348,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138829192846}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3255,7 +3381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138838947667}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightToe_End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3286,7 +3412,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138886656247}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHandMiddle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3318,8 +3444,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138899638791}
-  - component: {fileID: 2248776024613762356}
-  m_Layer: 0
+  - component: {fileID: 5727617298180676938}
+  m_Layer: 9
   m_Name: Mech_Humanoid_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3339,11 +3465,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 447691962317133026}
-  - {fileID: 2125609415378912479}
+  - {fileID: 8019863967348605509}
   m_Father: {fileID: 830349137439486091}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2248776024613762356
+--- !u!114 &5727617298180676938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3360,7 +3486,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
-  maxHealth: 100
+  maxHealth: 300
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:
@@ -3380,7 +3506,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138902673478}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHandThumb3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3411,7 +3537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138960643516}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_LeftHandMiddle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3443,7 +3569,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349139025141087}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mech_Humanoid_RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3511,7 +3637,7 @@ GameObject:
   - component: {fileID: 8445783900331688301}
   - component: {fileID: 4871146468345343138}
   - component: {fileID: 8724741990324914796}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Humanoid_Shotgun_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3606,7 +3732,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2873862516944300614}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Barrel_End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3642,7 +3768,7 @@ GameObject:
   - component: {fileID: 78821998426444213}
   - component: {fileID: 403871229026316745}
   - component: {fileID: 5517191829918382658}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Backpack_Box_2_Geom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3745,7 +3871,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   armor: 0
   health: 100
-  maxHealth: 100
+  maxHealth: 200
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:
@@ -3756,6 +3882,207 @@ MonoBehaviour:
   giantFinisher: 0
   unbreakable: 0
   boneRoot: {fileID: 0}
+--- !u!1 &3883347175925934527
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8019863967348605509}
+  - component: {fileID: 2227999682868918939}
+  - component: {fileID: 936598390972717241}
+  m_Layer: 0
+  m_Name: Target Ray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8019863967348605509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883347175925934527}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.4330002, z: 0.538}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 830349138899638791}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2227999682868918939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883347175925934527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55e4665219c40bd4f821693a2d7a3ae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  influence: 1
+  triggerInteraction: 0
+  detectLayer:
+    serializedVersion: 2
+    m_Bits: 321
+  autoUpdate: 1
+  gizmosUpdate: 0
+  liner: {fileID: 936598390972717241}
+  useLinerClampedPosition: 0
+  cutOnHit: 1
+  linerEndPosition: 0.9386792
+  linerBasePosition: 0
+  stamp: {fileID: 0}
+  local: 1
+  scalable: 0
+  stampOnHit: 0
+  stampAutoHide: 0
+  stampOffset: 0
+  syncStamp:
+    axis: 0
+    syncAxis: 0
+    flipAxis: 0
+  planarSensitive: 0
+  _planar: {fileID: 0}
+  planers: []
+  anyPlanar: 1
+  onCast:
+    m_PersistentCalls:
+      m_Calls: []
+  onDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onBeginDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndDetect:
+    m_PersistentCalls:
+      m_Calls: []
+  direction: {x: 0, y: 0, z: 1}
+  target: {fileID: 0}
+  radius: 0.4
+  weightType: 1
+  weight: 1
+  distance: 600
+  offset: 0
+--- !u!120 &936598390972717241
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3883347175925934527}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 3625be17a0e97a345b8a5f133fa5ad80, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 87.76158, z: 10.617284}
+  - {x: 0, y: 87.76158, z: 10.617284}
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.7
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0.7
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0
 --- !u!1 &5794177924628958678
 GameObject:
   m_ObjectHideFlags: 0
@@ -3765,7 +4092,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830349138632557365}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Backpack_Box_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3836,7 +4163,7 @@ MonoBehaviour:
   triggerInteraction: 0
   detectLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 64
   autoUpdate: 0
   gizmosUpdate: 0
   liner: {fileID: 0}
@@ -3884,7 +4211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 830349137986008274}
   - component: {fileID: 43151279413997817}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Humanoid_Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3937,10 +4264,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 830349138136529844}
     m_Modifications:
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.70848
+      objectReference: {fileID: 0}
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6.0438
+      objectReference: {fileID: 0}
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4.9549
+      objectReference: {fileID: 0}
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.5426505
+      objectReference: {fileID: 0}
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.0775242
+      objectReference: {fileID: 0}
     - target: {fileID: 5584087559696114291, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_Name
       value: WeakPoint
       objectReference: {fileID: 0}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
+      objectReference: {fileID: 957780149209889658}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -4067,15 +4418,19 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 830349138899638791}
+    m_TransformParent: {fileID: 830349137439486091}
     m_Modifications:
     - target: {fileID: 762057443526485557, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
-      propertyPath: colliders.Array.size
-      value: 0
+      propertyPath: radius
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 762057443526485557, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
+      propertyPath: minRadius
+      value: 95
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4083,11 +4438,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.27
+      value: 0.83798224
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.21
+      value: 0.33558023
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4095,15 +4450,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6875148881676653000, guid: e834d94a0bb457c41b03cef4d4336fb2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4139,33 +4494,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeakPoint (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
+      objectReference: {fileID: 8766783387281608339}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.20000002
+      value: 0.55816007
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.19999993
+      value: 0.48275983
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.20000012
+      value: 0.92820054
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.050243307
+      value: 0.013
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4921295
+      value: -0.052
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.38198063
+      value: -0.248
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4209,9 +4568,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 830349138899638791}
     m_Modifications:
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.31384
+      objectReference: {fileID: 0}
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4.40944
+      objectReference: {fileID: 0}
+    - target: {fileID: 1201905476545848294, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.7239
+      objectReference: {fileID: 0}
     - target: {fileID: 5584087559696114291, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_Name
       value: WeakPoint (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8344917384970343396, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
+      propertyPath: attachedLimb
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_RootOrder
@@ -4219,11 +4594,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.20000006
+      value: 0.20000012
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.20000006
+      value: 0.20000012
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4231,11 +4606,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.394
+      value: 0.39399976
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.74
+      value: 0.11500001
       objectReference: {fileID: 0}
     - target: {fileID: 9205170870499727921, guid: a61f3d77653e6c847bf5107c32aba0e2, type: 3}
       propertyPath: m_LocalRotation.w

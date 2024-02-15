@@ -24,7 +24,7 @@ public class LimbManager : MonoBehaviour
 
     private static IEnumerator IExplodeEffect(Transform target)
     {
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 10; i++)
         {
             Instantiate(DismemberEffect, target.position+Random.insideUnitSphere*Random.Range(2f, 15f), Quaternion.identity);
             yield return new WaitForSeconds(.15f);

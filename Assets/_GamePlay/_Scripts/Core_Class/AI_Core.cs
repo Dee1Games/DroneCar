@@ -41,6 +41,11 @@ public class AI_Core : MonoBehaviour
                 ik.GetIKSolver().Update();
             }
         }
+        
+        if (carCore == null || carCore.vehicle == null || !carCore.vehicle.IsActive)
+        {
+            OnEnd(carCore);
+        }
     }
 
     [Range(0, 1)]
@@ -153,7 +158,7 @@ public class AI_Core : MonoBehaviour
         if (lookAtIK) lookAtIK.enabled = phase;
     }
 
-    private float IKDelay = 1f;
+    public float IKDelay = 10f;
     private float weight = 0;
 
     protected void SetIKsTarget(Transform _target)
@@ -190,6 +195,11 @@ public class AI_Core : MonoBehaviour
     }
     public virtual void OnPlayerFound(CarCore _core)
     {
+        if (Vector3.Distance(_core.transform.position, sightDetector.transform.position) < sightDetector.minRadius)
+        {
+            return;
+        }
+        
         Debug.Log($"<color=#83FF5F>{_core}</color> founded.");
         carCore = _core;
         
@@ -221,7 +231,7 @@ public class AI_Core : MonoBehaviour
         aware = false;
         
         IkTween.SafeKill();
-        IkTween = DOVirtual.Float(weight, 0, IKDelay, f =>
+        IkTween = DOVirtual.Float(weight, 0, 1f, f =>
         {
             weight = f;
             if (lookAtIK)

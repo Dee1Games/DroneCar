@@ -37,8 +37,8 @@ public class WeakPoint : MonoBehaviour, IHitable
             currentIndex = value;
             
             CurrentActive = Monster._.weakPoints[currentIndex];
-            CurrentActive.target.enabled = true;
-            CurrentActive.target.TargetColor = Color.white;
+            //CurrentActive.target.enabled = true;
+            //CurrentActive.target.TargetColor = Color.white;
         }
     }
     

@@ -17,7 +17,11 @@ public class GunCore : MonoBehaviour
     private RaySensor mainSensor;
     private void Start()
     {
-        if (TryGetComponent(out caster))
+        if (caster == null)
+        {
+            TryGetComponent(out caster);
+        }
+        if (caster != null)
         {
             mainSensor = caster.raySensors[0];
             if (onCastParticle)
@@ -29,6 +33,14 @@ public class GunCore : MonoBehaviour
             }
             
             caster.trackTarget = CarCore._.transform;
+        }
+    }
+
+    private void Update()
+    {
+        if (caster.raySensors.Length > 0 && !caster.raySensors[0].gameObject.activeInHierarchy)
+        {
+            Deactivate();
         }
     }
 

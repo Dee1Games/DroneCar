@@ -111,7 +111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4968008021767602474}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 53.8, z: 6.1}
+  m_LocalPosition: {x: 0, y: 45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -125,10 +125,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 206502350192013601}
     m_Modifications:
+    - target: {fileID: 1080391354025604233, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: maxHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1544823647823789487, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: maxHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451411308067852683, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: isLeg
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2451411308067852683, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: maxHealth
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 2968022400013379529, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: poolManager
       value: 
       objectReference: {fileID: 820266767958113367}
+    - target: {fileID: 3436900575878956781, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: maxHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: radius
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: colliders.Array.size
       value: 0
@@ -193,10 +217,22 @@ PrefabInstance:
       propertyPath: monster
       value: 
       objectReference: {fileID: 206502350192013607}
+    - target: {fileID: 7398747037815146370, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: legCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8303329452224747902, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: attachedLimb
       value: 
       objectReference: {fileID: 4021598613437473798}
+    - target: {fileID: 8621293714134413276, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: isLeg
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8621293714134413276, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: maxHealth
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 8665920347677971034, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: myCore
       value: 
@@ -287,16 +323,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
-  limbType: 2
-  armor: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
+  isLeg: 0
   health: 100
   maxHealth: 100
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}
 --- !u!4 &8824375329358912947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6642172655797455484, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
@@ -319,13 +361,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
-  limbType: 4
-  armor: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
+  isLeg: 1
   health: 100
-  maxHealth: 100
+  maxHealth: 200
+  explosionForce: 150
+  explosionRadius: 15
+  bakeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  scaleFactor: 1
+  rigidBodyMass: 12
   giantFinisher: 0
   unbreakable: 0
-  particle: {fileID: 0}
-  member: {fileID: 0}
-  forceToDeScale: {fileID: 0}
+  boneRoot: {fileID: 0}

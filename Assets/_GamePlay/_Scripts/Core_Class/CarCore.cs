@@ -144,7 +144,7 @@ public class CarCore : MonoBehaviour
         if (hitable != null)
         {
             End(false);
-            UserManager.Instance.SeenFlyTutorial();
+            UserManager.Instance.SeenHitGiantTutorial();
             hitable.OnHit(this, vehicle.Bomb);
             if (hit.transform.TryGetComponent(out Limb limb))
             {

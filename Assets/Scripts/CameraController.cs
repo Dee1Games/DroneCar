@@ -16,6 +16,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float lookOffset;
     [SerializeField] private float longShotDuration;
     [SerializeField] private float longShotOffset;
+    [SerializeField] private float longShotRadius;
+    [SerializeField] private float longShotHeight;
     private MeshRenderer[] propRenderers;
 
     
@@ -96,13 +98,31 @@ public class CameraController : MonoBehaviour
         // }
 
         // Camera Long shot Fixed
-        var dir = (Monster._.transform.position - CarCore._.transform.position).normalized;
+        Vector3 monsterPos = GameManager.Instance.Monster.transform.position;
+        Vector3 carPos = transform.position;
+        Vector3 carDir = (carPos - monsterPos).normalized;
+        if (carDir.x > 0)
+            carDir.x = 1f;
+        else if (carDir.x < 0)
+            carDir.x = -1f;
+        if (carDir.z > 0)
+            carDir.z = 1f;
+        else if (carDir.z < 0)
+            carDir.z = -1f;
+        carDir.y = 0f;
+        Vector3 endPos = monsterPos + (carDir * longShotRadius);
+        endPos.y = longShotHeight;
+        
+        
+        //var dir = CarCore._.transform.forward.normalized;
+        //dir.y = 0f;
         var basePos = transform.position;
-        var endPos = transform.position - dir * longShotOffset;
+        //var endPos = transform.position - (dir * longShotOffset);
         var baseRot = transform.rotation;
         while (timer <= longShotDuration)
         {
             transform.position = Vector3.Lerp(basePos, endPos, timer / longShotDuration);
+            Vector3 dir = (GameManager.Instance.Monster.com.position - transform.position).normalized;
             transform.rotation = Quaternion.Lerp(baseRot, Quaternion.LookRotation(dir, Vector3.up), timer / longShotDuration);
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();

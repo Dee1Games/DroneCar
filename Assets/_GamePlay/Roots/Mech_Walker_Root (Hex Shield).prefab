@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19506353009311320}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 53.8, z: 6.1}
+  m_LocalPosition: {x: 0, y: 50, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -158,6 +158,10 @@ PrefabInstance:
       propertyPath: shield
       value: 
       objectReference: {fileID: 6398839903073577941}
+    - target: {fileID: 1899676388669836376, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: IKDelay
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1899676388669836376, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: aimIks.Array.size
       value: 1
@@ -695,6 +699,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7221549915421522866}
     - target: {fileID: 4042787755030533787, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: radius
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042787755030533787, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: minRadius
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042787755030533787, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: colliders.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -706,8 +718,16 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 7221549915261250998}
+    - target: {fileID: 4363434298122243784, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: legCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4616069903141067066, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: convexMeshColliders
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5081437842000856373, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: isLeg
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5960846088115977734, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
@@ -721,6 +741,10 @@ PrefabInstance:
     - target: {fileID: 6895967523096829880, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8040221454890469598, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: isLeg
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8151075723642788658, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_Layer
@@ -873,7 +897,7 @@ MonoBehaviour:
   referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
-  armor: 0
+  isLeg: 0
   health: 100
   maxHealth: 100
   explosionForce: 150
@@ -933,7 +957,7 @@ MonoBehaviour:
   referenceSkin: {fileID: 7221549915257164662}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
-  armor: 0
+  isLeg: 1
   health: 100
   maxHealth: 100
   explosionForce: 150
@@ -1000,7 +1024,7 @@ MonoBehaviour:
   referenceSkin: {fileID: 7221549915257164662}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
-  armor: 0
+  isLeg: 1
   health: 100
   maxHealth: 100
   explosionForce: 150

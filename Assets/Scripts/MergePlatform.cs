@@ -76,22 +76,25 @@ public class MergePlatform : MonoBehaviour
                 {
                     if (GameManager.Instance.Player.SetUpgrade(currentSelectedItem.Type, currentSelectedItem.Level))
                     {
-                        if (UserManager.Instance.Data.SeenAssembleTutorial || (!UserManager.Instance.Data.SeenAssembleTutorial && NumberOfFullCells()==0))
+                        if (UserManager.Instance.Data.SeenMergeTutorial)
                         {
-                            merged = true;
-                            GameManager.Instance.Player.ShowUpgradeVisuals();
-                            MergeItem currentItem = currentSelectedItem;
-                            currentSelectedItem.MoveToPlayerVehicle(moveSpeed, () =>
+                            if (UserManager.Instance.Data.SeenAssembleTutorial || (!UserManager.Instance.Data.SeenAssembleTutorial && NumberOfFullCells()==0))
                             {
-                                PlayParticle();
-                                Destroy(currentItem.gameObject);
-                                if (!UserManager.Instance.Data.SeenAssembleTutorial)
+                                merged = true;
+                                GameManager.Instance.Player.ShowUpgradeVisuals();
+                                MergeItem currentItem = currentSelectedItem;
+                                currentSelectedItem.MoveToPlayerVehicle(moveSpeed, () =>
                                 {
-                                    TutorialManager.Instance.ShowPlayHint();
-                                    UserManager.Instance.SeenAssembleTutorial();
-                                    UIManager.Instance.Refresh();
-                                }
-                            });
+                                    PlayParticle();
+                                    Destroy(currentItem.gameObject);
+                                    if (!UserManager.Instance.Data.SeenAssembleTutorial)
+                                    {
+                                        TutorialManager.Instance.ShowPlayHint();
+                                        UserManager.Instance.SeenAssembleTutorial();
+                                        UIManager.Instance.Refresh();
+                                    }
+                                });
+                            }
                         }
                     }
                 }

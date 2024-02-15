@@ -104,6 +104,7 @@ public class GameManager : MonoBehaviour
             Player.InitPlayMode();
         else
             Player.InitShowCaseMode();
+
     }
 
     public bool IsPlaying()

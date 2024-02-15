@@ -14,8 +14,8 @@ public class Limb : MonoBehaviour, IHitable
 
     public Vector3 rotationOffset;
 
-    [Range(0, 1)]
-    public float armor;
+    public bool isLeg = false;
+    
     public float health = 100f;
     public float maxHealth = 100f;
     public float explosionForce = 150f;
@@ -49,14 +49,17 @@ public class Limb : MonoBehaviour, IHitable
     /// </summary>
     public bool unbreakable;
     public Transform boneRoot;
+
+    void Start()
+    {
+        health = maxHealth;
+    }
+    
     
 
     public void TakeDamage(float amount)
     {
-        amount *= (1 - armor);
         Health -= amount;
-        
-        Dismember();
         giantCore.TakeDamage(amount);
     }
 
@@ -65,6 +68,11 @@ public class Limb : MonoBehaviour, IHitable
     public void Dismember(bool instantiateParticle = true, bool instantiateMember = true)
     {
         if (unbreakable) return;
+
+        if (isLeg && giantCore.currentLegCount <= 1) return;
+        
+        if(isLeg)
+            giantCore.currentLegCount--;
         
         if (instantiateMember) // Part instantiate
         {
@@ -80,9 +88,14 @@ public class Limb : MonoBehaviour, IHitable
                 dismember.localEulerAngles = rotationOffset;
                 dismember.localPosition = Vector3.zero;
                 dismember.parent = null;
-                var rb = dismember.AddComponent<Rigidbody>();
+                var rb = dismember.GetComponent<Rigidbody>();
+                if (rb == null)
+                {
+                    rb = dismember.AddComponent<Rigidbody>();
+                }
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
                 rb.mass = rigidBodyMass;
+                Destroy(dismember.gameObject, 10f);
             }
         }
         
@@ -102,10 +115,10 @@ public class Limb : MonoBehaviour, IHitable
         }
 
         
-        if (giantFinisher)
-        {
-            giantCore.SetHealth(0);
-        }
+        // if (giantFinisher)
+        // {
+        //     giantCore.SetHealth(0);
+        // }
 
         unbreakable = true;
     }
@@ -206,5 +219,6 @@ public class Limb : MonoBehaviour, IHitable
             rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
         }
         rb.mass = rigidBodyMass;
+        Destroy(dismember.gameObject, 10f);
     }
 }

@@ -7,13 +7,13 @@ using UnityEngine;
 public class Giant_Core : MonoBehaviour, IHitable
 {
     public Monster monster;
+    public int legCount;
+    public int currentLegCount;
     protected AI_Core aiCore;
     protected Animator animator;
     public FullBodyBipedIK fullBodyBipedIK;
 
     [Title("Options", titleAlignment: TitleAlignments.Centered)]
-    [Range(0, 1)]
-    public float armor;
 
 
     [Title("UI")]
@@ -34,6 +34,7 @@ public class Giant_Core : MonoBehaviour, IHitable
 
     private void Awake()
     {
+        currentLegCount = legCount;
         aiCore = GetComponent<AI_Core>();
         monster = GetComponentInParent<Monster>();
         animator = GetComponentInChildren<Animator>();
@@ -164,6 +165,9 @@ public class Giant_Core : MonoBehaviour, IHitable
 
     public void TakeDamage(float damage)
     {
+        if (isDead)
+            return;
+        
         if (GameManager.Instance.Player == null || GameManager.Instance.Player.Core.hitedMonster)
         {
             return;
@@ -172,7 +176,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         GameManager.Instance.CurrentRunDamage += damage;
             
 
-        monster.Health -= damage * (1 - armor);
+        monster.Health -= damage;
         
         aiCore.OnPlayerFound(CarCore._);
         
@@ -193,10 +197,10 @@ public class Giant_Core : MonoBehaviour, IHitable
     public void SetHealth(float amount)
     {
         monster.Health = amount;
-        if (amount <= 0)
+        /*if (amount <= 0)
         {
             OnDie();
-        }
+        }*/
     }
     public void OnHit(CarCore core, float damage) => TakeDamage(damage);
 }
