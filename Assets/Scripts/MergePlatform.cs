@@ -226,22 +226,22 @@ public class MergePlatform : MonoBehaviour
             }
         }
 
-        if (NumberOfFullCells() == 5)
-        {
-            UpgradeType t = probabilities[0];
-            foreach (MergeCell cell in cells)
-            {
-                if (cell.Item!=null && cell.Item.Level == 1)
-                    t = cell.Item.Type;
-            }
-
-            return GameManager.Instance.Player.Config.GetItem(t, 1);
-        }
-        else
-        {
+        // if (NumberOfFullCells() == 5)
+        // {
+        //     UpgradeType t = probabilities[0];
+        //     foreach (MergeCell cell in cells)
+        //     {
+        //         if (cell.Item!=null && cell.Item.Level == 1)
+        //             t = cell.Item.Type;
+        //     }
+        //
+        //     return GameManager.Instance.Player.Config.GetItem(t, 1);
+        // }
+        // else
+        // {
             UpgradeType randomType = probabilities[Random.Range(0, probabilities.Count)];
             return GameManager.Instance.Player.Config.GetItem(randomType, 1);
-        }
+        //}
     }
 
     private MergeCell GetClosestCell(MergeItem item)
@@ -314,6 +314,25 @@ public class MergePlatform : MonoBehaviour
     public int GetCurrentUpgradePrice()
     {
         return GetUpgradePrice(UserManager.Instance.Data.UpgradeCount);
+    }
+    
+    public int GetPrevUpgradePrice()
+    {
+        return GetUpgradePrice(UserManager.Instance.Data.UpgradeCount-1);
+    }
+    
+    public int GetTotalUpgradePrice(int n)
+    {
+        int x = 0;
+        int i = UserManager.Instance.Data.UpgradeCount;
+        int last = 0;
+        for (int k = i; k < i + n; k++)
+        {
+            last = GetUpgradePrice(k);
+            x += last;
+        }
+        x += Mathf.FloorToInt(last * Random.Range(0.01f, 1f));
+        return x;
     }
 
     public void PlayParticle()

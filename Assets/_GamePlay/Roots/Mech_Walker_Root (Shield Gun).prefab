@@ -86,6 +86,7 @@ MonoBehaviour:
   maxHealth: 100
   com: {fileID: 7157495782374137857}
   weakPointCount: 3
+  detachedLimbs: []
 --- !u!1 &8323093117160318387
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,6 +125,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7944441942224103044}
     m_Modifications:
+    - target: {fileID: 2577946255603437733, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 3497638076687803286, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 3649270705275206618, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972369346082928606, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 7410530949785952292, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
       propertyPath: radius
       value: 250
@@ -132,6 +149,10 @@ PrefabInstance:
       propertyPath: minRadius
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 7433792669387753877, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 8714652383512455132, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
       propertyPath: pivot
       value: 
@@ -139,6 +160,10 @@ PrefabInstance:
     - target: {fileID: 8714652383512455132, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
       propertyPath: IKDelay
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8891092893095821774, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
+      propertyPath: maxHealth
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 9196618184557371190, guid: 2778606849a2f7d4da46b12a4c7e3c6f, type: 3}
       propertyPath: m_RootOrder

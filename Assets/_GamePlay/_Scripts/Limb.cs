@@ -95,7 +95,8 @@ public class Limb : MonoBehaviour, IHitable
                 }
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
                 rb.mass = rigidBodyMass;
-                Destroy(dismember.gameObject, 10f);
+                //Destroy(dismember.gameObject, 10f);
+                GameManager.Instance.Monster.detachedLimbs.Add(dismember.gameObject);
             }
         }
         
@@ -219,6 +220,7 @@ public class Limb : MonoBehaviour, IHitable
             rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
         }
         rb.mass = rigidBodyMass;
-        Destroy(dismember.gameObject, 10f);
+        //Destroy(dismember.gameObject, 10f);
+        GameManager.Instance.Monster.detachedLimbs.Add(dismember.gameObject);
     }
 }

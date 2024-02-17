@@ -31,7 +31,6 @@ public class Giant_Core : MonoBehaviour, IHitable
     public float drag = 3;
     [FoldoutGroup("Ragdoll Setup")]
     public float angularDrag = 3;
-
     private void Awake()
     {
         currentLegCount = legCount;
@@ -183,15 +182,24 @@ public class Giant_Core : MonoBehaviour, IHitable
         if (monster.Health <= 0)
         {
             OnDie();
-            if (GameManager.Instance.Player.IsActive)
-            {
-                GameManager.Instance.Player.Core.End(false, false);
-            }
-            UserManager.Instance.NextLevel();
-            GameManager.Instance.Player.Core.CameraZoomOut();
+            Invoke("EndMonsterUI", 3f);
+            //GameManager.Instance.Player.Core.CameraZoomOut();
             //UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
         }
 
+    }
+
+    private void EndMonsterUI()
+    {
+        if (GameManager.Instance.Player.IsActive)
+        {
+            GameManager.Instance.Player.Core.End(false, false);
+        }
+        UserManager.Instance.NextLevel();
+        if (GameManager.Instance.Monster.IsDead)
+        {
+            UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
+        }
     }
 
     public void SetHealth(float amount)

@@ -30,13 +30,20 @@ public class LevelManager : MonoBehaviour
 
     public void InitCurrentLevel()
     {
+        if (GameManager.Instance.Monster != null)
+        {
+            List<GameObject> objs = GameManager.Instance.Monster.detachedLimbs;
+            while (objs.Count > 0)
+            {
+                GameObject obj = objs[0];
+                DestroyImmediate(obj);
+                objs.RemoveAt(0);
+            }
+            DestroyImmediate(GameManager.Instance.Monster.gameObject);
+        }
         if (GameManager.Instance.Map != null)
         {
             DestroyImmediate(GameManager.Instance.Map.gameObject);
-        }
-        if (GameManager.Instance.Monster != null)
-        {
-            DestroyImmediate(GameManager.Instance.Monster.gameObject);
         }
         
         GameManager.Instance.Map = Instantiate(CurrentLevelData.MapPrefab.gameObject).GetComponent<Map>();
@@ -59,12 +66,15 @@ public class LevelManager : MonoBehaviour
 
     public int GetRunReward()
     {
-        return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
+        return MergePlatform.Instance.GetTotalUpgradePrice(5);
+
+        //return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
     }
     
     public int GetPreviousRunReward()
     {
-        return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + ((UserManager.Instance.Data.Run-1) * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
+        return MergePlatform.Instance.GetTotalUpgradePrice(5);
+        //return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + ((UserManager.Instance.Data.Run-1) * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
     }
 
     public float GetSpaceLimit()

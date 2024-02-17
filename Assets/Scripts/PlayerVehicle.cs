@@ -392,7 +392,7 @@ public class PlayerVehicle : MonoBehaviour
         OnExploded?.Invoke();
     }
 
-    private void SetVisualsVisibility(bool value)
+    public void SetVisualsVisibility(bool value)
     {
         foreach (GameObject visual in visuals)
         {

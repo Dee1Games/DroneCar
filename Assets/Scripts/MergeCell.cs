@@ -75,7 +75,7 @@ public class MergeCell : MonoBehaviour
         DestroyImmediate(Item.gameObject);
         RemoveItem();
         UserManager.Instance.SetMergePlatformCell(Index, UpgradeType.Tire, -1);
-        UserManager.Instance.AddCoins(Mathf.RoundToInt(0.8f * MergePlatform.Instance.GetCurrentUpgradePrice() * (Mathf.Pow(2, (UserManager.Instance.Data.Level-1)))));
+        UserManager.Instance.AddCoins(MergePlatform.Instance.GetPrevUpgradePrice());
         UIManager.Instance.Refresh();
         
     }

@@ -56,6 +56,7 @@ MonoBehaviour:
   maxHealth: 150
   com: {fileID: 1137580482876503972}
   weakPointCount: 3
+  detachedLimbs: []
 --- !u!1 &3915161426587872226
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,11 +128,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1080391354025604233, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 1544823647823789487, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 2451411308067852683, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: isLeg
@@ -139,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2451411308067852683, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 2968022400013379529, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: poolManager
@@ -147,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 820266767958113367}
     - target: {fileID: 3436900575878956781, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: radius
@@ -231,7 +232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8621293714134413276, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 200
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 8665920347677971034, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: myCore
@@ -370,7 +371,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
   health: 100
-  maxHealth: 200
+  maxHealth: 700
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:

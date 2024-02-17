@@ -88,6 +88,7 @@ MonoBehaviour:
   maxHealth: 100
   com: {fileID: 5439745241194236118}
   weakPointCount: 3
+  detachedLimbs: []
 --- !u!1 &8157309854690036144
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,10 +127,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5073587412035046995}
     m_Modifications:
+    - target: {fileID: 34504092631034262, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 651353549786643526, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: myCore
       value: 
       objectReference: {fileID: 9074712254556840316}
+    - target: {fileID: 886403240199339781, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 897716483630017480, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: poolManager
       value: 
@@ -730,6 +739,10 @@ PrefabInstance:
       propertyPath: isLeg
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5081437842000856373, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 5960846088115977734, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: myCore
       value: 
@@ -746,6 +759,10 @@ PrefabInstance:
       propertyPath: isLeg
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8040221454890469598, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 8151075723642788658, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -754,6 +771,10 @@ PrefabInstance:
       propertyPath: myCore
       value: 
       objectReference: {fileID: 9074712254556840316}
+    - target: {fileID: 8165033929404514998, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: maxHealth
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 8226003100704334229, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -761,6 +782,10 @@ PrefabInstance:
     - target: {fileID: 8513903481845012984, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_Convex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591762401979712330, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: maxHealth
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 8926536092806650661, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: solver.bodyWeight
@@ -899,7 +924,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 0
   health: 100
-  maxHealth: 100
+  maxHealth: 700
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:
@@ -959,7 +984,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
   health: 100
-  maxHealth: 100
+  maxHealth: 700
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:
@@ -1026,7 +1051,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
   health: 100
-  maxHealth: 100
+  maxHealth: 700
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:

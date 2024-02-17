@@ -38,6 +38,9 @@ public class Monster : MonoBehaviour
 
 
     public int weakPointCount = 3;
+    
+    [HideInInspector] public List<GameObject> detachedLimbs;
+
 
     private void Awake()
     {        
@@ -56,6 +59,7 @@ public class Monster : MonoBehaviour
 
     public void Init(MonsterData data)
     {
+        detachedLimbs = new List<GameObject>();
         this.data = data;
         Health = data.Health*UserManager.Instance.Data.MonsterHealth;
 

@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
         if (target == null)
             return;
         
-        HideCameraOverlaps();
+        //HideCameraOverlaps();
     }
 
     public void SetTarget(Transform target)
