@@ -11,6 +11,7 @@ public class MergeScreen : UIScreen
     [SerializeField] private TMP_Text priceText;
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
+    [SerializeField] private TMP_Text levelText_tut;
 
     [SerializeField] private Image upgradeButton;
     [SerializeField] private Sprite activeButtonSprite;
@@ -27,7 +28,18 @@ public class MergeScreen : UIScreen
         base.Show();
         RefreshUpgradePrice();
         coinsText.text = UserManager.Instance.Data.Coins.ToString();
-        levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
+        
+        if (UserManager.Instance.Data.Level == 1)
+        {
+            levelText_tut.gameObject.SetActive(true);
+            levelText.gameObject.SetActive(false);
+        }
+        else
+        {
+            levelText_tut.gameObject.SetActive(false);
+            levelText.gameObject.SetActive(true);
+            levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
+        }
         
         if (!UserManager.Instance.Data.SeenMergeTutorial)
         {

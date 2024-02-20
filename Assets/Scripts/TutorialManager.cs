@@ -97,4 +97,18 @@ public class TutorialManager : MonoBehaviour
         hand.gameObject.SetActive(true);
         hand.Init(a,b);
     }
+
+    public bool HasSeenLimb2()
+    {
+        int limbs = 0;
+        foreach (var limb in GameManager.Instance.GiantCore.limbs)
+        {
+            if (!limb.gameObject.activeInHierarchy)
+            {
+                limbs++;
+            }
+        }
+
+        return limbs >= 2;
+    }
 }

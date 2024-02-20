@@ -139,7 +139,11 @@ public class Giant_Core : MonoBehaviour, IHitable
             return;
         
         isDead = true;
-        aiCore.Active(false);
+
+        if (aiCore != null)
+        {
+            aiCore.Active(false);
+        }
 
         if (hasRagdoll)
         {
@@ -176,8 +180,11 @@ public class Giant_Core : MonoBehaviour, IHitable
             
 
         monster.Health -= damage;
-        
-        aiCore.OnPlayerFound(CarCore._);
+
+        if (aiCore != null)
+        {
+            aiCore.OnPlayerFound(CarCore._);
+        }
         
         if (monster.Health <= 0)
         {
@@ -210,7 +217,14 @@ public class Giant_Core : MonoBehaviour, IHitable
             OnDie();
         }*/
     }
-    public void OnHit(CarCore core, float damage) => TakeDamage(damage);
+
+    public void OnHit(CarCore core, float damage)
+    {
+        if (UserManager.Instance.Data.Level != 1)
+        {
+            TakeDamage(damage);
+        }
+    }
 }
 public static class CoreExtension
 {

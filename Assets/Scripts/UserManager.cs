@@ -20,11 +20,22 @@ public class UserManager : MonoBehaviour
     public void Init()
     {
         Data = SaveManager.Instance.LoadUserData();
+
+        if (Data != null && Data.Level == 1)
+            Data = null;
         
         if (Data == null)
         {
             Data = new UserData();
             SaveManager.Instance.SaveUserData(Data);
+        }
+        else
+        {
+            SeenAssembleTutorial();
+            SeenMergeTutorial();
+            SeenHitGiantTutorial();
+            SeenFlyTutorial();
+            SeenMoveTutorial();
         }
     }
 
@@ -59,7 +70,6 @@ public class UserManager : MonoBehaviour
 
     public void NextRun()
     {
-        AddCoins(LevelManager.Instance.GetRunReward());
         Data.Run++;
         SaveManager.Instance.SaveUserData(Data);
     }

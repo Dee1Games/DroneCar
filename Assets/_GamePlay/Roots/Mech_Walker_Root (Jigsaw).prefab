@@ -64,6 +64,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1554786538134603626}
+  - component: {fileID: 1109572770945359957}
   m_Layer: 9
   m_Name: COM
   m_TagString: Untagged
@@ -86,6 +87,24 @@ Transform:
   m_Father: {fileID: 1767502022219497967}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1109572770945359957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6821582941482136036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 1, g: 1, b: 1, a: 1}
+  needBoxIndicator: 0
+  needArrowIndicator: 1
+  needDistanceText: 0
+  indicator: {fileID: 0}
+  TargetColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &6562000059561573241
 PrefabInstance:
   m_ObjectHideFlags: 0

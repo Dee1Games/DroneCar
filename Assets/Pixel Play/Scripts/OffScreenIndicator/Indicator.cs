@@ -9,6 +9,7 @@ public class Indicator : MonoBehaviour
     [SerializeField] private IndicatorType indicatorType;
     private Image indicatorImage;
     private Text distanceText;
+    private CanvasGroup cnvs;
 
     /// <summary>
     /// Gets if the game object is active in hierarchy.
@@ -36,6 +37,7 @@ public class Indicator : MonoBehaviour
     {
         indicatorImage = transform.GetComponent<Image>();
         distanceText = transform.GetComponentInChildren<Text>();
+        cnvs = transform.GetComponent<CanvasGroup>();
     }
 
     /// <summary>
@@ -45,6 +47,11 @@ public class Indicator : MonoBehaviour
     public void SetImageColor(Color color)
     {
         indicatorImage.color = color;
+    }
+    
+    public void SetVisible(bool vsble)
+    {
+        cnvs.alpha = vsble ? 1f : 0f;
     }
     
     public void SetImageAlpha(float a)

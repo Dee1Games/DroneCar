@@ -13,6 +13,7 @@ public class OffScreenIndicator : MonoBehaviour
     [Range(0.5f, 0.9f)]
     [Tooltip("Distance offset of the indicators from the centre of the screen")]
     [SerializeField] private float screenBoundOffset = 0.9f;
+    [SerializeField] private Color invisible;
 
     [SerializeField] private LayerMask enemylayer;
 
@@ -49,12 +50,12 @@ public class OffScreenIndicator : MonoBehaviour
             float distanceFromCamera = target.NeedDistanceText ? target.GetDistanceFromCamera(mainCamera.transform.position) : float.MinValue;// Gets the target distance from the camera.
             Indicator indicator = null;
 
-            if(target.NeedBoxIndicator && isTargetVisible)
+            if(target.NeedBoxIndicator)
             {
                 screenPosition.z = 0;
                 indicator = GetIndicator(ref target.indicator, IndicatorType.BOX); // Gets the box indicator from the pool.
             }
-            else if(target.NeedArrowIndicator && !isTargetVisible)
+            else if(target.NeedArrowIndicator)
             {
                 float angle = float.MinValue;
                 OffScreenIndicatorCore.GetArrowIndicatorPositionAndAngle(ref screenPosition, ref angle, screenCentre, screenBounds);
@@ -63,26 +64,19 @@ public class OffScreenIndicator : MonoBehaviour
             }
             if(indicator)
             {
-                indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
+                if (target.NeedBoxIndicator)
+                {
+                    indicator.SetVisible(isTargetVisible);
+                }
+
+                if (target.NeedArrowIndicator)
+                {
+                    indicator.SetVisible(!isTargetVisible);
+                }
+                
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
-            }
-
-            if (GameManager.Instance.Player != null)
-            {
-                Vector3 playerPos = GameManager.Instance.Player.transform.position;
-                Vector3 dir = playerPos - target.transform.position;
-                Vector3 dirN = dir.normalized;
-                Debug.DrawRay(target.transform.position, dir, Color.blue);
-                if (Physics.Raycast(target.transform.position, dirN, dir.magnitude, enemylayer))
-                {
-                    indicator.SetImageAlpha(0.2f);
-                }
-                else
-                {
-                    indicator.SetImageAlpha(1f);
-                }
             }
         }
     }

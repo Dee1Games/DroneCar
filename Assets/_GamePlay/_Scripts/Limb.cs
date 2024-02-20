@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using RaycastPro;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -59,6 +60,10 @@ public class Limb : MonoBehaviour, IHitable
 
     public void TakeDamage(float amount)
     {
+        // if (UserManager.Instance.Data.Level == 1)
+        // {
+        //     amount = 1f;
+        // }
         Health -= amount;
         giantCore.TakeDamage(amount);
     }

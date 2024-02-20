@@ -51,7 +51,14 @@ public class GameManager : MonoBehaviour
         UserManager.Instance.Init();
         LevelManager.Instance.InitCurrentLevel();
         UIManager.Instance.Init();
-        GoToUpgradeMode();
+        if (UserManager.Instance.Data.Level == 1)
+        {
+            GoToPlayMode();
+        }
+        else
+        {
+            GoToUpgradeMode();
+        }
     }
 
     public void GoToPlayMode()

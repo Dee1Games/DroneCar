@@ -144,8 +144,12 @@ public class CarCore : MonoBehaviour
         if (hitable != null)
         {
             End(false);
-            UserManager.Instance.SeenHitGiantTutorial();
-            hitable.OnHit(this, vehicle.Bomb);
+            float dmg = vehicle.Bomb;
+            if (UserManager.Instance.Data.Level == 1)
+            {
+                dmg = 200f;
+            }
+            hitable.OnHit(this, dmg);
             if (hit.transform.TryGetComponent(out Limb limb))
             {
                 vehicle.RigidBody.AddExplosionForce(200, hit.point, 20f);
@@ -201,8 +205,15 @@ public class CarCore : MonoBehaviour
                 //SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
             } catch {}
         }
-        
-        UserManager.Instance.NextRun();
+
+        if (UserManager.Instance.Data.Level == 1)
+        {
+            UserManager.Instance.NextRun();
+        }
+        else
+        {
+            UserManager.Instance.NextRun();
+        }
     }
 
     public void CameraZoomOut()
