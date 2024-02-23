@@ -4901,10 +4901,10 @@ MonoBehaviour:
   smoothSpeed: 5
   offset: {x: 0, y: 6, z: -15}
   lookOffset: 0.5
-  longShotDuration: 5
+  longShotDuration: 4
   longShotOffset: 100
-  longShotRadius: 70
-  longShotHeight: 120
+  longShotRadius: 85
+  longShotHeight: 130
 --- !u!114 &1687258589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6037,6 +6037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenBoundOffset: 0.7
+  invisible: {r: 0, g: 0, b: 0, a: 0}
   enemylayer:
     serializedVersion: 2
     m_Bits: 512

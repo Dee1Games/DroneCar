@@ -93,6 +93,11 @@ public class Limb : MonoBehaviour, IHitable
                 dismember.localEulerAngles = rotationOffset;
                 dismember.localPosition = Vector3.zero;
                 dismember.parent = null;
+                Transform fire = dismember.transform.Find("Godzilla_Fire");
+                if (fire != null)
+                {
+                    fire.gameObject.SetActive(false);
+                }
                 var rb = dismember.GetComponent<Rigidbody>();
                 if (rb == null)
                 {
@@ -218,6 +223,12 @@ public class Limb : MonoBehaviour, IHitable
         
         var col = dismember.AddComponent<MeshCollider>();
         col.convex = true;
+        
+        Transform fire = dismember.transform.Find("Godzilla_Fire");
+        if (fire != null)
+        {
+            fire.gameObject.SetActive(false);
+        }
 
         rb = dismember.AddComponent<Rigidbody>();
         if (explosionForce > 0)

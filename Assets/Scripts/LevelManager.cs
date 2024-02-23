@@ -18,7 +18,23 @@ public class LevelManager : MonoBehaviour
     //public int CurrentLevelIndex => UserManager.Instance.Data.Level;
 #endif
 
-    public LevelData CurrentLevelData => Config.Levels[(CurrentLevelIndex - 1)%Config.Levels.Count];
+    public LevelData CurrentLevelData
+    {
+        get
+        {
+            if (CurrentLevelIndex-1 < Config.Levels.Count)
+            {
+                return Config.Levels[(CurrentLevelIndex - 1) % Config.Levels.Count];
+            }
+            else
+            {
+                int levelsCount = Config.Levels.Count - 1;
+                int x = ((CurrentLevelIndex-2) % levelsCount)+1;
+                return Config.Levels[x];
+            }
+            
+        }
+    }
 
     private void Awake()
     {
