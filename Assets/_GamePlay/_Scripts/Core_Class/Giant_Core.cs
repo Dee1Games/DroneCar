@@ -14,6 +14,8 @@ public class Giant_Core : MonoBehaviour, IHitable
     public FullBodyBipedIK fullBodyBipedIK;
 
     [Title("Options", titleAlignment: TitleAlignments.Centered)]
+    
+    [HideInInspector] public Target[] targets;
 
 
     [Title("UI")]
@@ -33,6 +35,7 @@ public class Giant_Core : MonoBehaviour, IHitable
     public float angularDrag = 3;
     private void Awake()
     {
+        targets = GetComponentsInChildren<Target>(true);
         currentLegCount = legCount;
         aiCore = GetComponent<AI_Core>();
         monster = GetComponentInParent<Monster>();
@@ -53,7 +56,7 @@ public class Giant_Core : MonoBehaviour, IHitable
             UI_Core._.giantIcon.sprite = giantIcon;
         }
     }
-
+    
     public Transform GetRandomMember()
     {
         var random = Random.Range(0, 5);
@@ -166,7 +169,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(Vector3 pos, float damage)
     {
         if (isDead)
             return;
@@ -202,10 +205,12 @@ public class Giant_Core : MonoBehaviour, IHitable
         {
             GameManager.Instance.Player.Core.End(false, false);
         }
-        UserManager.Instance.NextLevel();
+        //UserManager.Instance.NextLevel();
         if (GameManager.Instance.Monster.IsDead)
         {
-            UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
+            GameManager.Instance.RunResult = RunResult.Finish;
+            //UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
+            UIManager.Instance.ShowScreen(UIScreenID.EndRun);
         }
     }
 
@@ -218,11 +223,11 @@ public class Giant_Core : MonoBehaviour, IHitable
         }*/
     }
 
-    public void OnHit(CarCore core, float damage)
+    public void OnHit(CarCore core, Vector3 pos, float damage)
     {
         if (UserManager.Instance.Data.Level != 1)
         {
-            TakeDamage(damage);
+            TakeDamage(pos, damage);
         }
     }
 }

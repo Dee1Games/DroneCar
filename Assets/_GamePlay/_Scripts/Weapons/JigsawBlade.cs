@@ -37,7 +37,7 @@ public class JigsawBlade : MonoBehaviour
         if (core)
         {
             
-            core.TakeDamage(DPS);
+            core.TakeDamage(other.transform.position, DPS);
         }
     }
 }

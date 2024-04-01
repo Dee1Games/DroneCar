@@ -32,7 +32,7 @@ public class Robot_Gun_AI : AI_Core
         {
             if (carCore && hit.transform == carCore.transform)
             {
-                carCore.TakeDamage(Time.deltaTime * laserDamage*targetRay.Influence);
+                carCore.TakeDamage(carCore.transform.position, Time.deltaTime * laserDamage*targetRay.Influence);
             }
         });
     }

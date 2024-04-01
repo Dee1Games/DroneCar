@@ -54,7 +54,7 @@ public class Shield : MonoBehaviour, IHitable
      //   UI_Core._.shieldIcon.DOFillAmount(0, fadeOutDuration).SetEase(ease);
     }
 
-    public void OnHit(CarCore core, float damage)
+    public void OnHit(CarCore core, Vector3 pos, float damage)
     {
         
     }

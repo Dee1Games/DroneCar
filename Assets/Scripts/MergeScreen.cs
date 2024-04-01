@@ -8,12 +8,12 @@ public class MergeScreen : UIScreen
 {
     public override UIScreenID ID => UIScreenID.Merge;
 
-    [SerializeField] private TMP_Text priceText;
+    [SerializeField] private TMP_Text[] priceTexts;
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text levelText_tut;
 
-    [SerializeField] private Image upgradeButton;
+    [SerializeField] private Image[] upgradeButtons;
     [SerializeField] private Sprite activeButtonSprite;
     [SerializeField] private Sprite passiveButtonSprite;
     [SerializeField] private Button playButton;
@@ -68,15 +68,33 @@ public class MergeScreen : UIScreen
     private void RefreshUpgradePrice()
     {
         int price = MergePlatform.Instance.GetCurrentUpgradePrice();
-        priceText.text = "$" + price.ToString();
+        foreach (TMP_Text priceText in priceTexts)
+        {
+            priceText.text = "$" + price.ToString();
+        }
 
         if (price > UserManager.Instance.Data.Coins)
         {
-            upgradeButton.sprite = passiveButtonSprite;
+            foreach (Image upgradeButton in upgradeButtons)
+            {
+                upgradeButton.sprite = passiveButtonSprite;
+            }
         }
         else
         {
-            upgradeButton.sprite = activeButtonSprite;
+            int i = 0;
+            foreach (Image upgradeButton in upgradeButtons)
+            {
+                if (i > 0 && !UserManager.Instance.Data.SeenMergeTutorial)
+                {
+                    upgradeButton.sprite = passiveButtonSprite;
+                }
+                else
+                {
+                    upgradeButton.sprite = activeButtonSprite;
+                }
+                i++;
+            }
         }
     }
 
@@ -89,31 +107,105 @@ public class MergeScreen : UIScreen
 
     public void OnClick_Upgrade()
     {
+        if (CanBuyUpgradeNow())
+        {
+            MergePlatform.Instance.SpawnUpgrade();
+            CheckTut();
+        }
+    }
+    
+    public void OnClick_Upgrade_Tire()
+    {
+        if (!UserManager.Instance.Data.SeenMergeTutorial)
+        {
+            return;
+        }
+
+        if (CanBuyUpgradeNow())
+        {
+            MergePlatform.Instance.SpawnUpgrade(UpgradeType.Tire);
+            CheckTut();
+        }
+    }
+    
+    public void OnClick_Upgrade_Turbo()
+    {
+        if (!UserManager.Instance.Data.SeenMergeTutorial)
+        {
+            return;
+        }
+        
+        if (CanBuyUpgradeNow())
+        {
+            MergePlatform.Instance.SpawnUpgrade(UpgradeType.Turbo);
+            CheckTut();
+        }
+    }
+    
+    public void OnClick_Upgrade_Bomb()
+    {
+        if (!UserManager.Instance.Data.SeenMergeTutorial)
+        {
+            return;
+        }
+        
+        if (CanBuyUpgradeNow())
+        {
+            MergePlatform.Instance.SpawnUpgrade(UpgradeType.Bomb);
+            CheckTut();
+        }
+    }
+    
+    public void OnClick_Upgrade_Gun()
+    {
+        if (CanBuyUpgradeNow())
+        {
+            MergePlatform.Instance.SpawnUpgrade(UpgradeType.Gun);
+            CheckTut();
+        }
+    }
+
+    private void CheckTut()
+    {
+        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==2)
+        {
+            TutorialManager.Instance.ShowBuyHint2();
+        }
+    }
+
+    private bool CanBuyUpgradeNow()
+    {
+        if (CanContinueToUpgrade() && UserManager.Instance.Data.Coins >= MergePlatform.Instance.GetCurrentUpgradePrice())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+
+    private bool CanContinueToUpgrade()
+    {
         if (!UserManager.Instance.Data.SeenAssembleTutorial)
         {
             if (!UserManager.Instance.Data.SeenMergeTutorial)
             {
                 if (MergePlatform.Instance.NumberOfFullCells() >= 2)
                 {
-                    return;
+                    return false;
                 }
             }
             else
             {
                 if (MergePlatform.Instance.NumberOfFullCells() >= 1)
                 {
-                    return;
+                    return false;
                 }
             }
         }
-        
-        if (UserManager.Instance.Data.Coins >= MergePlatform.Instance.GetCurrentUpgradePrice())
-        {
-            MergePlatform.Instance.SpawnUpgrade();
-            if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==2)
-            {
-                TutorialManager.Instance.ShowBuyHint2();
-            }
-        }
+
+        return true;
     }
 }

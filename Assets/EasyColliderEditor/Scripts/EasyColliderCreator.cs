@@ -1556,8 +1556,10 @@ namespace ECE
       // Create a mesh collider
 #if (UNITY_EDITOR)
       MeshCollider createdCollider = Undo.AddComponent<MeshCollider>(attachToObject);
+      createdCollider.convex = true;
 #else
       MeshCollider createdCollider = attachToObject.AddComponent<MeshCollider>();
+      createdCollider.convex = true;
 #endif
       createdCollider.sharedMesh = mesh;
       // Auto inflate mesh to the minimum amount

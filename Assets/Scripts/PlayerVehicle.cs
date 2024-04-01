@@ -63,6 +63,10 @@ public class PlayerVehicle : MonoBehaviour
     private float fireRateMultiplyer;
     private float lastInputTouchTime;
 
+    private float lifeTimer;
+
+    public float CurrentLifTimeLeft => lifeTimer / Config.LifeTime;
+
     #region Cached_Animatios
 
     private static readonly int Reset = Animator.StringToHash("reset");
@@ -87,6 +91,7 @@ public class PlayerVehicle : MonoBehaviour
 
     public void InitPlayMode()
     {
+        lifeTimer = Config.LifeTime;
         fireRateMultiplyer = 1f;
         lastInputTouchTime = -1f;
         upgrades = UserManager.Instance.GetUpgradeLevels(ID);
@@ -175,8 +180,21 @@ public class PlayerVehicle : MonoBehaviour
 
     private void Update()
     {
-        if (!IsActive || isChanging)
+        if (!IsActive)
             return;
+        
+        lifeTimer -= Time.deltaTime;
+        if (lifeTimer < 0f)
+        {
+            Core.Die();
+            return;
+        }
+        
+        
+        if (isChanging)
+            return;
+
+        
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -228,6 +246,11 @@ public class PlayerVehicle : MonoBehaviour
             if(Physics.Raycast(transform.position, transform.forward, 3f, LayerMask.GetMask("Props")))
             {
                 currentSpeed = 0f;
+                
+                Core.Die();
+                //UIManager.Instance.ShowScreen(UIScreenID.EndRun);
+
+                return;
             }
             
             if (transform.position.magnitude > LevelManager.Instance.GetSpaceLimit())
@@ -530,5 +553,20 @@ public class PlayerVehicle : MonoBehaviour
             gun = Mathf.Max(gun, upgrade.GetGun(upgradeLevel.Level));
             jumpForce = Mathf.Max(jumpForce, upgrade.GetJumpForce(upgradeLevel.Level));
         }
+        
+        acceleration *= Config.SpeedMultiplyer;
+        reverseAcceleration *= Config.SpeedMultiplyer;
+        maxSpeed *= Config.SpeedMultiplyer;
+    }
+
+    public void pointToMonster()
+    {
+        if(GameManager.Instance.Monster == null)
+            return;
+
+        Transform t = GameManager.Instance.Monster.com.transform;
+        Vector3 f = t.position - transform.position;
+        f = f.normalized;
+        transform.forward = f;
     }
 }

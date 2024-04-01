@@ -17,22 +17,49 @@ public class LevelManager : MonoBehaviour
     public int CurrentLevelIndex => debugLevel > 0 ? debugLevel : UserManager.Instance.Data.Level;
     //public int CurrentLevelIndex => UserManager.Instance.Data.Level;
 #endif
+    
+    public LevelData PreviousLevelData
+    {
+        get
+        {
+            if (CurrentLevelIndex <= 1)
+            {
+                return null;
+            }
+            else
+            {
+                return GetLevelDataByIndex(CurrentLevelIndex-1);
+            }
+        }
+    }
 
     public LevelData CurrentLevelData
     {
         get
         {
-            if (CurrentLevelIndex-1 < Config.Levels.Count)
-            {
-                return Config.Levels[(CurrentLevelIndex - 1) % Config.Levels.Count];
-            }
-            else
-            {
-                int levelsCount = Config.Levels.Count - 1;
-                int x = ((CurrentLevelIndex-2) % levelsCount)+1;
-                return Config.Levels[x];
-            }
-            
+            return GetLevelDataByIndex(CurrentLevelIndex);
+        }
+    }
+    
+    public LevelData NextLevelData
+    {
+        get
+        {
+            return GetLevelDataByIndex(CurrentLevelIndex + 1);
+        }
+    }
+
+    public LevelData GetLevelDataByIndex(int index)
+    {
+        if (index-1 < Config.Levels.Count)
+        {
+            return Config.Levels[(index - 1) % Config.Levels.Count];
+        }
+        else
+        {
+            int levelsCount = Config.Levels.Count - 1;
+            int x = ((index-2) % levelsCount)+1;
+            return Config.Levels[x];
         }
     }
 

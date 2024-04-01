@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public interface IHitable
 {
-    void OnHit(CarCore core, float damage);
+    void OnHit(CarCore core, Vector3 pos, float damage);
 }
 public class CarCore : MonoBehaviour
 {
@@ -93,10 +93,35 @@ public class CarCore : MonoBehaviour
             if (hp <= 0)
             {
                 End(true);
+                GameManager.Instance.RunResult = RunResult.Died;
                 CameraZoomOut();
                 //UIManager.Instance.ShowScreen(UIScreenID.EndRun);
             }
         }
+    }
+
+    public void Die()
+    {
+        float value = -1f;
+        if (value < hp)
+        {
+            PlayerVehicle.OnTookDamage();
+        }
+        hp = Mathf.Clamp(value, 0, maxHp);
+        UI_Core._.carHealth.UpdateHealthUI(hp, maxHp);
+        if (hp <= 0)
+        {
+            End(true);
+            GameManager.Instance.RunResult = RunResult.Died;
+            //CameraZoomOut();
+            Invoke("ShowEnd", 1.5f);
+        }
+    }
+
+    private void ShowEnd()
+    {
+        UIManager.Instance.ShowScreen(UIScreenID.EndRun);
+
     }
 
     public float MaxHp
@@ -149,12 +174,24 @@ public class CarCore : MonoBehaviour
             {
                 dmg = 200f;
             }
-            hitable.OnHit(this, dmg);
+            if (UserManager.Instance.Data.Level != 1)
+            {
+                DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
+            }
+            else
+            {
+                if (!(hitable is Giant_Core))
+                {
+                    DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
+                }
+            }
+            hitable.OnHit(this, transform.position, dmg);
             if (hit.transform.TryGetComponent(out Limb limb))
             {
                 vehicle.RigidBody.AddExplosionForce(200, hit.point, 20f);
             }
             Debug.Log(hit.transform.name);
+            GameManager.Instance.RunResult = RunResult.Hit;
             CameraZoomOut();
         }
     }
@@ -225,10 +262,10 @@ public class CarCore : MonoBehaviour
     
     void OnBullet(RaycastPro.Bullets.Bullet bullet)
     {
-        TakeDamage(bullet.damage);
+        TakeDamage(bullet.transform.position, bullet.damage);
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(Vector3 pos, float amount)
     {
         Hp -= amount;
         if (debug)

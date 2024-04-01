@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGameScreen : UIScreen
 {
     public override UIScreenID ID => UIScreenID.InGame;
 
     [SerializeField] private HealthUI monsterHealthUI;
+    [SerializeField] private Image lifeTime;
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text levelText_tut;
@@ -29,6 +31,14 @@ public class InGameScreen : UIScreen
         Monster.OnHealthChange -= UpdateMonsterHealthBar;
         PlayerVehicle.OnExploded -= HideRetryButton;
         PlayerVehicle.OnTookDamage -= ShowDamageUI;
+    }
+
+    private void Update()
+    {
+        if (GameManager.Instance.Player != null)
+        {
+            UpdateLifeTImeBar(GameManager.Instance.Player.CurrentLifTimeLeft);
+        }
     }
 
     public override void Init()
@@ -65,6 +75,14 @@ public class InGameScreen : UIScreen
     {
         GameManager.Instance.GoToUpgradeMode();
     }
+    
+    public void OnClick_Monster()
+    {
+        if(GameManager.Instance.Player == null) 
+            return;
+        
+        GameManager.Instance.Player.pointToMonster();
+    }
 
     private Camera _camera;
     
@@ -78,6 +96,11 @@ public class InGameScreen : UIScreen
     private void UpdateMonsterHealthBar(float currentHealth, float maxHealth)
     {
         monsterHealthUI.UpdateHealthUI(currentHealth, maxHealth); 
+    }
+    
+    private void UpdateLifeTImeBar(float val)
+    {
+        lifeTime.fillAmount = val;
     }
 
     private void HideRetryButton()

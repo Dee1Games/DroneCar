@@ -24,7 +24,7 @@ public class Flamer : MonoBehaviour
         {
             if (c.transform.TryGetComponent(out CarCore carCore))
             {
-                carCore.TakeDamage(DPS * Time.fixedDeltaTime);
+                carCore.TakeDamage(carCore.transform.position, DPS * Time.fixedDeltaTime);
             }
         });
     }

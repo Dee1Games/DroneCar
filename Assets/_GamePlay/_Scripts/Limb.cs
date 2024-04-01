@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class Limb : MonoBehaviour, IHitable
 {
+    private LimbSmoke smoke;
+    
+    
     public SkinnedMeshRenderer referenceSkin;
     
     [HideInInspector] public Giant_Core giantCore;
@@ -17,7 +20,7 @@ public class Limb : MonoBehaviour, IHitable
 
     public bool isLeg = false;
     
-    public float health = 100f;
+    [HideInInspector] public float health = 100f;
     public float maxHealth = 100f;
     public float explosionForce = 150f;
     public float explosionRadius = 15f;
@@ -58,14 +61,42 @@ public class Limb : MonoBehaviour, IHitable
     
     
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(Vector3 pos, float amount)
     {
         // if (UserManager.Instance.Data.Level == 1)
         // {
         //     amount = 1f;
         // }
         Health -= amount;
-        giantCore.TakeDamage(amount);
+        giantCore.TakeDamage(pos, amount);
+        
+        bool smokeChanged = false;
+        float healthPercent = Health / maxHealth;
+        int damageLevel = 0;
+        if (healthPercent > 0.66f)
+        {
+            damageLevel = 1;
+        } else if (healthPercent > 0.33f)
+        {
+            damageLevel = 2;
+        } else
+        {
+            damageLevel = 3;
+        }
+
+        if (smoke == null || damageLevel != smoke.level)
+        {
+            LimbSmoke newSmoke = LimbSmokePool.Instance.Spawn(transform.position,  transform.up, damageLevel);
+            if (newSmoke != null)
+            {
+                if (smoke != null)
+                {
+                    smoke.ReturnToPool();
+                }
+                newSmoke.transform.parent = transform.parent;
+                smoke = newSmoke;
+            }
+        }
     }
 
     private Transform dismember;
@@ -88,6 +119,11 @@ public class Limb : MonoBehaviour, IHitable
             else
             {
                 dismember = Instantiate(transform, transform);
+                Target t = dismember.transform.GetComponentInChildren<Target>();
+                if (t != null)
+                {
+                    t.enabled = false;
+                }
                 dismember.gameObject.layer = LayerMask.NameToLayer("Ragdolls");
                 dismember.localScale = Vector3.one;
                 dismember.localEulerAngles = rotationOffset;
@@ -135,9 +171,9 @@ public class Limb : MonoBehaviour, IHitable
     }
     
 
-    public void OnHit(CarCore core, float damage)
+    public void OnHit(CarCore core, Vector3 pos, float damage)
     {
-        TakeDamage(damage);
+        TakeDamage(pos, damage);
     }
     
     private List<int> boneIndex = new List<int>();
@@ -207,6 +243,12 @@ public class Limb : MonoBehaviour, IHitable
 
 
         dismember = new GameObject($"{name} Limb").transform;
+        
+        Target t = dismember.transform.GetComponentInChildren<Target>();
+        if (t != null)
+        {
+            t.enabled = false;
+        }
 
 //        createdMesh.layer = LayerMask.NameToLayer("Ragdolls");
         

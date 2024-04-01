@@ -82,13 +82,13 @@ public class WeakPoint : MonoBehaviour, IHitable
         Number = index;
     }
 
-    public void OnHit(CarCore core, float damage = 10f)
+    public void OnHit(CarCore core, Vector3 pos, float damage = 10f)
     {
         if (currentIndex != index) return;
         
        CurrentIndex = index + 1;
 
-        myCore.TakeDamage(damage * damageMultiplier + damagePlus);
+        myCore.TakeDamage(pos, damage * damageMultiplier + damagePlus);
         if (explodable)
         {
             explodable.transform.SetParent(null);

@@ -140,7 +140,7 @@ public class MergePlatform : MonoBehaviour
         currentSelectedItem = item;
     }
 
-    public void SpawnUpgrade()
+    public void SpawnUpgrade(UpgradeType t = UpgradeType.None)
     {
         if (NumberOfFullCells() == 6)
             return;
@@ -152,7 +152,7 @@ public class MergePlatform : MonoBehaviour
         
         UserManager.Instance.Data.Coins -= price;
         
-        SpawnItemInCell(GetRandomEmptyCell());
+        SpawnItemInCell(GetRandomEmptyCell(), t);
         
         UserManager.Instance.NextUpgrade();
         UIManager.Instance.Refresh();
@@ -160,9 +160,9 @@ public class MergePlatform : MonoBehaviour
         ShowTutorialsIfNeeded();
     }
 
-    private void SpawnItemInCell(MergeCell cell)
+    private void SpawnItemInCell(MergeCell cell, UpgradeType t = UpgradeType.None)
     {
-        Item randomItem = GetRandomItem();
+        Item randomItem = GetRandomItem(t);
         MergeItem item = Instantiate(randomItem.MergePrefab, cell.transform).GetComponent<MergeItem>();
         item.Init(randomItem.Level, randomItem.Type);
         cell.SetItem(item);
@@ -200,7 +200,7 @@ public class MergePlatform : MonoBehaviour
         return n;
     }
     
-    private Item GetRandomItem()
+    private Item GetRandomItem(UpgradeType t = UpgradeType.None)
     {
         if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount == 1)
         {
@@ -214,15 +214,18 @@ public class MergePlatform : MonoBehaviour
         List<UpgradeType> probabilities = new List<UpgradeType>();
         foreach(UpgradeType upgradeType in UpgradeType.GetValues(typeof(UpgradeType)))
         {
-            int p = GameManager.Instance.Player.Config.GetProbability(upgradeType);
-            if (GameManager.Instance.Player.Config.GetItem(upgradeType,
-                UserManager.Instance.GetUpgradeLevel(LevelManager.Instance.CurrentLevelData.Vehicle, upgradeType)+1) == null)
+            if (upgradeType != UpgradeType.None)
             {
-                p = 0;
-            } 
-            for (int i = 0; i < p; i++)
-            {
-                probabilities.Add(upgradeType);
+                int p = GameManager.Instance.Player.Config.GetProbability(upgradeType);
+                if (GameManager.Instance.Player.Config.GetItem(upgradeType,
+                    UserManager.Instance.GetUpgradeLevel(LevelManager.Instance.CurrentLevelData.Vehicle, upgradeType)+1) == null)
+                {
+                    p = 0;
+                } 
+                for (int i = 0; i < p; i++)
+                {
+                    probabilities.Add(upgradeType);
+                }
             }
         }
 
@@ -239,8 +242,12 @@ public class MergePlatform : MonoBehaviour
         // }
         // else
         // {
-            UpgradeType randomType = probabilities[Random.Range(0, probabilities.Count)];
-            return GameManager.Instance.Player.Config.GetItem(randomType, 1);
+        UpgradeType randomType = probabilities[Random.Range(0, probabilities.Count)];
+        if (t != UpgradeType.None)
+        {
+            randomType = t;
+        }
+        return GameManager.Instance.Player.Config.GetItem(randomType, 1);
         //}
     }
 

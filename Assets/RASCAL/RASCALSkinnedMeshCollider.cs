@@ -958,6 +958,8 @@ public class RASCALSkinnedMeshCollider : MonoBehaviour {
 
             meshCol = parentBone.transform.gameObject.AddComponent<MeshCollider>();
             meshCol.convex = host.convexMeshColliders;
+            meshCol.convex = true;
+
 
             HandlePhysMatInheritence();
 

@@ -78,6 +78,14 @@ public class Indicator : MonoBehaviour
     {
         distanceText.rectTransform.rotation = rotation;
     }
+    
+    public void OnClick_Monster()
+    {
+        if(GameManager.Instance.Player == null) 
+            return;
+        
+        GameManager.Instance.Player.pointToMonster();
+    }
 
     /// <summary>
     /// Sets the indicator as active or inactive.

@@ -147,11 +147,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1080391354025604233, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 700
+      value: 190
       objectReference: {fileID: 0}
     - target: {fileID: 1544823647823789487, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 700
+      value: 190
       objectReference: {fileID: 0}
     - target: {fileID: 2451411308067852683, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: isLeg
@@ -159,7 +159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2451411308067852683, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 700
+      value: 190
       objectReference: {fileID: 0}
     - target: {fileID: 2968022400013379529, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: poolManager
@@ -167,7 +167,7 @@ PrefabInstance:
       objectReference: {fileID: 820266767958113367}
     - target: {fileID: 3436900575878956781, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 700
+      value: 190
       objectReference: {fileID: 0}
     - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: radius
@@ -177,10 +177,22 @@ PrefabInstance:
       propertyPath: colliders.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4597811565197012952, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4958954509339159883, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: attachedLimb
       value: 
       objectReference: {fileID: 5823933078357944361}
+    - target: {fileID: 5112210705836286925, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5587535631704910057, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6056266654561034444, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: ease
       value: 30
@@ -251,7 +263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8621293714134413276, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: maxHealth
-      value: 700
+      value: 190
       objectReference: {fileID: 0}
     - target: {fileID: 8665920347677971034, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: myCore
@@ -268,6 +280,10 @@ PrefabInstance:
     - target: {fileID: 8761177693482489517, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: IKDelay
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8818064507349081308, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8983983403997087947, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: m_text
@@ -390,7 +406,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
   health: 100
-  maxHealth: 700
+  maxHealth: 190
   explosionForce: 150
   explosionRadius: 15
   bakeLayer:

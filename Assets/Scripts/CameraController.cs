@@ -130,12 +130,9 @@ public class CameraController : MonoBehaviour
 
         if (GameManager.Instance.Monster.IsDead)
         {
-            UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
-        }
-        else
-        {
-            UIManager.Instance.ShowScreen(UIScreenID.EndRun);
-        }
+            GameManager.Instance.RunResult = RunResult.Finish;
+        }   
+        UIManager.Instance.ShowScreen(UIScreenID.EndRun);
         
         // if (GameManager.Instance.Monster.IsDead)
         // {

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Giant_Core GiantCore;
     [HideInInspector] public PlayerVehicle Player;
     [HideInInspector] public float CurrentRunDamage;
+    [HideInInspector] public RunResult RunResult;
 
     [SerializeField] private Vehicles VehiclesConfig;
     [SerializeField] private float respawnDelay;
