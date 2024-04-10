@@ -30,7 +30,7 @@ public class DamageIndicator : MonoBehaviour
         {
             str = "0.1";
         }
-        txt.text = "-%" + str;
+        txt.text = "-" + damage;
         
         float distance = 1f;
         if (GameManager.Instance != null && GameManager.Instance.Player != null)
