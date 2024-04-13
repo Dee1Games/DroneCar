@@ -92,6 +92,7 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.Map = Instantiate(CurrentLevelData.MapPrefab.gameObject).GetComponent<Map>();
         GameManager.Instance.Map.transform.position = Vector3.zero;
         GameManager.Instance.Map.transform.rotation = Quaternion.identity;
+        GameManager.Instance.Map.Init();
         
         GameManager.Instance.Monster = Instantiate(CurrentLevelData.MonsterPrefab.gameObject, GameManager.Instance.Map.GetMonsterParent()).GetComponentInChildren<Monster>();
         GameManager.Instance.GiantCore = GameManager.Instance.Monster.GetComponentInChildren<Giant_Core>();

@@ -21,6 +21,10 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private MMFeedbacks explodeFeedback;
     [SerializeField] private Animator anim;
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private float limitX;
+    [SerializeField] private float limitY;
+    [SerializeField] private ParticleSystem upgradeParticle;
+
     
     private List<UpgradeLevel> upgrades;
     private float acceleration;
@@ -190,6 +194,12 @@ public class PlayerVehicle : MonoBehaviour
             return;
         }
         
+        if (transform.position.z < Config.LimitZ)
+        {
+            Core.Die();
+            return;
+        }
+        
         
         if (isChanging)
             return;
@@ -292,7 +302,8 @@ public class PlayerVehicle : MonoBehaviour
             }
 
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
-            transform.Rotate(Vector3.up, input.JoystickX*handeling);
+            float ang = input.JoystickX * handeling;
+            transform.Rotate(Vector3.up, ang);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
         }
 
@@ -345,6 +356,11 @@ public class PlayerVehicle : MonoBehaviour
     {
         if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / (Config.FireRate*fireRateMultiplyer)) && gunExitPoints.Length!=0)
         {
+            if (transform.position.z > Config.GunShootZ)
+            {
+                return false;
+            }
+            
             if (Config.AlwaysShoot)
             {
                 return true;
@@ -383,18 +399,39 @@ public class PlayerVehicle : MonoBehaviour
         
         if (isHovering)
         {
-
-            
-            rigidBody.velocity = transform.forward * Core.ApplySpeedBuff(currentSpeed);
+            Vector3 dir = transform.forward;
+            if (transform.position.x <= -limitX && transform.forward.x<0)
+            {
+                dir.x = 0f;
+            }
+            if (transform.position.x >= limitX && transform.forward.x>0)
+            {
+                dir.x = 0f;
+            }
+            rigidBody.velocity = dir * Core.ApplySpeedBuff(currentSpeed);
             rigidBody.angularVelocity = Vector3.zero;
         }
         else
         {
-            Vector3 v = transform.forward * currentSpeed;
+            Vector3 dir = transform.forward;
+            if (transform.position.x <= -limitX && transform.forward.x<0)
+            {
+                dir.x = 0f;
+            }
+            if (transform.position.x >= limitX && transform.forward.x>0)
+            {
+                dir.x = 0f;
+            }
+            Vector3 v = dir * currentSpeed;
             v.y = rigidBody.velocity.y;
             rigidBody.velocity = v;
             rigidBody.angularVelocity = Vector3.zero;
         }
+    }
+    
+    public void PlayUpgradeParticle()
+    {
+        upgradeParticle.Play();
     }
 
     public void Explode()
@@ -509,6 +546,14 @@ public class PlayerVehicle : MonoBehaviour
 
     public bool SetUpgrade(UpgradeType type, int level)
     {
+        if (level < 0)
+        {
+            level = 0;
+        }
+        if (Config.GetUpgradeConfig(type).maxLevel < level)
+        {
+            return false;
+        }   
         int upgradeIndex = -1;
         for (int i = 0; i < upgrades.Count; i++)
         {
@@ -529,6 +574,20 @@ public class PlayerVehicle : MonoBehaviour
         }
 
         return false;
+    }
+    
+    public int GetUpgradeLevel(UpgradeType type)
+    {
+        int upgradeIndex = -1;
+        for (int i = 0; i < upgrades.Count; i++)
+        {
+            if (upgrades[i].Type == type)
+            {
+                return upgrades[i].Level;
+            }
+        }
+
+        return 0;
     }
     
     private void GetUpgradeValues ()

@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour
 
     public void GoToPlayMode()
     {
+        UserManager.Instance.ResetVehicleUpgrades();
+        Map.Init();
         CurrentRunDamage = 0f;
         isPlaying = true;
         spawnPlayer();
@@ -73,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToUpgradeMode()
     {
+        UserManager.Instance.ResetVehicleUpgrades();
         isPlaying = false;
         spawnPlayer();
         MergePlatform.Instance.Init();
@@ -104,7 +107,7 @@ public class GameManager : MonoBehaviour
         if(Player != null)
             DestroyImmediate(Player.gameObject);
         Player = Instantiate(VehiclesConfig.GetVehicle(LevelManager.Instance.CurrentLevelData.Vehicle).Prefab).GetComponent<PlayerVehicle>();
-        Transform spawnPoint = Map.GetRandomSpawnPoint();
+        Transform spawnPoint = Map.GetSpawnPoint();
         Player.transform.position = spawnPoint.position;
         Player.transform.forward = spawnPoint.forward;
         

@@ -4,24 +4,26 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
-    [SerializeField] private Transform monsterPos;
-    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private Transform monsterPoint;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Transform gatesParent;
+
+    public void Init()
+    {
+        GateObstacle[] gates = gatesParent.GetComponentsInChildren<GateObstacle>();
+        foreach (GateObstacle gate in gates)
+        {
+            gate.Init();
+        }
+    }
 
     public Transform GetMonsterParent()
     {
-        return monsterPos;
+        return monsterPoint;
     }
 
-    public Transform GetRandomSpawnPoint()
+    public Transform GetSpawnPoint()
     {
-        if (!UserManager.Instance.Data.SeenMoveTutorial)
-        {
-            return spawnPoints[0];
-        }
-        if (!UserManager.Instance.Data.SeenFlyTutorial)
-        {
-            return spawnPoints[1];
-        }
-        return spawnPoints[Random.Range(0, spawnPoints.Length)];
+        return spawnPoint;
     }
 }

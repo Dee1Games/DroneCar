@@ -21,10 +21,13 @@ MonoBehaviour:
   JumpForce: 10
   FireRate: 1.5
   AlwaysShoot: 0
-  LifeTime: 100
+  LifeTime: 999999
   SpeedMultiplyer: 1.5
+  GunShootZ: 0
+  LimitZ: -450
   upgrades:
   - Type: 0
+    maxLevel: 5
     accelerationCurve:
       serializedVersion: 2
       m_Curve:
@@ -111,6 +114,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     jumpForceRemap: {x: 0, y: 0}
   - Type: 1
+    maxLevel: 5
     accelerationCurve:
       serializedVersion: 2
       m_Curve: []
@@ -179,6 +183,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     jumpForceRemap: {x: 0, y: 0}
   - Type: 2
+    maxLevel: 5
     accelerationCurve:
       serializedVersion: 2
       m_Curve:
@@ -337,6 +342,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     jumpForceRemap: {x: 0, y: 0}
   - Type: 3
+    maxLevel: 5
     accelerationCurve:
       serializedVersion: 2
       m_Curve: []

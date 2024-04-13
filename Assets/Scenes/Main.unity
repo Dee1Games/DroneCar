@@ -11426,7 +11426,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 70
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -11507,7 +11507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothSpeed: 5
-  offset: {x: 0, y: 6, z: -15}
+  offset: {x: 0, y: 5, z: -10}
   lookOffset: 0.5
   longShotDuration: 2.5
   longShotOffset: 100
@@ -14788,7 +14788,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 187180, guid: f6f089c0d69d2af4cadd8bcb356e04e4, type: 3}
       propertyPath: m_Name
-      value: MagicBuffGreen 1
+      value: UpgradeParticle
       objectReference: {fileID: 0}
     - target: {fileID: 436656, guid: f6f089c0d69d2af4cadd8bcb356e04e4, type: 3}
       propertyPath: m_RootOrder
@@ -19139,6 +19139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1435685044346001413}
   - component: {fileID: 1435685044346001466}
+  - component: {fileID: 1435685044346001467}
   m_Layer: 5
   m_Name: LifeTimeBar
   m_TagString: Untagged
@@ -19183,6 +19184,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthFill: {fileID: 1435685044344224658}
   tweenDuration: 0.7
+--- !u!225 &1435685044346001467
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435685044346001412}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1435685044438823980
 MonoBehaviour:
   m_ObjectHideFlags: 0

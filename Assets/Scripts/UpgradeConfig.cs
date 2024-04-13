@@ -4,7 +4,8 @@ using UnityEngine;
 public class UpgradeConfig
 {
     public UpgradeType Type;
-    
+
+    public int maxLevel;
     [SerializeField] private AnimationCurve accelerationCurve = new AnimationCurve();
     [SerializeField] private Vector2 accelerationRemap;
     [SerializeField] private AnimationCurve reverseAccelerationCurve = new AnimationCurve();
