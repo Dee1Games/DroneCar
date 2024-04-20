@@ -8,6 +8,7 @@ public class Gate : MonoBehaviour
 {
     [SerializeField] private Image bg;
     [SerializeField] private Image labelBG;
+    [SerializeField] private Image icon;
     [SerializeField] private TMP_Text value;
     [SerializeField] private string valueText;
 
@@ -15,11 +16,14 @@ public class Gate : MonoBehaviour
     [SerializeField] private Sprite positiveBG;
     [SerializeField] private Sprite negetiveLabel;
     [SerializeField] private Sprite negetiveBG;
+    
+    [SerializeField] private Sprite[] levels;
 
-    public void Init(bool isNegetive, int diff)
+    public void Init(bool isNegetive, int diff, int level)
     {
         bg.sprite = isNegetive ? negetiveBG : positiveBG;
         labelBG.sprite = isNegetive ? negetiveLabel : positiveLabel;
         value.text = string.Format(valueText, isNegetive ? "-" : "+", diff.ToString());
+        icon.sprite = levels[level];
     }
 }

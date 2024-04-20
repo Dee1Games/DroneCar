@@ -67,7 +67,7 @@ public class GateObstacle : MonoBehaviour
         {
             isNegative = false;
         }
-        ActivateType(selected, 0);
+        ActivateType(selected, 0, 0);
         if (gateType != UpgradeType.None)
         {
             Refresh();
@@ -115,10 +115,10 @@ public class GateObstacle : MonoBehaviour
             diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(gateType).GetMaxSpeed(gateLevel));
         }
         int intDiff = Mathf.CeilToInt(diff);
-        ActivateType(selected, intDiff);
+        ActivateType(selected, intDiff, gateLevel);
     }
 
-    public void ActivateType(GateObstacleType selectedType, int diff)
+    public void ActivateType(GateObstacleType selectedType, int diff, int level)
     {
         foreach (GateObstacleType type in itemsDict.Keys)
         {
@@ -128,7 +128,7 @@ public class GateObstacle : MonoBehaviour
                 Gate gate = itemsDict[type].GO.GetComponent<Gate>();
                 if (gate != null)
                 {
-                    gate.Init(isNegative, diff);
+                    gate.Init(isNegative, diff, level);
                 }
             }
             else
