@@ -13,6 +13,7 @@ public class GateObstacle : MonoBehaviour
     private GateObstacleType selected;
     private bool isUsed = false;
     private bool isNegative;
+    private UpgradeType gateType;
 
     public void Init()
     {
@@ -38,6 +39,24 @@ public class GateObstacle : MonoBehaviour
             }
             i += chance;
         }
+
+        gateType = UpgradeType.None;
+        if (selected != GateObstacleType.Obstacle)
+        {
+            if (selected == GateObstacleType.BombGate)
+            {
+                gateType = UpgradeType.Bomb;
+            } else if (selected == GateObstacleType.GunGate)
+            {
+                gateType = UpgradeType.Gun;
+            } else if (selected == GateObstacleType.TireGate)
+            {
+                gateType = UpgradeType.Tire;
+            }  else if (selected == GateObstacleType.TurboGate)
+            {
+                gateType = UpgradeType.Turbo;
+            }
+        }
         
         rnd = UnityEngine.Random.Range(0f, 1f);
         if (rnd < negativeChance)
@@ -48,10 +67,58 @@ public class GateObstacle : MonoBehaviour
         {
             isNegative = false;
         }
-        ActivateType(selected);
+        ActivateType(selected, 0);
+        if (gateType != UpgradeType.None)
+        {
+            Refresh();
+        }
     }
 
-    public void ActivateType(GateObstacleType selectedType)
+    public void Refresh()
+    {
+        if (gateType == UpgradeType.None)
+        {
+            return;
+        }
+        
+        int max = GameManager.Instance.Player.Config.GetUpgradeConfig(gateType).maxLevel;
+        int current = GameManager.Instance.Player.GetUpgradeLevel(gateType);
+        int next = current;
+        int prev = current;
+
+        if (current < max)
+        {
+            next = current + 1;
+        }
+        
+        if (current > 1)
+        {
+            prev = current - 1;
+        }
+
+        int gateLevel = next;
+        if (isNegative)
+            gateLevel = prev;
+        
+        float diff = 0f;
+        if (selected == GateObstacleType.BombGate)
+        {
+            diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(gateType).GetBomb(gateLevel));
+        } else if (selected == GateObstacleType.GunGate)
+        {
+            diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(gateType).GetGun(gateLevel));
+        } else if (selected == GateObstacleType.TireGate)
+        {
+            diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(gateType).GetHandling(gateLevel));
+        }  else if (selected == GateObstacleType.TurboGate)
+        {
+            diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(gateType).GetMaxSpeed(gateLevel));
+        }
+        int intDiff = Mathf.CeilToInt(diff);
+        ActivateType(selected, intDiff);
+    }
+
+    public void ActivateType(GateObstacleType selectedType, int diff)
     {
         foreach (GateObstacleType type in itemsDict.Keys)
         {
@@ -61,7 +128,7 @@ public class GateObstacle : MonoBehaviour
                 Gate gate = itemsDict[type].GO.GetComponent<Gate>();
                 if (gate != null)
                 {
-                    gate.Init(isNegative);
+                    gate.Init(isNegative, diff);
                 }
             }
             else
@@ -87,6 +154,7 @@ public class GateObstacle : MonoBehaviour
         if (other.GetComponentInParent<PlayerVehicle>() != null)
         {
             isUsed = true;
+            GameManager.Instance.Map.Refresh();
             DeactivateAll();
             if (selected == GateObstacleType.Obstacle)
             {
@@ -94,25 +162,10 @@ public class GateObstacle : MonoBehaviour
             }
             else
             {
-                UpgradeType upgradeType = UpgradeType.None;
-                if (selected == GateObstacleType.BombGate)
-                {
-                    upgradeType = UpgradeType.Bomb;
-                } else if (selected == GateObstacleType.GunGate)
-                {
-                    upgradeType = UpgradeType.Gun;
-                } else if (selected == GateObstacleType.TireGate)
-                {
-                    upgradeType = UpgradeType.Tire;
-                }  else if (selected == GateObstacleType.TurboGate)
-                {
-                    upgradeType = UpgradeType.Turbo;
-                }
-
-                int l = GameManager.Instance.Player.GetUpgradeLevel(upgradeType);
+                int l = GameManager.Instance.Player.GetUpgradeLevel(gateType);
                 int newL = isNegative ? (l - 1) : (l + 1);
 
-                if (GameManager.Instance.Player.SetUpgrade(upgradeType, newL))
+                if (GameManager.Instance.Player.SetUpgrade(gateType, newL))
                 {
                     GameManager.Instance.Player.ShowUpgradeVisuals();
                     if (!isNegative)

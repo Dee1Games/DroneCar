@@ -65,12 +65,12 @@ public class GameManager : MonoBehaviour
     public void GoToPlayMode()
     {
         UserManager.Instance.ResetVehicleUpgrades();
-        Map.Init();
         CurrentRunDamage = 0f;
         isPlaying = true;
         spawnPlayer();
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
         MergePlatform.Instance.Hide();
+        Map.Init();
     }
 
     public void GoToUpgradeMode()

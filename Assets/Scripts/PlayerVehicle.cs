@@ -552,7 +552,7 @@ public class PlayerVehicle : MonoBehaviour
         }
         if (Config.GetUpgradeConfig(type).maxLevel < level)
         {
-            return false;
+            level = Config.GetUpgradeConfig(type).maxLevel;
         }   
         int upgradeIndex = -1;
         for (int i = 0; i < upgrades.Count; i++)

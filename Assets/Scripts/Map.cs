@@ -8,12 +8,22 @@ public class Map : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Transform gatesParent;
 
+    private GateObstacle[] gates;
+
     public void Init()
     {
-        GateObstacle[] gates = gatesParent.GetComponentsInChildren<GateObstacle>();
+        gates = gatesParent.GetComponentsInChildren<GateObstacle>();
         foreach (GateObstacle gate in gates)
         {
             gate.Init();
+        }
+    }
+    
+    public void Refresh()
+    {
+        foreach (GateObstacle gate in gates)
+        {
+            gate.Refresh();
         }
     }
 
