@@ -171,6 +171,7 @@ public class GateObstacle : MonoBehaviour
                     if (!isNegative)
                     {
                         GameManager.Instance.Player.PlayUpgradeParticle();
+                        GameManager.Instance.Player.PlayUpgradeAnim(gateType);
                     }
                 }
             }

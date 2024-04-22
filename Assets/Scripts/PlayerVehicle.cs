@@ -24,6 +24,9 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private float limitX;
     [SerializeField] private float limitY;
     [SerializeField] private ParticleSystem upgradeParticle;
+    [SerializeField] private Animator bombAnim;
+    [SerializeField] private Animator turboAnim;
+    [SerializeField] private Animator[] gunAnims;
 
     
     private List<UpgradeLevel> upgrades;
@@ -142,6 +145,23 @@ public class PlayerVehicle : MonoBehaviour
         {
             levelUI.gameObject.SetActive(true);
         }
+    }
+
+    public void PlayUpgradeAnim(UpgradeType t)
+    {
+        if (t == UpgradeType.Bomb)
+        {
+            bombAnim.SetTrigger("bounce");
+        } else if (t == UpgradeType.Gun)
+        {
+            foreach (Animator anim in gunAnims)
+            {
+                anim.SetTrigger("bounce");
+            }
+        }  else if (t == UpgradeType.Turbo)
+        {
+            turboAnim.SetTrigger("bounce");
+        }  
     }
 
     public void ShowUpgradeVisuals()
@@ -269,7 +289,8 @@ public class PlayerVehicle : MonoBehaviour
             }
             // باف سرعت رو داخل کور اصلی حساب میکنه
 
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
+            float yy = Mathf.Clamp(transform.eulerAngles.y, 180f - 45f, 180f + 45f);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, yy, 0f);
             direction = new Vector3(input.Right, 0f, inputForward);
         }
         else
@@ -304,7 +325,9 @@ public class PlayerVehicle : MonoBehaviour
             direction = new Vector3(input.JoystickX, 0f, input.Forward);
             float ang = input.JoystickX * handeling;
             transform.Rotate(Vector3.up, ang);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), rotationLerp*Time.deltaTime);
+            float yy = Mathf.Clamp(transform.eulerAngles.y, 180f - 45f, 180f + 45f);
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, yy, 0f), rotationLerp*Time.deltaTime);
         }
 
         if (CanShoot())

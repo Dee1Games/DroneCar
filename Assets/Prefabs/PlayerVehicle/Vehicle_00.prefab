@@ -79155,7 +79155,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5158895906235115900}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.12, z: -0.34}
   m_LocalScale: {x: 0.72057027, y: 0.72057027, z: 0.7205705}
   m_ConstrainProportionsScale: 0
@@ -79163,7 +79163,7 @@ Transform:
   - {fileID: 7540076298398278629}
   m_Father: {fileID: 4334641536248784299}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2876749390943906483
 Animator:
   serializedVersion: 5
@@ -84786,6 +84786,11 @@ MonoBehaviour:
   limitX: 18
   limitY: 0
   upgradeParticle: {fileID: 4802265006369055339}
+  bombAnim: {fileID: 2876749390943906483}
+  turboAnim: {fileID: 6825336710952626875}
+  gunAnims:
+  - {fileID: 6452869132378080859}
+  - {fileID: 5727726885001154552}
   Core: {fileID: 0}
   groundLayer:
     serializedVersion: 2

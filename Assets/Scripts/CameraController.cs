@@ -111,6 +111,8 @@ public class CameraController : MonoBehaviour
             carDir.z = -1f;
         carDir.y = 0f;
         Vector3 endPos = monsterPos + (carDir * longShotRadius);
+        endPos.x = monsterPos.x;
+        endPos.z = monsterPos.z + longShotRadius;
         endPos.y = longShotHeight;
         
         
