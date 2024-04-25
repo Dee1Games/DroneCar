@@ -52,32 +52,37 @@ public class GameManager : MonoBehaviour
         UserManager.Instance.Init();
         LevelManager.Instance.InitCurrentLevel();
         UIManager.Instance.Init();
-        if (UserManager.Instance.Data.Level == 1)
-        {
-            GoToPlayMode();
-        }
-        else
-        {
-            GoToUpgradeMode();
-        }
+        GoToUpgradeMode();
     }
 
     public void GoToPlayMode()
     {
-        UserManager.Instance.ResetVehicleUpgrades();
+        UserManager.Instance.ResetInGameVehicleUpgrades();
         CurrentRunDamage = 0f;
         isPlaying = true;
         spawnPlayer();
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
         MergePlatform.Instance.Hide();
-        Map.Init();
+        //Map.Init();
     }
 
     public void GoToUpgradeMode()
     {
-        UserManager.Instance.ResetVehicleUpgrades();
+        UserManager.Instance.ResetInGameVehicleUpgrades();
         isPlaying = false;
         spawnPlayer();
+        UIManager.Instance.ShowScreen(UIScreenID.MainMenu);
+        MergePlatform.Instance.Hide();
+        Map.Init();
+
+        
+        if(GameManager.Instance.Monster.Health <= 0f)
+        {
+            LevelManager.Instance.InitCurrentLevel();
+        }
+
+        return;
+        
         MergePlatform.Instance.Init();
         MergePlatform.Instance.Show();
         UIManager.Instance.ShowScreen(UIScreenID.Merge);
@@ -111,10 +116,12 @@ public class GameManager : MonoBehaviour
         Player.transform.position = spawnPoint.position;
         Player.transform.forward = spawnPoint.forward;
         
-        if(isPlaying)
-            Player.InitPlayMode();
-        else
-            Player.InitShowCaseMode();
+        Player.InitPlayMode();
+        
+        // if(isPlaying)
+        //     Player.InitPlayMode();
+        // else
+        //     Player.InitShowCaseMode();
 
     }
 

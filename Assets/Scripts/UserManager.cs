@@ -21,9 +21,6 @@ public class UserManager : MonoBehaviour
     {
         Data = SaveManager.Instance.LoadUserData();
 
-        if (Data != null && Data.Level == 1)
-            Data = null;
-        
         if (Data == null)
         {
             Data = new UserData();
@@ -31,9 +28,6 @@ public class UserManager : MonoBehaviour
         }
         else
         {
-            SeenAssembleTutorial();
-            SeenMergeTutorial();
-            SeenHitGiantTutorial();
             SeenFlyTutorial();
             SeenMoveTutorial();
         }
@@ -45,7 +39,23 @@ public class UserManager : MonoBehaviour
         SaveManager.Instance.SaveUserData(Data);
     }
 
-    public void ResetVehicleUpgrades()
+    public void ResetInGameVehicleUpgrades()
+    {
+        int i = 0;
+        foreach (VehicleUpgradeData v in Data.VehicleUpgrades)
+        {
+            v.UpgradeLevels = new List<UpgradeLevel>()
+            {
+                new UpgradeLevel() {Type = UpgradeType.Tire, Level = Data.VehicleUpgrades[i].UpgradeLevels.FirstOrDefault(x=>x.Type==UpgradeType.Tire).Level},
+                new UpgradeLevel() {Type = UpgradeType.Turbo, Level = 0},
+                new UpgradeLevel() {Type = UpgradeType.Gun, Level = 0},
+                new UpgradeLevel() {Type = UpgradeType.Bomb, Level = 0}
+            };
+            i++;
+        }
+    }
+    
+    public void ResetAllVehicleUpgrades()
     {
         foreach (VehicleUpgradeData v in Data.VehicleUpgrades)
         {
@@ -61,7 +71,7 @@ public class UserManager : MonoBehaviour
 
     public void NextLevel()
     {
-        ResetVehicleUpgrades();
+        ResetInGameVehicleUpgrades();
         MergePlatform.Instance.ClearPlatform();
         Data.Level++;
         Data.MonsterHealth = 1f;
@@ -153,18 +163,6 @@ public class UserManager : MonoBehaviour
         };
         SaveManager.Instance.SaveUserData(Data);
     }
-    
-    public void SeenMergeTutorial()
-    {
-        Data.SeenMergeTutorial = true;
-        SaveManager.Instance.SaveUserData(Data);
-    }
-    
-    public void SeenAssembleTutorial()
-    {
-        Data.SeenAssembleTutorial = true;
-        SaveManager.Instance.SaveUserData(Data);
-    }
 
     public void SeenMoveTutorial()
     {
@@ -175,12 +173,6 @@ public class UserManager : MonoBehaviour
     public void SeenFlyTutorial()
     {
         Data.SeenFlyTutorial = true;
-        SaveManager.Instance.SaveUserData(Data);
-    }
-
-    public void SeenHitGiantTutorial()
-    {
-        Data.SeenHitGiantTutorial = true;
         SaveManager.Instance.SaveUserData(Data);
     }
 }

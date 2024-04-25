@@ -34,7 +34,6 @@ public class EndRunScreen : UIScreen
     public override void Show()
     {
         base.Show();
-        UserManager.Instance.SeenHitGiantTutorial();
         Animate();
     }
 
@@ -45,18 +44,18 @@ public class EndRunScreen : UIScreen
 
     public void OnClick_Continue()
     {
-        if (UserManager.Instance.Data.Level == 1)
-        {
-            if (!TutorialManager.Instance.HasSeenLimb2())
-            {
-                GameManager.Instance.GoToPlayMode();
-            }
-            else
-            {
-                GameManager.Instance.GoToUpgradeMode();
-            }
-        }
-        else
+        // if (UserManager.Instance.Data.Level == 1)
+        // {
+        //     if (!TutorialManager.Instance.HasSeenLimb2())
+        //     {
+        //         GameManager.Instance.GoToPlayMode();
+        //     }
+        //     else
+        //     {
+        //         GameManager.Instance.GoToUpgradeMode();
+        //     }
+        // }
+        // else
         {
             GameManager.Instance.GoToUpgradeMode();
         }
@@ -174,6 +173,7 @@ public class EndRunScreen : UIScreen
         
         if (GameManager.Instance.RunResult == RunResult.Finish)
         {
+            UserManager.Instance.ResetAllVehicleUpgrades();
             UserManager.Instance.NextLevel();
         }
         

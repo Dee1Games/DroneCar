@@ -170,21 +170,21 @@ public class CarCore : MonoBehaviour
         {
             End(false);
             float dmg = vehicle.Bomb;
-            if (UserManager.Instance.Data.Level == 1)
-            {
-                dmg = 200f;
-            }
-            if (UserManager.Instance.Data.Level != 1)
+            // if (UserManager.Instance.Data.Level == 1)
+            // {
+            //     dmg = 200f;
+            // }
+            // if (UserManager.Instance.Data.Level != 1)
             {
                 DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
             }
-            else
-            {
-                if (!(hitable is Giant_Core))
-                {
-                    DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
-                }
-            }
+            // else
+            // {
+            //     if (!(hitable is Giant_Core))
+            //     {
+            //         DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
+            //     }
+            // }
             hitable.OnHit(this, transform.position, dmg);
             if (hit.transform.TryGetComponent(out Limb limb))
             {

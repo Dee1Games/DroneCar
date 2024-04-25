@@ -204,7 +204,7 @@ public class PlayerVehicle : MonoBehaviour
 
     private void Update()
     {
-        if (!IsActive)
+        if (!IsActive || !GameManager.Instance.IsPlaying())
             return;
         
         lifeTimer -= Time.deltaTime;
@@ -362,13 +362,13 @@ public class PlayerVehicle : MonoBehaviour
             }
         }
 
-        if (isHovering && !UserManager.Instance.Data.SeenHitGiantTutorial)
+        if (isHovering)
         {
-            if (!Physics.Raycast(transform.position, transform.forward, 1000f, enemyLayer))
-            {
-                TutorialManager.Instance.ShowHitGiantHint();
-            }
-            else
+            // if (!Physics.Raycast(transform.position, transform.forward, 1000f, enemyLayer))
+            // {
+            //     TutorialManager.Instance.ShowHitGiantHint();
+            // }
+            // else
             {
                 TutorialManager.Instance.Hide();
             }
@@ -417,7 +417,7 @@ public class PlayerVehicle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsActive || isChanging)
+        if (!IsActive || isChanging || !GameManager.Instance.IsPlaying())
             return;
         
         if (isHovering)
@@ -582,11 +582,11 @@ public class PlayerVehicle : MonoBehaviour
         {
             if (upgrades[i].Type == type)
             {
-                if (upgrades[i].Level >= level)
-                {
-                    return false;
-                }
-                else
+                // if (upgrades[i].Level >= level)
+                // {
+                //     return false;
+                // }
+                // else
                 {
                     upgrades[i].Level = level;
                     UserManager.Instance.SetUpgradeLevel(ID, type, level);

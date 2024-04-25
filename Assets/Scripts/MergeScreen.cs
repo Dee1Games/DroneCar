@@ -41,20 +41,20 @@ public class MergeScreen : UIScreen
             levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
         }
         
-        if (!UserManager.Instance.Data.SeenMergeTutorial)
-        {
-            if (UserManager.Instance.Data.UpgradeCount==1)
-            {
-                TutorialManager.Instance.ShowBuyHint();
-            } else if(UserManager.Instance.Data.UpgradeCount==2)
-            {
-                TutorialManager.Instance.ShowBuyHint2();
-            } 
-
-            //این قسمت رو یک چک بزن 
-            //playButton.interactable = false;
-        }
-        else
+        // if (!UserManager.Instance.Data.SeenMergeTutorial)
+        // {
+        //     if (UserManager.Instance.Data.UpgradeCount==1)
+        //     {
+        //         TutorialManager.Instance.ShowBuyHint();
+        //     } else if(UserManager.Instance.Data.UpgradeCount==2)
+        //     {
+        //         TutorialManager.Instance.ShowBuyHint2();
+        //     } 
+        //
+        //     //این قسمت رو یک چک بزن 
+        //     //playButton.interactable = false;
+        // }
+        // else
         {
             playButton.interactable = true;
         }
@@ -85,11 +85,11 @@ public class MergeScreen : UIScreen
             int i = 0;
             foreach (Image upgradeButton in upgradeButtons)
             {
-                if (i > 0 && !UserManager.Instance.Data.SeenMergeTutorial)
-                {
-                    upgradeButton.sprite = passiveButtonSprite;
-                }
-                else
+                // if (i > 0 && !UserManager.Instance.Data.SeenMergeTutorial)
+                // {
+                //     upgradeButton.sprite = passiveButtonSprite;
+                // }
+                // else
                 {
                     upgradeButton.sprite = activeButtonSprite;
                 }
@@ -100,8 +100,8 @@ public class MergeScreen : UIScreen
 
     public void OnClick_Play()
     {
-        if (!UserManager.Instance.Data.SeenAssembleTutorial)
-            return;
+        // if (!UserManager.Instance.Data.SeenAssembleTutorial)
+        //     return;
         GameManager.Instance.GoToPlayMode();
     }
 
@@ -116,10 +116,10 @@ public class MergeScreen : UIScreen
     
     public void OnClick_Upgrade_Tire()
     {
-        if (!UserManager.Instance.Data.SeenMergeTutorial)
-        {
-            return;
-        }
+        // if (!UserManager.Instance.Data.SeenMergeTutorial)
+        // {
+        //     return;
+        // }
 
         if (CanBuyUpgradeNow())
         {
@@ -130,10 +130,10 @@ public class MergeScreen : UIScreen
     
     public void OnClick_Upgrade_Turbo()
     {
-        if (!UserManager.Instance.Data.SeenMergeTutorial)
-        {
-            return;
-        }
+        // if (!UserManager.Instance.Data.SeenMergeTutorial)
+        // {
+        //     return;
+        // }
         
         if (CanBuyUpgradeNow())
         {
@@ -144,10 +144,10 @@ public class MergeScreen : UIScreen
     
     public void OnClick_Upgrade_Bomb()
     {
-        if (!UserManager.Instance.Data.SeenMergeTutorial)
-        {
-            return;
-        }
+        // if (!UserManager.Instance.Data.SeenMergeTutorial)
+        // {
+        //     return;
+        // }
         
         if (CanBuyUpgradeNow())
         {
@@ -167,10 +167,10 @@ public class MergeScreen : UIScreen
 
     private void CheckTut()
     {
-        if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==2)
-        {
-            TutorialManager.Instance.ShowBuyHint2();
-        }
+        // if (!UserManager.Instance.Data.SeenMergeTutorial && UserManager.Instance.Data.UpgradeCount==2)
+        // {
+        //     TutorialManager.Instance.ShowBuyHint2();
+        // }
     }
 
     private bool CanBuyUpgradeNow()
@@ -188,23 +188,23 @@ public class MergeScreen : UIScreen
 
     private bool CanContinueToUpgrade()
     {
-        if (!UserManager.Instance.Data.SeenAssembleTutorial)
-        {
-            if (!UserManager.Instance.Data.SeenMergeTutorial)
-            {
-                if (MergePlatform.Instance.NumberOfFullCells() >= 2)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (MergePlatform.Instance.NumberOfFullCells() >= 1)
-                {
-                    return false;
-                }
-            }
-        }
+        // if (!UserManager.Instance.Data.SeenAssembleTutorial)
+        // {
+        //     if (!UserManager.Instance.Data.SeenMergeTutorial)
+        //     {
+        //         if (MergePlatform.Instance.NumberOfFullCells() >= 2)
+        //         {
+        //             return false;
+        //         }
+        //     }
+        //     else
+        //     {
+        //         if (MergePlatform.Instance.NumberOfFullCells() >= 1)
+        //         {
+        //             return false;
+        //         }
+        //     }
+        // }
 
         return true;
     }

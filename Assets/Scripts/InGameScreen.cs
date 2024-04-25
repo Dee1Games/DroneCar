@@ -13,7 +13,6 @@ public class InGameScreen : UIScreen
     [SerializeField] private Image lifeTime;
     [SerializeField] private TMP_Text coinsText;
     [SerializeField] private TMP_Text levelText;
-    [SerializeField] private TMP_Text levelText_tut;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private Animator damageUI;
 
@@ -51,16 +50,12 @@ public class InGameScreen : UIScreen
         base.Show();
         retryButton.SetActive(true);
         coinsText.text = UserManager.Instance.Data.Coins.ToString();
-        if (UserManager.Instance.Data.Level == 1)
+        // if (UserManager.Instance.Data.Level == 1)
+        // {
+        //     HideRetryButton();
+        // }
+        // else
         {
-            levelText_tut.gameObject.SetActive(true);
-            levelText.gameObject.SetActive(false);
-            HideRetryButton();
-        }
-        else
-        {
-            levelText_tut.gameObject.SetActive(false);
-            levelText.gameObject.SetActive(true);
             levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
         }
         monsterHealthUI.SetHealth(UserManager.Instance.Data.MonsterHealth);

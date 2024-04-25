@@ -11,11 +11,8 @@ public class UserData
     public int UpgradeCount;
     public List<UpgradeLevel> MergePlatform;
     public float MonsterHealth;
-    public bool SeenMergeTutorial;
-    public bool SeenAssembleTutorial;
     public bool SeenMoveTutorial;
     public bool SeenFlyTutorial;
-    public bool SeenHitGiantTutorial;
 
     public UserData()
     {
@@ -47,10 +44,7 @@ public class UserData
             new UpgradeLevel {Type = UpgradeType.Tire, Level = -1}
         };
         MonsterHealth = 1f;
-        SeenMergeTutorial = false;
-        SeenAssembleTutorial = false;
         SeenMoveTutorial = false;
         SeenFlyTutorial = false;
-        SeenHitGiantTutorial = false;
     }
 }

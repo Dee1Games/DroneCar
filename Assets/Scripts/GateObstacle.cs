@@ -15,9 +15,15 @@ public class GateObstacle : MonoBehaviour
     private bool isNegative;
     private UpgradeType gateType;
 
+    public void Set(GateObstacleType t)
+    {
+        selected = t;
+    }
+
     public void Init()
     {
         isUsed = false;
+        
         itemsDict = new Dictionary<GateObstacleType, GateObstacleItem>();
         foreach (GateObstacleItem item in items)
         {
@@ -25,19 +31,6 @@ public class GateObstacle : MonoBehaviour
             {
                 itemsDict.Add(item.Type, item);
             }
-        }
-
-        float rnd = UnityEngine.Random.Range(0f, 1f);
-        float i = 0f;
-        selected = GateObstacleType.Obstacle;
-        foreach (GateObstacleType type in itemsDict.Keys)
-        {
-            float chance = itemsDict[type].Chance;
-            if (rnd >= i && rnd < i+chance)
-            {
-                selected = type;
-            }
-            i += chance;
         }
 
         gateType = UpgradeType.None;
@@ -58,7 +51,7 @@ public class GateObstacle : MonoBehaviour
             }
         }
         
-        rnd = UnityEngine.Random.Range(0f, 1f);
+        float rnd = UnityEngine.Random.Range(0f, 1f);
         if (rnd < negativeChance)
         {
             isNegative = true;
@@ -154,8 +147,6 @@ public class GateObstacle : MonoBehaviour
         if (other.GetComponentInParent<PlayerVehicle>() != null)
         {
             isUsed = true;
-            GameManager.Instance.Map.Refresh();
-            DeactivateAll();
             if (selected == GateObstacleType.Obstacle)
             {
                 
@@ -175,6 +166,8 @@ public class GateObstacle : MonoBehaviour
                     }
                 }
             }
+            GameManager.Instance.Map.Refresh();
+            DeactivateAll();
         }
     }
 
