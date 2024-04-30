@@ -68,6 +68,8 @@ public class EndRunScreen : UIScreen
 
     private IEnumerator animate()
     {
+        GameManager.Instance.Skip = false;
+
         if (GameManager.Instance.CurrentRunDamage == 0f && GameManager.Instance.RunResult!=RunResult.Died)
         {
             GameManager.Instance.RunResult = RunResult.Missed;
@@ -122,7 +124,7 @@ public class EndRunScreen : UIScreen
 
         float dur = 1.5f;
         float t = 0f;
-        while (t < dur)
+        while (t < dur && !GameManager.Instance.Skip)
         {
             float nowHealth = Mathf.Lerp(beforeHealth, afterHealth, t);
             
@@ -156,7 +158,7 @@ public class EndRunScreen : UIScreen
         {
             dur = 1.5f;
             t = 0f;
-            while (t < dur)
+            while (t < dur && !GameManager.Instance.Skip)
             {
                 float nowReward = Mathf.Lerp(0, c, t);
                 rewardText.text = "+ " + Mathf.FloorToInt(nowReward).ToString();
@@ -169,12 +171,21 @@ public class EndRunScreen : UIScreen
         rewardText.text = "+ " + c.ToString();
         UserManager.Instance.AddCoins(c);
 
-        yield return new WaitForSeconds(skipDur);
+        if (!GameManager.Instance.Skip)
+        {
+            yield return new WaitForSeconds(skipDur);
+        }
         
         if (GameManager.Instance.RunResult == RunResult.Finish)
         {
             UserManager.Instance.ResetAllVehicleUpgrades();
             UserManager.Instance.NextLevel();
+        }
+        
+        if (GameManager.Instance.Skip)
+        {
+            yield return new WaitForSeconds(skipDur/2f);
+            GameManager.Instance.Skip = false;
         }
         
         OnClick_Continue();

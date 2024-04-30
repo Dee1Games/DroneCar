@@ -9,20 +9,39 @@ public class Map : MonoBehaviour
 {
     [SerializeField] private Transform monsterPoint;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private Transform gatesParent;
     
     [SerializeField] private Vector2 gateCount;
     [SerializeField] private float obstacleChance;
 
+
+    [SerializeField] private Transform pathesParent;
     private List<GateObstacle> gates;
 
     public void Init()
     {
+        var allPathes = pathesParent.GetComponentsInChildren<MapPath>(true).ToList();
+        int rndInt = UnityEngine.Random.Range(0, allPathes.Count);
+        MapPath selectedPath = allPathes[rndInt];
+        Transform gatesParent = selectedPath.Gates;
+        for (int i=0 ; i< allPathes.Count ; i++)
+        {
+            if (i == rndInt)
+            {
+                allPathes[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                allPathes[i].gameObject.SetActive(false);
+            }
+        }
+        
+        
         int count = UnityEngine.Random.Range((int)gateCount.x, (int)gateCount.y+1);
         var allGates = gatesParent.GetComponentsInChildren<GateObstacle>(true).ToList().OrderBy(i => Guid.NewGuid()).ToList();
         gates = new List<GateObstacle>(count);
         for (int i=0 ; i<count ; i++)
         {
+            allGates[i].gameObject.SetActive(true);
             gates.Add(allGates[i]);
         }
         for (int i=count ; i<allGates.Count; i++)

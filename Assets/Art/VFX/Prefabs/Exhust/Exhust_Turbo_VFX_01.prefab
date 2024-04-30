@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 185338, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: m_Name
-      value: Exhust_Turbo_VFX_01 (1)
+      value: Exhust_Turbo_VFX_01
       objectReference: {fileID: 0}
     - target: {fileID: 458914, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: m_RootOrder
@@ -67,21 +67,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19847996, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19847996, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: VelocityModule.x.scalar
       value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 0.3
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 19883180, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}

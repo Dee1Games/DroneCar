@@ -67,17 +67,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19847996, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19847996, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: lengthInSec
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: VelocityModule.x.scalar
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.275
+      value: 0.175
       objectReference: {fileID: 0}
     - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 0.2
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 19874660, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 19883180, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f69e4dfc4baf1b0478ecef466358f144, type: 3}

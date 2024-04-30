@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public const string CPlayer = "Player";
     #endregion
 
+    [HideInInspector] public bool Skip;
     [HideInInspector] public Map Map;
     [HideInInspector] public Monster Monster;
     [HideInInspector] public Giant_Core GiantCore;
@@ -32,6 +33,14 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         //PlayerVehicle.OnExploded -= SpawnPlayer;
+    }
+
+    private void Update()
+    {
+        if (!Skip && Input.GetMouseButtonDown(0))
+        {
+            Skip = true;
+        }
     }
 
     private void Awake()

@@ -85,6 +85,7 @@ public class CameraController : MonoBehaviour
     {
         //Vector3 axis = (hitPoint - GameManager.Instance.Monster.transform.position).normalized;
         //axis.y = 0f;
+        GameManager.Instance.Skip = false;
         following = false;
         float timer = 0f;
         // Vector3 startPos = transform.position;
@@ -121,7 +122,7 @@ public class CameraController : MonoBehaviour
         var basePos = transform.position;
         //var endPos = transform.position - (dir * longShotOffset);
         var baseRot = transform.rotation;
-        while (timer <= longShotDuration)
+        while (timer <= longShotDuration && !GameManager.Instance.Skip)
         {
             transform.position = Vector3.Lerp(basePos, endPos, timer / longShotDuration);
             Vector3 dir = (GameManager.Instance.Monster.com.position - transform.position).normalized;
@@ -129,6 +130,12 @@ public class CameraController : MonoBehaviour
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
+        GameManager.Instance.Skip = false;
+        
+        transform.position = endPos;
+        Vector3 dir2 = (GameManager.Instance.Monster.com.position - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(dir2, Vector3.up);
 
         if (GameManager.Instance.Monster.IsDead)
         {

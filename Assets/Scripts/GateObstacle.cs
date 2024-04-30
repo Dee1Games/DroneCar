@@ -7,6 +7,7 @@ public class GateObstacle : MonoBehaviour
 {
     [SerializeField] private List<GateObstacleItem> items;
     [SerializeField] private float negativeChance = 0.25f;
+    [SerializeField] private Obstacle obstacle;
 
     private Dictionary<GateObstacleType, GateObstacleItem> itemsDict;
 
@@ -128,6 +129,11 @@ public class GateObstacle : MonoBehaviour
             {
                 itemsDict[type].GO.SetActive(false);
             }
+
+            if (type == GateObstacleType.Obstacle)
+            {
+                obstacle.Init();
+            }
         }
     }
     
@@ -149,7 +155,8 @@ public class GateObstacle : MonoBehaviour
             isUsed = true;
             if (selected == GateObstacleType.Obstacle)
             {
-                
+                GameManager.Instance.Player.Core.Die();
+                obstacle.Explode();
             }
             else
             {
@@ -163,6 +170,10 @@ public class GateObstacle : MonoBehaviour
                     {
                         GameManager.Instance.Player.PlayUpgradeParticle();
                         GameManager.Instance.Player.PlayUpgradeAnim(gateType);
+                    }
+                    else
+                    {
+                        GameManager.Instance.Player.PlayDowngradeParticle();
                     }
                 }
             }

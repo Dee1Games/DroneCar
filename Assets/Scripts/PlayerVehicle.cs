@@ -24,6 +24,7 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private float limitX;
     [SerializeField] private float limitY;
     [SerializeField] private ParticleSystem upgradeParticle;
+    [SerializeField] private ParticleSystem downgradeParticle;
     [SerializeField] private Animator bombAnim;
     [SerializeField] private Animator turboAnim;
     [SerializeField] private Animator[] gunAnims;
@@ -455,6 +456,11 @@ public class PlayerVehicle : MonoBehaviour
     public void PlayUpgradeParticle()
     {
         upgradeParticle.Play();
+    }
+    
+    public void PlayDowngradeParticle()
+    {
+        downgradeParticle.Play();
     }
 
     public void Explode()
