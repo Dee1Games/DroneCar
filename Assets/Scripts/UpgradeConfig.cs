@@ -12,6 +12,8 @@ public class UpgradeConfig
     [SerializeField] private Vector2 reverseAccelerationRemap;
     [SerializeField] private AnimationCurve maxSpeedCurve = new AnimationCurve();
     [SerializeField] private Vector2 maxSpeedRemap;
+    [SerializeField] private AnimationCurve maxSpeedMultiplierCurve = new AnimationCurve();
+    [SerializeField] private Vector2 maxSpeedMultiplierRemap;
     [SerializeField] private AnimationCurve handlingCurve = new AnimationCurve();
     [SerializeField] private Vector2 handlingRemap;
     [SerializeField] private AnimationCurve bombCurve = new AnimationCurve();
@@ -20,11 +22,19 @@ public class UpgradeConfig
     [SerializeField] private Vector2 gunRemap;
     [SerializeField] private AnimationCurve jumpForceCurve = new AnimationCurve();
     [SerializeField] private Vector2 jumpForceRemap;
+    [SerializeField] private AnimationCurve bonusCurve = new AnimationCurve();
+    [SerializeField] private Vector2 bonusRemap;
 
     public float GetAcceleration(int level)
     {
         float value = accelerationCurve.Evaluate(level);
         return Remap(value, accelerationCurve, accelerationRemap.x, accelerationRemap.y);
+    }
+    
+    public float GetBonus(int level)
+    {
+        float value = bonusCurve.Evaluate(level);
+        return Remap(value, bonusCurve, bonusRemap.x, bonusRemap.y);
     }
     
     public float GetReverseAcceleration(int level)
@@ -37,6 +47,12 @@ public class UpgradeConfig
     {
         float value = maxSpeedCurve.Evaluate(level);
         return Remap(value, maxSpeedCurve, maxSpeedRemap.x, maxSpeedRemap.y);
+    }
+    
+    public float GetMaxSpeedMultiplier(int level)
+    {
+        float value = maxSpeedMultiplierCurve.Evaluate(level);
+        return Remap(value, maxSpeedMultiplierCurve, maxSpeedMultiplierRemap.x, maxSpeedMultiplierRemap.y);
     }
     
     public float GetHandling(int level)

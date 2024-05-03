@@ -34,6 +34,7 @@ public class PlayerVehicle : MonoBehaviour
     private float acceleration;
     private float reverseAcceleration;
     private float maxSpeed;
+    private float maxSpeedMultiplier;
     private float handeling;
     private float bomb;
     public float Bomb => bomb;
@@ -188,7 +189,12 @@ public class PlayerVehicle : MonoBehaviour
         {
             try
             {
-                List<UpgradeItem> list = upgradeItems[upgradeLevel.Type][upgradeLevel.Level];
+                int index = upgradeLevel.Level;
+                if (upgradeItems[upgradeLevel.Type].Count <= index)
+                {
+                    index = upgradeItems[upgradeLevel.Type].Count - 1;
+                }
+                List<UpgradeItem> list = upgradeItems[upgradeLevel.Type][index];
                 foreach (UpgradeItem item in list)
                 {
                     item.gameObject.SetActive(true);
@@ -218,6 +224,7 @@ public class PlayerVehicle : MonoBehaviour
         if (transform.position.z < Config.LimitZ)
         {
             Core.Die();
+            Core.CameraZoomOut();
             return;
         }
         
@@ -251,14 +258,14 @@ public class PlayerVehicle : MonoBehaviour
         if (isHovering)
         {
             float inputForward = 1f;
-            float speedDiff = (maxSpeed * inputForward) - currentSpeed;
+            float speedDiff = (maxSpeed * maxSpeedMultiplier * inputForward) - currentSpeed;
             if (speedDiff > 0)
             {
                 float delta = acceleration * Time.deltaTime;
-                if (delta + currentSpeed <= maxSpeed)
+                if (delta + currentSpeed <= maxSpeed * maxSpeedMultiplier)
                     currentSpeed += delta;
                 else
-                    currentSpeed = maxSpeed;
+                    currentSpeed = maxSpeed * maxSpeedMultiplier;
             }
             else {
                 float delta = -acceleration * Time.deltaTime;
@@ -296,14 +303,14 @@ public class PlayerVehicle : MonoBehaviour
         }
         else
         {
-            float speedDiff = (maxSpeed * input.Forward) - currentSpeed;
+            float speedDiff = (maxSpeed * maxSpeedMultiplier * input.Forward) - currentSpeed;
             if (speedDiff > 0)
             {
                 float delta = acceleration * Time.deltaTime;
-                if (delta + currentSpeed <= maxSpeed)
+                if (delta + currentSpeed <= maxSpeed * maxSpeedMultiplier)
                     currentSpeed += delta;
                 else
-                    currentSpeed = maxSpeed;
+                    currentSpeed = maxSpeed * maxSpeedMultiplier;
             }
             else {
                 float delta = -reverseAcceleration * Time.deltaTime;
@@ -470,7 +477,11 @@ public class PlayerVehicle : MonoBehaviour
 
     public void Deactivate()
     {
+        if (!IsActive)
+            return;
+        
         IsActive = false;
+        UserManager.Instance.LostLife();
         CameraController.Instance.SetTarget(null);
         SetVisualsVisibility(false);
         anim.SetBool(Hover, false);
@@ -624,6 +635,7 @@ public class PlayerVehicle : MonoBehaviour
         acceleration = Config.Acceleration;
         reverseAcceleration = Config.ReverseAcceleration;
         maxSpeed = Config.MaxSpeed;
+        maxSpeedMultiplier = Config.MaxSpeedMultiplier;
         handeling = Config.Handeling;
         bomb = Config.Bomb;
         gun = Config.Gun;
@@ -636,6 +648,7 @@ public class PlayerVehicle : MonoBehaviour
             acceleration = Mathf.Max(acceleration, upgrade.GetAcceleration(upgradeLevel.Level));
             reverseAcceleration = Mathf.Max(reverseAcceleration, upgrade.GetReverseAcceleration(upgradeLevel.Level));
             maxSpeed = Mathf.Max(maxSpeed, upgrade.GetMaxSpeed(upgradeLevel.Level));
+            maxSpeedMultiplier = Mathf.Max(maxSpeedMultiplier, upgrade.GetMaxSpeedMultiplier(upgradeLevel.Level));
             handeling = Mathf.Max(handeling, upgrade.GetHandling(upgradeLevel.Level));
             bomb = Mathf.Max(bomb, upgrade.GetBomb(upgradeLevel.Level));
             gun = Mathf.Max(gun, upgrade.GetGun(upgradeLevel.Level));

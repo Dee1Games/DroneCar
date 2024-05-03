@@ -15,6 +15,7 @@ public class InGameScreen : UIScreen
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private GameObject retryButton;
     [SerializeField] private Animator damageUI;
+    [SerializeField] private TMP_Text life;
 
     private void OnEnable()
     {
@@ -48,6 +49,7 @@ public class InGameScreen : UIScreen
     public override void Show()
     {
         base.Show();
+        life.text = UserManager.Instance.Data.Lifes.ToString() + " x";
         retryButton.SetActive(true);
         coinsText.text = UserManager.Instance.Data.Coins.ToString();
         // if (UserManager.Instance.Data.Level == 1)
@@ -100,6 +102,7 @@ public class InGameScreen : UIScreen
 
     private void HideRetryButton()
     {
+        life.text = UserManager.Instance.Data.Lifes.ToString() + " x";
         retryButton.SetActive(false);
     }
     private void ShowDamageUI()

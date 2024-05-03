@@ -4,5 +4,7 @@ public enum UpgradeType
     Bomb,
     Turbo,
     Gun,
-    None
+    None,
+    Bonus,
+    MaxSpeed
 }

@@ -15,6 +15,7 @@ MonoBehaviour:
   Acceleration: 40
   ReverseAcceleration: 1
   MaxSpeed: 25
+  MaxSpeedMultiplier: 1
   Handeling: 5
   Bomb: 200
   Gun: 10
@@ -25,9 +26,34 @@ MonoBehaviour:
   SpeedMultiplyer: 1.5
   GunShootZ: 0
   LimitZ: -450
+  priceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0.01010101
+      outSlope: 0.01010101
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 100
+      value: 1
+      inSlope: 0.01010101
+      outSlope: 0.01010101
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  priceRemap: {x: 100, y: 1000}
   upgrades:
   - Type: 0
-    maxLevel: 5
+    maxLevel: 40
     accelerationCurve:
       serializedVersion: 2
       m_Curve:
@@ -67,31 +93,38 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     maxSpeedRemap: {x: 0, y: 0}
+    maxSpeedMultiplierCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedMultiplierRemap: {x: 0, y: 0}
     handlingCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 1
+        time: 0
         value: 20
-        inSlope: 21.55865
-        outSlope: 21.55865
-        tangentMode: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.052511424
+        outWeight: 0.33333334
       - serializedVersion: 3
-        time: 5
+        time: 40
         value: 60
-        inSlope: 4.7677817
-        outSlope: 4.7677817
-        tangentMode: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
-        inWeight: 0.118721485
+        inWeight: 0.33333334
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    handlingRemap: {x: 5, y: 15}
+    handlingRemap: {x: 5, y: 20}
     bombCurve:
       serializedVersion: 2
       m_Curve: []
@@ -113,6 +146,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     jumpForceRemap: {x: 0, y: 0}
+    bonusCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bonusRemap: {x: 0, y: 0}
   - Type: 1
     maxLevel: 5
     accelerationCurve:
@@ -136,6 +176,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     maxSpeedRemap: {x: 0, y: 0}
+    maxSpeedMultiplierCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedMultiplierRemap: {x: 0, y: 0}
     handlingCurve:
       serializedVersion: 2
       m_Curve: []
@@ -182,6 +229,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     jumpForceRemap: {x: 0, y: 0}
+    bonusCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bonusRemap: {x: 0, y: 0}
   - Type: 2
     maxLevel: 4
     accelerationCurve:
@@ -312,7 +366,14 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    maxSpeedRemap: {x: 25, y: 50}
+    maxSpeedRemap: {x: 25, y: 75}
+    maxSpeedMultiplierCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedMultiplierRemap: {x: 0, y: 0}
     handlingCurve:
       serializedVersion: 2
       m_Curve: []
@@ -341,6 +402,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     jumpForceRemap: {x: 0, y: 0}
+    bonusCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bonusRemap: {x: 0, y: 0}
   - Type: 3
     maxLevel: 5
     accelerationCurve:
@@ -364,6 +432,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     maxSpeedRemap: {x: 0, y: 0}
+    maxSpeedMultiplierCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedMultiplierRemap: {x: 0, y: 0}
     handlingCurve:
       serializedVersion: 2
       m_Curve: []
@@ -446,6 +521,179 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     jumpForceRemap: {x: 0, y: 0}
+    bonusCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bonusRemap: {x: 0, y: 0}
+  - Type: 5
+    maxLevel: 50
+    accelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    accelerationRemap: {x: 0, y: 0}
+    reverseAccelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    reverseAccelerationRemap: {x: 0, y: 0}
+    maxSpeedCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedRemap: {x: 0, y: 0}
+    maxSpeedMultiplierCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedMultiplierRemap: {x: 0, y: 0}
+    handlingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    handlingRemap: {x: 0, y: 0}
+    bombCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bombRemap: {x: 0, y: 0}
+    gunCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    gunRemap: {x: 0, y: 0}
+    jumpForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    jumpForceRemap: {x: 0, y: 0}
+    bonusCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.02
+        inSlope: 0.0196
+        outSlope: 0.0196
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 50
+        value: 2
+        inSlope: 0.0196
+        outSlope: 0.0196
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bonusRemap: {x: 1.02, y: 2}
+  - Type: 6
+    maxLevel: 50
+    accelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    accelerationRemap: {x: 0, y: 0}
+    reverseAccelerationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    reverseAccelerationRemap: {x: 0, y: 0}
+    maxSpeedCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedRemap: {x: 0, y: 0}
+    maxSpeedMultiplierCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.02
+        inSlope: 0.0196
+        outSlope: 0.0196
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 50
+        value: 2
+        inSlope: 0.0196
+        outSlope: 0.0196
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maxSpeedMultiplierRemap: {x: 1.01, y: 1.5}
+    handlingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    handlingRemap: {x: 0, y: 0}
+    bombCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bombRemap: {x: 0, y: 0}
+    gunCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    gunRemap: {x: 0, y: 0}
+    jumpForceCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    jumpForceRemap: {x: 0, y: 0}
+    bonusCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    bonusRemap: {x: 0, y: 0}
   items:
   - Type: 0
     Probability: 2

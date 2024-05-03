@@ -25,12 +25,12 @@ public class DamageIndicator : MonoBehaviour
         
         //txt.text = "-" + damage.ToString();
         float num = percent * 100f;
-        string str = num.ToString("F2");
-        if (num == 0)
+        string str = damage.ToString("F2");
+        if (damage > 10)
         {
-            str = "0.1";
+            str = damage.ToString("F0");
         }
-        txt.text = "-" + damage.ToString("F2");
+        txt.text = "-" + str;
         
         float distance = 1f;
         if (GameManager.Instance != null && GameManager.Instance.Player != null)

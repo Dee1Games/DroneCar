@@ -19,15 +19,17 @@ public class UpgradeButtonUI : MonoBehaviour
 
     private bool isActive = false;
     private int lvl = 0;
+    private int pr = 0;
 
-    public void Init(int price, int value, bool active)
+    public void Init(int price, string value, bool active)
     {
         isActive = active;
         btnBG.sprite = active ? activeBtnBG : passiveBtnBG;
         coinIcon.gameObject.SetActive(true);
         //icon.sprite = sprite;
         priceTxt.text = price.ToString();
-        valueTxt.text = "+" + value.ToString();
+        valueTxt.text = "+" + value + "%";
+        pr = price;
     }
 
     public void SetMax()
@@ -52,6 +54,8 @@ public class UpgradeButtonUI : MonoBehaviour
             GameManager.Instance.Player.ShowUpgradeVisuals();
             GameManager.Instance.Player.PlayUpgradeParticle();
         }
+        
+        UserManager.Instance.AddCoins(-pr);
         
         UserManager.Instance.NextUpgrade();
         screen.Show();

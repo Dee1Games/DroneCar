@@ -155,6 +155,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9074712254556840316}
     - target: {fileID: 886403240199339781, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: isLeg
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 886403240199339781, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: IsHead
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 886403240199339781, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: maxHealth
       value: 1000
       objectReference: {fileID: 0}
@@ -958,11 +966,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsHead: 0
   referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 0
-  health: 100
   maxHealth: 1000
   explosionForce: 150
   explosionRadius: 15
@@ -1018,11 +1026,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsHead: 0
   referenceSkin: {fileID: 7221549915257164662}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
-  health: 100
   maxHealth: 1000
   explosionForce: 150
   explosionRadius: 15
@@ -1085,11 +1093,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsHead: 0
   referenceSkin: {fileID: 7221549915257164662}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
-  health: 100
   maxHealth: 1000
   explosionForce: 150
   explosionRadius: 15

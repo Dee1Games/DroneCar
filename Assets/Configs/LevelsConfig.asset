@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Levels:
   - MonsterData:
-      Health: 7000
+      Health: 10000
       Sprite: {fileID: 21300000, guid: 55a6600f76e0387439dc0573e7d3a7df, type: 3}
     MapPrefab: {fileID: 2466872084783868318, guid: 28bb0fee036b4044e9d4f949a3cfdfc5, type: 3}
     MonsterPrefab: {fileID: 2244784723894402073, guid: ee7b2da281879a144a19251584bcecf8, type: 3}
@@ -49,8 +49,29 @@ MonoBehaviour:
     MapPrefab: {fileID: 2466872084783868318, guid: 28bb0fee036b4044e9d4f949a3cfdfc5, type: 3}
     MonsterPrefab: {fileID: 7944441942224103042, guid: a60bcbe51955ef541aace119297242a8, type: 3}
     Vehicle: 4
-  RewardRunMultiplier: 50
-  RewardDamageMultiplier: 10
-  SpaceLimit: 900
-  InitMonsterHealth: 2000
-  AddUpMonsterHealth: 250
+  AvrageMonsterHealth: 10000
+  prizeMultiplierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.05
+      outSlope: 0.05
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 20
+      value: 1
+      inSlope: 0.05
+      outSlope: 0.05
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  prizeMultiplierRemap: {x: 1.02, y: 1.5}

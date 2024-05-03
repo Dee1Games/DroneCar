@@ -122,7 +122,7 @@ public class CameraController : MonoBehaviour
         var basePos = transform.position;
         //var endPos = transform.position - (dir * longShotOffset);
         var baseRot = transform.rotation;
-        while (timer <= longShotDuration && !GameManager.Instance.Skip)
+        while (timer <= longShotDuration)
         {
             transform.position = Vector3.Lerp(basePos, endPos, timer / longShotDuration);
             Vector3 dir = (GameManager.Instance.Monster.com.position - transform.position).normalized;

@@ -11,6 +11,7 @@ public class UserData
     public int UpgradeCount;
     public List<UpgradeLevel> MergePlatform;
     public float MonsterHealth;
+    public int Lifes;
     public bool SeenMoveTutorial;
     public bool SeenFlyTutorial;
 
@@ -28,7 +29,9 @@ public class UserData
                     new UpgradeLevel() {Type = UpgradeType.Tire, Level = 0},
                     new UpgradeLevel() {Type = UpgradeType.Turbo, Level = 0},
                     new UpgradeLevel() {Type = UpgradeType.Gun, Level = 0},
-                    new UpgradeLevel() {Type = UpgradeType.Bomb, Level = 1}
+                    new UpgradeLevel() {Type = UpgradeType.Bomb, Level = 1},
+                    new UpgradeLevel() {Type = UpgradeType.Bonus, Level = 0},
+                    new UpgradeLevel() {Type = UpgradeType.MaxSpeed, Level = 0},
                 }
             }
         };

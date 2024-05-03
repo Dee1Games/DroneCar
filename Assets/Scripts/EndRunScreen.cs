@@ -8,6 +8,7 @@ public class EndRunScreen : UIScreen
 {
     public override UIScreenID ID => UIScreenID.EndRun;
 
+    [SerializeField] private RetryScreen retryPanel;
     [SerializeField] private float skipDur;
     [SerializeField] private HealthUI monsterHealthUI;
     [SerializeField] private Image monsterHealthSliderFill;
@@ -15,6 +16,7 @@ public class EndRunScreen : UIScreen
     [SerializeField] private TMP_Text monsterHealthUIText;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text rewardText;
+    [SerializeField] private TMP_Text bonusText;
     [SerializeField] private TMP_Text coinText;
     [SerializeField] private GameObject beforGO;
     [SerializeField] private GameObject nowGO;
@@ -34,6 +36,7 @@ public class EndRunScreen : UIScreen
     public override void Show()
     {
         base.Show();
+        UserManager.Instance.NextRun();
         Animate();
     }
 
@@ -56,9 +59,10 @@ public class EndRunScreen : UIScreen
         //     }
         // }
         // else
-        {
-            GameManager.Instance.GoToUpgradeMode();
-        }
+        // {
+        //     GameManager.Instance.GoToUpgradeMode();
+        // }
+        GameManager.Instance.GoToUpgradeMode();
     }
 
     private void Animate()
@@ -68,6 +72,8 @@ public class EndRunScreen : UIScreen
 
     private IEnumerator animate()
     {
+        retryPanel.gameObject.SetActive(false);
+
         GameManager.Instance.Skip = false;
 
         if (GameManager.Instance.CurrentRunDamage == 0f && GameManager.Instance.RunResult!=RunResult.Died)
@@ -90,6 +96,11 @@ public class EndRunScreen : UIScreen
             titleText.text = "Boss Is Done";
         }
         
+        if (GameManager.Instance.RunResult != RunResult.Finish && UserManager.Instance.Data.Lifes <= 0)
+        {
+            titleText.text = "Out of Cars!";
+        }
+        
         crossGo.SetActive(false);
         deadTextGo.SetActive(false);
         progressBarGo.SetActive(true);
@@ -108,6 +119,7 @@ public class EndRunScreen : UIScreen
         
 
         rewardText.text = "+ 0";
+        bonusText.text = "<color=\"white\">Bonus: </color> +0";
         levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
         coinText.text = UserManager.Instance.Data.Coins.ToString();
         
@@ -147,11 +159,13 @@ public class EndRunScreen : UIScreen
             progressBarGo.SetActive(false);
         }
 
-        int c = LevelManager.Instance.GetPreviousRunReward();
+        int c = LevelManager.Instance.GetRunReward();
+        int b = Mathf.FloorToInt(c * GameManager.Instance.Player.Config.GetUpgradeConfig(UpgradeType.Bonus).GetBonus(GameManager.Instance.Player.GetUpgradeLevel(UpgradeType.Bonus))) - c;
         
         if (GameManager.Instance.RunResult == RunResult.Missed || GameManager.Instance.CurrentRunDamage == 0f)
         {
             c = 0;
+            b = 0;
         }
 
         if (c != 0)
@@ -161,15 +175,20 @@ public class EndRunScreen : UIScreen
             while (t < dur && !GameManager.Instance.Skip)
             {
                 float nowReward = Mathf.Lerp(0, c, t);
+                float nowBonus = Mathf.Lerp(0, b, t);
+                
                 rewardText.text = "+ " + Mathf.FloorToInt(nowReward).ToString();
-            
+                bonusText.text = "<color=\"white\">Bonus: </color> +" + Mathf.FloorToInt(nowBonus).ToString();
+
                 yield return new WaitForEndOfFrame();
                 t += Time.deltaTime;
             }
         }
 
         rewardText.text = "+ " + c.ToString();
-        UserManager.Instance.AddCoins(c);
+        bonusText.text = "<color=\"white\">Bonus: </color> +" + b.ToString();
+
+        UserManager.Instance.AddCoins(c+b);
 
         if (!GameManager.Instance.Skip)
         {
@@ -188,6 +207,25 @@ public class EndRunScreen : UIScreen
             GameManager.Instance.Skip = false;
         }
         
-        OnClick_Continue();
+        if (GameManager.Instance.RunResult != RunResult.Finish && UserManager.Instance.Data.Lifes <= 0)
+        {
+            if (UserManager.Instance.Data.Coins >= GameManager.Instance.retryPrice)
+            {
+                retryPanel.gameObject.SetActive(true);
+                retryPanel.Show();
+            }
+            else
+            {
+                UserManager.Instance.ResetLife();
+                UserManager.Instance.SetMonsterHealth(1f);
+                UserManager.Instance.ResetRun();
+                LevelManager.Instance.InitCurrentLevel();
+                OnClick_Continue();
+            }
+        }
+        else
+        {
+            OnClick_Continue();
+        }
     }
 }

@@ -82,9 +82,9 @@ public class WeakPoint : MonoBehaviour, IHitable
         Number = index;
     }
 
-    public void OnHit(CarCore core, Vector3 pos, float damage = 10f)
+    public float OnHit(CarCore core, Vector3 pos, float damage , bool isCar)
     {
-        if (currentIndex != index) return;
+        if (currentIndex != index) return 0f;
         
        CurrentIndex = index + 1;
 
@@ -101,5 +101,7 @@ public class WeakPoint : MonoBehaviour, IHitable
             effect.transform.up = -core.transform.forward;
         }
         attachedLimb?.Dismember();
+
+        return damage;
     }
 }

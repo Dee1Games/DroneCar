@@ -18,7 +18,7 @@ public class RayDebugger : MonoBehaviour
 
                 Debug.Log(_pointerRay.Hit.transform.name);
 
-                _hitable?.OnHit(CarCore._, transform.position, _pointerRay.Influence * 100);
+                _hitable?.OnHit(CarCore._, transform.position, _pointerRay.Influence * 100, false);
             }
         }
     }    

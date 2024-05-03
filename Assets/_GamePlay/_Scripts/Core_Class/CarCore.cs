@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public interface IHitable
 {
-    void OnHit(CarCore core, Vector3 pos, float damage);
+    float OnHit(CarCore core, Vector3 pos, float damage, bool isCar);
 }
 public class CarCore : MonoBehaviour
 {
@@ -175,9 +175,9 @@ public class CarCore : MonoBehaviour
             //     dmg = 200f;
             // }
             // if (UserManager.Instance.Data.Level != 1)
-            {
-                DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
-            }
+            // {
+            //     DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
+            // }
             // else
             // {
             //     if (!(hitable is Giant_Core))
@@ -185,7 +185,8 @@ public class CarCore : MonoBehaviour
             //         DamageIndicatorPool.Instance.ShowOne(transform.position, dmg);
             //     }
             // }
-            hitable.OnHit(this, transform.position, dmg);
+            float h = hitable.OnHit(this, transform.position, dmg, true);
+            DamageIndicatorPool.Instance.ShowOne(transform.position, h);
             if (hit.transform.TryGetComponent(out Limb limb))
             {
                 vehicle.RigidBody.AddExplosionForce(200, hit.point, 20f);
@@ -241,15 +242,6 @@ public class CarCore : MonoBehaviour
             {
                 //SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);
             } catch {}
-        }
-
-        if (UserManager.Instance.Data.Level == 1)
-        {
-            UserManager.Instance.NextRun();
-        }
-        else
-        {
-            UserManager.Instance.NextRun();
         }
     }
 

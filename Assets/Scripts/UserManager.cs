@@ -24,6 +24,7 @@ public class UserManager : MonoBehaviour
         if (Data == null)
         {
             Data = new UserData();
+            Data.Lifes = GameManager.Instance.life;
             SaveManager.Instance.SaveUserData(Data);
         }
         else
@@ -38,6 +39,24 @@ public class UserManager : MonoBehaviour
         Data.UpgradeCount++;
         SaveManager.Instance.SaveUserData(Data);
     }
+    
+    public void LostLife()
+    {
+        Data.Lifes--;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+    
+    public void ResetLife()
+    {
+        Data.Lifes = GameManager.Instance.life;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+    
+    public void AddLife()
+    {
+        Data.Lifes++;
+        SaveManager.Instance.SaveUserData(Data);
+    }
 
     public void ResetInGameVehicleUpgrades()
     {
@@ -47,6 +66,8 @@ public class UserManager : MonoBehaviour
             v.UpgradeLevels = new List<UpgradeLevel>()
             {
                 new UpgradeLevel() {Type = UpgradeType.Tire, Level = Data.VehicleUpgrades[i].UpgradeLevels.FirstOrDefault(x=>x.Type==UpgradeType.Tire).Level},
+                new UpgradeLevel() {Type = UpgradeType.Bonus, Level = Data.VehicleUpgrades[i].UpgradeLevels.FirstOrDefault(x=>x.Type==UpgradeType.Bonus).Level},
+                new UpgradeLevel() {Type = UpgradeType.MaxSpeed, Level = Data.VehicleUpgrades[i].UpgradeLevels.FirstOrDefault(x=>x.Type==UpgradeType.MaxSpeed).Level},
                 new UpgradeLevel() {Type = UpgradeType.Turbo, Level = 0},
                 new UpgradeLevel() {Type = UpgradeType.Gun, Level = 0},
                 new UpgradeLevel() {Type = UpgradeType.Bomb, Level = 0}
@@ -62,6 +83,8 @@ public class UserManager : MonoBehaviour
             v.UpgradeLevels = new List<UpgradeLevel>()
             {
                 new UpgradeLevel() {Type = UpgradeType.Tire, Level = 0},
+                new UpgradeLevel() {Type = UpgradeType.MaxSpeed, Level = 0},
+                new UpgradeLevel() {Type = UpgradeType.Bonus, Level = 0},
                 new UpgradeLevel() {Type = UpgradeType.Turbo, Level = 0},
                 new UpgradeLevel() {Type = UpgradeType.Gun, Level = 0},
                 new UpgradeLevel() {Type = UpgradeType.Bomb, Level = 0}
@@ -73,6 +96,8 @@ public class UserManager : MonoBehaviour
     {
         ResetInGameVehicleUpgrades();
         MergePlatform.Instance.ClearPlatform();
+        UserManager.Instance.ResetLife();
+        UserManager.Instance.ResetRun();
         Data.Level++;
         Data.MonsterHealth = 1f;
         SaveManager.Instance.SaveUserData(Data);
@@ -81,6 +106,12 @@ public class UserManager : MonoBehaviour
     public void NextRun()
     {
         Data.Run++;
+        SaveManager.Instance.SaveUserData(Data);
+    }
+    
+    public void ResetRun()
+    {
+        Data.Run = 1;
         SaveManager.Instance.SaveUserData(Data);
     }
     

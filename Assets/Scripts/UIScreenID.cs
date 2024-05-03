@@ -4,5 +4,5 @@ public enum UIScreenID
     InGame,
     Merge,
     EndLevel,
-    EndRun
+    EndRun,
 }

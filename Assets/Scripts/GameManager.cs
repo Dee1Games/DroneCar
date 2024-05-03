@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public const string CPlayer = "Player";
     #endregion
 
+    public int retryPrice;
+    public int life;
     [HideInInspector] public bool Skip;
     [HideInInspector] public Map Map;
     [HideInInspector] public Monster Monster;
@@ -82,13 +84,15 @@ public class GameManager : MonoBehaviour
         spawnPlayer();
         UIManager.Instance.ShowScreen(UIScreenID.MainMenu);
         MergePlatform.Instance.Hide();
-        Map.Init();
 
         
         if(GameManager.Instance.Monster.Health <= 0f)
         {
             LevelManager.Instance.InitCurrentLevel();
         }
+        
+        Map.Init();
+
 
         return;
         

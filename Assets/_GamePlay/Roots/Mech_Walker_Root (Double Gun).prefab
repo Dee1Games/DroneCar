@@ -171,7 +171,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: radius
-      value: 300
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
+      propertyPath: minRadius
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4014852602019070283, guid: 1257a0f47e57bda4eb8efe5594260c10, type: 3}
       propertyPath: colliders.Array.size
@@ -363,11 +367,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsHead: 0
   referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 0
-  health: 100
   maxHealth: 100
   explosionForce: 150
   explosionRadius: 15
@@ -401,11 +405,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsHead: 0
   referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
-  health: 100
   maxHealth: 1000
   explosionForce: 150
   explosionRadius: 15

@@ -49,6 +49,7 @@ public class Giant_Core : MonoBehaviour, IHitable
         foreach (var limb in limbs)
         {
             limb.giantCore = this;
+            limb.Reset();
         }
 
         if (UI_Core._)
@@ -169,14 +170,14 @@ public class Giant_Core : MonoBehaviour, IHitable
         }
     }
 
-    public void TakeDamage(Vector3 pos, float damage)
+    public float TakeDamage(Vector3 pos, float damage)
     {
         if (isDead)
-            return;
+            return 0f;
         
         if (GameManager.Instance.Player == null || GameManager.Instance.Player.Core.hitedMonster)
         {
-            return;
+            return 0f;
         }
         
         GameManager.Instance.CurrentRunDamage += damage;
@@ -197,6 +198,7 @@ public class Giant_Core : MonoBehaviour, IHitable
             //UIManager.Instance.ShowScreen(UIScreenID.EndLevel);
         }
 
+        return damage;
     }
 
     private void EndMonsterUI()
@@ -223,12 +225,9 @@ public class Giant_Core : MonoBehaviour, IHitable
         }*/
     }
 
-    public void OnHit(CarCore core, Vector3 pos, float damage)
+    public float OnHit(CarCore core, Vector3 pos, float damage, bool isCar)
     {
-        if (UserManager.Instance.Data.Level != 1)
-        {
-            TakeDamage(pos, damage);
-        }
+        return TakeDamage(pos, damage);
     }
 }
 public static class CoreExtension

@@ -102,27 +102,30 @@ public class LevelManager : MonoBehaviour
         
         WeakPoint.CurrentIndex = 0;
     }
-    
-    public float GetCurrentMonsterHealth()
-    {
-        return Config.InitMonsterHealth + (CurrentLevelIndex * Config.AddUpMonsterHealth);
-    }
 
-    public int GetRunReward()
-    {
-        return MergePlatform.Instance.GetTotalUpgradePrice(5);
-
-        //return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
-    }
+    // public int GetRunReward()
+    // {
+    //     return MergePlatform.Instance.GetTotalUpgradePrice(5);
+    //
+    //     //return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + (UserManager.Instance.Data.Run * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
+    // }
     
     public int GetPreviousRunReward()
     {
         return MergePlatform.Instance.GetTotalUpgradePrice(5);
         //return Mathf.RoundToInt(MergePlatform.Instance.GetCurrentUpgradePrice() + ((UserManager.Instance.Data.Run-1) * Config.RewardRunMultiplier) + (GameManager.Instance.CurrentRunDamage * Config.RewardDamageMultiplier));
     }
+    
+    public int GetRunReward()
+    {
+        int runDamage = Mathf.CeilToInt(LevelManager.Instance.Config.AvrageMonsterHealth / GameManager.Instance.life);
+        float multiplier = LevelManager.Instance.Config.GetPrizeMultiplier(UserManager.Instance.Data.Run);
+        return Mathf.CeilToInt(runDamage * multiplier);
+    }
 
     public float GetSpaceLimit()
     {
-        return Config.SpaceLimit;
+        //return Config.SpaceLimit;
+        return 100f;
     }
 }

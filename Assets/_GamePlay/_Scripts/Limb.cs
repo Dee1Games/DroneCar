@@ -10,7 +10,8 @@ using UnityEngine;
 public class Limb : MonoBehaviour, IHitable
 {
     private LimbSmoke smoke;
-    
+
+    public bool IsHead = false;
     
     public SkinnedMeshRenderer referenceSkin;
     
@@ -20,7 +21,7 @@ public class Limb : MonoBehaviour, IHitable
 
     public bool isLeg = false;
     
-    [HideInInspector] public float health = 100f;
+    private float _h;
     public float maxHealth = 100f;
     public float explosionForce = 150f;
     public float explosionRadius = 15f;
@@ -31,13 +32,13 @@ public class Limb : MonoBehaviour, IHitable
 
     public float Health
     {
-        get => health;
+        get => _h;
         set
         {
-            health = value;
-            health = Mathf.Clamp(health, 0f, maxHealth);
+            _h = value;
+            _h = Mathf.Clamp(_h, 0f, maxHealth);
 
-            if (health <= 0)
+            if (_h <= 0)
             {
                 Dismember();
             }
@@ -54,19 +55,24 @@ public class Limb : MonoBehaviour, IHitable
     public bool unbreakable;
     public Transform boneRoot;
 
-    void Start()
+    public void Reset()
     {
-        health = maxHealth;
+        _h = maxHealth;
     }
     
     
 
-    public void TakeDamage(Vector3 pos, float amount)
+    public float TakeDamage(Vector3 pos, float amount, bool isCar = false)
     {
         // if (UserManager.Instance.Data.Level == 1)
         // {
         //     amount = 1f;
         // }
+        if (IsHead && isCar)
+        {
+            amount = (Health) + 1;
+        }
+        
         Health -= amount;
         giantCore.TakeDamage(pos, amount);
         
@@ -97,6 +103,8 @@ public class Limb : MonoBehaviour, IHitable
                 smoke = newSmoke;
             }
         }
+
+        return amount;
     }
 
     private Transform dismember;
@@ -171,9 +179,9 @@ public class Limb : MonoBehaviour, IHitable
     }
     
 
-    public void OnHit(CarCore core, Vector3 pos, float damage)
+    public float OnHit(CarCore core, Vector3 pos, float damage, bool isCar)
     {
-        TakeDamage(pos, damage);
+        return TakeDamage(pos, damage, isCar);
     }
     
     private List<int> boneIndex = new List<int>();

@@ -30,34 +30,53 @@ public class MenuScreen : UIScreen
         {
             int max = GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).maxLevel-1;
             int lvl = GameManager.Instance.Player.GetUpgradeLevel(btn.type);
-            int intDiff = 0;
+            float diff = 0f;
             if (lvl < max)
             {
-                float diff = 0f;
                 if (btn.type == UpgradeType.Bomb)
                 {
-                    diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetBomb(lvl + 1));
+                    float newVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetBomb(lvl + 1));
+                    float oldVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetBomb(0));
+                    diff = (newVal / oldVal) * 100f;
                 }
                 else if (btn.type == UpgradeType.Gun)
                 {
-                    diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetGun(lvl + 1));
+                    float newVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetGun(lvl + 1));
+                    float oldVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetGun(0));
+                    diff = (newVal / oldVal) * 100f;
                 }
                 else if (btn.type == UpgradeType.Tire)
                 {
-                    diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type)
-                        .GetHandling(lvl + 1));
+                    float newVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetHandling(lvl + 1));
+                    float oldVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetHandling(0));
+                    diff = (newVal / oldVal) * 100f;
                 }
                 else if (btn.type == UpgradeType.Turbo)
                 {
-                    diff = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type)
-                        .GetMaxSpeed(lvl + 1));
+                    float newVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetMaxSpeed(lvl + 1));
+                    float oldVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetMaxSpeed(0));
+                    diff = (newVal / oldVal) * 100f;
                 }
-                intDiff = Mathf.CeilToInt(diff);
+                else if (btn.type == UpgradeType.Bonus)
+                {
+                    float newVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetBonus(lvl + 1));
+                    float oldVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetBonus(0));
+                    diff = (newVal / oldVal) * 100f;
+                }
+                else if (btn.type == UpgradeType.MaxSpeed)
+                {
+                    float newVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetMaxSpeedMultiplier(lvl + 1));
+                    float oldVal = Mathf.Abs(GameManager.Instance.Player.Config.GetUpgradeConfig(btn.type).GetMaxSpeedMultiplier(0));
+                    diff = (newVal / oldVal) * 100f;
+                }
+
+                diff -= 100;
             }
             
-            int price = MergePlatform.Instance.GetCurrentUpgradePrice();
+            //int price = MergePlatform.Instance.GetCurrentUpgradePrice();
+            int price = GameManager.Instance.Player.Config.GetPrice(lvl+1);
             bool isActive = UserManager.Instance.Data.Coins >= price;
-            btn.Init(price, intDiff, isActive);
+            btn.Init(price, diff.ToString("F0"), isActive);
 
             if (lvl >= max)
             {
