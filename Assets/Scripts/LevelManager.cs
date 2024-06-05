@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -83,6 +84,14 @@ public class LevelManager : MonoBehaviour
                 objs.RemoveAt(0);
             }
             DestroyImmediate(GameManager.Instance.Monster.gameObject);
+            
+            List<LimbSmoke> objs2 = FindObjectsOfType<LimbSmoke>().ToList();
+            while (objs2.Count > 0)
+            {
+                GameObject obj = objs2[0].gameObject;
+                DestroyImmediate(obj);
+                objs2.RemoveAt(0);
+            }
         }
         if (GameManager.Instance.Map != null)
         {
@@ -118,6 +127,15 @@ public class LevelManager : MonoBehaviour
     
     public int GetRunReward()
     {
+        int lvl1 = GameManager.Instance.Player.GetUpgradeLevel(UpgradeType.Tire);
+        int lvl2 = GameManager.Instance.Player.GetUpgradeLevel(UpgradeType.MaxSpeed);
+        int lvl3 = GameManager.Instance.Player.GetUpgradeLevel(UpgradeType.Bonus);
+        int avg = Mathf.FloorToInt((lvl1 + lvl2 + lvl3) / 3);
+
+        int prc = GameManager.Instance.Player.Config.GetPrice(avg);
+
+        return prc * 3;
+        
         int runDamage = Mathf.CeilToInt(LevelManager.Instance.Config.AvrageMonsterHealth / GameManager.Instance.life);
         float multiplier = LevelManager.Instance.Config.GetPrizeMultiplier(UserManager.Instance.Data.Run);
         return Mathf.CeilToInt(runDamage * multiplier);

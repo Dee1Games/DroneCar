@@ -120,6 +120,10 @@ PrefabInstance:
       propertyPath: referenceSkin
       value: 
       objectReference: {fileID: 4121300310167828058}
+    - target: {fileID: 1576711348781316046, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: explosionForce
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 2535224376614873222, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: monster
       value: 
@@ -144,6 +148,10 @@ PrefabInstance:
       propertyPath: referenceSkin
       value: 
       objectReference: {fileID: 4121300310167828058}
+    - target: {fileID: 3019736108518642343, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: explosionForce
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3329248589529669985, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: isLeg
       value: 1
@@ -151,6 +159,10 @@ PrefabInstance:
     - target: {fileID: 3329248589529669985, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: maxHealth
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329248589529669985, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: explosionForce
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4729861749040318750, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: pivot
@@ -171,6 +183,10 @@ PrefabInstance:
     - target: {fileID: 6412251580978965632, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: maxHealth
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6412251580978965632, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: explosionForce
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7070973032571879815, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: m_Name
@@ -246,7 +262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7693630446366383728, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: explosionForce
-      value: 150
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8598712265495798237, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: IsHead
@@ -255,6 +271,14 @@ PrefabInstance:
     - target: {fileID: 8598712265495798237, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
       propertyPath: maxHealth
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598712265495798237, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: IsCritical
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598712265495798237, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}
+      propertyPath: explosionForce
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a81fadf4974a8e843a6c1c8688e6b84b, type: 3}

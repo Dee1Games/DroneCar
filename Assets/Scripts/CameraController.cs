@@ -130,6 +130,9 @@ public class CameraController : MonoBehaviour
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        
+        yield return new WaitForSeconds(0.5f);
+
 
         GameManager.Instance.Skip = false;
         

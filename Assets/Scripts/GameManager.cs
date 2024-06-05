@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public int retryPrice;
     public int life;
+    public int coinReward;
     [HideInInspector] public bool Skip;
     [HideInInspector] public Map Map;
     [HideInInspector] public Monster Monster;

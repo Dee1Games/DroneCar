@@ -150,6 +150,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 34504092631034262, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: explosionForce
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 651353549786643526, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: myCore
       value: 
@@ -165,6 +169,14 @@ PrefabInstance:
     - target: {fileID: 886403240199339781, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: maxHealth
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 886403240199339781, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: IsCritical
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 886403240199339781, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: explosionForce
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 897716483630017480, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: poolManager
@@ -782,6 +794,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 5081437842000856373, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: explosionForce
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5729471896738002974, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -810,6 +826,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 8040221454890469598, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: explosionForce
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 8151075723642788658, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -822,6 +842,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 8165033929404514998, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: explosionForce
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 8226003100704334229, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -833,6 +857,10 @@ PrefabInstance:
     - target: {fileID: 8591762401979712330, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: maxHealth
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591762401979712330, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
+      propertyPath: explosionForce
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8926536092806650661, guid: 79e550b5c713a1645b09361da8a22975, type: 3}
       propertyPath: solver.bodyWeight
@@ -966,13 +994,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsHead: 0
+  IsCritical: 0
   referenceSkin: {fileID: 0}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 0
   maxHealth: 1000
-  explosionForce: 150
+  explosionForce: 25
   explosionRadius: 15
   bakeLayer:
     serializedVersion: 2
@@ -1026,13 +1054,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsHead: 0
+  IsCritical: 0
   referenceSkin: {fileID: 7221549915257164662}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
   maxHealth: 1000
-  explosionForce: 150
+  explosionForce: 25
   explosionRadius: 15
   bakeLayer:
     serializedVersion: 2
@@ -1093,13 +1121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c3fafa55e40134cb73387ff33484ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsHead: 0
+  IsCritical: 0
   referenceSkin: {fileID: 7221549915257164662}
   giantCore: {fileID: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
   isLeg: 1
   maxHealth: 1000
-  explosionForce: 150
+  explosionForce: 25
   explosionRadius: 15
   bakeLayer:
     serializedVersion: 2

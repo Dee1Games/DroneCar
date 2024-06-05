@@ -28,6 +28,7 @@ public class Map : MonoBehaviour
             if (i == rndInt)
             {
                 allPathes[i].gameObject.SetActive(true);
+                allPathes[i].Init();
             }
             else
             {

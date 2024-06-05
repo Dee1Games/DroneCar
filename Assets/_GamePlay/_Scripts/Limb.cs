@@ -9,9 +9,8 @@ using UnityEngine;
 
 public class Limb : MonoBehaviour, IHitable
 {
-    private LimbSmoke smoke;
 
-    public bool IsHead = false;
+    public bool IsCritical = false;
     
     public SkinnedMeshRenderer referenceSkin;
     
@@ -20,6 +19,7 @@ public class Limb : MonoBehaviour, IHitable
     public Vector3 rotationOffset;
 
     public bool isLeg = false;
+    private LimbSmoke smoke;
     
     private float _h;
     public float maxHealth = 100f;
@@ -29,6 +29,7 @@ public class Limb : MonoBehaviour, IHitable
     public LayerMask bakeLayer;
     public float scaleFactor = 1f;
     public float rigidBodyMass = 12f;
+    public bool IsDismembered = false;
 
     public float Health
     {
@@ -38,7 +39,7 @@ public class Limb : MonoBehaviour, IHitable
             _h = value;
             _h = Mathf.Clamp(_h, 0f, maxHealth);
 
-            if (_h <= 0)
+            if (_h <= 0 && !IsDismembered)
             {
                 Dismember();
             }
@@ -59,8 +60,6 @@ public class Limb : MonoBehaviour, IHitable
     {
         _h = maxHealth;
     }
-    
-    
 
     public float TakeDamage(Vector3 pos, float amount, bool isCar = false)
     {
@@ -68,17 +67,14 @@ public class Limb : MonoBehaviour, IHitable
         // {
         //     amount = 1f;
         // }
-        if (IsHead && isCar)
+        if (IsCritical && isCar)
         {
             amount = (Health) + 1;
         }
         
-        Health -= amount;
-        giantCore.TakeDamage(pos, amount);
-        
-        bool smokeChanged = false;
-        float healthPercent = Health / maxHealth;
         int damageLevel = 0;
+        float healthPercent = (Health-amount)/ maxHealth;
+
         if (healthPercent > 0.66f)
         {
             damageLevel = 1;
@@ -90,19 +86,24 @@ public class Limb : MonoBehaviour, IHitable
             damageLevel = 3;
         }
 
-        if (smoke == null || damageLevel != smoke.level)
+        if (Health >= 0f && !IsDismembered)
         {
-            LimbSmoke newSmoke = LimbSmokePool.Instance.Spawn(transform.position,  transform.up, damageLevel);
-            if (newSmoke != null)
+            if (smoke == null || smoke.level != damageLevel)
             {
                 if (smoke != null)
                 {
-                    smoke.ReturnToPool();
+                    Destroy(smoke.gameObject);
                 }
-                newSmoke.transform.parent = transform.parent;
-                smoke = newSmoke;
+                smoke = LimbSmokePool.Instance.Spawn(transform.position,  transform.up, transform.parent, damageLevel);
             }
         }
+        
+        
+        Health -= amount;
+        giantCore.TakeDamage(pos, amount);
+        
+        bool smokeChanged = false;
+        
 
         return amount;
     }
@@ -127,6 +128,11 @@ public class Limb : MonoBehaviour, IHitable
             else
             {
                 dismember = Instantiate(transform, transform);
+                Limb l = dismember.GetComponent<Limb>();
+                if (l != null)
+                {
+                    l.IsDismembered = true;
+                }
                 Target t = dismember.transform.GetComponentInChildren<Target>();
                 if (t != null)
                 {
@@ -147,7 +153,7 @@ public class Limb : MonoBehaviour, IHitable
                 {
                     rb = dismember.AddComponent<Rigidbody>();
                 }
-                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+                rb.AddExplosionForce(explosionForce, transform.position + new Vector3(0f, -5f, 1f), explosionRadius);
                 rb.mass = rigidBodyMass;
                 //Destroy(dismember.gameObject, 10f);
                 GameManager.Instance.Monster.detachedLimbs.Add(dismember.gameObject);
@@ -251,6 +257,11 @@ public class Limb : MonoBehaviour, IHitable
 
 
         dismember = new GameObject($"{name} Limb").transform;
+        Limb l = dismember.GetComponent<Limb>();
+        if (l != null)
+        {
+            l.IsDismembered = true;
+        }
         
         Target t = dismember.transform.GetComponentInChildren<Target>();
         if (t != null)
@@ -283,7 +294,7 @@ public class Limb : MonoBehaviour, IHitable
         rb = dismember.AddComponent<Rigidbody>();
         if (explosionForce > 0)
         {
-            rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+            rb.AddExplosionForce(explosionForce, transform.position + new Vector3(0f, -5f, 1f), explosionRadius);
         }
         rb.mass = rigidBodyMass;
         //Destroy(dismember.gameObject, 10f);

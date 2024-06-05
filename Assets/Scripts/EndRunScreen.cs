@@ -225,6 +225,10 @@ public class EndRunScreen : UIScreen
         }
         else
         {
+            if (GameManager.Instance.RunResult == RunResult.Finish)
+            {
+                NewCarPopup.Instance.Show(LevelManager.Instance.CurrentLevelData.VehicleSprite);
+            }
             OnClick_Continue();
         }
     }
