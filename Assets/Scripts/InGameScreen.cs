@@ -38,6 +38,7 @@ public class InGameScreen : UIScreen
         if (GameManager.Instance.Player != null)
         {
             UpdateLifeTImeBar(GameManager.Instance.Player.CurrentLifTimeLeft);
+            coinsText.text = UserManager.Instance.Data.Coins.ToString();
         }
     }
 
@@ -62,7 +63,7 @@ public class InGameScreen : UIScreen
         }
         monsterHealthUI.SetHealth(UserManager.Instance.Data.MonsterHealth);
     }
-
+    
     public override void Hide()
     {
         base.Hide();

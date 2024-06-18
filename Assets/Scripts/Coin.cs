@@ -29,6 +29,7 @@ public class Coin : MonoBehaviour
         {
             isUsed = true;
             CoinParticlePool.Instance.ShowOne(other.transform, GameManager.Instance.coinReward);
+            UserManager.Instance.AddCoins(GameManager.Instance.coinReward);
             Deactivate();
         }
     }
