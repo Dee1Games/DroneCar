@@ -45,6 +45,19 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
-  }
+    "com.unity.modules.xr": "1.0.0",
+    "com.homagames.sdk-installer-bundle": "2.0.8"
+  },
+  "scopedRegistries": [
+    {
+      "name": "Homa Games SDK",
+      "url": "https://homagames.jfrog.io/artifactory/api/npm/unity-public-sdk",
+      "scopes": [
+        "com.homagames",
+        "com.google.external-dependency-manager",
+        "com.adjust.sdk",
+        "com.gameanalytics.sdk"
+      ]
+    }
+  ]
 }
