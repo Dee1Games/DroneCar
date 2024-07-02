@@ -1946,9 +1946,6 @@ namespace ECE
     /// <param name="color"></param>
     private void DebugDrawPoint(Vector3 worldLoc, Color color, float dist = 0.01f)
     {
-      Debug.DrawLine(worldLoc - Vector3.up * dist, worldLoc + Vector3.up * dist, color, 0.01f, false);
-      Debug.DrawLine(worldLoc - Vector3.left * dist, worldLoc + Vector3.left * dist, color, 0.01f, false);
-      Debug.DrawLine(worldLoc - Vector3.forward * dist, worldLoc + Vector3.forward * dist, color, 0.01f, false);
     }
 
     /// <summary>

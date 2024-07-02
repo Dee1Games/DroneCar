@@ -1,10 +1,57 @@
+// Android Resolver Repos Start
+([rootProject] + (rootProject.subprojects as List)).each { project ->
+    project.repositories {
+        def unityProjectPath = $/file:///**DIR_UNITYPROJECT**/$.replace("\\", "/")
+        maven {
+            url "https://maven.google.com"
+        }
+        mavenLocal()
+        mavenCentral()
+    }
+}
+// Android Resolver Repos End
 apply plugin: 'com.android.library'
 **APPLY_PLUGINS**
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+// Android Resolver Dependencies Start
+    // implementation 'com.android.installreferrer:installreferrer:2.1' // Assets/AppsFlyer/Editor/AppsFlyerDependencies.xml:10
+    implementation 'com.android.installreferrer:installreferrer:2.2' // Packages/com.homagames.attribution.adjust/Editor/AdjustDependencies.xml:4
+    implementation 'com.android.support:appcompat-v7:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
+    implementation 'com.android.support:cardview-v7:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
+    implementation 'com.android.support:customtabs:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
+    implementation 'com.android.support:support-v4:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
+    implementation 'com.appsflyer:af-android-sdk:6.10.1' // Assets/AppsFlyer/Editor/AppsFlyerDependencies.xml:6
+    implementation 'com.appsflyer:unity-wrapper:6.10.1' // Assets/AppsFlyer/Editor/AppsFlyerDependencies.xml:8
+    implementation 'com.facebook.android:facebook-applinks:[16.0,17)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:6
+    implementation 'com.facebook.android:facebook-core:[16.0,17)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:5
+    implementation 'com.facebook.android:facebook-gamingservices:[16.0,17)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:9
+    implementation 'com.facebook.android:facebook-login:[16.0,17)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:7
+    implementation 'com.facebook.android:facebook-share:[16.0,17)' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:8
+    // implementation 'com.google.android.gms:play-services-ads-identifier:[18.0.0]' // Packages/com.homagames.attribution.adjust/Editor/AdjustDependencies.xml:6
+    implementation 'com.google.android.gms:play-services-ads-identifier:[18.0.1]' // Packages/com.homagames.sdk-core/Utilities/Editor/Android/CoreDependencies.xml:6
+    // implementation 'com.google.android.gms:play-services-appset:[16.0.2]' // Packages/com.homagames.sdk-core/Utilities/Editor/Android/CoreDependencies.xml:4
+    implementation 'com.google.android.gms:play-services-appset:16.0.2' // Packages/com.gameanalytics.sdk/Editor/Android/Dependencies.xml:4
+    implementation 'com.google.android.gms:play-services-basement:[18.0.0]' // Packages/com.homagames.attribution.adjust/Editor/AdjustDependencies.xml:5
+    implementation 'com.google.android.instantapps:instantapps:1.1.0' // Packages/com.gameanalytics.sdk/Editor/Android/Dependencies.xml:3
+    implementation 'com.parse.bolts:bolts-android:1.4.0' // Assets/FacebookSDK/Plugins/Editor/Dependencies.xml:4
+    implementation 'com.usercentrics.sdk:usercentrics-ui-unity:[2.13.1-unity]' // Packages/com.homagames.usercentrics-sdk/Usercentrics/Editor/UsercentricsDependencies.xml:4
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:[1.8.0]' // Packages/com.homagames.usercentrics-sdk/Usercentrics/Editor/UsercentricsDependencies.xml:3
+// Android Resolver Dependencies End
 **DEPS**}
 
+// Android Resolver Exclusions Start
+android {
+  packagingOptions {
+      exclude ('/lib/armeabi/*' + '*')
+      exclude ('/lib/mips/*' + '*')
+      exclude ('/lib/mips64/*' + '*')
+      exclude ('/lib/x86/*' + '*')
+      exclude ('/lib/x86_64/*' + '*')
+  }
+}
+// Android Resolver Exclusions End
 android {
     compileSdkVersion **APIVERSION**
     buildToolsVersion '**BUILDTOOLS**'
