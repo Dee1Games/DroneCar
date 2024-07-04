@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using HomaGames.HomaBelly;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,6 +51,9 @@ public class InGameScreen : UIScreen
     public override void Show()
     {
         base.Show();
+
+        Analytics.GameplayStarted();
+        
         life.text = UserManager.Instance.Data.Lifes.ToString() + " x";
         retryButton.SetActive(true);
         coinsText.text = UserManager.Instance.Data.Coins.ToString();

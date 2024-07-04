@@ -6,6 +6,7 @@ public class UserData
 {
     public int Level;
     public int Run;
+    public int Attempt;
     public List<VehicleUpgradeData> VehicleUpgrades;
     public int Coins;
     public int UpgradeCount;
@@ -19,6 +20,7 @@ public class UserData
     {
         Level = 1;
         Run = 1;
+        Attempt = 1;
         VehicleUpgrades = new List<VehicleUpgradeData>()
         {
             new VehicleUpgradeData()

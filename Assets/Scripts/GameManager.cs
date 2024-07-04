@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using HomaGames.HomaBelly;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -73,6 +74,11 @@ public class GameManager : MonoBehaviour
         CurrentRunDamage = 0f;
         isPlaying = true;
         spawnPlayer();
+        Analytics.LevelStarted(UserManager.Instance.Data.Run);
+        if (UserManager.Instance.Data.Attempt == 1)
+        {
+            Analytics.MissionStarted(LevelManager.Instance.CurrentLevelIndex.ToString());
+        }
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
         MergePlatform.Instance.Hide();
         //Map.Init();
@@ -101,7 +107,6 @@ public class GameManager : MonoBehaviour
         MergePlatform.Instance.Show();
         UIManager.Instance.ShowScreen(UIScreenID.Merge);
         MergePlatform.Instance.ShowTutorialsIfNeeded();
-        Debug.Log($"Run {UserManager.Instance.Data.Run} Started");
         try
         {
             //SupersonicWisdom.Api.NotifyLevelStarted(UserManager.Instance.Data.Run, null);

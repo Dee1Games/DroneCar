@@ -224,7 +224,6 @@ public class AI_Core : MonoBehaviour
 
     public virtual void OnPlayerLost(CarCore _core)
     {
-        Debug.Log($"<color=#83FF5F>{_core}</color> Lost.");
         carCore = null;
 
         aiming = false;

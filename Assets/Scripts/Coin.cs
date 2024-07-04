@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using HomaGames.HomaBelly;
 using UnityEngine;
 
 public class Coin : MonoBehaviour
@@ -30,6 +31,15 @@ public class Coin : MonoBehaviour
             isUsed = true;
             CoinParticlePool.Instance.ShowOne(other.transform, GameManager.Instance.coinReward);
             UserManager.Instance.AddCoins(GameManager.Instance.coinReward);
+            // Analytics.ResourceFlowEvent(
+            //     ResourceFlowType.Source,
+            //     "coin",
+            //     GameManager.Instance.coinReward,
+            //     UserManager.Instance.Data.Coins,
+            //     "coin",
+            //     "ingame_coin",
+            //     ResourceFlowReason.Progression
+            // );
             Deactivate();
         }
     }

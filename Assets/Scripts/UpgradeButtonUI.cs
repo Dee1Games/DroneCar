@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using HomaGames.HomaBelly;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,6 +57,16 @@ public class UpgradeButtonUI : MonoBehaviour
         }
         
         UserManager.Instance.AddCoins(-pr);
+        Analytics.ResourceFlowEvent(
+            ResourceFlowType.Sink,
+            "coin",
+            pr,
+            UserManager.Instance.Data.Coins,
+            "coin",
+            "upgrade",
+            ResourceFlowReason.Progression
+        );
+        Analytics.ItemUpgraded(ItemUpgradeType.Upgrade, type.ToString(), newL, ItemFlowReason.Progression);
         
         UserManager.Instance.NextUpgrade();
         screen.Show();

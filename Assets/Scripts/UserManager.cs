@@ -106,12 +106,14 @@ public class UserManager : MonoBehaviour
     public void NextRun()
     {
         Data.Run++;
+        Data.Attempt++;
         SaveManager.Instance.SaveUserData(Data);
     }
     
     public void ResetRun()
     {
-        Data.Run = 1;
+        Data.Attempt = 1;
+        //Data.Run = 1;
         SaveManager.Instance.SaveUserData(Data);
     }
     

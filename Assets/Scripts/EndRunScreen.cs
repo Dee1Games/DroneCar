@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using HomaGames.HomaBelly;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -189,6 +190,15 @@ public class EndRunScreen : UIScreen
         bonusText.text = "<color=\"white\">Bonus: </color> +" + b.ToString();
 
         UserManager.Instance.AddCoins(c+b);
+        Analytics.ResourceFlowEvent(
+            ResourceFlowType.Source,
+            "coin",
+            c+b,
+            UserManager.Instance.Data.Coins,
+            "coin",
+            "reward",
+            ResourceFlowReason.Progression
+        );
 
         if (!GameManager.Instance.Skip)
         {
@@ -197,6 +207,7 @@ public class EndRunScreen : UIScreen
         
         if (GameManager.Instance.RunResult == RunResult.Finish)
         {
+            Analytics.MissionCompleted(UserManager.Instance.Data.Level.ToString(), "");
             UserManager.Instance.ResetAllVehicleUpgrades();
             UserManager.Instance.NextLevel();
         }
@@ -216,6 +227,7 @@ public class EndRunScreen : UIScreen
             }
             else
             {
+                Analytics.MissionFailed(UserManager.Instance.Data.Level.ToString());
                 UserManager.Instance.ResetLife();
                 UserManager.Instance.SetMonsterHealth(1f);
                 UserManager.Instance.ResetRun();

@@ -135,10 +135,6 @@ public class LevelManager : MonoBehaviour
         int prc = GameManager.Instance.Player.Config.GetPrice(avg);
 
         return prc * 3;
-        
-        int runDamage = Mathf.CeilToInt(LevelManager.Instance.Config.AvrageMonsterHealth / GameManager.Instance.life);
-        float multiplier = LevelManager.Instance.Config.GetPrizeMultiplier(UserManager.Instance.Data.Run);
-        return Mathf.CeilToInt(runDamage * multiplier);
     }
 
     public float GetSpaceLimit()

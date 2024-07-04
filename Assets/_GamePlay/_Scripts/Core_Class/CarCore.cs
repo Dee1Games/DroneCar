@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using DG.Tweening;
+using HomaGames.HomaBelly;
 using RaycastPro;
 using RaycastPro.RaySensors;
 using Sirenix.OdinInspector;
@@ -102,6 +103,10 @@ public class CarCore : MonoBehaviour
 
     public void Die()
     {
+        if (!vehicle.IsActive)
+            return;
+
+        Analytics.LevelFailed("obstacle/miss");
         float value = -1f;
         if (value < hp)
         {
@@ -193,6 +198,7 @@ public class CarCore : MonoBehaviour
             }
             Debug.Log(hit.transform.name);
             GameManager.Instance.RunResult = RunResult.Hit;
+            Analytics.LevelCompleted();
             CameraZoomOut();
         }
     }
@@ -229,7 +235,6 @@ public class CarCore : MonoBehaviour
 
         if (runFailed)
         {
-            Debug.Log($"Run {UserManager.Instance.Data.Run} Failed");
             try
             {
                 //SupersonicWisdom.Api.NotifyLevelFailed(UserManager.Instance.Data.Run, null);
@@ -237,7 +242,6 @@ public class CarCore : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Run {UserManager.Instance.Data.Run} Completed");
             try
             {
                 //SupersonicWisdom.Api.NotifyLevelCompleted(UserManager.Instance.Data.Run, null);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using HomaGames.HomaBelly;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,9 @@ public class MenuScreen : UIScreen
     public override void Show()
     {
         base.Show();
+
+        Analytics.MainMenuLoaded();
+        
         coinsText.text = UserManager.Instance.Data.Coins.ToString(); 
         levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();
         monsterHealthUI.SetHealth(UserManager.Instance.Data.MonsterHealth);
