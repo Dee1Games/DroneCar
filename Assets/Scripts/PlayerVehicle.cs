@@ -28,6 +28,7 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private Animator bombAnim;
     [SerializeField] private Animator turboAnim;
     [SerializeField] private Animator[] gunAnims;
+    [SerializeField] private Animator flipAnimator;
 
     
     private List<UpgradeLevel> upgrades;
@@ -147,6 +148,11 @@ public class PlayerVehicle : MonoBehaviour
         {
             levelUI.gameObject.SetActive(true);
         }
+    }
+
+    public void Flip()
+    {
+        flipAnimator.SetTrigger("flip");
     }
 
     public void PlayUpgradeAnim(UpgradeType t)

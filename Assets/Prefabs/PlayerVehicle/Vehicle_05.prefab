@@ -35614,6 +35614,38 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &2950265018376897823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1567323639983549223}
+  m_Layer: 6
+  m_Name: Pivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1567323639983549223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950265018376897823}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6717197722991139342}
+  m_Father: {fileID: 4970276742172680016}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3018704021472279139
 GameObject:
   m_ObjectHideFlags: 0
@@ -84799,6 +84831,7 @@ GameObject:
   - component: {fileID: 4970276742172680021}
   - component: {fileID: 4970276742172680022}
   - component: {fileID: 4557705231673996525}
+  - component: {fileID: 2031335107109647433}
   m_Layer: 6
   m_Name: Vehicle_05
   m_TagString: Player
@@ -84818,7 +84851,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6717197722991139342}
+  - {fileID: 1567323639983549223}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.1232937, y: 1.6870576, z: 4.186452}
@@ -84877,6 +84910,7 @@ MonoBehaviour:
   gunAnims:
   - {fileID: 8598233793190476782}
   - {fileID: 4138822391992515648}
+  flipAnimator: {fileID: 2031335107109647433}
   Core: {fileID: 0}
   groundLayer:
     serializedVersion: 2
@@ -84967,6 +85001,27 @@ MonoBehaviour:
     m_RotationOrder: 4
   iceBuff: {fileID: 19872990, guid: aca414e583d1a87419104a3f361c7ee8, type: 3}
   vehicle: {fileID: 4970276742172680020}
+--- !u!95 &2031335107109647433
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6126404143397673781}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 54febfcea5b71394797b97c877060362, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6333448499831984627
 GameObject:
   m_ObjectHideFlags: 0
@@ -86642,8 +86697,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6717197722991139343}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -86662,7 +86717,7 @@ Transform:
   - {fileID: 6717197722417921658}
   - {fileID: 1860886390397586677}
   - {fileID: 7155205178464747095}
-  m_Father: {fileID: 4970276742172680016}
+  m_Father: {fileID: 1567323639983549223}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6717197722991139341

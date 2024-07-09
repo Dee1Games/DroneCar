@@ -9705,6 +9705,8 @@ GameObject:
   - component: {fileID: 54419324461462068}
   - component: {fileID: 135237550928776104}
   - component: {fileID: 114885112938256800}
+  - component: {fileID: 82812592776736042}
+  - component: {fileID: 2625103525489955423}
   m_Layer: 12
   m_Name: vfx_ToonProjectile_Bomb03Red
   m_TagString: Untagged
@@ -9765,7 +9767,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439816204641800}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
@@ -9814,6 +9816,36 @@ MonoBehaviour:
   - {fileID: 1588689682261560}
   - {fileID: 1514313384593206}
   ActiveParticleSystems: 01010101
+--- !u!114 &82812592776736042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439816204641800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6757b231cedd544c583ef8aeaf773b2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thickness: 2
+  material: {fileID: 0}
+  filter: -65535
+  m_SourceCollider: {fileID: 135237550928776104}
+  m_DistanceField: {fileID: 0}
+--- !u!114 &2625103525489955423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439816204641800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62359d80fdc0e4315ab6331b78ec5b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kinematicForParticles: 0
 --- !u!1 &1514313384593206
 GameObject:
   m_ObjectHideFlags: 0

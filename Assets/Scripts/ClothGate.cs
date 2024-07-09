@@ -17,6 +17,6 @@ public class ClothGate : MonoBehaviour
         }
 
         vector *= 0.2f;
-        cloth.AddForce(vector, ForceMode.Impulse);
+        // cloth.AddForce(vector, ForceMode.Impulse);
     }
 }

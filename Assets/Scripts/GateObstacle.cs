@@ -170,10 +170,12 @@ public class GateObstacle : MonoBehaviour
                     {
                         GameManager.Instance.Player.PlayUpgradeParticle();
                         GameManager.Instance.Player.PlayUpgradeAnim(gateType);
+                        GameManager.Instance.Player.Flip();
                     }
                     else
                     {
                         GameManager.Instance.Player.PlayDowngradeParticle();
+                        GameManager.Instance.Player.Flip();
                     }
                 }
             }
