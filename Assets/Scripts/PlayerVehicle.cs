@@ -387,6 +387,11 @@ public class PlayerVehicle : MonoBehaviour
     {
         if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / (Config.FireRate*fireRateMultiplyer)) && gunExitPoints.Length!=0)
         {
+            if(Physics.Raycast(transform.position, transform.forward, 1000f, LayerMask.GetMask("Cloth")))
+            {
+                return true;
+            }
+            
             if (transform.position.z > Config.GunShootZ)
             {
                 return false;
