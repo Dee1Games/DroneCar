@@ -7,6 +7,7 @@ using UnityEngine;
 public class ClothGate : MonoBehaviour
 {
     [SerializeField] private ObiTearableCloth cloth;
+    [SerializeField] private bool knockback;
 
     public void Hit(Vector3 vector)
     {
@@ -18,5 +19,14 @@ public class ClothGate : MonoBehaviour
 
         vector *= 0.2f;
         // cloth.AddForce(vector, ForceMode.Impulse);
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerVehicle p = other.GetComponentInParent<PlayerVehicle>();
+        if (knockback && p != null)
+        {
+            p.JumpBack();
+        }
     }
 }

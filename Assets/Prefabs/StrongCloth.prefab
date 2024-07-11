@@ -75,8 +75,8 @@ MonoBehaviour:
   m_TearableClothBlueprint: {fileID: 11400000, guid: 71ee0aab0d81c437ab6c9306fd33d914, type: 2}
   tearingEnabled: 1
   tearResistanceMultiplier: 250
-  tearRate: 40
-  tearDebilitation: 0.9
+  tearRate: 5
+  tearDebilitation: 0.1
 --- !u!23 &7993629778446085822
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -97,8 +97,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3862df0f523254bcda0733ce0d63c68a, type: 2}
-  - {fileID: 2100000, guid: 70fe8dde319ad42e1960dc6e337ead24, type: 2}
+  - {fileID: 2100000, guid: 81b11c6ca8f1b48d2a7c73e2b783ada6, type: 2}
+  - {fileID: 2100000, guid: 81b11c6ca8f1b48d2a7c73e2b783ada6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 4442088946881612881}
   - component: {fileID: 4843714325210588644}
   m_Layer: 19
-  m_Name: weak
+  m_Name: strong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 1494914447031701481}
   - component: {fileID: 4765515907859576262}
   m_Layer: 19
-  m_Name: WeakCloth
+  m_Name: StrongCloth
   m_TagString: Cloth
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -455,4 +455,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cloth: {fileID: 4795831612598294137}
-  knockback: 0
+  knockback: 1

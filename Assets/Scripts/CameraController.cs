@@ -43,6 +43,12 @@ public class CameraController : MonoBehaviour
 
         // Smoothly move the camera to the desired position
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.fixedDeltaTime);
+
+        if (GameManager.Instance.Player.IsJumpingBack)
+        {
+            smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.fixedDeltaTime * 7f);
+        }
+        
         transform.position = smoothedPosition;
 
         // Make the camera look at the car's position

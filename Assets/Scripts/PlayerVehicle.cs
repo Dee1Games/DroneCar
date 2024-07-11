@@ -29,6 +29,8 @@ public class PlayerVehicle : MonoBehaviour
     [SerializeField] private Animator turboAnim;
     [SerializeField] private Animator[] gunAnims;
     [SerializeField] private Animator flipAnimator;
+    [SerializeField] private float jumpBackForce;
+    [SerializeField] private float jumpBackDuration;
 
     
     private List<UpgradeLevel> upgrades;
@@ -38,6 +40,7 @@ public class PlayerVehicle : MonoBehaviour
     private float maxSpeedMultiplier;
     private float handeling;
     private float bomb;
+    public bool IsJumpingBack;
     public float Bomb => bomb;
     
     private float gun;
@@ -101,6 +104,7 @@ public class PlayerVehicle : MonoBehaviour
 
     public void InitPlayMode()
     {
+        IsJumpingBack = false;
         lifeTimer = Config.LifeTime;
         fireRateMultiplyer = 1f;
         lastInputTouchTime = -1f;
@@ -153,6 +157,31 @@ public class PlayerVehicle : MonoBehaviour
     public void Flip()
     {
         flipAnimator.SetTrigger("flip");
+    }
+
+    public void JumpBack()
+    {
+        if (!IsJumpingBack)
+        {
+            StartCoroutine(jumpBack());
+        }
+    }
+    
+    private IEnumerator jumpBack()
+    {
+        IsJumpingBack = true;
+        float t = 0f;
+        while (t < jumpBackDuration)
+        {
+            //rigidBody.velocity = Vector3.zero;
+            currentSpeed = -jumpBackForce;
+            //rigidBody.AddForce(transform.forward*-jumpBackForce, ForceMode.Impulse);
+            t += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        currentSpeed = 0f;
+        IsJumpingBack = false;
     }
 
     public void PlayUpgradeAnim(UpgradeType t)
@@ -238,7 +267,6 @@ public class PlayerVehicle : MonoBehaviour
         if (isChanging)
             return;
 
-        
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -387,10 +415,19 @@ public class PlayerVehicle : MonoBehaviour
                 TutorialManager.Instance.Hide();
             }
         }
+        
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            JumpBack();
+        }
+
     }
 
     private bool CanShoot()
     {
+        if (IsJumpingBack)
+            return false;
+        
         if (isHovering && Time.timeSinceLevelLoad - lastTimeShooting > (1f / (Config.FireRate*fireRateMultiplyer)) && gunExitPoints.Length!=0)
         {
             if(Physics.Raycast(transform.position, transform.forward, 1000f, LayerMask.GetMask("Cloth")))
