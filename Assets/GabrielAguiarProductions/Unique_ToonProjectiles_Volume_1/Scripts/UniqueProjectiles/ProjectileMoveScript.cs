@@ -165,12 +165,6 @@ public class ProjectileMoveScript : MonoBehaviour {
 	                }
                 }
 
-                if (co.gameObject.tag.ToLower() == "cloth")
-                {
-	                ClothGate cloth = co.gameObject.GetComponent<ClothGate>();
-	                cloth.Hit(transform.position);
-                }
-
                 StartCoroutine(DestroyParticle(0f));
             }
         }

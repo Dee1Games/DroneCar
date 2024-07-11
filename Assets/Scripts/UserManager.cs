@@ -69,7 +69,7 @@ public class UserManager : MonoBehaviour
                 new UpgradeLevel() {Type = UpgradeType.Bonus, Level = Data.VehicleUpgrades[i].UpgradeLevels.FirstOrDefault(x=>x.Type==UpgradeType.Bonus).Level},
                 new UpgradeLevel() {Type = UpgradeType.MaxSpeed, Level = Data.VehicleUpgrades[i].UpgradeLevels.FirstOrDefault(x=>x.Type==UpgradeType.MaxSpeed).Level},
                 new UpgradeLevel() {Type = UpgradeType.Turbo, Level = 0},
-                new UpgradeLevel() {Type = UpgradeType.Gun, Level = 2},
+                new UpgradeLevel() {Type = UpgradeType.Gun, Level = 0},
                 new UpgradeLevel() {Type = UpgradeType.Bomb, Level = 0}
             };
             i++;
