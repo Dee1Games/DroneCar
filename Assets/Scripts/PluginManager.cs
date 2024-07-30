@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using HomaGames.HomaBelly;
+//using HomaGames.HomaBelly; //TODO HOMA
 //using SupersonicWisdomSDK;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,12 +20,12 @@ public class PluginManager : MonoBehaviour
     
     public void Awake()
     {
-        if (!HomaBelly.Instance.IsInitialized)
+        /*if (!HomaBelly.Instance.IsInitialized)
         {
             // Listen event for initialization
             Events.onInitialized += OnInitialized;
         }
-        else
+        else*/ //TODO HOMA
         {
             // Homa Belly already initialized
             OnPluginReady();
@@ -34,7 +34,7 @@ public class PluginManager : MonoBehaviour
         
     private void OnDisable()
     {
-        Events.onInitialized -= OnInitialized;
+        //Events.onInitialized -= OnInitialized; //TODO HOMA
     }
 
     private void OnInitialized()

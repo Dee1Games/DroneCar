@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using HomaGames.HomaBelly;
+//using HomaGames.HomaBelly; //TODO HOMA
 using UnityEngine;
 
 public class Coin : MonoBehaviour

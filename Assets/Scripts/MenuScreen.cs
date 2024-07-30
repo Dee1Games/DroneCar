@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using HomaGames.HomaBelly;
+//using HomaGames.HomaBelly; //TODO HOMA
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +24,7 @@ public class MenuScreen : UIScreen
     {
         base.Show();
 
-        Analytics.MainMenuLoaded();
+        //Analytics.MainMenuLoaded(); //TODO HOMA
         
         coinsText.text = UserManager.Instance.Data.Coins.ToString(); 
         levelText.text = "Boss " + UserManager.Instance.Data.Level.ToString();

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using HomaGames.HomaBelly;
+//using HomaGames.HomaBelly; //TODO HOMA
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -74,11 +74,11 @@ public class GameManager : MonoBehaviour
         CurrentRunDamage = 0f;
         isPlaying = true;
         spawnPlayer();
-        Analytics.LevelStarted(UserManager.Instance.Data.Run);
+        /*Analytics.LevelStarted(UserManager.Instance.Data.Run);
         if (UserManager.Instance.Data.Attempt == 1)
         {
             Analytics.MissionStarted(LevelManager.Instance.CurrentLevelIndex.ToString());
-        }
+        }*/ //TODO HOMA
         UIManager.Instance.ShowScreen(UIScreenID.InGame);
         MergePlatform.Instance.Hide();
         //Map.Init();

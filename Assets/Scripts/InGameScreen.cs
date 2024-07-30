@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using HomaGames.HomaBelly;
+//using HomaGames.HomaBelly; //TODO HOMA
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,7 +52,7 @@ public class InGameScreen : UIScreen
     {
         base.Show();
 
-        Analytics.GameplayStarted();
+        //Analytics.GameplayStarted(); //TODO HOMA
         
         life.text = UserManager.Instance.Data.Lifes.ToString() + " x";
         retryButton.SetActive(true);

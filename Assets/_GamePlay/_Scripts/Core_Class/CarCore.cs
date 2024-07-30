@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using DG.Tweening;
-using HomaGames.HomaBelly;
+//using HomaGames.HomaBelly; //TODO HOMA
 using RaycastPro;
 using RaycastPro.RaySensors;
 using Sirenix.OdinInspector;
@@ -106,7 +106,7 @@ public class CarCore : MonoBehaviour
         if (!vehicle.IsActive)
             return;
 
-        Analytics.LevelFailed("obstacle/miss");
+        //Analytics.LevelFailed("obstacle/miss");  //TODO HOMA
         float value = -1f;
         if (value < hp)
         {
@@ -198,7 +198,7 @@ public class CarCore : MonoBehaviour
             }
             Debug.Log(hit.transform.name);
             GameManager.Instance.RunResult = RunResult.Hit;
-            Analytics.LevelCompleted();
+            //Analytics.LevelCompleted();  //TODO HOMA
             CameraZoomOut();
         }
     }
