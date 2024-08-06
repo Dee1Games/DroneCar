@@ -6,7 +6,6 @@ using RaycastPro.RaySensors;
 using RootMotion;
 using RootMotion.FinalIK;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 
 public class TeslaBot_AI : AI_Core
